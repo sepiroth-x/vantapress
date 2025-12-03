@@ -20,11 +20,11 @@ yarn-error.log
 
 # Debug and testing scripts - keep locally but don't commit
 /debug-scripts/
-check-*.php
-test-*.php
-debug-*.php
-fix-*.php
-create-admin-quick.php
+/scripts/check-*.php
+/scripts/test-*.php
+/scripts/debug-*.php
+/scripts/fix-*.php
+/scripts/create-admin-quick.php
 
 # Log files
 *.log
