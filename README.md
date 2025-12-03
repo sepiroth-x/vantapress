@@ -93,7 +93,7 @@ You are free to use, modify, and distribute VantaPress for any purpose, includin
 
 If you find VantaPress useful, consider giving credit:
 ```
-Powered by VantaPress - Created by Sepirothx
+Powered by VantaPress v1.0.0 - Created by Sepirothx
 ```
 
 ---
@@ -532,7 +532,7 @@ Special thanks to early testers and contributors!
 
 ## 📝 Changelog
 
-### Version 1.0.0 (January 2025) - Initial Release
+### Version 1.0.0 (December 3, 2025) - Initial Release
 
 **Core Features:**
 - ✅ Laravel 11.47 + FilamentPHP 3.3 foundation
