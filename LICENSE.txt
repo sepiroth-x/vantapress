@@ -1,0 +1,228 @@
+MIT License
+
+Copyright (c) 2025 Sepirothx (Richard Cebel Cupal, LPT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+===============================================================================
+
+VantaPress - WordPress-Inspired CMS Built with Laravel
+
+Created by Sepirothx (Richard Cebel Cupal, LPT)
+
+Contact Information:
+- Email: chardy.tsadiq02@gmail.com
+- Mobile: +63 915 0388 448
+
+===============================================================================
+
+ATTRIBUTION:
+
+If you use VantaPress in your project, attribution is appreciated but not
+required. You may include:
+
+"Powered by VantaPress - Created by Sepirothx"
+
+===============================================================================
+
+OPEN SOURCE COMMITMENT:
+
+VantaPress is committed to the open-source philosophy. You are free to:
+- Use VantaPress for personal or commercial projects
+- Modify the source code to fit your needs
+- Distribute modified or unmodified versions
+- Create derivative works
+- Sell products built with VantaPress
+
+The only requirement is to include this license file in distributions.
+
+===============================================================================
+
+TECHNOLOGY STACK:
+
+VantaPress is built with:
+- Laravel 11.47.0 (PHP Framework)
+- FilamentPHP 3.3.45 (Admin Panel)
+- PHP 8.2+ (Programming Language)
+- MySQL/MariaDB (Database)
+- Eloquent ORM (Data Layer)
+
+No Node.js, npm, Vite, or build tools required for deployment!
+
+===============================================================================
+
+Last Updated: December 2, 2025
+Version: 1.0.0
+
+For questions, support, or contributions:
+Email: chardy.tsadiq02@gmail.com
+GitHub: https://github.com/sepirothx/vantapress
+
+
+===============================================================================
+
+AUTHOR & COPYRIGHT HOLDER:
+Sepiroth X Villainous (Richard Cebel Cupal, LPT)
+
+CONTACT INFORMATION:
+Email: chardy.tsadiq02@gmail.com
+Mobile: +63 915 0388 448
+
+===============================================================================
+
+LICENSE NOTICE:
+
+This software and associated documentation files (the "Software") are 
+proprietary and confidential. They are owned by Sepiroth X Villainous 
+(Richard Cebel Cupal, LPT) and are protected by copyright law.
+
+===============================================================================
+
+RESTRICTIONS:
+
+1. COPYING AND DISTRIBUTION
+   - You may NOT copy, reproduce, or distribute the Software in any form
+     without explicit written permission from the copyright holder.
+
+2. MODIFICATION
+   - You may NOT modify, adapt, translate, reverse engineer, decompile,
+     disassemble, or create derivative works based on the Software without
+     explicit written permission from the copyright holder.
+
+3. COMMERCIAL USE
+   - You may NOT use the Software for commercial purposes without a valid
+     commercial license agreement from the copyright holder.
+
+4. REDISTRIBUTION
+   - You may NOT sell, rent, lease, sublicense, or otherwise transfer rights
+     to the Software without explicit written permission from the copyright
+     holder.
+
+5. SOURCE CODE
+   - The source code is provided for authorized use only and does NOT grant
+     ownership rights or the right to redistribute.
+
+===============================================================================
+
+PERMITTED USE:
+
+1. AUTHORIZED INSTALLATION
+   - Installation and use on authorized systems for the original 
+     purchaser/licensee only.
+
+2. BACKUP COPIES
+   - Making backup copies for archival purposes only.
+
+3. EVALUATION
+   - Evaluation for a limited period if explicitly authorized by the
+     copyright holder.
+
+===============================================================================
+
+INTELLECTUAL PROPERTY:
+
+The Software contains proprietary information and intellectual property of
+Sepiroth X Villainous (Richard Cebel Cupal, LPT). This includes but is not
+limited to:
+
+- Source code and compiled code
+- Database schemas and structures
+- Documentation and comments
+- Design patterns and architecture
+- Algorithms and business logic
+- User interfaces and graphics
+- Configuration files and templates
+
+===============================================================================
+
+UNAUTHORIZED USE:
+
+Any unauthorized use, reproduction, distribution, modification, or 
+commercialization of this Software or any portion thereof is strictly 
+prohibited and will be prosecuted to the fullest extent of applicable law.
+
+Violations may result in:
+- Civil litigation and damages
+- Criminal prosecution where applicable
+- Injunctive relief
+- Recovery of legal costs and attorney fees
+
+===============================================================================
+
+LICENSING INQUIRIES:
+
+If you wish to:
+- Use this Software in a commercial environment
+- Modify or extend this Software's functionality
+- Distribute or resell this Software or derivative works
+- Incorporate this code into other projects
+- Obtain a commercial license
+
+Please contact the copyright holder:
+Email: chardy.tsadiq02@gmail.com
+Mobile: +63 915 0388 448
+
+Custom licensing arrangements can be negotiated for specific use cases.
+
+===============================================================================
+
+DISCLAIMER OF WARRANTY:
+
+THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR
+OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+===============================================================================
+
+LIMITATION OF LIABILITY:
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL
+SEPIROTH X VILLAINOUS (RICHARD CEBEL CUPAL, LPT) BE LIABLE FOR ANY SPECIAL,
+INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES WHATSOEVER (INCLUDING, WITHOUT
+LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS
+OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE USE
+OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
+
+===============================================================================
+
+ACKNOWLEDGMENT:
+
+BY USING THIS SOFTWARE, YOU ACKNOWLEDGE THAT YOU HAVE READ THIS LICENSE
+AGREEMENT, UNDERSTAND IT, AND AGREE TO BE BOUND BY ITS TERMS AND CONDITIONS.
+
+IF YOU DO NOT AGREE TO THE TERMS OF THIS LICENSE, YOU ARE NOT AUTHORIZED TO
+INSTALL, COPY, OR USE THE SOFTWARE.
+
+===============================================================================
+
+Last Updated: December 2, 2025
+Version: 1.0.0
+
+===============================================================================
+
+For questions regarding this license, please contact:
+Sepiroth X Villainous (Richard Cebel Cupal, LPT)
+Email: chardy.tsadiq02@gmail.com
+Mobile: +63 915 0388 448

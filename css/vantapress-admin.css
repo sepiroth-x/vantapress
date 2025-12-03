@@ -1,0 +1,440 @@
+/* VantaPress Dark Theme for Filament Admin Panel */
+/* No build tools required - Direct CSS injection */
+
+:root {
+    /* Primary - Crimson Villain */
+    --primary-50: #ffe5ea;
+    --primary-100: #ffc7d2;
+    --primary-200: #ff8fa5;
+    --primary-300: #ff5778;
+    --primary-400: #ff1f4b;
+    --primary-500: #D40026;
+    --primary-600: #b0001f;
+    --primary-700: #8c0018;
+    --primary-800: #680012;
+    --primary-900: #44000c;
+    --primary-950: #200006;
+    
+    /* Gray - Steel Gray to Vantablack */
+    --gray-50: #f5f5f6;
+    --gray-100: #e8e9ea;
+    --gray-200: #d1d2d4;
+    --gray-300: #babcbf;
+    --gray-400: #a3a5a9;
+    --gray-500: #888A8F;
+    --gray-600: #6d6f73;
+    --gray-700: #525457;
+    --gray-800: #36383a;
+    --gray-900: #1b1c1e;
+    --gray-950: #0A0A0A;
+    
+    /* VantaPress Brand Colors */
+    --vanta-black: #050505;
+    --deep-obsidian: #0A0A0A;
+    --crimson-villain: #D40026;
+    --dark-violet: #6A0F91;
+    --steel-gray: #888A8F;
+    --pure-white: #FFFFFF;
+}
+
+/* Force dark mode styling */
+.dark, [data-theme="dark"] {
+    --color-bg-base: var(--vanta-black) !important;
+    --color-bg-surface: var(--deep-obsidian) !important;
+    --color-text-base: var(--pure-white) !important;
+    --color-text-subtle: var(--steel-gray) !important;
+}
+
+/* Sidebar styling */
+.fi-sidebar {
+    background: var(--deep-obsidian) !important;
+    border-right: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+.fi-sidebar-header {
+    background: linear-gradient(135deg, var(--deep-obsidian) 0%, var(--vanta-black) 100%) !important;
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+.fi-sidebar-nav-item {
+    color: var(--steel-gray) !important;
+    transition: all 0.3s ease !important;
+}
+
+.fi-sidebar-nav-item:hover {
+    background: rgba(212, 0, 38, 0.1) !important;
+    color: var(--crimson-villain) !important;
+}
+
+.fi-sidebar-item-active,
+.fi-active {
+    background: linear-gradient(90deg, rgba(212, 0, 38, 0.2), rgba(106, 15, 145, 0.2)) !important;
+    border-left: 3px solid var(--crimson-villain) !important;
+    color: var(--pure-white) !important;
+}
+
+/* Topbar styling */
+.fi-topbar {
+    background: var(--vanta-black) !important;
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+/* Main content area */
+.fi-main {
+    background: var(--vanta-black) !important;
+}
+
+/* Cards and panels */
+.fi-section,
+.fi-card {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Primary buttons */
+.fi-btn-primary {
+    background: var(--crimson-villain) !important;
+    color: var(--pure-white) !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.fi-btn-primary:hover {
+    background: #b0001f !important;
+    box-shadow: 0 4px 16px rgba(212, 0, 38, 0.4) !important;
+    transform: translateY(-1px);
+}
+
+/* Input fields */
+.fi-input,
+.fi-select,
+.fi-textarea {
+    background: var(--vanta-black) !important;
+    border: 1px solid rgba(136, 138, 143, 0.2) !important;
+    color: var(--pure-white) !important;
+}
+
+.fi-input:focus,
+.fi-select:focus,
+.fi-textarea:focus {
+    border-color: var(--crimson-villain) !important;
+    box-shadow: 0 0 0 3px rgba(212, 0, 38, 0.1) !important;
+}
+
+/* Tables */
+.fi-table {
+    background: var(--deep-obsidian) !important;
+}
+
+.fi-table-row:hover {
+    background: rgba(212, 0, 38, 0.05) !important;
+}
+
+.fi-table-header-cell {
+    background: var(--vanta-black) !important;
+    color: var(--steel-gray) !important;
+    border-bottom: 1px solid rgba(136, 138, 143, 0.2) !important;
+}
+
+.fi-table-cell {
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+/* Modals */
+.fi-modal {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.2) !important;
+}
+
+.fi-modal-header {
+    background: var(--vanta-black) !important;
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+/* Notifications */
+.fi-notification {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.fi-notification-success {
+    border-left: 4px solid #22c55e !important;
+}
+
+.fi-notification-error {
+    border-left: 4px solid var(--crimson-villain) !important;
+}
+
+.fi-notification-warning {
+    border-left: 4px solid #f59e0b !important;
+}
+
+.fi-notification-info {
+    border-left: 4px solid #3b82f6 !important;
+}
+
+/* Badges */
+.fi-badge {
+    background: rgba(212, 0, 38, 0.1) !important;
+    color: var(--crimson-villain) !important;
+    border: 1px solid rgba(212, 0, 38, 0.3) !important;
+}
+
+/* Links */
+a {
+    color: var(--crimson-villain) !important;
+    transition: color 0.3s ease !important;
+}
+
+a:hover {
+    color: var(--dark-violet) !important;
+}
+
+/* Dropdown menus */
+.fi-dropdown-list {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.fi-dropdown-list-item:hover {
+    background: rgba(212, 0, 38, 0.1) !important;
+}
+
+/* Tabs */
+.fi-tabs-item {
+    color: var(--steel-gray) !important;
+}
+
+.fi-tabs-item-active {
+    color: var(--crimson-villain) !important;
+    border-bottom: 2px solid var(--crimson-villain) !important;
+}
+
+/* Toggle switches */
+.fi-toggle:checked {
+    background: var(--crimson-villain) !important;
+}
+
+/* Checkboxes and radio buttons */
+.fi-checkbox:checked,
+.fi-radio:checked {
+    background: var(--crimson-villain) !important;
+    border-color: var(--crimson-villain) !important;
+}
+
+/* Progress bars */
+.fi-progress-bar {
+    background: rgba(136, 138, 143, 0.2) !important;
+}
+
+.fi-progress-bar-fill {
+    background: linear-gradient(90deg, var(--crimson-villain), var(--dark-violet)) !important;
+}
+
+/* Loading indicators */
+.fi-loading {
+    border-color: var(--crimson-villain) !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--vanta-black);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--steel-gray);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--crimson-villain);
+}
+
+/* Login page specific */
+.fi-simple-page {
+    background: linear-gradient(135deg, var(--vanta-black) 0%, var(--deep-obsidian) 100%) !important;
+}
+
+.fi-simple-main {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.1) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Brand logo in header */
+.fi-logo {
+    filter: brightness(1.2);
+}
+
+/* Widget styling */
+.fi-wi-stats-overview-stat {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+.fi-wi-stats-overview-stat-value {
+    color: var(--crimson-villain) !important;
+}
+
+/* Chart colors */
+.apexcharts-theme-light {
+    --apexcharts-bg: var(--deep-obsidian) !important;
+}
+
+/* Ensure text is readable */
+body, 
+.fi-body,
+.dark .fi-body {
+    color: var(--pure-white) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--pure-white) !important;
+}
+
+/* Muted text */
+.fi-helper-text,
+.fi-description,
+.text-gray-500 {
+    color: var(--steel-gray) !important;
+}
+
+/* Light mode improvements - softer, easier on the eyes */
+.light, [data-theme="light"], body:not(.dark) {
+    --color-bg-base: #fafafa !important;
+    --color-bg-surface: #ffffff !important;
+    --color-text-base: #1a1a1a !important;
+    --color-text-subtle: #6b7280 !important;
+}
+
+/* Light mode specific overrides */
+body:not(.dark) .fi-sidebar {
+    background: #f9fafb !important;
+    border-right: 1px solid #e5e7eb !important;
+}
+
+body:not(.dark) .fi-topbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+body:not(.dark) .fi-main {
+    background: #fafafa !important;
+}
+
+body:not(.dark) .fi-section,
+body:not(.dark) .fi-card {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+body:not(.dark) .fi-input,
+body:not(.dark) .fi-select,
+body:not(.dark) .fi-textarea {
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #1a1a1a !important;
+}
+
+body:not(.dark) .fi-table {
+    background: #ffffff !important;
+}
+
+body:not(.dark) .fi-table-header-cell {
+    background: #f9fafb !important;
+    color: #374151 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+body:not(.dark) .fi-table-cell {
+    border-bottom: 1px solid #f3f4f6 !important;
+}
+
+body:not(.dark) .fi-table-row:hover {
+    background: #f9fafb !important;
+}
+
+body:not(.dark) .fi-sidebar-nav-item {
+    color: #6b7280 !important;
+}
+
+body:not(.dark) .fi-sidebar-nav-item:hover {
+    background: rgba(212, 0, 38, 0.05) !important;
+    color: var(--crimson-villain) !important;
+}
+
+body:not(.dark) .fi-sidebar-item-active,
+body:not(.dark) .fi-active {
+    background: rgba(212, 0, 38, 0.1) !important;
+    border-left: 3px solid var(--crimson-villain) !important;
+    color: var(--crimson-villain) !important;
+}
+
+body:not(.dark) h1,
+body:not(.dark) h2, 
+body:not(.dark) h3, 
+body:not(.dark) h4, 
+body:not(.dark) h5, 
+body:not(.dark) h6 {
+    color: #1a1a1a !important;
+}
+
+body:not(.dark) .fi-helper-text,
+body:not(.dark) .fi-description {
+    color: #6b7280 !important;
+}
+
+body:not(.dark) .fi-modal {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+body:not(.dark) .fi-modal-header {
+    background: #f9fafb !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+body:not(.dark) .fi-dropdown-list {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+body:not(.dark) ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+body:not(.dark) ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+}
+
+body:not(.dark) ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Compact table spacing */
+.fi-table-cell {
+    padding: 0.5rem !important;
+}
+
+.fi-table-header-cell {
+    padding: 0.5rem !important;
+}
+
+/* Responsive table adjustments */
+@media (max-width: 1280px) {
+    .fi-table-cell,
+    .fi-table-header-cell {
+        padding: 0.375rem !important;
+        font-size: 0.875rem !important;
+    }
+}

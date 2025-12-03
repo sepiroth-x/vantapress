@@ -1,0 +1,18 @@
+{
+    "name": "Basic Theme",
+    "slug": "BasicTheme",
+    "version": "1.0.0",
+    "description": "A clean and simple theme for VantaPress CMS",
+    "author": "VantaPress",
+    "author_email": "chardy.tsadiq02@gmail.com",
+    "author_url": "https://github.com/sepiroth-x",
+    "license": "Open Source",
+    "social_links": {
+        "github": "https://github.com/sepiroth-x",
+        "facebook": "https://www.facebook.com/sepirothx/",
+        "twitter": "https://x.com/sepirothx000",
+        "email": "chardy.tsadiq02@gmail.com",
+        "mobile": "+63 915 0388 448"
+    },
+    "preview": "screenshot.png"
+}
