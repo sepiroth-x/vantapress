@@ -18,8 +18,14 @@ yarn-error.log
 /.idea
 /.vscode
 
-# Debug scripts - keep locally but don't deploy to production
+# Debug and testing scripts - keep locally but don't commit
 /debug-scripts/
+check-*.php
+test-*.php
+debug-*.php
+fix-*.php
+create-admin-quick.php
+install.php
 
 # Log files
 *.log
