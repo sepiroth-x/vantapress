@@ -25,7 +25,6 @@ test-*.php
 debug-*.php
 fix-*.php
 create-admin-quick.php
-install.php
 
 # Log files
 *.log
