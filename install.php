@@ -1,7 +1,7 @@
 <?php
 /**
- * TCC School CMS - Web Installer
- * For iFastNet/Shared Hosting without SSH access
+ * VantaPress - Web Installer
+ * For Shared Hosting without SSH access
  */
 
 // Disable error display for production
@@ -14,7 +14,7 @@ ini_set('display_errors', 1);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCC School CMS - Installation</title>
+    <title>VantaPress - Installation</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -187,6 +187,9 @@ ini_set('display_errors', 1);
             }
 
             if ($allPassed) {
+                echo "<div class='status success' style='margin-top:20px;'>";
+                echo "<span class='icon'>✓</span> All requirements met! Ready to proceed.";
+                echo "</div>";
                 echo "<div class='actions'>";
                 echo "<button onclick='location.href=\"?step=2\"'>Continue to Database Setup →</button>";
                 echo "</div>";
@@ -247,16 +250,17 @@ ini_set('display_errors', 1);
                         
                         file_put_contents($envPath, $envContent);
                         
-                        echo "<div class='status success'>";
-                        echo "<span class='icon'>✓</span> .env file updated with database credentials";
-                        echo "</div>";
-                    }
-
-                    echo "<div class='actions'>";
-                    echo "<button onclick='location.href=\"?step=3\"'>Run Database Migrations →</button>";
+                    echo "<div class='status success'>";
+                    echo "<span class='icon'>✓</span> .env file updated with database credentials";
                     echo "</div>";
+                }
 
-                } catch (PDOException $e) {
+                echo "<div class='status success' style='margin-top:20px;'>";
+                echo "<span class='icon'>🎉</span> Database connection successful! Ready to create tables.";
+                echo "</div>";
+                echo "<div class='actions'>";
+                echo "<button onclick='location.href=\"?step=3\"'>Continue to Database Migration →</button>";
+                echo "</div>";                } catch (PDOException $e) {
                     echo "<div class='status error'>";
                     echo "<span class='icon'>✗</span> Database connection failed: " . htmlspecialchars($e->getMessage());
                     echo "</div>";
@@ -324,10 +328,10 @@ ini_set('display_errors', 1);
                     <div style="margin-bottom: 20px;">
                         <label style="display:block; margin-bottom:5px; font-weight:600; color:#333;">
                             Database Name:
-                            <small style="font-weight:400; color:#666;">(e.g., tcc_school_cms)</small>
+                            <small style="font-weight:400; color:#666;">(e.g., vantapress_db)</small>
                         </label>
                         <input type="text" name="db_name" value="<?php echo htmlspecialchars($dbName); ?>" required 
-                               placeholder="tcc_school_cms"
+                               placeholder="vantapress_db"
                                style="width:100%; padding:12px; border:2px solid #ddd; border-radius:6px; font-size:15px;">
                     </div>
                     
@@ -408,6 +412,11 @@ ini_set('display_errors', 1);
                         updateProgress(100, text);
                         
                         setTimeout(() => {
+                            const completionMsg = document.createElement('div');
+                            completionMsg.className = 'status success';
+                            completionMsg.style.marginTop = '20px';
+                            completionMsg.innerHTML = '<span class="icon">✓</span> Database migration completed successfully!';
+                            document.getElementById('logOutput').parentNode.appendChild(completionMsg);
                             document.getElementById('nextStep').style.display = 'block';
                         }, 1000);
                     } catch (error) {
@@ -419,7 +428,7 @@ ini_set('display_errors', 1);
                 setTimeout(runMigrations, 500);
             </script>
 
-            <div class='actions' id='nextStep' style='display:none;'>
+            <div class='actions' id='nextStep' style='display:none; margin-top:20px;'>
                 <button onclick='location.href="?step=4"'>Continue to Asset Setup →</button>
             </div>
 
@@ -632,6 +641,11 @@ ini_set('display_errors', 1);
                         updateProgress(100, text);
                         
                         setTimeout(() => {
+                            const completionMsg = document.createElement('div');
+                            completionMsg.className = 'status success';
+                            completionMsg.style.marginTop = '20px';
+                            completionMsg.innerHTML = '<span class="icon">✓</span> Assets published successfully!';
+                            document.getElementById('logOutput').parentNode.appendChild(completionMsg);
                             document.getElementById('nextStep').style.display = 'block';
                         }, 1000);
                     } catch (error) {
@@ -643,7 +657,7 @@ ini_set('display_errors', 1);
                 setTimeout(publishAssets, 500);
             </script>
 
-            <div class='actions' id='nextStep' style='display:none;'>
+            <div class='actions' id='nextStep' style='display:none; margin-top:20px;'>
                 <button onclick='location.href="?step=5"'>Continue to Admin Setup →</button>
             </div>
 
@@ -838,7 +852,7 @@ ini_set('display_errors', 1);
                     }
                     
                     $name = $_POST['name'] ?? 'Administrator';
-                    $email = $_POST['email'] ?? 'admin@tcc.edu.ph';
+                    $email = $_POST['email'] ?? 'admin@vantapress.com';
                     $password = $_POST['password'] ?? 'admin123';
                     
                     // Connect to database using parsed credentials
@@ -888,11 +902,14 @@ ini_set('display_errors', 1);
                     }
                     
                     echo "<div class='status success'>";
-                    echo "<span class='icon'>🔑</span> Login credentials:<br>";
+                    echo "<span class='icon'>🔑</span> <strong>Save these credentials:</strong><br><br>";
                     echo "Email: <code>$email</code><br>";
                     echo "Password: <code>" . htmlspecialchars($password) . "</code>";
                     echo "</div>";
                     
+                    echo "<div class='status success' style='margin-top:20px;'>";
+                    echo "<span class='icon'>🎉</span> Admin account configured! Ready to complete installation.";
+                    echo "</div>";
                     echo "<div class='actions'>";
                     echo "<button onclick='location.href=\"?step=6\"'>Complete Installation →</button>";
                     echo "</div>";
@@ -918,7 +935,7 @@ ini_set('display_errors', 1);
                     
                     <div style="margin-bottom: 20px;">
                         <label style="display:block; margin-bottom:5px; font-weight:600;">Email:</label>
-                        <input type="email" name="email" value="admin@tcc.edu.ph" required 
+                        <input type="email" name="email" value="admin@vantapress.com" required 
                                style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:16px;">
                     </div>
                     
@@ -941,7 +958,7 @@ ini_set('display_errors', 1);
             ?>
             <div class="step">
                 <h2>🎉 Installation Complete!</h2>
-                <p>Your TCC School CMS is ready to use.</p>
+                <p>Your VantaPress CMS is ready to use.</p>
             </div>
 
             <div class='status success'>
