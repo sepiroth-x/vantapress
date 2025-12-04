@@ -82,6 +82,10 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::SCRIPTS_AFTER,
                 fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>'
             )
+            ->renderHook(
+                PanelsRenderHook::FOOTER,
+                fn (): string => view('filament.footer')->render()
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->resources([
                 \Modules\VPToDoList\Filament\Resources\ProjectResource::class,

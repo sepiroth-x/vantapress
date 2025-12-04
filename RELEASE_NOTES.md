@@ -1,12 +1,26 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.16-complete  
+**Current Version:** v1.0.17-complete  
 **Release Date:** December 5, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.16-complete
+## 📌 Latest Version: v1.0.17-complete
+
+### 🎯 What's New in v1.0.17-complete
+- **🏆 Admin Footer Added** - Proudly display developer attribution in admin panel
+- **📱 Social Links Integrated** - Email, GitHub, Facebook, Twitter/X, and mobile contact
+- **✨ Version Display Fixed** - Removed double "v" prefix in UpdateSystem page
+- **🔗 Theme Routing Fixed** - Replace route('login') with url('/admin') in TheVillainArise theme
+- **🗑️ Index.html Removed** - Properly delete pre-installation landing page for clean routing
+- **💪 Developer Pride** - Full name and contact information prominently displayed
+
+### 🐛 Bug Fixes
+- Fixed RouteNotFoundException when login route not defined
+- Fixed double "vv" prefix showing "VantaPress vv1.0.16-complete"
+- Fixed homepage loading static index.html instead of theme
+- Fixed admin footer displaying correctly across all admin pages
 
 ### 🎯 What's New in v1.0.16-complete
 - **🔧 Module Namespace Fixes** - Fixed PSR-4 autoloading for all modules
