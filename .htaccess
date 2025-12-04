@@ -40,7 +40,17 @@ Options -Indexes
     Deny from all
 </FilesMatch>
 
-<FilesMatch "\.(env|log|md)$">
+# Block access to sensitive file extensions
+<FilesMatch "\.(env|log|md|json|lock|yml|yaml|xml|sql|gitignore|gitattributes)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Block access to sensitive directories
+RedirectMatch 403 ^/(app|bootstrap|config|database|resources|routes|storage|vendor|tests)/
+
+# Block access to composer files
+<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|artisan)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
