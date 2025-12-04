@@ -28,9 +28,14 @@ class ProjectResource extends Resource
     
     public static function shouldRegisterNavigation(): bool
     {
-        return \App\Models\Module::where('slug', 'VPToDoList')
-            ->where('is_enabled', true)
-            ->exists();
+        try {
+            return \App\Models\Module::where('slug', 'VPToDoList')
+                ->where('is_enabled', true)
+                ->exists();
+        } catch (\Exception $e) {
+            // Return false if modules table doesn't exist yet
+            return false;
+        }
     }
 
     public static function form(Form $form): Form

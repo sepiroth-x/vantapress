@@ -1,12 +1,20 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.14-complete  
+**Current Version:** v1.0.15-complete  
 **Release Date:** December 4, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.14-complete
+## 📌 Latest Version: v1.0.15-complete
+
+### 🎯 What's New in v1.0.15-complete
+- **🛡️ Comprehensive Error Handling** - Added try-catch blocks throughout the codebase
+- **🔒 Database Safety** - Prevents crashes when tables don't exist yet
+- **🎨 Improved Installer UI** - Fixed action buttons always visible at bottom
+- **📊 Widget Protection** - StatsOverview widget handles missing tables gracefully
+- **🔧 Middleware Safety** - ThemeMiddleware won't crash on missing themes table
+- **✨ Module Protection** - VPToDoList module handles missing tables elegantly
 
 ### 🎯 What's New in v1.0.14-complete
 - **🎨 Villain-Themed Installer** - Complete UI rework with The Villain Arise aesthetic

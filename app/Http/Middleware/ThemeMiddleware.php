@@ -47,28 +47,41 @@ class ThemeMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check for theme preview mode (for customizer)
-        $previewTheme = $request->query('theme_preview');
-        
-        if ($previewTheme) {
-            // Load preview theme instead of active theme
-            $this->loadPreviewTheme($previewTheme);
-        } else {
-            // Get active theme from database
-            $activeTheme = Theme::where('is_active', true)->first();
+        try {
+            // Check for theme preview mode (for customizer)
+            $previewTheme = $request->query('theme_preview');
             
-            if ($activeTheme) {
-                // Load active theme from database
-                $this->themeManager->loadTheme($activeTheme->slug);
+            if ($previewTheme) {
+                // Load preview theme instead of active theme
+                $this->loadPreviewTheme($previewTheme);
             } else {
-                // Load default theme
+                // Get active theme from database
+                $activeTheme = Theme::where('is_active', true)->first();
+                
+                if ($activeTheme) {
+                    // Load active theme from database
+                    $this->themeManager->loadTheme($activeTheme->slug);
+                } else {
+                    // Load default theme
+                    $this->themeManager->loadTheme();
+                }
+            }
+
+            // Share theme data with views
+            view()->share('active_theme', $this->themeManager->getActiveTheme());
+            view()->share('theme_config', $this->themeManager->getThemeConfig($this->themeManager->getActiveTheme()));
+        } catch (\Exception $e) {
+            // If themes table doesn't exist or any other error, load default theme
+            try {
                 $this->themeManager->loadTheme();
+                view()->share('active_theme', $this->themeManager->getActiveTheme());
+                view()->share('theme_config', []);
+            } catch (\Exception $fallbackError) {
+                // Silently fail and continue - theme will use defaults
+                view()->share('active_theme', 'default');
+                view()->share('theme_config', []);
             }
         }
-
-        // Share theme data with views
-        view()->share('active_theme', $this->themeManager->getActiveTheme());
-        view()->share('theme_config', $this->themeManager->getThemeConfig($this->themeManager->getActiveTheme()));
 
         return $next($request);
     }
