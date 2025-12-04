@@ -1035,6 +1035,15 @@ ini_set('display_errors', 1);
 
         // Step 6: Complete
         elseif ($step === 6) {
+            // Activate Laravel by renaming _index.php back to index.php
+            $publicDir = __DIR__ . '/public';
+            if (file_exists("$publicDir/_index.php")) {
+                rename("$publicDir/_index.php", "$publicDir/index.php");
+                // Remove the HTML welcome page
+                if (file_exists("$publicDir/index.html")) {
+                    unlink("$publicDir/index.html");
+                }
+            }
             ?>
             <div class="step">
                 <h2>🎉 Installation Complete!</h2>
