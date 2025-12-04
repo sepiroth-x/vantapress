@@ -86,12 +86,13 @@ class ThemeResource extends Resource
                         Forms\Components\FileUpload::make('screenshot')
                             ->label('Theme Screenshot')
                             ->image()
-                            ->imageEditor()
                             ->directory('themes/screenshots')
                             ->disk('public')
-                            ->maxSize(2048)
-                            ->helperText('Preview image for this theme (recommended: 1200x900px)'),
-                    ]),
+                            ->disabled()
+                            ->dehydrated()
+                            ->helperText('Theme screenshot (read-only, automatically loaded from theme folder)'),
+                    ])
+                    ->description('Screenshot is automatically detected from the theme folder'),
                 
                 Forms\Components\Section::make('Configuration')
                     ->schema([
