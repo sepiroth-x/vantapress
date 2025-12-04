@@ -24,6 +24,17 @@ if (file_exists($envPath)) {
     }
 }
 
+// Check if APP_KEY is set before booting Laravel
+// If missing, show pre-installation welcome page
+$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+$isUtilityScript = preg_match('#/(install|diagnose|fix-app-key)\.php#', $requestUri);
+
+if ((!isset($_ENV['APP_KEY']) || empty($_ENV['APP_KEY']) || $_ENV['APP_KEY'] === '') && !$isUtilityScript) {
+    // APP_KEY missing - show pre-installation welcome page
+    require __DIR__.'/../resources/views/pre-install-welcome.php';
+    exit;
+}
+
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
