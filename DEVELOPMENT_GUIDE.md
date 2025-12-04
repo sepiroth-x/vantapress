@@ -298,6 +298,92 @@ These files map `Modules\HelloWorld\HelloWorldServiceProvider` to the file path.
 
 ## Development Standards
 
+### ⚠️ Must Know: Filament Asset Management
+
+**CRITICAL:** VantaPress uses a **root-level structure** (no `public/` folder), but Filament's asset publisher (`php artisan filament:assets`) is designed to publish assets to `public/css/` and `public/js/` by default.
+
+#### The Problem
+When you run `php artisan filament:assets`, Filament will:
+- ❌ Create a `public/` folder in your project root
+- ❌ Publish CSS/JS assets to `public/css/filament/` and `public/js/filament/`
+- ❌ Break the root-level structure
+- ❌ Cause asset loading issues in the admin panel
+
+#### Our Solution
+VantaPress overrides Laravel's public path to point to the **root directory** instead of `public/`:
+
+**1. In `index.php`:**
+```php
+$app = require_once __DIR__.'/bootstrap/app.php';
+
+// Override public path to use base directory (root-level structure)
+$app->usePublicPath(__DIR__);
+```
+
+**2. In `artisan`:**
+```php
+$app = require_once __DIR__.'/bootstrap/app.php';
+
+// Override public path to use base directory (root-level structure)
+$app->usePublicPath(__DIR__);
+```
+
+**3. AppServiceProvider (optional binding):**
+```php
+public function boot(): void
+{
+    // Set public path to base directory (root-level structure)
+    $this->app->bind('path.public', function() {
+        return base_path();
+    });
+}
+```
+
+#### Result
+With this configuration:
+- ✅ `php artisan filament:assets` publishes directly to `/css/filament/` and `/js/filament/`
+- ✅ No `public/` folder is created
+- ✅ Assets are accessible at root level (e.g., `/css/filament/filament/app.css`)
+- ✅ Works perfectly in both development and production
+
+#### Asset Loading in Admin Panel
+Filament's render hooks inject the required CSS/JS files in `AdminPanelProvider.php`:
+
+```php
+use Filament\View\PanelsRenderHook;
+
+->renderHook(
+    PanelsRenderHook::STYLES_AFTER,
+    fn (): string => '<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '?v=3.3.45">' .
+                     '<link rel="stylesheet" href="' . asset('css/filament-theme.css') . '">' .
+                     '<link rel="stylesheet" href="' . asset('css/vantapress-admin.css') . '">'
+)
+->renderHook(
+    PanelsRenderHook::SCRIPTS_AFTER,
+    fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>'
+)
+```
+
+#### Publishing Filament Assets
+
+When you need to update Filament assets (after updating Filament version):
+
+```bash
+# This will now publish to root /css/ and /js/ folders (not public/)
+php artisan filament:assets
+```
+
+#### Helper Script (Optional)
+If you ever need to copy assets from `public/` to root (e.g., if public path override fails):
+
+```bash
+php sync-filament-assets.php
+```
+
+This script copies assets from `public/css/filament/` and `public/js/filament/` to the root directories.
+
+---
+
 ### Local Development Server
 
 ⚠️ **IMPORTANT:** You cannot use `php artisan serve` with VantaPress because it requires a `public/` folder which we don't have.
