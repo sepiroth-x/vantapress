@@ -186,6 +186,68 @@ ini_set('display_errors', 1);
                 echo "<div class='status $class'><span class='icon'>$icon</span> $check</div>";
             }
 
+            // Auto-generate APP_KEY if .env exists but APP_KEY is missing or empty
+            if (file_exists(__DIR__ . '/.env')) {
+                $envPath = __DIR__ . '/.env';
+                $envContent = file_get_contents($envPath);
+                $needsKey = false;
+                
+                if (preg_match('/^APP_KEY=(.*)$/m', $envContent, $matches)) {
+                    $currentKey = trim($matches[1]);
+                    if (empty($currentKey)) {
+                        $needsKey = true;
+                    }
+                } else {
+                    $needsKey = true;
+                }
+                
+                if ($needsKey) {
+                    echo "<div class='status warning'>";
+                    echo "<span class='icon'>🔑</span> APP_KEY is missing or empty. Generating encryption key...";
+                    echo "</div>";
+                    
+                    try {
+                        // Generate secure random key
+                        $appKey = 'base64:' . base64_encode(random_bytes(32));
+                        
+                        // Update or add APP_KEY in .env
+                        if (preg_match('/^APP_KEY=.*$/m', $envContent)) {
+                            $newEnvContent = preg_replace('/^APP_KEY=.*$/m', "APP_KEY=$appKey", $envContent);
+                        } else {
+                            // Add APP_KEY after APP_URL if it exists, or at the beginning
+                            if (preg_match('/^APP_URL=.*$/m', $envContent)) {
+                                $newEnvContent = preg_replace('/^(APP_URL=.*)$/m', "$1\nAPP_KEY=$appKey", $envContent);
+                            } else {
+                                $newEnvContent = "APP_KEY=$appKey\n" . $envContent;
+                            }
+                        }
+                        
+                        $writeSuccess = file_put_contents($envPath, $newEnvContent);
+                        
+                        if ($writeSuccess !== false) {
+                            echo "<div class='status success'>";
+                            echo "<span class='icon'>✓</span> APP_KEY automatically generated and saved!";
+                            echo "</div>";
+                            $allPassed = $allPassed && true;
+                        } else {
+                            echo "<div class='status error'>";
+                            echo "<span class='icon'>✗</span> Could not write APP_KEY to .env file. Check file permissions.";
+                            echo "</div>";
+                            $allPassed = false;
+                        }
+                    } catch (Exception $e) {
+                        echo "<div class='status error'>";
+                        echo "<span class='icon'>✗</span> Error generating APP_KEY: " . htmlspecialchars($e->getMessage());
+                        echo "</div>";
+                        $allPassed = false;
+                    }
+                } else {
+                    echo "<div class='status success'>";
+                    echo "<span class='icon'>✓</span> APP_KEY is already configured";
+                    echo "</div>";
+                }
+            }
+
             if ($allPassed) {
                 echo "<div class='status success' style='margin-top:20px;'>";
                 echo "<span class='icon'>✓</span> All requirements met! Ready to proceed.";
@@ -247,15 +309,6 @@ ini_set('display_errors', 1);
                         $envContent = preg_replace('/DB_DATABASE=.*/', "DB_DATABASE=$dbName", $envContent);
                         $envContent = preg_replace('/DB_USERNAME=.*/', "DB_USERNAME=$dbUser", $envContent);
                         $envContent = preg_replace('/DB_PASSWORD=.*/', "DB_PASSWORD=$dbPass", $envContent);
-                        
-                        // Generate APP_KEY if not set
-                        if (preg_match('/APP_KEY=\s*$/', $envContent) || preg_match('/APP_KEY=$/', $envContent)) {
-                            $appKey = 'base64:' . base64_encode(random_bytes(32));
-                            $envContent = preg_replace('/APP_KEY=.*/', "APP_KEY=$appKey", $envContent);
-                            echo "<div class='status success'>";
-                            echo "<span class='icon'>🔐</span> Generated application encryption key";
-                            echo "</div>";
-                        }
                         
                         file_put_contents($envPath, $envContent);
                         
