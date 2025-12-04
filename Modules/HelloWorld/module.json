@@ -14,5 +14,6 @@
         "email": "chardy.tsadiq02@gmail.com",
         "mobile": "+63 915 0388 448"
     },
-    "active": true
+    "active": true,
+    "service_provider": "Modules\\HelloWorld\\HelloWorldServiceProvider"
 }

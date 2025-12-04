@@ -9,6 +9,7 @@ return Application::configure(basePath: dirname(__DIR__))
         \App\Providers\Filament\AdminPanelProvider::class,
         \Modules\VPEssential1\VPEssential1ServiceProvider::class,
         \Modules\VPToDoList\VPToDoListServiceProvider::class,
+        \Modules\HelloWorld\HelloWorldServiceProvider::class,
     ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
