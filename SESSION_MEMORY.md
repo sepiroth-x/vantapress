@@ -83,6 +83,18 @@
 
 ## Development Notes
 
+### Local Development Server
+
+Since `public/` folder was removed, you CANNOT use `php artisan serve` (it expects a public/ directory).
+
+**Use instead:**
+```bash
+php serve.php              # Starts server at http://127.0.0.1:8000
+php serve.php 0.0.0.0 8080 # Custom host and port
+```
+
+The `serve.php` script starts PHP's built-in server from the root directory.
+
 ### AI Assistant Confusion Points (to avoid repeating)
 
 1. **DON'T assume `public/` is the web root** - It's not for shared hosting
