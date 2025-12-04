@@ -155,8 +155,7 @@ class Settings extends Page
                                     ->label('Allowed File Types')
                                     ->placeholder('jpg, png, pdf')
                                     ->helperText('Comma-separated list of allowed file extensions')
-                                    ->dehydrateStateUsing(fn ($state) => is_array($state) ? implode(',', $state) : $state)
-                                    ->formatStateUsing(fn ($state) => is_string($state) ? array_filter(array_map('trim', explode(',', $state))) : $state),
+                                    ->dehydrateStateUsing(fn ($state) => is_array($state) ? implode(',', $state) : $state),
                             ]),
                         
                         Forms\Components\Tabs\Tab::make('SEO')
