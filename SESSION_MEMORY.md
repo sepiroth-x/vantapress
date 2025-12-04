@@ -4,6 +4,43 @@
 
 ## Critical Architecture Decisions
 
+### 🎨 Theme-Based Admin Styling (December 4, 2025)
+
+**Decision:** Admin panel styling is now controlled by active theme, not root-level CSS.
+
+**Architecture:**
+- Admin CSS location: `themes/{ActiveTheme}/assets/css/admin.css`
+- Dynamic loading: `AdminPanelProvider` detects active theme and loads its `admin.css`
+- Cache busting: Automatic `?v=timestamp` parameter on CSS URL
+- Scope: Themes control LOOKS only, never break Filament functionality
+
+**Files:**
+- `themes/BasicTheme/assets/css/admin.css` - Admin panel styling
+- `themes/BasicTheme/assets/css/theme.css` - Frontend website styling
+- `app/Providers/Filament/AdminPanelProvider.php` - Dynamic CSS loader
+
+**What Themes Control:**
+- ✅ Visual styling (colors, fonts, shadows, borders, spacing)
+- ✅ Light and dark mode aesthetics
+- ✅ Frontend layouts and components
+- ✅ Admin panel appearance (sidebar, cards, forms, tables)
+
+**What Themes DON'T Control:**
+- ❌ Filament core functionality
+- ❌ Admin panel structure or features
+- ❌ Navigation or widgets logic
+- ❌ Data models or controllers
+
+**Impact:**
+- Switching themes changes entire CMS appearance (frontend + backend)
+- Ensures design consistency across all areas
+- Themes are fully portable (single ZIP file)
+- Visual customization without breaking functionality
+
+**Default Theme:** Basic Theme (The Beginning) - Retro arcade aesthetic with flat colors
+
+---
+
 ### 🗑️ public/ Folder DELETED (December 4, 2025)
 
 **Decision:** Permanently removed the `public/` directory from VantaPress.

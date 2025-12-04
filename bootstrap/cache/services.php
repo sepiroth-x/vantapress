@@ -44,10 +44,11 @@
     40 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
     41 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
     42 => 'Spatie\\Permission\\PermissionServiceProvider',
-    43 => 'App\\Providers\\Filament\\AdminPanelProvider',
-    44 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
-    45 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
-    46 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
+    43 => 'App\\Providers\\AppServiceProvider',
+    44 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    45 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
+    46 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
+    47 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
   ),
   'eager' => 
   array (
@@ -80,10 +81,11 @@
     26 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
     27 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
     28 => 'Spatie\\Permission\\PermissionServiceProvider',
-    29 => 'App\\Providers\\Filament\\AdminPanelProvider',
-    30 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
-    31 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
-    32 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
+    29 => 'App\\Providers\\AppServiceProvider',
+    30 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    31 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
+    32 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
+    33 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
   ),
   'deferred' => 
   array (

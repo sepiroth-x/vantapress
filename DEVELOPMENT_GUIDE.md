@@ -1,6 +1,6 @@
 # VantaPress Development Guide
 
-**Version:** 1.0.5  
+**Version:** 1.0.12  
 **Last Updated:** December 4, 2025  
 **Author:** Sepiroth X Villainous (Richard Cebel Cupal, LPT)
 
@@ -16,6 +16,7 @@
 6. [Development Standards](#development-standards)
 7. [Module Development Guide](#module-development-guide)
 8. [Theme Development Guide](#theme-development-guide)
+   - [Theme-Based Admin Styling](#theme-based-admin-styling)
 9. [Deployment Guidelines](#deployment-guidelines)
    - [Architecture & Security Considerations](#️-critical-architecture--security-considerations)
    - [Root-Level vs public/ Folder](#root-level-vs-public-folder-structure)
@@ -1041,6 +1042,199 @@ Themes are activated through the VantaPress admin panel:
 3. Click **Activate**
 
 The theme loader automatically discovers themes in the `vantapress/` directory.
+
+---
+
+### Theme-Based Admin Styling
+
+**NEW IN v1.0.12**: Admin panel styling is now controlled by the active theme, providing a unified design experience across frontend and backend.
+
+#### Architecture
+
+Each theme controls **both** the frontend website appearance AND the admin panel aesthetics through two CSS files:
+
+```
+themes/YourTheme/
+├── assets/
+│   └── css/
+│       ├── theme.css    ← Frontend website styling
+│       └── admin.css    ← Admin panel styling ⭐
+```
+
+#### How It Works
+
+The `AdminPanelProvider` automatically detects the active theme and loads its `admin.css`:
+
+```php
+// app/Providers/Filament/AdminPanelProvider.php
+->renderHook(
+    PanelsRenderHook::STYLES_AFTER,
+    function (): string {
+        $themeManager = app(\App\Services\CMS\ThemeManager::class);
+        $activeTheme = $themeManager->getActiveTheme();
+        $adminCss = asset("themes/{$activeTheme}/assets/css/admin.css") . '?v=' . time();
+        
+        return '<link rel="stylesheet" href="' . $adminCss . '">';
+    }
+)
+```
+
+#### What Themes Can Style
+
+**✅ Themes Control (Visual Styling Only):**
+- Colors, gradients, and color schemes
+- Typography (fonts, sizes, weights)
+- Borders, shadows, and spacing
+- Light and dark mode aesthetics
+- Sidebar appearance
+- Card designs
+- Form input styling
+- Button styles
+- Table layouts
+- Hover and active states
+
+**❌ Themes DON'T Control (Filament Core):**
+- Admin panel functionality
+- Navigation structure
+- Resource/Page behavior
+- Form validation logic
+- Data models or controllers
+- Widgets or actions
+- Dashboard widgets
+
+#### Creating Admin Styles
+
+**File**: `themes/YourTheme/assets/css/admin.css`
+
+```css
+/* Dark Mode Styling */
+.dark .fi-sidebar {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%) !important;
+    border-right: 3px solid #ff0033 !important;
+}
+
+.dark .fi-card {
+    background: #16213e !important;
+    border: 2px solid #4ecdc4 !important;
+    box-shadow: 4px 4px 0 #ff0033 !important;
+}
+
+/* Light Mode Styling */
+html:not(.dark) .fi-sidebar {
+    background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border-right: 3px solid #ff6b6b !important;
+}
+
+html:not(.dark) .fi-card {
+    background: white !important;
+    border: 2px solid #4ecdc4 !important;
+}
+
+/* Buttons */
+.fi-btn-primary {
+    background: #ff0033 !important;
+    border: 2px solid #ffd93d !important;
+}
+
+.fi-btn-primary:hover {
+    background: #ffd93d !important;
+    color: #1a1a2e !important;
+}
+```
+
+#### Important Selectors
+
+Common Filament CSS classes to target:
+
+```css
+/* Layout */
+.fi-sidebar          /* Main sidebar */
+.fi-topbar           /* Top navigation bar */
+.fi-main             /* Main content area */
+
+/* Components */
+.fi-card             /* Card containers */
+.fi-section          /* Section containers */
+.fi-stats-card       /* Dashboard statistics */
+
+/* Navigation */
+.fi-sidebar-nav-item        /* Sidebar menu items */
+.fi-sidebar-item-active     /* Active menu item */
+
+/* Forms */
+.fi-input            /* Text inputs */
+.fi-select           /* Select dropdowns */
+.fi-textarea         /* Text areas */
+.fi-btn              /* Buttons */
+
+/* Tables */
+.fi-table            /* Table wrapper */
+.fi-table-header-cell    /* Column headers */
+.fi-table-cell       /* Table cells */
+.fi-table-row        /* Table rows */
+```
+
+#### Best Practices
+
+1. **Use !important**: Filament has strong default styles, override with `!important`
+2. **Support Both Modes**: Always style both `.dark` and `html:not(.dark)`
+3. **Preserve Functionality**: Only change visual properties (colors, fonts, spacing)
+4. **Test Thoroughly**: Check all admin pages, forms, tables after styling
+5. **Cache Busting**: The provider adds automatic `?v=timestamp` to force reloads
+
+#### Example: Corporate Theme
+
+```css
+/* Professional, minimal design */
+.dark .fi-sidebar {
+    background: #2d3748 !important;
+    border-right: 1px solid #4a5568 !important;
+}
+
+.dark .fi-card {
+    background: #1a202c !important;
+    border: 1px solid #4a5568 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.fi-btn-primary {
+    background: #3182ce !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+}
+```
+
+#### Example: Retro Gaming Theme (Default)
+
+```css
+/* Flat colors, pixel-perfect, 16-bit aesthetic */
+.dark .fi-sidebar {
+    background: linear-gradient(180deg, #16213E 0%, #1A1A2E 100%) !important;
+    border-right: 3px solid #FF0033 !important;
+}
+
+.dark .fi-card {
+    background: #16213E !important;
+    border: 4px solid #4ECDC4 !important;
+    border-radius: 0px !important; /* Sharp corners */
+    box-shadow: 8px 8px 0 #FF0033 !important; /* Solid shadow */
+}
+
+.dark h1, .dark h2, .dark h3 {
+    color: #FFD93D !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 3px !important;
+    text-shadow: 4px 4px 0 #FF0033 !important;
+}
+```
+
+#### Documentation
+
+For comprehensive theming architecture documentation, see:
+- `THEME_ARCHITECTURE.md` - Complete theme system guide
+- `themes/BasicTheme/README.md` - Default theme documentation
 
 ---
 
