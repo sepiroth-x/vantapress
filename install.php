@@ -72,6 +72,42 @@ ini_set('display_errors', 1);
             padding: 40px;
             position: relative;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+        
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+        
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .content-area::-webkit-scrollbar-track {
+            background: var(--villain-darker);
+            border-radius: 4px;
+        }
+        
+        .content-area::-webkit-scrollbar-thumb {
+            background: var(--villain-red);
+            border-radius: 4px;
+        }
+        
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: var(--villain-light);
+        }
+        
+        .fixed-actions {
+            border-top: 2px solid rgba(220, 38, 38, 0.3);
+            padding-top: 20px;
+            margin-top: auto;
+            background: var(--villain-dark);
         }
         
         h1 {
@@ -175,7 +211,6 @@ ini_set('display_errors', 1);
         }
         
         .actions {
-            margin-top: 30px;
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
@@ -206,12 +241,34 @@ ini_set('display_errors', 1);
             border: 1px solid rgba(220, 38, 38, 0.3);
             padding: 15px;
             border-radius: 4px;
-            max-height: 400px;
+            max-height: 300px;
+            min-height: 150px;
             overflow-y: auto;
+            overflow-x: auto;
             font-family: 'Space Mono', monospace;
             font-size: 12px;
             line-height: 1.8;
             color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        
+        .log::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .log::-webkit-scrollbar-track {
+            background: var(--villain-darker);
+            border-radius: 4px;
+        }
+        
+        .log::-webkit-scrollbar-thumb {
+            background: var(--villain-red);
+            border-radius: 4px;
+        }
+        
+        .log::-webkit-scrollbar-thumb:hover {
+            background: var(--villain-light);
         }
         
         .progress {
@@ -304,6 +361,7 @@ ini_set('display_errors', 1);
         <h1>⚡ VantaPress</h1>
         <p class="subtitle">The Villain Arise • Installation Wizard</p>
 
+        <div class="content-area">
         <?php
         $step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
         $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -325,7 +383,7 @@ ini_set('display_errors', 1);
                 echo "<strong>Action Required:</strong> Please rename <code>.env.example</code> to <code>.env</code> before continuing.";
                 echo "</div>";
                 echo "<p style='margin-top: 20px;'>After renaming the file, refresh this page to continue the installation.</p>";
-                echo "</div></div></body></html>";
+                echo "</div></div></div></body></html>";
                 exit;
             }
             
@@ -417,18 +475,27 @@ ini_set('display_errors', 1);
                 echo "<div class='status success' style='margin-top:20px;'>";
                 echo "<span class='icon'>✓</span> All requirements met! Ready to proceed.";
                 echo "</div>";
-                echo "<div class='actions'>";
-                echo "<button onclick='location.href=\"?step=2\"'>Continue to Database Setup →</button>";
-                echo "</div>";
             } else {
                 echo "<div class='status error'>";
                 echo "<span class='icon'>⚠</span> Please fix the errors above before continuing.";
                 echo "</div>";
             }
+            ?>
+            </div><!-- end content-area -->
+            
+            <?php if ($allPassed) { ?>
+            <div class='fixed-actions'>
+                <div class='actions'>
+                    <button onclick='location.href="?step=2"'>Continue to Database Setup →</button>
+                </div>
+            </div>
+            <?php } ?>
+            <?php
         }
 
         // Step 2: Database Configuration
         elseif ($step === 2) {
+            echo "<div class='content-area'>";
             // Handle database configuration form submission
             if ($action === 'test_db' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dbHost = $_POST['db_host'] ?? '';
@@ -485,9 +552,13 @@ ini_set('display_errors', 1);
                 echo "<div class='status success' style='margin-top:20px;'>";
                 echo "<span class='icon'>🎉</span> Database connection successful! Ready to create tables.";
                 echo "</div>";
-                echo "<div class='actions'>";
+                
+                echo "</div><!-- end content-area -->";
+                echo "<div class='fixed-actions'><div class='actions'>";
                 echo "<button onclick='location.href=\"?step=3\"'>Continue to Database Migration →</button>";
-                echo "</div>";                } catch (PDOException $e) {
+                echo "</div></div>";
+                
+                } catch (PDOException $e) {
                     echo "<div class='status error'>";
                     echo "<span class='icon'>✗</span> Database connection failed: " . htmlspecialchars($e->getMessage());
                     echo "</div>";
@@ -500,9 +571,10 @@ ini_set('display_errors', 1);
                     echo "• Ensure database user has proper permissions";
                     echo "</div>";
 
-                    echo "<div class='actions'>";
+                    echo "</div><!-- end content-area -->";
+                    echo "<div class='fixed-actions'><div class='actions'>";
                     echo "<button onclick='location.href=\"?step=2\"'>← Try Again</button>";
-                    echo "</div>";
+                    echo "</div></div>";
                 }
             } else {
                 // Show database configuration form
@@ -589,13 +661,21 @@ ini_set('display_errors', 1);
                         • Database name includes your prefix (e.g., username_dbname)<br>
                         • Username also includes your prefix (e.g., username_dbuser)
                     </div>
-                    
-                    <div class='actions' style="margin-top: 25px;">
+                </form>
+                </div><!-- end content-area -->
+                
+                <div class='fixed-actions'>
+                    <div class='actions'>
                         <button type="button" onclick='location.href="?step=1"' 
                                 style="background:#6c757d;">← Back</button>
-                        <button type="submit">Test Connection & Continue →</button>
+                        <button type="submit" form="dbForm">Test Connection & Continue →</button>
                     </div>
-                </form>
+                </div>
+                
+                <script>
+                // Make form submittable from fixed button
+                document.querySelector('form').id = 'dbForm';
+                </script>
                 <?php
             }
         }
@@ -603,6 +683,7 @@ ini_set('display_errors', 1);
         // Step 3: Run Migrations
         elseif ($step === 3) {
             ?>
+            <div class="content-area">
             <div class="step">
                 <h2>Step 3: Database Migration</h2>
                 <p>Creating database tables and seeding initial data...</p>
@@ -613,6 +694,13 @@ ini_set('display_errors', 1);
             </div>
 
             <div class="log" id="logOutput">Starting migration process...<br></div>
+            </div><!-- end content-area -->
+            
+            <div class='fixed-actions'>
+                <div class='actions' id='nextStep' style='display:none;'>
+                    <button onclick='location.href="?step=4"'>Continue to Asset Setup →</button>
+                </div>
+            </div>
 
             <script>
                 let progress = 0;
@@ -639,12 +727,7 @@ ini_set('display_errors', 1);
                         updateProgress(100, text);
                         
                         setTimeout(() => {
-                            const completionMsg = document.createElement('div');
-                            completionMsg.className = 'status success';
-                            completionMsg.style.marginTop = '20px';
-                            completionMsg.innerHTML = '<span class="icon">✓</span> Database migration completed successfully!';
-                            document.getElementById('logOutput').parentNode.appendChild(completionMsg);
-                            document.getElementById('nextStep').style.display = 'block';
+                            document.getElementById('nextStep').style.display = 'flex';
                         }, 1000);
                     } catch (error) {
                         updateProgress(100, '❌ Error: ' + error.message);
@@ -654,10 +737,6 @@ ini_set('display_errors', 1);
                 // Auto-start migration
                 setTimeout(runMigrations, 500);
             </script>
-
-            <div class='actions' id='nextStep' style='display:none; margin-top:20px;'>
-                <button onclick='location.href="?step=4"'>Continue to Asset Setup →</button>
-            </div>
 
             <?php
             if ($action === 'migrate') {
@@ -900,6 +979,7 @@ ini_set('display_errors', 1);
         // Step 4: Publish Filament Assets
         elseif ($step === 4) {
             ?>
+            <div class="content-area">
             <div class="step">
                 <h2>Step 4: Publishing Filament Assets</h2>
                 <p>Copying FilamentPHP assets for admin panel styling...</p>
@@ -910,6 +990,13 @@ ini_set('display_errors', 1);
             </div>
 
             <div class="log" id="logOutput">Starting asset publishing...<br></div>
+            </div><!-- end content-area -->
+            
+            <div class='fixed-actions'>
+                <div class='actions' id='nextStep' style='display:none;'>
+                    <button onclick='location.href="?step=5"'>Continue to Admin Setup →</button>
+                </div>
+            </div>
 
             <script>
                 let progress = 0;
@@ -936,12 +1023,7 @@ ini_set('display_errors', 1);
                         updateProgress(100, text);
                         
                         setTimeout(() => {
-                            const completionMsg = document.createElement('div');
-                            completionMsg.className = 'status success';
-                            completionMsg.style.marginTop = '20px';
-                            completionMsg.innerHTML = '<span class="icon">✓</span> Assets published successfully!';
-                            document.getElementById('logOutput').parentNode.appendChild(completionMsg);
-                            document.getElementById('nextStep').style.display = 'block';
+                            document.getElementById('nextStep').style.display = 'flex';
                         }, 1000);
                     } catch (error) {
                         updateProgress(100, '❌ Error: ' + error.message);
@@ -951,10 +1033,6 @@ ini_set('display_errors', 1);
                 // Auto-start publishing
                 setTimeout(publishAssets, 500);
             </script>
-
-            <div class='actions' id='nextStep' style='display:none; margin-top:20px;'>
-                <button onclick='location.href="?step=5"'>Continue to Admin Setup →</button>
-            </div>
 
             <?php
             if ($action === 'publish_assets') {
@@ -1119,7 +1197,7 @@ ini_set('display_errors', 1);
         // Step 5: Create Admin User
         elseif ($step === 5) {
             if ($action === 'create_admin' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-                
+                echo "<div class='content-area'>";
                 try {
                     require __DIR__ . '/vendor/autoload.php';
                     
@@ -1202,26 +1280,30 @@ ini_set('display_errors', 1);
                     echo "Password: <code>" . htmlspecialchars($password) . "</code>";
                     echo "</div>";
                     
-                    echo "<div class='status success' style='margin-top:20px;'>";
+                    echo "<div class='status success'>";
                     echo "<span class='icon'>🎉</span> Admin account configured! Ready to complete installation.";
                     echo "</div>";
-                    echo "<div class='actions'>";
+                    
+                    echo "</div><!-- end content-area -->";
+                    echo "<div class='fixed-actions'><div class='actions'>";
                     echo "<button onclick='location.href=\"?step=6\"'>Complete Installation →</button>";
-                    echo "</div>";
+                    echo "</div></div>";
                     
                 } catch (Exception $e) {
                     echo "<div class='status error'>";
                     echo "<span class='icon'>✗</span> Error: " . htmlspecialchars($e->getMessage());
                     echo "</div>";
+                    echo "</div><!-- end content-area -->";
                 }
             } else {
                 ?>
+                <div class="content-area">
                 <div class="step">
                     <h2>Step 5: Create Admin Account</h2>
                     <p>Set up your administrator credentials...</p>
                 </div>
 
-                <form method="POST" action="?step=5&action=create_admin">
+                <form method="POST" action="?step=5&action=create_admin" id="adminForm">
                     <div style="margin-bottom: 20px;">
                         <label style="display:block; margin-bottom:5px; font-weight:600;">Name:</label>
                         <input type="text" name="name" value="Administrator" required 
@@ -1239,11 +1321,14 @@ ini_set('display_errors', 1);
                         <input type="password" name="password" value="admin123" required 
                                style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:16px;">
                     </div>
-                    
-                    <div class='actions'>
-                        <button type="submit">Create Admin User</button>
-                    </div>
                 </form>
+                </div><!-- end content-area -->
+                
+                <div class='fixed-actions'>
+                    <div class='actions'>
+                        <button type="submit" form="adminForm">Create Admin User</button>
+                    </div>
+                </div>
                 <?php
             }
         }
@@ -1270,6 +1355,7 @@ ini_set('display_errors', 1);
                 }
             }
             ?>
+            <div class="content-area">
             <div class="step">
                 <h2>🎉 Installation Complete!</h2>
                 <p>Your VantaPress CMS is ready to use.</p>
@@ -1285,10 +1371,13 @@ ini_set('display_errors', 1);
                 2. <strong>Secure .env</strong> - Ensure .env file is not publicly accessible<br>
                 3. <strong>Change default password</strong> - Login and change your admin password
             </div>
-
-            <div class='actions'>
-                <button onclick='location.href="/"'>Go to Homepage</button>
-                <button onclick='location.href="/admin"' style='background:#28a745;'>Go to Admin Panel</button>
+            </div><!-- end content-area -->
+            
+            <div class='fixed-actions'>
+                <div class='actions'>
+                    <button onclick='location.href="/"'>Go to Homepage</button>
+                    <button onclick='location.href="/admin"' style='background:#28a745;'>Go to Admin Panel</button>
+                </div>
             </div>
             <?php
         }
