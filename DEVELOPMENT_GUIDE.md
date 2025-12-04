@@ -1,7 +1,7 @@
 # VantaPress Development Guide
 
-**Version:** 1.0.15  
-**Last Updated:** December 4, 2025  
+**Version:** 1.0.16  
+**Last Updated:** December 5, 2025  
 **Author:** Sepiroth X Villainous (Richard Cebel Cupal, LPT)
 
 ---

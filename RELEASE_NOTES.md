@@ -1,12 +1,30 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.15-complete  
-**Release Date:** December 4, 2025  
+**Current Version:** v1.0.16-complete  
+**Release Date:** December 5, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.15-complete
+## 📌 Latest Version: v1.0.16-complete
+
+### 🎯 What's New in v1.0.16-complete
+- **🔧 Module Namespace Fixes** - Fixed PSR-4 autoloading for all modules
+- **📁 Case-Sensitive Folders** - Renamed `models/` → `Models/`, `controllers/` → `Controllers/`
+- **✅ Theme Customizer Fixed** - Resolved "Class ThemeSetting not found" error
+- **🏠 Homepage Routing Fixed** - index.html properly deleted after installation
+- **🎉 Update System Enhanced** - Congratulatory message when running latest version
+- **🗄️ Database Cleanup** - Removed 9 legacy school system migrations
+- **🚀 Pure CMS Focus** - Converted from TCC School CMS to pure content management system
+- **🎨 Theme Loading Improved** - TheVillainArise theme loads correctly on homepage
+- **🛠️ Installation Enhanced** - Better debug comments and activation sequence
+
+### 🐛 Bug Fixes
+- Fixed VPEssential1 ThemeSetting model not found when clicking theme customize
+- Fixed HelloWorld module controller autoloading error on /hello route
+- Fixed homepage showing "Not Installed" instead of admin panel button
+- Fixed installer not deleting index.html properly
+- Fixed all module namespace case-sensitivity issues
 
 ### 🎯 What's New in v1.0.15-complete
 - **🛡️ Comprehensive Error Handling** - Added try-catch blocks throughout the codebase
