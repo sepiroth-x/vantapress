@@ -89,7 +89,7 @@
                         </a>
                     @endif
                 @else
-                    <a href="{{ route('login') }}" 
+                    <a href="{{ url('/admin') }}" 
                        class="text-gray-300 hover:text-villain-500 transition font-medium text-sm">
                         Login
                     </a>
