@@ -1,24 +1,37 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.7-complete  
+**Current Version:** v1.0.9  
 **Release Date:** December 4, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.7-complete
+## 📌 Latest Version: v1.0.9
 
-### 🎯 What's New in v1.0.7
-- **Homepage Pre-Installation Fix** - Shows welcome page instead of 500 errors
-- **Graceful Database Handling** - Works before database configuration
-- **Professional First Impression** - Beautiful landing page with Install button
-- Includes all v1.0.6 improvements (APP_KEY auto-generation, diagnostic tools)
+### 🎯 What's New in v1.0.9
+- **Enhanced APP_KEY Detection** - Improved pre-boot validation logic
+- **Code Cleanup** - Removed obsolete diagnostic tools (diagnose.php, fix-app-key.php)
+- **Streamlined Release** - Only essential files, cleaner installation
+- **Robust Empty Key Handling** - Better detection of missing/empty APP_KEY values
 
-**Download:** [v1.0.7-complete](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.7-complete)
+### Why v1.0.9?
+v1.0.8 introduced the pre-installation welcome page, but the APP_KEY detection wasn't robust enough on all shared hosting environments. v1.0.9 strengthens this check with explicit validation.
+
+**Download:** [v1.0.9](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.9)
 
 ---
 
 ## 📜 Version History
+
+### v1.0.9 (December 4, 2025)
+- Enhanced APP_KEY detection with explicit validation
+- Removed obsolete diagnostic tools
+- Cleaner release package
+
+### v1.0.8-complete (December 4, 2025)
+- Pre-boot APP_KEY check in public/index.php
+- Standalone pre-installation welcome page
+- Complete pre-installation UX solution
 
 ### v1.0.7-complete (December 4, 2025)
 - Pre-installation UX improvement
