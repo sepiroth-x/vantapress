@@ -63,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Green,
                 'warning' => Color::Orange,
             ])
-            ->darkMode(true)
+            ->darkMode(true) // Enable dark mode toggle (user can switch)
             ->font('Inter')
             ->brandLogo(asset('images/vantapress-logo.svg'))
             ->favicon(asset('images/favicon.ico'))
@@ -75,7 +75,18 @@ class AdminPanelProvider extends PanelProvider
             )
             ->renderHook(
                 PanelsRenderHook::SCRIPTS_AFTER,
-                fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>'
+                fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>' .
+                                 '<script>
+                                     // Debug dark mode toggle
+                                     console.log("Dark mode class present:", document.documentElement.classList.contains("dark"));
+                                     console.log("Theme preference:", localStorage.getItem("theme"));
+                                     
+                                     // Watch for theme changes
+                                     const observer = new MutationObserver(() => {
+                                         console.log("Theme changed to:", document.documentElement.classList.contains("dark") ? "dark" : "light");
+                                     });
+                                     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+                                 </script>'
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->resources([
