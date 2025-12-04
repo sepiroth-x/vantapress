@@ -248,6 +248,15 @@ ini_set('display_errors', 1);
                         $envContent = preg_replace('/DB_USERNAME=.*/', "DB_USERNAME=$dbUser", $envContent);
                         $envContent = preg_replace('/DB_PASSWORD=.*/', "DB_PASSWORD=$dbPass", $envContent);
                         
+                        // Generate APP_KEY if not set
+                        if (preg_match('/APP_KEY=\s*$/', $envContent) || preg_match('/APP_KEY=$/', $envContent)) {
+                            $appKey = 'base64:' . base64_encode(random_bytes(32));
+                            $envContent = preg_replace('/APP_KEY=.*/', "APP_KEY=$appKey", $envContent);
+                            echo "<div class='status success'>";
+                            echo "<span class='icon'>🔐</span> Generated application encryption key";
+                            echo "</div>";
+                        }
+                        
                         file_put_contents($envPath, $envContent);
                         
                     echo "<div class='status success'>";
