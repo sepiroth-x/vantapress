@@ -78,23 +78,28 @@ class Theme extends Model
      */
     public static function ensureActiveTheme(): void
     {
-        $activeTheme = static::where('is_active', true)->first();
-        
-        if (!$activeTheme) {
-            // Try to activate Basic Theme
-            $basicTheme = static::where('slug', 'Basic')->first();
+        try {
+            $activeTheme = static::where('is_active', true)->first();
             
-            if ($basicTheme) {
-                $basicTheme->activate();
-                \Log::info('Basic Theme auto-activated as no theme was active');
-            } else {
-                // If Basic Theme doesn't exist, activate the first available theme
-                $firstTheme = static::orderBy('created_at', 'asc')->first();
-                if ($firstTheme) {
-                    $firstTheme->activate();
-                    \Log::info("Theme '{$firstTheme->name}' auto-activated as fallback");
+            if (!$activeTheme) {
+                // Try to activate BasicTheme first
+                $basicTheme = static::where('slug', 'BasicTheme')->first();
+                
+                if ($basicTheme) {
+                    $basicTheme->update(['is_active' => true]);
+                    \Log::info('BasicTheme auto-activated as no theme was active');
+                } else {
+                    // If BasicTheme doesn't exist, activate the first available theme
+                    $firstTheme = static::orderBy('created_at', 'asc')->first();
+                    if ($firstTheme) {
+                        $firstTheme->update(['is_active' => true]);
+                        \Log::info("Theme '{$firstTheme->name}' auto-activated as fallback");
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            // Silently fail if there's an error, don't break the installation
+            \Log::warning('Could not ensure active theme: ' . $e->getMessage());
         }
     }
     

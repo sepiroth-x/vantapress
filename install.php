@@ -945,6 +945,10 @@ ini_set('display_errors', 1);
                         }
                         echo "✓ Themes synced from file system<br>";
                         
+                        // Ensure at least one theme is active
+                        \App\Models\Theme::ensureActiveTheme();
+                        echo "✓ Default theme activated<br>";
+                        
                         echo "<br>✅ Themes and modules synced successfully!<br>";
                     } catch (Exception $e) {
                         echo "⚠️  Warning: Could not sync themes/modules: " . htmlspecialchars($e->getMessage()) . "<br>";
