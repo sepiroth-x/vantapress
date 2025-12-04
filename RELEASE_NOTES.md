@@ -1,27 +1,43 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.10  
+**Current Version:** v1.0.12-complete  
 **Release Date:** December 4, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.10
+## 📌 Latest Version: v1.0.12-complete
 
-### 🎯 What's New in v1.0.10
-- **Simple HTML Welcome Page** - Pure HTML, zero PHP complexity
-- **index.html Pre-Installation** - Shows BEFORE Laravel loads
-- **Automatic Activation** - Laravel activates after installation completes
-- **100% Theme Compatible** - All theming features work as before
+### 🎯 What's New in v1.0.12-complete
+- **Theme-Based Admin Styling** - Admin CSS now controlled by active theme
+- **Retro Arcade Theme** - Flat colors, sharp corners, neon accents
+- **Dynamic Theme Loading** - AdminPanelProvider loads theme-specific CSS automatically
+- **Comprehensive Documentation** - New THEME_ARCHITECTURE.md guide
+- **Root-Level Structure** - Standardized architecture without public/ folder
 
-### The Simplest Solution
-Forget complex pre-boot checks! v1.0.10 uses plain `index.html` that web servers load BEFORE `index.php`. No Laravel boot = No errors. After installation, Laravel automatically takes over.
+### Theme Architecture Revolution
+Admin panel styling is now part of the theme system! Each theme can customize the admin interface appearance through `themes/[ThemeName]/assets/css/admin.css`. The default BasicTheme includes a complete retro arcade aesthetic with dark/light mode support.
 
-**Download:** [v1.0.10-complete](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.10-complete)
+**Download:** [v1.0.12-complete](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.12-complete)
 
 ---
 
 ## 📜 Version History
+
+### v1.0.12-complete (December 4, 2025)
+- Theme-based admin styling architecture
+- Retro arcade theme design (flat colors, sharp corners, pixel patterns)
+- Dynamic CSS loading via AdminPanelProvider
+- THEME_ARCHITECTURE.md documentation
+- Root-level structure standardization (no public/ folder)
+- Updated DEVELOPMENT_GUIDE.md and SESSION_MEMORY.md
+- README.md version badge and folder structure update
+
+### v1.0.11 (December 4, 2025)
+- Fixed Filament admin panel styling
+- Prevented public/ folder creation
+- Custom development server (serve.php, server.php)
+- Admin panel styling fix documentation
 
 ### v1.0.10 (December 4, 2025)
 - Simple HTML welcome page solution
