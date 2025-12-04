@@ -1344,19 +1344,26 @@ ini_set('display_errors', 1);
             $rootDir = __DIR__;
             $publicDir = __DIR__ . '/public';
             
+            // Always delete index.html first (pre-installation landing page)
+            if (file_exists("$rootDir/index.html")) {
+                unlink("$rootDir/index.html");
+                echo "<!-- Removed pre-installation landing page (index.html) -->\n";
+            }
+            
+            if (file_exists("$publicDir/index.html")) {
+                unlink("$publicDir/index.html");
+                echo "<!-- Removed public/index.html -->\n";
+            }
+            
             // Check both locations and activate whichever exists
             if (file_exists("$rootDir/_index.php")) {
                 rename("$rootDir/_index.php", "$rootDir/index.php");
-                if (file_exists("$rootDir/index.html")) {
-                    unlink("$rootDir/index.html");
-                }
+                echo "<!-- Activated Laravel routing (root/index.php) -->\n";
             }
             
             if (file_exists("$publicDir/_index.php")) {
                 rename("$publicDir/_index.php", "$publicDir/index.php");
-                if (file_exists("$publicDir/index.html")) {
-                    unlink("$publicDir/index.html");
-                }
+                echo "<!-- Activated Laravel routing (public/index.php) -->\n";
             }
             ?>
             <div class="content-area">

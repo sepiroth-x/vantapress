@@ -65,19 +65,22 @@
                             </div>
                         </div>
                     @else
-                        <div class="rounded-lg bg-blue-50 dark:bg-blue-900/20 p-4 border border-blue-200 dark:border-blue-800">
+                        <div class="rounded-lg bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-6 border-2 border-green-400 dark:border-green-600 shadow-lg">
                             <div class="flex items-start">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                                    <div class="text-4xl animate-bounce">
+                                        🎉
+                                    </div>
                                 </div>
-                                <div class="ml-3 flex-1">
-                                    <h3 class="text-lg font-medium text-blue-800 dark:text-blue-200">
-                                        You're Running the Latest Version
+                                <div class="ml-4 flex-1">
+                                    <h3 class="text-2xl font-bold text-green-800 dark:text-green-200 mb-2">
+                                        Congratulations! You have the latest version of VantaPress!
                                     </h3>
-                                    <p class="mt-1 text-sm text-blue-700 dark:text-blue-300">
-                                        VantaPress v{{ $currentVersion }} is up to date.
+                                    <p class="text-base text-green-700 dark:text-green-300 font-medium">
+                                        You're running VantaPress v{{ $currentVersion }} - the most current release available.
+                                    </p>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                        No updates are available at this time. Check back later for new features and improvements!
                                     </p>
                                 </div>
                             </div>
