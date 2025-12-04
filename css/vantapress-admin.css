@@ -37,62 +37,62 @@
     --pure-white: #FFFFFF;
 }
 
-/* Force dark mode styling */
-.dark, [data-theme="dark"] {
-    --color-bg-base: var(--vanta-black) !important;
-    --color-bg-surface: var(--deep-obsidian) !important;
-    --color-text-base: var(--pure-white) !important;
-    --color-text-subtle: var(--steel-gray) !important;
+/* Dark mode variables - only apply in dark mode */
+.dark {
+    --color-bg-base: var(--vanta-black);
+    --color-bg-surface: var(--deep-obsidian);
+    --color-text-base: var(--pure-white);
+    --color-text-subtle: var(--steel-gray);
 }
 
-/* Sidebar styling */
-.fi-sidebar {
+/* Sidebar styling - dark mode */
+.dark .fi-sidebar {
     background: var(--deep-obsidian) !important;
     border-right: 1px solid rgba(136, 138, 143, 0.1) !important;
 }
 
-.fi-sidebar-header {
+.dark .fi-sidebar-header {
     background: linear-gradient(135deg, var(--deep-obsidian) 0%, var(--vanta-black) 100%) !important;
     border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
 }
 
-.fi-sidebar-nav-item {
+.dark .fi-sidebar-nav-item {
     color: var(--steel-gray) !important;
     transition: all 0.3s ease !important;
 }
 
-.fi-sidebar-nav-item:hover {
+.dark .fi-sidebar-nav-item:hover {
     background: rgba(212, 0, 38, 0.1) !important;
     color: var(--crimson-villain) !important;
 }
 
-.fi-sidebar-item-active,
-.fi-active {
+.dark .fi-sidebar-item-active,
+.dark .fi-active {
     background: linear-gradient(90deg, rgba(212, 0, 38, 0.2), rgba(106, 15, 145, 0.2)) !important;
     border-left: 3px solid var(--crimson-villain) !important;
     color: var(--pure-white) !important;
 }
 
-/* Topbar styling */
-.fi-topbar {
+/* Topbar styling - dark mode */
+.dark .fi-topbar {
     background: var(--vanta-black) !important;
     border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
 }
 
-/* Main content area */
-.fi-main {
+/* Main content area - dark mode */
+.dark .fi-main {
     background: var(--vanta-black) !important;
 }
 
-/* Cards and panels */
-.fi-section,
-.fi-card {
+/* Cards and panels - dark mode */
+.dark .fi-section,
+.dark .fi-card {
     background: var(--deep-obsidian) !important;
     border: 1px solid rgba(136, 138, 143, 0.1) !important;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Primary buttons */
+/* Primary buttons - both modes keep crimson theme */
 .fi-btn-primary {
     background: var(--crimson-villain) !important;
     color: var(--pure-white) !important;
@@ -106,204 +106,207 @@
     transform: translateY(-1px);
 }
 
-/* Input fields */
-.fi-input,
-.fi-select,
-.fi-textarea {
+/* Input fields - dark mode */
+.dark .fi-input,
+.dark .fi-select,
+.dark .fi-textarea {
     background: var(--vanta-black) !important;
     border: 1px solid rgba(136, 138, 143, 0.2) !important;
     color: var(--pure-white) !important;
 }
 
-.fi-input:focus,
-.fi-select:focus,
-.fi-textarea:focus {
+.dark .fi-input:focus,
+.dark .fi-select:focus,
+.dark .fi-textarea:focus {
     border-color: var(--crimson-villain) !important;
     box-shadow: 0 0 0 3px rgba(212, 0, 38, 0.1) !important;
 }
 
-/* Tables */
-.fi-table {
+/* Tables - dark mode */
+.dark .fi-table {
     background: var(--deep-obsidian) !important;
 }
 
-.fi-table-row:hover {
+.dark .fi-table-row:hover {
     background: rgba(212, 0, 38, 0.05) !important;
 }
 
-.fi-table-header-cell {
+.dark .fi-table-header-cell {
     background: var(--vanta-black) !important;
     color: var(--steel-gray) !important;
     border-bottom: 1px solid rgba(136, 138, 143, 0.2) !important;
 }
 
-.fi-table-cell {
+.dark .fi-table-cell {
     border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
 }
 
-/* Modals */
-.fi-modal {
+/* Modals - dark mode */
+.dark .fi-modal {
     background: var(--deep-obsidian) !important;
     border: 1px solid rgba(136, 138, 143, 0.2) !important;
 }
 
-.fi-modal-header {
+.dark .fi-modal-header {
     background: var(--vanta-black) !important;
     border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
 }
 
-/* Notifications */
-.fi-notification {
+/* Notifications - dark mode */
+.dark .fi-notification {
     background: var(--deep-obsidian) !important;
     border: 1px solid rgba(136, 138, 143, 0.2) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
 }
 
-.fi-notification-success {
+.dark .fi-notification-success {
     border-left: 4px solid #22c55e !important;
 }
 
-.fi-notification-error {
+.dark .fi-notification-error {
     border-left: 4px solid var(--crimson-villain) !important;
 }
 
-.fi-notification-warning {
+.dark .fi-notification-warning {
     border-left: 4px solid #f59e0b !important;
 }
 
-.fi-notification-info {
+.dark .fi-notification-info {
     border-left: 4px solid #3b82f6 !important;
 }
 
-/* Badges */
-.fi-badge {
+/* Badges - dark mode */
+.dark .fi-badge {
     background: rgba(212, 0, 38, 0.1) !important;
     color: var(--crimson-villain) !important;
     border: 1px solid rgba(212, 0, 38, 0.3) !important;
 }
 
-/* Links */
-a {
+/* Links - dark mode */
+.dark a {
     color: var(--crimson-villain) !important;
     transition: color 0.3s ease !important;
 }
 
-a:hover {
+.dark a:hover {
     color: var(--dark-violet) !important;
 }
 
-/* Dropdown menus */
-.fi-dropdown-list {
+/* Dropdown menus - dark mode */
+.dark .fi-dropdown-list {
     background: var(--deep-obsidian) !important;
     border: 1px solid rgba(136, 138, 143, 0.2) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
 }
 
-.fi-dropdown-list-item:hover {
+.dark .fi-dropdown-list-item:hover {
     background: rgba(212, 0, 38, 0.1) !important;
 }
 
-/* Tabs */
-.fi-tabs-item {
+/* Tabs - dark mode */
+.dark .fi-tabs-item {
     color: var(--steel-gray) !important;
 }
 
-.fi-tabs-item-active {
+.dark .fi-tabs-item-active {
     color: var(--crimson-villain) !important;
     border-bottom: 2px solid var(--crimson-villain) !important;
 }
 
-/* Toggle switches */
-.fi-toggle:checked {
+/* Toggle switches - dark mode */
+.dark .fi-toggle:checked {
     background: var(--crimson-villain) !important;
 }
 
-/* Checkboxes and radio buttons */
-.fi-checkbox:checked,
-.fi-radio:checked {
+/* Checkboxes and radio buttons - dark mode */
+.dark .fi-checkbox:checked,
+.dark .fi-radio:checked {
     background: var(--crimson-villain) !important;
     border-color: var(--crimson-villain) !important;
 }
 
-/* Progress bars */
-.fi-progress-bar {
+/* Progress bars - dark mode */
+.dark .fi-progress-bar {
     background: rgba(136, 138, 143, 0.2) !important;
 }
 
-.fi-progress-bar-fill {
+.dark .fi-progress-bar-fill {
     background: linear-gradient(90deg, var(--crimson-villain), var(--dark-violet)) !important;
 }
 
-/* Loading indicators */
-.fi-loading {
+/* Loading indicators - dark mode */
+.dark .fi-loading {
     border-color: var(--crimson-villain) !important;
 }
 
-/* Scrollbars */
-::-webkit-scrollbar {
+/* Scrollbars - dark mode */
+.dark ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
 }
 
-::-webkit-scrollbar-track {
+.dark ::-webkit-scrollbar-track {
     background: var(--vanta-black);
 }
 
-::-webkit-scrollbar-thumb {
+.dark ::-webkit-scrollbar-thumb {
     background: var(--steel-gray);
     border-radius: 5px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover {
     background: var(--crimson-villain);
 }
 
-/* Login page specific */
-.fi-simple-page {
+/* Login page specific - dark mode */
+.dark .fi-simple-page {
     background: linear-gradient(135deg, var(--vanta-black) 0%, var(--deep-obsidian) 100%) !important;
 }
 
-.fi-simple-main {
+.dark .fi-simple-main {
     background: var(--deep-obsidian) !important;
     border: 1px solid rgba(136, 138, 143, 0.1) !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Brand logo in header */
-.fi-logo {
+/* Brand logo in header - dark mode */
+.dark .fi-logo {
     filter: brightness(1.2);
 }
 
-/* Widget styling */
-.fi-wi-stats-overview-stat {
+/* Widget styling - dark mode */
+.dark .fi-wi-stats-overview-stat {
     background: var(--deep-obsidian) !important;
     border: 1px solid rgba(136, 138, 143, 0.1) !important;
 }
 
-.fi-wi-stats-overview-stat-value {
+.dark .fi-wi-stats-overview-stat-value {
     color: var(--crimson-villain) !important;
 }
 
-/* Chart colors */
-.apexcharts-theme-light {
+/* Chart colors - dark mode */
+.dark .apexcharts-theme-light {
     --apexcharts-bg: var(--deep-obsidian) !important;
 }
 
-/* Ensure text is readable */
-body, 
-.fi-body,
+/* Ensure text is readable in DARK mode only */
+.dark body, 
 .dark .fi-body {
     color: var(--pure-white) !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
+.dark h1, 
+.dark h2, 
+.dark h3, 
+.dark h4, 
+.dark h5, 
+.dark h6 {
     color: var(--pure-white) !important;
 }
 
-/* Muted text */
-.fi-helper-text,
-.fi-description,
-.text-gray-500 {
+/* Muted text in dark mode */
+.dark .fi-helper-text,
+.dark .fi-description {
     color: var(--steel-gray) !important;
 }
 
