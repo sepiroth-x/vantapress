@@ -4,10 +4,14 @@
 [![Laravel](https://img.shields.io/badge/Laravel-11.47-FF2D20?logo=laravel)](https://laravel.com)
 [![FilamentPHP](https://img.shields.io/badge/FilamentPHP-3.3-FFB800?logo=php)](https://filamentphp.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?logo=php)](https://www.php.net)
+[![Release](https://img.shields.io/badge/Release-v1.0.12--complete-success)](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.12-complete)
 
 **A WordPress-Inspired Content Management System Built with Laravel**
 
 VantaPress is a modern, open-source CMS that combines the familiar simplicity of WordPress with the robust architecture of Laravel. Built for developers who want WordPress-style ease-of-use with enterprise-grade code quality.
+
+**📦 Current Version:** v1.0.12-complete  
+**📥 Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
@@ -57,7 +61,7 @@ VantaPress is a **production-ready content management system** that provides com
 
 ### Installation (WordPress-Style)
 
-1. **Download VantaPress** - Get the latest release
+1. **Download VantaPress** - Get the [latest release](https://github.com/sepiroth-x/vantapress/releases/latest)
 2. **Upload to Server** - Use FTP/cPanel to upload all files to your document root
 3. **Create Database** - Create a MySQL database via your hosting control panel
 4. **Run Installer** - Visit `https://yourdomain.com/install.php` in your browser
@@ -145,30 +149,40 @@ vantapress/
 ├── app/
 │   ├── Filament/          # FilamentPHP admin resources
 │   ├── Models/            # Eloquent models (9 core models)
-│   └── Providers/         # Service providers
+│   ├── Providers/         # Service providers (includes AdminPanelProvider)
+│   └── Services/          # CMS services (ThemeManager, ModuleLoader)
 ├── bootstrap/             # Laravel bootstrap
 ├── config/                # Configuration files
-├── css/                   # Static CSS assets (root location for shared hosting)
-│   └── filament/          # FilamentPHP stylesheets
+├── css/                   # Static CSS assets (ROOT LEVEL - shared hosting optimized)
+│   └── filament/          # FilamentPHP stylesheets (published assets)
 ├── database/
 │   └── migrations/        # 12 migration files creating 21 tables
-├── js/                    # Static JS assets (root location for shared hosting)
-│   └── filament/          # FilamentPHP JavaScript
-├── public/                # Public assets (may not be document root on shared hosting)
-│   └── vendor/filament/   # Copied FilamentPHP assets
+├── images/                # Static images (ROOT LEVEL)
+├── js/                    # Static JavaScript (ROOT LEVEL)
+│   └── filament/          # FilamentPHP JavaScript (published assets)
+├── Modules/               # Modular plugins (WordPress-style)
 ├── resources/
 │   └── views/             # Blade templates
-├── routes/                # Application routes
+├── routes/                # Application routes (web, admin)
 ├── storage/               # Logs, cache, sessions (needs 775 permissions)
-├── vendor/                # Composer dependencies
-├── .env                   # Environment configuration
-├── .htaccess              # Apache rewrite rules (CRITICAL for routing)
+├── themes/                # Theme system (controls frontend + admin styling)
+│   └── BasicTheme/        # Default theme
+│       └── assets/
+│           └── css/
+│               ├── admin.css   # Admin panel styling ⭐
+│               └── theme.css   # Frontend styling
+├── vendor/                # Composer dependencies (include in deployment)
+├── .env                   # Environment configuration (PROTECTED by .htaccess)
+├── .htaccess              # Apache rewrite rules (CRITICAL for routing & security)
 ├── artisan                # Laravel CLI
 ├── composer.json          # PHP dependencies
+├── index.php              # Application entry point (ROOT LEVEL)
 ├── install.php            # 6-step web installer ⚡
 ├── create-admin.php       # Backup admin user creator
 └── LICENSE                # MIT License
 ```
+
+**Note:** VantaPress uses a **root-level architecture** optimized for shared hosting. Unlike traditional Laravel apps, there's no `public/` folder as the document root. All public assets (`css/`, `js/`, `images/`) are at root level, and sensitive files are protected via `.htaccess` rules.
 
 ---
 
