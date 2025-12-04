@@ -4,11 +4,8 @@
             <!-- Profile and Info Section -->
             <div class="flex items-start space-x-4 mb-6">
                 <div class="flex-shrink-0">
-                    <img src="{{ asset('images/sepiroth-profile.jpg') }}" 
-                         alt="Sepiroth X Villainous" 
-                         class="w-24 h-24 rounded-full object-cover ring-4 ring-crimson-500 shadow-lg"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <svg class="w-24 h-24 text-crimson-500" fill="currentColor" viewBox="0 0 24 24" style="display:none;">
+                    <!-- Shield icon representing Sepiroth X Villainous -->
+                    <svg class="w-24 h-24 text-crimson-500" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.31-.98-6-4.65-6-9V8.3l6-3.11v14.82z"/>
                     </svg>
                 </div>
