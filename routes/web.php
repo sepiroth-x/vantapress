@@ -33,3 +33,8 @@ Route::get('/old-landing', function () {
 // Additional routes will be registered by modules
 
 Route::get('/livewire-test', function() { return view('livewire-test'); });
+
+// Catch-all route for dynamic pages (must be last)
+Route::get('/{slug}', [App\Http\Controllers\PageController::class, 'show'])
+    ->where('slug', '.*')
+    ->name('page.show');
