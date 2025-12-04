@@ -1,7 +1,52 @@
-# 🚀 VantaPress v1.0.0 - Initial Release
+# 🚀 VantaPress - Release Notes
+
+**Current Version:** v1.0.7-complete  
+**Release Date:** December 4, 2025  
+**Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
+
+---
+
+## 📌 Latest Version: v1.0.7-complete
+
+### 🎯 What's New in v1.0.7
+- **Homepage Pre-Installation Fix** - Shows welcome page instead of 500 errors
+- **Graceful Database Handling** - Works before database configuration
+- **Professional First Impression** - Beautiful landing page with Install button
+- Includes all v1.0.6 improvements (APP_KEY auto-generation, diagnostic tools)
+
+**Download:** [v1.0.7-complete](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.7-complete)
+
+---
+
+## 📜 Version History
+
+### v1.0.7-complete (December 4, 2025)
+- Pre-installation UX improvement
+- Homepage works before database configuration
+- Professional welcome page with installation guide
+
+### v1.0.6-complete (December 4, 2025)
+- Critical APP_KEY auto-generation fix
+- New diagnostic tools: diagnose.php & fix-app-key.php
+- Prevents MissingAppKeyException on deployment
+
+### v1.0.5-complete (December 3, 2025)
+- Theme screenshot display system
+- Navigation menu reordering
+- UX improvements in admin panel
+
+### v1.0.0-complete (December 3, 2025)
+- Initial public release
+- 6-step web installer
+- FilamentPHP admin panel
+- Complete CMS foundation
+
+---
+
+## 🚀 VantaPress v1.0.0 - Initial Release (Historical)
 
 **Release Date:** December 3, 2025  
-**Download:** [VantaPress-v1.0.0.zip](https://github.com/sepiroth-x/vantapress/archive/refs/tags/v1.0.0.zip)
+**Status:** Superseded by v1.0.7-complete
 
 ---
 
