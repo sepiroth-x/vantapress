@@ -77,10 +77,11 @@ return [
         |--------------------------------------------------------------------------
         |
         | Here you may update the modules' assets path.
+        | Changed from public_path() to base_path() for shared hosting.
         |
         */
 
-        'assets' => public_path('modules'),
+        'assets' => base_path('modules'),
 
         /*
         |--------------------------------------------------------------------------
