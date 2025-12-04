@@ -1,6 +1,6 @@
 # VantaPress Session Memory
 
-**Last Updated:** December 4, 2025
+**Last Updated:** December 5, 2025
 
 ## Critical Architecture Decisions
 
@@ -175,3 +175,123 @@ When creating new features:
 4. **Themes** - Self-contained in `/themes/{slug}/` with own assets
 
 **Never reference `public/` folder - it doesn't exist!**
+
+---
+
+## Recent Updates (December 5, 2025)
+
+### 🎉 v1.0.17-complete Release
+
+**Released:** December 5, 2025
+
+**Major Features:**
+1. **Admin Footer with Developer Attribution**
+   - Created `resources/views/filament/footer.blade.php`
+   - Added PanelsRenderHook::FOOTER to AdminPanelProvider
+   - Displays full developer name: "Sepiroth X Villainous (Richard Cebel Cupal, LPT)"
+   - Includes 5 social media platforms with SVG icons
+   - Dynamic version display from config
+   - Responsive design with dark mode support
+   - Copyright notice with MIT license link
+
+2. **Bug Fixes:**
+   - Fixed double "vv" prefix in UpdateSystem display (`VantaPress vv1.0.16` → `VantaPress v1.0.17`)
+   - Fixed TheVillainArise theme RouteNotFoundException (changed `route('login')` → `url('/admin')`)
+   - Deleted `index.html` from root (was causing routing issues post-installation)
+   - Fixed admin footer displaying correctly across all admin pages
+
+**Files Modified:**
+- `config/version.php` - Updated to v1.0.17-complete
+- `README.md` - Version badges updated
+- `RELEASE_NOTES.md` - Added v1.0.17 changelog
+- `DEVELOPMENT_GUIDE.md` - Version header updated
+- `app/Providers/Filament/AdminPanelProvider.php` - Added footer render hook
+- `resources/views/filament/footer.blade.php` - NEW FILE (96 lines)
+- `resources/views/filament/pages/update-system.blade.php` - Fixed version display
+- `themes/TheVillainArise/partials/header.blade.php` - Fixed login routing
+
+**Git Workflow:**
+```bash
+# Development branch
+git add -A
+git commit -m "Release v1.0.17-complete: Admin footer with developer attribution"
+
+# Release branch
+git checkout release
+git merge development  # Fast-forward merge
+git tag -a "v1.0.17-complete" -m "VantaPress v1.0.17-complete: Admin Panel Footer & Bug Fixes"
+git push origin release
+git push origin v1.0.17-complete
+
+# Master branch
+git checkout master
+git merge release
+git push origin master
+
+# Back to development
+git checkout development
+git push origin development
+```
+
+**Developer Pride:** This release showcases the developer's work with prominent attribution in the admin panel footer visible on all admin pages.
+
+---
+
+### 📚 VantaPress Developer Manual (Private eBook)
+
+**Created:** December 5, 2025
+
+**Purpose:** Comprehensive developer documentation for VantaPress CMS, being authored as a private eBook.
+
+**Location:** `VantaPress Developer Manual.md` (in project root)
+
+**Status:** Added to `.gitignore` to remain private during authoring phase.
+
+**Current Content:**
+- **Part I: Introduction & Architecture** (Complete)
+  - What is VantaPress?
+  - Core Philosophy: "WordPress Philosophy, Laravel Power"
+  - System Architecture diagrams
+  - Root-Level Structure explanation
+  - Shared Hosting Optimization details
+
+- **Part II: Installation & Setup** (Complete)
+  - Installation Overview (6-step web installer)
+  - Web Installer Deep Dive with UI features
+  - Database Setup (21 core tables documented)
+  - Asset Management structure
+  - Post-Installation Tasks & Security Checklist
+
+- **Part III: Theme Development** (Partial)
+  - Theme System Architecture
+  - Revolutionary dual-styling (frontend + admin)
+  - Creating Your First Theme (step-by-step guide)
+  - Theme Development Timeline: **2-4 hours for simple themes** ⏱️
+  - Code examples and templates
+
+**Key Insights Documented:**
+- VantaPress themes control BOTH frontend AND admin panel styling (unique feature!)
+- Root-level architecture vs traditional Laravel's `public/` folder
+- Shared hosting optimization strategies
+- Complete database schema with relationships
+- Why VantaPress can create themes faster than other CMSs
+
+**Planned Sections (To Be Added):**
+- Complete Blade templating guide
+- CSS & Asset Management examples
+- Admin Panel Theming deep dive
+- Module Development tutorial
+- Advanced Development techniques
+- Deployment & Maintenance strategies
+- Troubleshooting & Best Practices
+
+**Git Ignore Entry:**
+```gitignore
+# Developer Manual (Private eBook)
+VantaPress Developer Manual.md
+```
+
+**Commit Message:** "Add VantaPress Developer Manual to .gitignore for private eBook authoring"
+
+**Future Plans:** Manual will be expanded with each VantaPress release and eventually published as official documentation.
+
