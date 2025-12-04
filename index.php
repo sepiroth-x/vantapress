@@ -36,6 +36,10 @@ require __DIR__.'/vendor/autoload.php';
 
 $app = require_once __DIR__.'/bootstrap/app.php';
 
+// Override public path to use base directory (root-level structure)
+// This prevents Filament from creating a public/ folder
+$app->usePublicPath(__DIR__);
+
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(

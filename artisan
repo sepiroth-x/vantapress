@@ -19,6 +19,9 @@ require __DIR__.'/vendor/autoload.php';
 
 $app = require_once __DIR__.'/bootstrap/app.php';
 
+// Override public path to use base directory (root-level structure)
+$app->usePublicPath(__DIR__);
+
 /*
 |--------------------------------------------------------------------------
 | Run The Artisan Application
