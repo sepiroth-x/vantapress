@@ -1,6 +1,6 @@
 # VantaPress Development Guide
 
-**Version:** 1.0.4  
+**Version:** 1.0.5  
 **Last Updated:** December 4, 2025  
 **Author:** Sepiroth X Villainous (Richard Cebel Cupal, LPT)
 
@@ -366,6 +366,24 @@ These files map `Modules\HelloWorld\HelloWorldServiceProvider` to the file path.
   ```
   
   Types: `Fix`, `Feature`, `Enhancement`, `Refactor`, `Docs`, `Style`
+
+- **Versioning Standard**:
+  - **Format**: `vX.Y.Z-complete` (e.g., `v1.0.5-complete`)
+  - **Semantic Versioning**:
+    - Major (X): Breaking changes, major feature overhauls
+    - Minor (Y): New features, backwards-compatible
+    - Patch (Z): Bug fixes, minor improvements
+  - **Suffix**: Always append `-complete` to release tags
+  - **Version Files**:
+    - Update `config/version.php` default value
+    - Update `.env.example` APP_VERSION
+    - Update `DEVELOPMENT_GUIDE.md` version header
+  - **Release Process**:
+    1. Update version in all relevant files
+    2. Commit changes: `Version: Update to vX.Y.Z`
+    3. Create annotated tag: `git tag -a vX.Y.Z-complete -m "Release notes"`
+    4. Push tag: `git push origin vX.Y.Z-complete`
+  - **Example Tags**: v1.0.0-complete, v1.0.5-complete, v1.1.0-complete
 
 - **Never Commit**:
   - `.env` file
