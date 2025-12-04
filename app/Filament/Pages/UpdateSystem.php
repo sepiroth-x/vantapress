@@ -27,7 +27,18 @@ class UpdateSystem extends Page
 
     public function mount(): void
     {
-        $this->currentVersion = config('version.version', '1.0.0');
+        // Clear config cache to ensure fresh version is loaded
+        try {
+            \Artisan::call('config:clear');
+            \Artisan::call('cache:clear');
+        } catch (\Exception $e) {
+            // Silently fail if artisan commands don't work
+        }
+        
+        // Load version directly from config file to bypass caching
+        $versionConfig = include(base_path('config/version.php'));
+        $this->currentVersion = $versionConfig['version'] ?? config('version.version', '1.0.0');
+        
         $this->checkForUpdates();
     }
 

@@ -86,10 +86,34 @@
                     
                     {{-- Release Notes --}}
                     <div class="mt-4">
-                        <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-2">Release Notes:</h4>
-                        <div class="prose prose-sm dark:prose-invert max-w-none">
-                            <div class="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">
-                                {{ $latestRelease['body'] }}
+                        <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3 flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Release Notes:
+                        </h4>
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800">
+                            <div class="prose prose-sm dark:prose-invert max-w-none
+                                prose-headings:text-gray-900 dark:prose-headings:text-white
+                                prose-h1:text-2xl prose-h1:font-bold prose-h1:mb-4 prose-h1:border-b prose-h1:border-gray-200 dark:prose-h1:border-gray-700 prose-h1:pb-2
+                                prose-h2:text-xl prose-h2:font-semibold prose-h2:mt-6 prose-h2:mb-3
+                                prose-h3:text-lg prose-h3:font-medium prose-h3:mt-4 prose-h3:mb-2
+                                prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed
+                                prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+                                prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-semibold
+                                prose-em:text-gray-700 dark:prose-em:text-gray-300
+                                prose-code:text-pink-600 dark:prose-code:text-pink-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:before:content-[''] prose-code:after:content-['']
+                                prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:text-gray-100 prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto
+                                prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 dark:prose-blockquote:text-gray-400
+                                prose-ul:list-disc prose-ul:pl-6 prose-ul:space-y-2
+                                prose-ol:list-decimal prose-ol:pl-6 prose-ol:space-y-2
+                                prose-li:text-gray-700 dark:prose-li:text-gray-300
+                                prose-hr:border-gray-300 dark:prose-hr:border-gray-700 prose-hr:my-6
+                                prose-table:border-collapse prose-table:w-full
+                                prose-th:bg-gray-100 dark:prose-th:bg-gray-800 prose-th:p-2 prose-th:text-left prose-th:font-semibold prose-th:border prose-th:border-gray-300 dark:prose-th:border-gray-700
+                                prose-td:p-2 prose-td:border prose-td:border-gray-300 dark:prose-td:border-gray-700
+                                prose-img:rounded-lg prose-img:shadow-md">
+                                {!! \Illuminate\Mail\Markdown::parse($latestRelease['body']) !!}
                             </div>
                         </div>
                     </div>
