@@ -5159,6 +5159,8 @@ class ComposerStaticInit1a5b9c0105092c5224a70afbf4bd150d
         'Masterminds\\HTML5\\Serializer\\OutputRules' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/OutputRules.php',
         'Masterminds\\HTML5\\Serializer\\RulesInterface' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/RulesInterface.php',
         'Masterminds\\HTML5\\Serializer\\Traverser' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/Traverser.php',
+        'Modules\\HelloWorld\\Controllers\\HelloWorldController' => __DIR__ . '/../..' . '/Modules/HelloWorld/Controllers/HelloWorldController.php',
+        'Modules\\HelloWorld\\HelloWorldServiceProvider' => __DIR__ . '/../..' . '/Modules/HelloWorld/HelloWorldServiceProvider.php',
         'Modules\\VPEssential1\\Filament\\Pages\\MenuBuilder' => __DIR__ . '/../..' . '/Modules/VPEssential1/Filament/Pages/MenuBuilder.php',
         'Modules\\VPEssential1\\Filament\\Pages\\ProfileManager' => __DIR__ . '/../..' . '/Modules/VPEssential1/Filament/Pages/ProfileManager.php',
         'Modules\\VPEssential1\\Filament\\Pages\\ThemeCustomizer' => __DIR__ . '/../..' . '/Modules/VPEssential1/Filament/Pages/ThemeCustomizer.php',

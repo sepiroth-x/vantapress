@@ -70,7 +70,8 @@ class ThemeCustomizerController extends Controller
     {
         $theme = Theme::findOrFail($id);
         
-        $data = $request->all();
+        // Get all form data except _token
+        $data = $request->except(['_token']);
         
         // Check if VP Essential helper functions are available
         if (!function_exists('vp_set_theme_setting')) {
@@ -80,18 +81,22 @@ class ThemeCustomizerController extends Controller
             ], 400);
         }
         
+        // Save each setting
         foreach ($data as $key => $value) {
-            if ($key === '_token') continue;
-            
             $type = 'string';
             if (is_bool($value)) {
                 $type = 'boolean';
             } elseif (is_array($value)) {
                 $type = 'json';
+                $value = json_encode($value);
             }
             
             vp_set_theme_setting($key, $value, $type, 'theme');
         }
+        
+        // Clear cache to ensure changes are reflected
+        \Illuminate\Support\Facades\Cache::flush();
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
         
         return response()->json([
             'success' => true,

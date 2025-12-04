@@ -99,30 +99,47 @@ class ModuleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable()
-                    ->weight('bold')
-                    ->icon('heroicon-o-puzzle-piece')
-                    ->description(fn ($record) => $record->description)
-                    ->wrap(),
-                
-                Tables\Columns\TextColumn::make('author')
-                    ->searchable()
-                    ->icon('heroicon-o-user')
-                    ->wrap(),
-                
-                Tables\Columns\TextColumn::make('version')
-                    ->badge()
-                    ->color('gray'),
-                
-                Tables\Columns\IconColumn::make('is_enabled')
-                    ->boolean()
-                    ->label('Status')
-                    ->trueIcon('heroicon-o-check-circle')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->trueColor('success')
-                    ->falseColor('gray'),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('name')
+                            ->searchable()
+                            ->sortable()
+                            ->weight('bold')
+                            ->size('lg')
+                            ->icon('heroicon-o-puzzle-piece')
+                            ->grow(false),
+                        
+                        Tables\Columns\TextColumn::make('description')
+                            ->color('gray')
+                            ->wrap()
+                            ->lineClamp(2),
+                    ])->space(1),
+                    
+                    Tables\Columns\Layout\Stack::make([
+                        Tables\Columns\TextColumn::make('author')
+                            ->icon('heroicon-o-user')
+                            ->color('gray')
+                            ->size('sm'),
+                        
+                        Tables\Columns\TextColumn::make('version')
+                            ->badge()
+                            ->color('gray')
+                            ->icon('heroicon-o-tag'),
+                    ])->space(1)->alignment('end'),
+                    
+                    Tables\Columns\IconColumn::make('is_enabled')
+                        ->boolean()
+                        ->label('Status')
+                        ->trueIcon('heroicon-o-check-circle')
+                        ->falseIcon('heroicon-o-x-circle')
+                        ->trueColor('success')
+                        ->falseColor('gray')
+                        ->alignment('end')
+                        ->grow(false),
+                ])->from('md'),
+            ])
+            ->contentGrid([
+                'md' => 1,
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_enabled')

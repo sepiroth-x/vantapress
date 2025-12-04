@@ -4493,6 +4493,8 @@ return array(
     'Masterminds\\HTML5\\Serializer\\OutputRules' => $vendorDir . '/masterminds/html5/src/HTML5/Serializer/OutputRules.php',
     'Masterminds\\HTML5\\Serializer\\RulesInterface' => $vendorDir . '/masterminds/html5/src/HTML5/Serializer/RulesInterface.php',
     'Masterminds\\HTML5\\Serializer\\Traverser' => $vendorDir . '/masterminds/html5/src/HTML5/Serializer/Traverser.php',
+    'Modules\\HelloWorld\\Controllers\\HelloWorldController' => $baseDir . '/Modules/HelloWorld/Controllers/HelloWorldController.php',
+    'Modules\\HelloWorld\\HelloWorldServiceProvider' => $baseDir . '/Modules/HelloWorld/HelloWorldServiceProvider.php',
     'Modules\\VPEssential1\\Filament\\Pages\\MenuBuilder' => $baseDir . '/Modules/VPEssential1/Filament/Pages/MenuBuilder.php',
     'Modules\\VPEssential1\\Filament\\Pages\\ProfileManager' => $baseDir . '/Modules/VPEssential1/Filament/Pages/ProfileManager.php',
     'Modules\\VPEssential1\\Filament\\Pages\\ThemeCustomizer' => $baseDir . '/Modules/VPEssential1/Filament/Pages/ThemeCustomizer.php',

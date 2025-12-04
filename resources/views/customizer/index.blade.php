@@ -733,13 +733,20 @@
             const form = document.getElementById('customizer-form');
             const formData = new FormData(form);
             
+            // Convert FormData to JSON object for better handling
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
             fetch(`/theme-customizer/${themeId}/save`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body: formData
+                body: JSON.stringify(data)
             })
             .then(response => response.json())
             .then(data => {
@@ -748,6 +755,8 @@
                         showSavingIndicator('✓ Changes saved!', true);
                     }
                     setTimeout(() => refreshPreview(), 500);
+                } else {
+                    showSavingIndicator('❌ ' + (data.message || 'Error saving'), true);
                 }
             })
             .catch(error => {
@@ -767,13 +776,20 @@
             const form = document.getElementById('customizer-form');
             const formData = new FormData(form);
             
+            // Convert FormData to JSON object
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
             fetch(`/theme-customizer/${themeId}/save`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Accept': 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body: formData
+                body: JSON.stringify(data)
             })
             .then(response => response.json())
             .then(data => {
@@ -786,6 +802,8 @@
                             'Accept': 'application/json',
                         }
                     });
+                } else {
+                    throw new Error(data.message || 'Failed to save settings');
                 }
             })
             .then(response => response.json())
@@ -795,11 +813,13 @@
                     setTimeout(() => {
                         window.location.href = data.redirect || '/admin/themes';
                     }, 1500);
+                } else {
+                    throw new Error(data.message || 'Failed to activate theme');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showSavingIndicator('❌ Error activating', true);
+                showSavingIndicator('❌ ' + error.message, true);
             });
         }
     </script>

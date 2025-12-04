@@ -47,6 +47,7 @@
     43 => 'App\\Providers\\Filament\\AdminPanelProvider',
     44 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
     45 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
+    46 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
   ),
   'eager' => 
   array (
@@ -82,6 +83,7 @@
     29 => 'App\\Providers\\Filament\\AdminPanelProvider',
     30 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
     31 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
+    32 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
   ),
   'deferred' => 
   array (
