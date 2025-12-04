@@ -169,6 +169,18 @@ ini_set('display_errors', 1);
             </div>
 
             <?php
+            // Check if .env exists, if not show helpful message
+            if (!file_exists(__DIR__ . '/.env')) {
+                echo "<div class='status error'><span class='icon'>✗</span> .env file not found</div>";
+                echo "<div class='status warning'>";
+                echo "<span class='icon'>⚠</span> ";
+                echo "<strong>Action Required:</strong> Please rename <code>.env.example</code> to <code>.env</code> before continuing.";
+                echo "</div>";
+                echo "<p style='margin-top: 20px;'>After renaming the file, refresh this page to continue the installation.</p>";
+                echo "</div></div></body></html>";
+                exit;
+            }
+            
             $checks = [
                 'PHP Version >= 8.2' => version_compare(PHP_VERSION, '8.2.0', '>='),
                 'vendor/ directory exists' => is_dir(__DIR__ . '/vendor'),
@@ -655,6 +667,25 @@ ini_set('display_errors', 1);
                             echo "  • {$failed['file']}: {$failed['error']}<br>";
                         }
                         echo "<br>";
+                    }
+                    
+                    echo "<br>";
+                    
+                    // Sync themes and modules from filesystem to database
+                    echo "🔄 Syncing themes and modules...<br><br>";
+                    try {
+                        // Run the ModuleThemeSeeder
+                        $seeder = new \Database\Seeders\ModuleThemeSeeder();
+                        $seeder->setCommand(new class {
+                            public function info($message) {
+                                echo "✓ $message<br>";
+                            }
+                        });
+                        $seeder->run();
+                        echo "<br>✅ Themes and modules synced successfully!<br>";
+                    } catch (Exception $e) {
+                        echo "⚠️  Warning: Could not sync themes/modules: " . htmlspecialchars($e->getMessage()) . "<br>";
+                        echo "   You can manually sync them later by running: php artisan db:seed --class=ModuleThemeSeeder<br>";
                     }
                     
                     echo "<br>";
