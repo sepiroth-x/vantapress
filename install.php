@@ -1036,10 +1036,20 @@ ini_set('display_errors', 1);
         // Step 6: Complete
         elseif ($step === 6) {
             // Activate Laravel by renaming _index.php back to index.php
+            // Files are in ROOT directory (not public/) for shared hosting
+            $rootDir = __DIR__;
             $publicDir = __DIR__ . '/public';
+            
+            // Check both locations and activate whichever exists
+            if (file_exists("$rootDir/_index.php")) {
+                rename("$rootDir/_index.php", "$rootDir/index.php");
+                if (file_exists("$rootDir/index.html")) {
+                    unlink("$rootDir/index.html");
+                }
+            }
+            
             if (file_exists("$publicDir/_index.php")) {
                 rename("$publicDir/_index.php", "$publicDir/index.php");
-                // Remove the HTML welcome page
                 if (file_exists("$publicDir/index.html")) {
                     unlink("$publicDir/index.html");
                 }
