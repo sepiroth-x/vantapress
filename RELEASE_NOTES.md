@@ -1,27 +1,32 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.9  
+**Current Version:** v1.0.10  
 **Release Date:** December 4, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.9
+## 📌 Latest Version: v1.0.10
 
-### 🎯 What's New in v1.0.9
-- **Enhanced APP_KEY Detection** - Improved pre-boot validation logic
-- **Code Cleanup** - Removed obsolete diagnostic tools (diagnose.php, fix-app-key.php)
-- **Streamlined Release** - Only essential files, cleaner installation
-- **Robust Empty Key Handling** - Better detection of missing/empty APP_KEY values
+### 🎯 What's New in v1.0.10
+- **Simple HTML Welcome Page** - Pure HTML, zero PHP complexity
+- **index.html Pre-Installation** - Shows BEFORE Laravel loads
+- **Automatic Activation** - Laravel activates after installation completes
+- **100% Theme Compatible** - All theming features work as before
 
-### Why v1.0.9?
-v1.0.8 introduced the pre-installation welcome page, but the APP_KEY detection wasn't robust enough on all shared hosting environments. v1.0.9 strengthens this check with explicit validation.
+### The Simplest Solution
+Forget complex pre-boot checks! v1.0.10 uses plain `index.html` that web servers load BEFORE `index.php`. No Laravel boot = No errors. After installation, Laravel automatically takes over.
 
-**Download:** [v1.0.9](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.9)
+**Download:** [v1.0.10-complete](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.10-complete)
 
 ---
 
 ## 📜 Version History
+
+### v1.0.10 (December 4, 2025)
+- Simple HTML welcome page solution
+- Automatic Laravel activation after install
+- Zero PHP complexity for pre-installation
 
 ### v1.0.9 (December 4, 2025)
 - Enhanced APP_KEY detection with explicit validation
