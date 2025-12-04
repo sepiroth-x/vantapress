@@ -14,147 +14,295 @@ ini_set('display_errors', 1);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VantaPress - Installation</title>
+    <title>The Villain Arise - VantaPress Installation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --villain-red: #dc2626;
+            --villain-dark: #0f172a;
+            --villain-darker: #020617;
+            --villain-gray: #1e293b;
+            --villain-light: #f87171;
+            --text-light: #d1d5db;
+            --text-dark: #6b7280;
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Space Mono', monospace;
+            background: var(--villain-darker);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(220, 38, 38, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(220, 38, 38, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-flow 20s linear infinite;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        @keyframes grid-flow {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+        
         .container {
-            background: white;
+            background: var(--villain-dark);
+            border: 2px solid rgba(220, 38, 38, 0.3);
             border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(220, 38, 38, 0.3);
+            max-width: 900px;
             width: 100%;
             padding: 40px;
+            position: relative;
+            z-index: 10;
         }
+        
         h1 {
-            color: #333;
+            color: var(--villain-red);
             margin-bottom: 10px;
-            font-size: 32px;
+            font-size: 36px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
         }
+        
         .subtitle {
-            color: #666;
+            color: var(--text-dark);
             margin-bottom: 30px;
-            font-size: 16px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
+        
         .step {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
+            background: var(--villain-darker);
+            border-left: 4px solid var(--villain-red);
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 4px;
+            border: 1px solid rgba(220, 38, 38, 0.3);
         }
+        
         .step h2 {
-            color: #667eea;
+            color: var(--villain-red);
             font-size: 20px;
             margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
+        
         .status {
             display: flex;
             align-items: center;
             margin: 10px 0;
-            padding: 10px;
+            padding: 12px 15px;
             border-radius: 4px;
+            border: 1px solid;
         }
+        
         .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.3);
         }
+        
         .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
         }
+        
         .status.warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border-color: rgba(245, 158, 11, 0.3);
         }
+        
         .icon {
             font-size: 20px;
             margin-right: 10px;
             font-weight: bold;
         }
+        
         button {
-            background: #667eea;
+            background: var(--villain-red);
             color: white;
-            border: none;
+            border: 2px solid var(--villain-red);
             padding: 14px 32px;
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 6px;
             cursor: pointer;
-            transition: background 0.3s;
-            font-weight: 600;
+            transition: all 0.3s;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
+        
         button:hover {
-            background: #5568d3;
+            background: var(--villain-light);
+            border-color: var(--villain-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4);
         }
+        
         button:disabled {
-            background: #ccc;
+            background: var(--villain-gray);
+            border-color: var(--villain-gray);
             cursor: not-allowed;
+            transform: none;
         }
+        
         .actions {
             margin-top: 30px;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
+        
         code {
-            background: #f4f4f4;
-            padding: 2px 6px;
+            background: rgba(220, 38, 38, 0.1);
+            color: var(--villain-light);
+            padding: 3px 8px;
             border-radius: 3px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            border: 1px solid rgba(220, 38, 38, 0.3);
         }
+        
         pre {
-            background: #2d2d2d;
-            color: #f8f8f2;
+            background: var(--villain-darker);
+            color: var(--text-light);
             padding: 15px;
             border-radius: 4px;
             overflow-x: auto;
             margin: 10px 0;
+            border: 1px solid rgba(220, 38, 38, 0.3);
         }
+        
         .log {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
+            background: var(--villain-darker);
+            border: 1px solid rgba(220, 38, 38, 0.3);
             padding: 15px;
             border-radius: 4px;
             max-height: 400px;
             overflow-y: auto;
-            font-family: monospace;
-            font-size: 13px;
-            line-height: 1.6;
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            line-height: 1.8;
+            color: var(--text-light);
         }
+        
         .progress {
-            background: #e9ecef;
+            background: var(--villain-darker);
+            border: 1px solid rgba(220, 38, 38, 0.3);
             border-radius: 4px;
-            height: 30px;
+            height: 35px;
             margin: 20px 0;
             overflow: hidden;
         }
+        
         .progress-bar {
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, var(--villain-red), var(--villain-light));
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 600;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             transition: width 0.3s;
+            font-size: 13px;
+        }
+        
+        label {
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        label small {
+            font-weight: 400;
+            color: var(--text-dark);
+            font-size: 12px;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--villain-darker);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 4px;
+            color: var(--text-light);
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: var(--villain-red);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder,
+        input[type="email"]::placeholder {
+            color: var(--text-dark);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>⚡ VantaPress</h1>
-        <p class="subtitle">WordPress-Inspired CMS · Built with Laravel · Installation Wizard</p>
+        <p class="subtitle">The Villain Arise • Installation Wizard</p>
 
         <?php
         $step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
@@ -236,7 +384,7 @@ ini_set('display_errors', 1);
                         
                         // Also set APP_VERSION if not present
                         if (!preg_match('/^APP_VERSION=.*$/m', $newEnvContent)) {
-                            $newEnvContent = preg_replace('/^(APP_KEY=.*)$/m', "$1\nAPP_VERSION=1.0.13-complete", $newEnvContent);
+                            $newEnvContent = preg_replace('/^(APP_KEY=.*)$/m', "$1\nAPP_VERSION=1.0.14-complete", $newEnvContent);
                         }
                         
                         $writeSuccess = file_put_contents($envPath, $newEnvContent);
@@ -679,14 +827,45 @@ ini_set('display_errors', 1);
                     // Sync themes and modules from filesystem to database
                     echo "🔄 Syncing themes and modules...<br><br>";
                     try {
-                        // Run the ModuleThemeSeeder
-                        $seeder = new \Database\Seeders\ModuleThemeSeeder();
-                        $seeder->setCommand(new class {
-                            public function info($message) {
-                                echo "✓ $message<br>";
-                            }
-                        });
-                        $seeder->run();
+                        // Manually sync modules and themes (avoiding seeder command dependency)
+                        $moduleLoader = app(\App\Services\ModuleLoader::class);
+                        $modules = $moduleLoader->discoverModules();
+                        
+                        foreach ($modules as $slug => $metadata) {
+                            \App\Models\Module::updateOrCreate(
+                                ['slug' => $slug],
+                                [
+                                    'name' => $metadata['name'] ?? $slug,
+                                    'description' => $metadata['description'] ?? '',
+                                    'version' => $metadata['version'] ?? '1.0.0',
+                                    'author' => $metadata['author'] ?? '',
+                                    'is_enabled' => $metadata['active'] ?? false,
+                                    'path' => $metadata['path'] ?? '',
+                                    'config' => $metadata,
+                                ]
+                            );
+                        }
+                        echo "✓ Modules synced from file system<br>";
+                        
+                        $themeLoader = app(\App\Services\ThemeLoader::class);
+                        $themes = $themeLoader->discoverThemes();
+                        
+                        foreach ($themes as $slug => $metadata) {
+                            \App\Models\Theme::updateOrCreate(
+                                ['slug' => $slug],
+                                [
+                                    'name' => $metadata['name'] ?? $slug,
+                                    'description' => $metadata['description'] ?? '',
+                                    'version' => $metadata['version'] ?? '1.0.0',
+                                    'author' => $metadata['author'] ?? '',
+                                    'is_active' => $metadata['active'] ?? false,
+                                    'path' => $metadata['path'] ?? '',
+                                    'config' => $metadata,
+                                ]
+                            );
+                        }
+                        echo "✓ Themes synced from file system<br>";
+                        
                         echo "<br>✅ Themes and modules synced successfully!<br>";
                     } catch (Exception $e) {
                         echo "⚠️  Warning: Could not sync themes/modules: " . htmlspecialchars($e->getMessage()) . "<br>";

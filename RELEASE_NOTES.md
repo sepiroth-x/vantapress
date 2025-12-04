@@ -1,12 +1,19 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.13-complete  
+**Current Version:** v1.0.14-complete  
 **Release Date:** December 4, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.13-complete
+## 📌 Latest Version: v1.0.14-complete
+
+### 🎯 What's New in v1.0.14-complete
+- **🎨 Villain-Themed Installer** - Complete UI rework with The Villain Arise aesthetic
+- **🔥 Dark Theme Design** - Installer now matches villain theme with animated grid background
+- **🛠️ Fixed Seeder Issue** - Resolved ModuleThemeSeeder command type mismatch error
+- **📝 Developer Standards** - Added VERSION_HANDLING.md and SESSION_DEV_HANDLING.md
+- **✨ Enhanced UX** - Orbitron and Space Mono fonts, red accent colors, improved animations
 
 ### 🎯 What's New in v1.0.13-complete
 - **🚀 WordPress-Style Auto-Updates** - One-click automatic updates with background download
