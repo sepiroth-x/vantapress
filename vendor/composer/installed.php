@@ -3,7 +3,7 @@
         'name' => 'tcc/school-cms',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '65ab0c30dea933eee23018e5e69e8bc21d97e58f',
+        'reference' => '3633ce2d9ef853fd18ec33679c8736ad067f3da1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -1247,7 +1247,7 @@
         'tcc/school-cms' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '65ab0c30dea933eee23018e5e69e8bc21d97e58f',
+            'reference' => '3633ce2d9ef853fd18ec33679c8736ad067f3da1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

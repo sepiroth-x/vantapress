@@ -78,7 +78,7 @@ That's it! No terminal access required. Migrations run via raw SQL for maximum s
 
 ## 👨‍💻 Author & License
 
-**Created by:** Sepirothx (Richard Cebel Cupal, LPT)
+**Created by:** Sepiroth X  Villainous (Richard Cebel Cupal, LPT)
 
 **Contact:**
 - 📧 Email: chardy.tsadiq02@gmail.com
@@ -93,7 +93,7 @@ You are free to use, modify, and distribute VantaPress for any purpose, includin
 
 If you find VantaPress useful, consider giving credit:
 ```
-Powered by VantaPress v1.0.0 - Created by Sepirothx
+Powered by VantaPress v1.0.0 - Created by Sepiroth X Villainous
 ```
 
 ---

@@ -36,20 +36,17 @@
     32 => 'Filament\\Tables\\TablesServiceProvider',
     33 => 'Filament\\Widgets\\WidgetsServiceProvider',
     34 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
-    35 => 'Laravel\\Sail\\SailServiceProvider',
-    36 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    37 => 'Livewire\\LivewireServiceProvider',
-    38 => 'Carbon\\Laravel\\ServiceProvider',
-    39 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    40 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    41 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
-    42 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    43 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
-    44 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    45 => 'Spatie\\Permission\\PermissionServiceProvider',
-    46 => 'App\\Providers\\Filament\\AdminPanelProvider',
-    47 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
-    48 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
+    35 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    36 => 'Livewire\\LivewireServiceProvider',
+    37 => 'Carbon\\Laravel\\ServiceProvider',
+    38 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    39 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
+    40 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    41 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    42 => 'Spatie\\Permission\\PermissionServiceProvider',
+    43 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    44 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
+    45 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
   ),
   'eager' => 
   array (
@@ -77,16 +74,14 @@
     21 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
     22 => 'Livewire\\LivewireServiceProvider',
     23 => 'Carbon\\Laravel\\ServiceProvider',
-    24 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    25 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    26 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
-    27 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    28 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
-    29 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    30 => 'Spatie\\Permission\\PermissionServiceProvider',
-    31 => 'App\\Providers\\Filament\\AdminPanelProvider',
-    32 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
-    33 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
+    24 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    25 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
+    26 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    27 => 'Spatie\\Activitylog\\ActivitylogServiceProvider',
+    28 => 'Spatie\\Permission\\PermissionServiceProvider',
+    29 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    30 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
+    31 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
   ),
   'deferred' => 
   array (
@@ -239,8 +234,6 @@
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'Illuminate\\Contracts\\Validation\\UncompromisedVerifier' => 'Illuminate\\Validation\\ValidationServiceProvider',
-    'Laravel\\Sail\\Console\\InstallCommand' => 'Laravel\\Sail\\SailServiceProvider',
-    'Laravel\\Sail\\Console\\PublishCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
   ),
   'when' => 
@@ -282,9 +275,6 @@
     array (
     ),
     'Illuminate\\Validation\\ValidationServiceProvider' => 
-    array (
-    ),
-    'Laravel\\Sail\\SailServiceProvider' => 
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
