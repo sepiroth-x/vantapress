@@ -43,3 +43,6 @@ response-log.txt
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Developer Manual (Private eBook)
+VantaPress Developer Manual.md
