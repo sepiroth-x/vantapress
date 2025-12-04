@@ -472,6 +472,24 @@ ini_set('display_errors', 1);
                     echo "Database: {$dbConfig['DB_DATABASE']}<br>";
                     echo "User: {$dbConfig['DB_USERNAME']}<br><br>";
                     
+                    // Ensure storage directories exist before bootstrapping Laravel
+                    echo "📁 Checking storage directories...<br>";
+                    $storageDirs = [
+                        __DIR__ . '/storage/framework/cache/data',
+                        __DIR__ . '/storage/framework/sessions',
+                        __DIR__ . '/storage/framework/views',
+                        __DIR__ . '/storage/logs',
+                        __DIR__ . '/bootstrap/cache'
+                    ];
+                    
+                    foreach ($storageDirs as $dir) {
+                        if (!is_dir($dir)) {
+                            mkdir($dir, 0755, true);
+                            echo "✓ Created: " . basename(dirname($dir)) . "/" . basename($dir) . "<br>";
+                        }
+                    }
+                    echo "✓ Storage directories ready<br><br>";
+                    
                     // Bootstrap Laravel application
                     echo "🚀 Bootstrapping Laravel...<br>";
                     $app = require_once __DIR__ . '/bootstrap/app.php';
