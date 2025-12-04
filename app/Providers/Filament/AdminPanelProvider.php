@@ -71,7 +71,7 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::STYLES_AFTER,
                 fn (): string => '<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '?v=3.3.45">' .
                                  '<link rel="stylesheet" href="' . asset('css/filament-theme.css') . '">' .
-                                 '<link rel="stylesheet" href="' . asset('css/vantapress-admin.css') . '">'
+                                 '<link rel="stylesheet" href="' . asset('css/vantapress-admin.css') . '?v=' . time() . '">'
             )
             ->renderHook(
                 PanelsRenderHook::SCRIPTS_AFTER,
