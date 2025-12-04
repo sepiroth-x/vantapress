@@ -34,6 +34,16 @@ Route::get('/old-landing', function () {
 
 Route::get('/livewire-test', function() { return view('livewire-test'); });
 
+// Theme Customizer (Full-page, WordPress-style)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/theme-customizer/{id}', [App\Http\Controllers\ThemeCustomizerController::class, 'show'])
+        ->name('theme-customizer.show');
+    Route::post('/theme-customizer/{id}/save', [App\Http\Controllers\ThemeCustomizerController::class, 'save'])
+        ->name('theme-customizer.save');
+    Route::post('/theme-customizer/{id}/activate', [App\Http\Controllers\ThemeCustomizerController::class, 'activate'])
+        ->name('theme-customizer.activate');
+});
+
 // Catch-all route for dynamic pages (must be last)
 Route::get('/{slug}', [App\Http\Controllers\PageController::class, 'show'])
     ->where('slug', '.*')

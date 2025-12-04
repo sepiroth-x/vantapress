@@ -155,7 +155,8 @@ class ThemeResource extends Resource
                     ->label('Customize')
                     ->icon('heroicon-o-paint-brush')
                     ->color('primary')
-                    ->url(fn ($record) => route('filament.admin.resources.themes.customize', ['record' => $record->id]))
+                    ->url(fn ($record) => route('theme-customizer.show', ['id' => $record->id]))
+                    ->openUrlInNewTab()
                     ->tooltip('Customize theme appearance and settings'),
                 
                 Tables\Actions\Action::make('activate')
