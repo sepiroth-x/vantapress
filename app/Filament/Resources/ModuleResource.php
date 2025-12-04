@@ -21,7 +21,7 @@ class ModuleResource extends Resource
     
     protected static ?string $navigationGroup = 'Extensions';
     
-    protected static ?int $navigationGroupSort = 40;
+    protected static ?int $navigationGroupSort = 35;
     
     protected static ?int $navigationSort = 1;
     
