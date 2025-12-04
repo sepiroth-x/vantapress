@@ -4,13 +4,13 @@
 [![Laravel](https://img.shields.io/badge/Laravel-11.47-FF2D20?logo=laravel)](https://laravel.com)
 [![FilamentPHP](https://img.shields.io/badge/FilamentPHP-3.3-FFB800?logo=php)](https://filamentphp.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?logo=php)](https://www.php.net)
-[![Release](https://img.shields.io/badge/Release-v1.0.13--complete-success)](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.13-complete)
+[![Release](https://img.shields.io/badge/Release-v1.0.14--complete-success)](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.14-complete)
 
 **A WordPress-Inspired Content Management System Built with Laravel**
 
 VantaPress is a modern, open-source CMS that combines the familiar simplicity of WordPress with the robust architecture of Laravel. Built for developers who want WordPress-style ease-of-use with enterprise-grade code quality.
 
-**📦 Current Version:** v1.0.13-complete  
+**📦 Current Version:** v1.0.14-complete  
 **📥 Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
@@ -61,14 +61,52 @@ VantaPress is a **production-ready content management system** that provides com
 
 ### Installation (WordPress-Style)
 
-1. **Download VantaPress** - Get the [latest release](https://github.com/sepiroth-x/vantapress/releases/latest)
-2. **Upload to Server** - Use FTP/cPanel to upload all files to your document root
-3. **Create Database** - Create a MySQL database via your hosting control panel
-4. **Run Installer** - Visit `https://yourdomain.com/install.php` in your browser
-5. **Follow Wizard** - Complete 6 easy steps (requirements, database, migrations, assets, admin, done)
-6. **Login** - Access admin panel at `https://yourdomain.com/admin`
+VantaPress is designed for **effortless deployment on any shared hosting** without terminal access!
 
-That's it! No terminal access required. Migrations run via raw SQL for maximum shared hosting compatibility.
+#### 📥 Installation Steps
+
+1. **📦 Download the Latest Version**  
+   Get the zipped release from [GitHub Releases](https://github.com/sepiroth-x/vantapress/releases/latest)
+
+2. **☁️ Upload to Server**  
+   Use your hosting control panel's **File Manager** to upload the `.zip` file
+
+3. **📂 Extract the Archive**  
+   Right-click the uploaded `.zip` and select **Extract** in File Manager
+
+4. **📁 Navigate to Extracted Folder**  
+   Open the extracted folder that contains all the VantaPress files
+
+5. **🔄 Move Files to Root Directory**  
+   Select **all files** inside the extracted folder and **move** them to your root directory (`yourdomain.com/` or `public_html/`)
+
+6. **⚙️ Rename Environment File**  
+   Rename `.env.example` to `.env`
+
+7. **🌐 Visit the Installer**  
+   Open your browser and go to `https://yourdomain.com/install.php`
+
+8. **🚀 Run the Installer**  
+   Follow the 6-step installation wizard (requirements check → database setup → migrations → assets → admin creation → done!)
+
+9. **🔐 Login to Admin Panel**  
+   Access your admin dashboard at `https://yourdomain.com/admin`
+
+10. **🎉 Enjoy VantaPress!**  
+    Start building your site with the power of Laravel and FilamentPHP!
+
+**⚠️ Security Tip:** Delete `install.php` after completing installation!
+
+---
+
+### Quick Summary
+
+- ✅ No terminal/SSH required
+- ✅ No Composer or npm needed
+- ✅ Works on any shared hosting (cPanel, Plesk, DirectAdmin)
+- ✅ Automatic database setup
+- ✅ One-click asset publishing
+- ✅ Built-in admin user creation
 
 ### Admin Panel Access
 

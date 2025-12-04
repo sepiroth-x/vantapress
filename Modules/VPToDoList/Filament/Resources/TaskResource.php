@@ -41,9 +41,16 @@ class TaskResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('project_id')
                             ->label('Project')
-                            ->options(fn () => Project::where('user_id', auth()->id())
-                                ->where('status', '!=', 'archived')
-                                ->pluck('name', 'id'))
+                            ->options(function () {
+                                try {
+                                    return Project::where('user_id', auth()->id())
+                                        ->where('status', '!=', 'archived')
+                                        ->pluck('name', 'id');
+                                } catch (\Exception $e) {
+                                    // Return empty array if table doesn't exist yet
+                                    return [];
+                                }
+                            })
                             ->required()
                             ->searchable()
                             ->preload()
@@ -275,8 +282,13 @@ class TaskResource extends Resource
     
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('user_id', auth()->id())
-            ->whereNotIn('status', ['completed'])
-            ->count() ?: null;
+        try {
+            return static::getModel()::where('user_id', auth()->id())
+                ->whereNotIn('status', ['completed'])
+                ->count() ?: null;
+        } catch (\Exception $e) {
+            // Return null if table doesn't exist yet (module not fully installed)
+            return null;
+        }
     }
 }

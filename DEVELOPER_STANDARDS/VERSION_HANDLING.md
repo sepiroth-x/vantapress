@@ -156,6 +156,7 @@ git push origin v1.0.0-complete
 **Current Version:** v1.0.13-complete
 
 **Version Timeline:**
+- v1.0.14 - Villain-themed installer UI & developer standards
 - v1.0.13 - WordPress-style auto-updates system
 - v1.0.12 - Theme-based admin styling architecture
 - v1.0.11 - Filament admin panel styling fixes
@@ -176,6 +177,8 @@ git push origin v1.0.0-complete
 1. ⛔ **No pushing without explicit command** - Always wait for approval
 2. 📦 **Format: v.X.Y.Z-complete** - Use standard versioning format
 3. ⬆️ **Increment on every release push** - Never push with same version number
+
+**Current Project Version:** v1.0.14-complete
 
 **Remember:** Version control is critical for tracking changes, deployment history, and user support. Always follow these standards to maintain project integrity.
 

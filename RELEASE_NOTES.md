@@ -33,7 +33,7 @@
 ### Theme Architecture Revolution
 Admin panel styling is now part of the theme system! Each theme can customize the admin interface appearance through `themes/[ThemeName]/assets/css/admin.css`. The default BasicTheme includes a complete retro arcade aesthetic with dark/light mode support.
 
-**Download:** [v1.0.12-complete](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.12-complete)
+**Download:** [v1.0.14-complete](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.14-complete)
 
 ---
 

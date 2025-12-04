@@ -170,8 +170,13 @@ class ProjectResource extends Resource
     
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('user_id', auth()->id())
-            ->where('status', 'active')
-            ->count() ?: null;
+        try {
+            return static::getModel()::where('user_id', auth()->id())
+                ->where('status', 'active')
+                ->count() ?: null;
+        } catch (\Exception $e) {
+            // Return null if table doesn't exist yet (module not fully installed)
+            return null;
+        }
     }
 }
