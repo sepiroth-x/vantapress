@@ -50,46 +50,85 @@ class MenuResource extends Resource
                         Forms\Components\Repeater::make('items')
                             ->relationship('items')
                             ->schema([
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\Select::make('page_id')
+                                            ->label('Link to Page')
+                                            ->relationship('page', 'title')
+                                            ->searchable()
+                                            ->preload()
+                                            ->live()
+                                            ->helperText('Select an existing page (URL will be auto-filled)')
+                                            ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                                if ($state) {
+                                                    $page = \App\Models\Page::find($state);
+                                                    if ($page) {
+                                                        // Auto-fill title if empty
+                                                        if (empty($get('title'))) {
+                                                            $set('title', $page->title);
+                                                        }
+                                                        // Auto-fill URL
+                                                        $set('url', '/' . ltrim($page->slug, '/'));
+                                                    }
+                                                }
+                                            })
+                                            ->columnSpan(1),
+                                        
+                                        Forms\Components\Placeholder::make('page_info')
+                                            ->label('Info')
+                                            ->content('Or enter custom title and URL below')
+                                            ->columnSpan(1),
+                                    ]),
+                                
                                 Forms\Components\TextInput::make('title')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->helperText('Menu item label (auto-filled from page if linked)'),
                                 
                                 Forms\Components\TextInput::make('url')
                                     ->required()
                                     ->maxLength(255)
                                     ->prefix('/')
-                                    ->helperText('Relative URL (e.g., /about) or full URL'),
+                                    ->helperText('Relative URL (e.g., /about) or full URL (auto-filled from page if linked)'),
                                 
-                                Forms\Components\Select::make('target')
-                                    ->options([
-                                        '_self' => 'Same Window',
-                                        '_blank' => 'New Window',
-                                    ])
-                                    ->default('_self'),
+                                Forms\Components\Grid::make(2)
+                                    ->schema([
+                                        Forms\Components\Select::make('target')
+                                            ->options([
+                                                '_self' => 'Same Window',
+                                                '_blank' => 'New Window',
+                                            ])
+                                            ->default('_self'),
+                                        
+                                        Forms\Components\TextInput::make('icon')
+                                            ->maxLength(100)
+                                            ->helperText('Icon class (e.g., heroicon-o-home)'),
+                                    ]),
                                 
-                                Forms\Components\TextInput::make('icon')
-                                    ->maxLength(100)
-                                    ->helperText('Icon class (e.g., heroicon-o-home)'),
-                                
-                                Forms\Components\TextInput::make('css_class')
-                                    ->maxLength(255)
-                                    ->helperText('Custom CSS classes'),
-                                
-                                Forms\Components\TextInput::make('order')
-                                    ->numeric()
-                                    ->default(0),
-                                
-                                Forms\Components\Toggle::make('is_active')
-                                    ->label('Visible')
-                                    ->default(true),
+                                Forms\Components\Grid::make(3)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('css_class')
+                                            ->maxLength(255)
+                                            ->helperText('Custom CSS classes')
+                                            ->columnSpan(2),
+                                        
+                                        Forms\Components\Toggle::make('is_active')
+                                            ->label('Visible')
+                                            ->default(true)
+                                            ->columnSpan(1),
+                                    ]),
                             ])
                             ->orderColumn('order')
                             ->reorderable()
                             ->collapsible()
-                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'New Menu Item')
                             ->collapsed()
                             ->addActionLabel('Add Menu Item')
-                            ->defaultItems(0),
+                            ->defaultItems(0)
+                            ->deleteAction(
+                                fn (Forms\Components\Actions\Action $action) => $action
+                                    ->requiresConfirmation()
+                            ),
                     ])
                     ->collapsible(),
             ]);

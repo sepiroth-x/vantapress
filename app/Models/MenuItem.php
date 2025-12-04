@@ -29,6 +29,7 @@ class MenuItem extends Model
     protected $fillable = [
         'menu_id',
         'parent_id',
+        'page_id',
         'title',
         'url',
         'target',
@@ -49,6 +50,14 @@ class MenuItem extends Model
     public function menu(): BelongsTo
     {
         return $this->belongsTo(Menu::class);
+    }
+
+    /**
+     * Get the linked page
+     */
+    public function page(): BelongsTo
+    {
+        return $this->belongsTo(Page::class);
     }
 
     /**
@@ -73,5 +82,27 @@ class MenuItem extends Model
     public function descendants()
     {
         return $this->children()->with('descendants');
+    }
+
+    /**
+     * Get the effective URL (from page if linked, otherwise use url field)
+     */
+    public function getEffectiveUrlAttribute(): string
+    {
+        if ($this->page_id && $this->page) {
+            return '/' . ltrim($this->page->slug, '/');
+        }
+        return $this->url;
+    }
+
+    /**
+     * Get the effective title (from page if not customized)
+     */
+    public function getEffectiveTitleAttribute(): string
+    {
+        if ($this->page_id && $this->page && empty($this->title)) {
+            return $this->page->title;
+        }
+        return $this->title;
     }
 }
