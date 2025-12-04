@@ -1,8 +1,8 @@
 {
-    "name": "Basic Theme",
+    "name": "Basic Theme (The Beginning)",
     "slug": "BasicTheme",
     "version": "1.0.0",
-    "description": "A clean and simple theme for VantaPress CMS",
+    "description": "The default VantaPress theme - A clean and simple theme that controls both frontend and admin panel styling",
     "author": "VantaPress",
     "author_email": "chardy.tsadiq02@gmail.com",
     "author_url": "https://github.com/sepiroth-x",

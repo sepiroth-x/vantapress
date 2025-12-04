@@ -69,8 +69,14 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/favicon.ico'))
             ->renderHook(
                 PanelsRenderHook::STYLES_AFTER,
-                fn (): string => '<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '?v=3.3.45">' .
-                                 '<link rel="stylesheet" href="' . asset('css/vantapress-retro.css') . '?v=' . time() . '">'
+                function (): string {
+                    $themeManager = app(\App\Services\CMS\ThemeManager::class);
+                    $activeTheme = $themeManager->getActiveTheme();
+                    $adminCss = asset("themes/{$activeTheme}/assets/css/admin.css") . '?v=' . time();
+                    
+                    return '<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '?v=3.3.45">' .
+                           '<link rel="stylesheet" href="' . $adminCss . '">';
+                }
             )
             ->renderHook(
                 PanelsRenderHook::SCRIPTS_AFTER,
