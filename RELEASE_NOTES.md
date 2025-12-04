@@ -160,7 +160,7 @@ Admin panel styling is now part of the theme system! Each theme can customize th
 
 1. **Download VantaPress**
    ```
-   Download: vantapress-v1.0.0.zip from GitHub releases
+   Download: vantapress-v1.0.12-complete.zip from GitHub releases
    ```
 
 2. **Upload to Server**
@@ -207,30 +207,40 @@ vantapress/
 ├── app/                      # Application code
 │   ├── Filament/            # Admin panel resources
 │   ├── Models/              # 9 Eloquent models
-│   └── Providers/           # Service providers
-├── build-tools/             # Deployment tools
+│   ├── Providers/           # Service providers (includes AdminPanelProvider)
+│   └── Services/            # CMS services (ThemeManager, ModuleLoader)
+├── bootstrap/               # Laravel bootstrap
 ├── config/                  # Configuration files
-├── css/                     # Static CSS assets
-│   └── filament/           # FilamentPHP stylesheets
+├── css/                     # Static CSS assets (ROOT LEVEL - shared hosting optimized)
+│   └── filament/           # FilamentPHP stylesheets (published assets)
 ├── database/
-│   └── migrations/         # 12 migration files
-├── docs/                    # 25 documentation files
-├── js/                      # Static JavaScript
-│   └── filament/           # FilamentPHP scripts
-├── public/                  # Public assets
-├── resources/               # Views and templates
-├── routes/                  # Application routes
-├── scripts/                 # Utility scripts
-│   └── install.php         # Web installer ⚡
-├── storage/                 # Logs, cache, sessions
-├── vendor/                  # Composer dependencies
-├── .env.example            # Environment template
-├── .htaccess               # Apache configuration
+│   └── migrations/         # 12 migration files creating 21 tables
+├── images/                  # Static images (ROOT LEVEL)
+├── js/                      # Static JavaScript (ROOT LEVEL)
+│   └── filament/           # FilamentPHP JavaScript (published assets)
+├── Modules/                 # Modular plugins (WordPress-style)
+├── resources/
+│   └── views/              # Blade templates
+├── routes/                  # Application routes (web, admin)
+├── storage/                 # Logs, cache, sessions (needs 775 permissions)
+├── themes/                  # Theme system (controls frontend + admin styling)
+│   └── BasicTheme/         # Default theme
+│       └── assets/
+│           └── css/
+│               ├── admin.css   # Admin panel styling ⭐
+│               └── theme.css   # Frontend styling
+├── vendor/                  # Composer dependencies (include in deployment)
+├── .env                     # Environment configuration (PROTECTED by .htaccess)
+├── .htaccess               # Apache rewrite rules (CRITICAL for routing & security)
 ├── artisan                 # Laravel CLI
 ├── composer.json           # PHP dependencies
-├── LICENSE                 # MIT License
-└── README.md               # Documentation
+├── index.php               # Application entry point (ROOT LEVEL)
+├── install.php             # 6-step web installer ⚡
+├── create-admin.php        # Backup admin user creator
+└── LICENSE                 # MIT License
 ```
+
+**Note:** VantaPress uses a **root-level architecture** optimized for shared hosting. Unlike traditional Laravel apps, there's no `public/` folder as the document root. All public assets (`css/`, `js/`, `images/`) are at root level, and sensitive files are protected via `.htaccess` rules.
 
 ### Database Schema (21 Tables)
 
@@ -270,14 +280,14 @@ vantapress/
 
 ## 🔧 Maintenance Tools
 
-VantaPress includes WordPress-inspired utility scripts in the `scripts/` directory:
+VantaPress includes WordPress-inspired utility scripts at root level:
 
 ### `install.php` ⚡
 6-step web-based installation wizard. Handles everything from requirements check to admin user creation.
 
 **⚠️ Delete after installation for security!**
 
-### `create-admin-quick.php`
+### `create-admin.php`
 Emergency admin user creator. Use if locked out or installer fails.
 
 **⚠️ Delete after creating admin account!**
@@ -304,7 +314,7 @@ Emergency admin user creator. Use if locked out or installer fails.
 - Some hosts require database prefix (e.g., `username_dbname`)
 
 **🔒 Cannot Login After Installation**
-- Use `scripts/create-admin-quick.php` to reset admin user
+- Use `create-admin.php` to reset admin user
 - Clear browser cookies/cache
 - Check user exists in database
 
@@ -337,8 +347,8 @@ Included documentation files (in `docs/` folder):
 
 After installation, complete these security steps:
 
-- [ ] Delete `scripts/install.php`
-- [ ] Delete `scripts/create-admin-quick.php`
+- [ ] Delete `install.php` from root
+- [ ] Delete `create-admin.php` from root
 - [ ] Change default admin password
 - [ ] Set `APP_DEBUG=false` in `.env`
 - [ ] Set `APP_ENV=production` in `.env`
@@ -411,7 +421,7 @@ You are free to use, modify, and distribute VantaPress for any purpose, includin
 ### Attribution
 If you find VantaPress useful, consider giving credit:
 ```
-Powered by VantaPress v1.0.0 - Created by Sepirothx
+Powered by VantaPress v1.0.12 - Created by Sepirothx
 ```
 
 ---
@@ -478,16 +488,17 @@ https://github.com/sepiroth-x/vantapress
 
 **Copyright © 2025 Sepirothx. Licensed under MIT.**
 
-**VantaPress v1.0.0** - *WordPress Philosophy, Laravel Power*
+**VantaPress v1.0.12-complete** - *WordPress Philosophy, Laravel Power*
 
 ---
 
 ## 📥 Download Links
 
-- **Source Code (zip):** https://github.com/sepiroth-x/vantapress/archive/refs/tags/v1.0.0.zip
-- **Source Code (tar.gz):** https://github.com/sepiroth-x/vantapress/archive/refs/tags/v1.0.0.tar.gz
+- **Latest Release:** https://github.com/sepiroth-x/vantapress/releases/latest
+- **Source Code (zip):** https://github.com/sepiroth-x/vantapress/archive/refs/tags/v1.0.12-complete.zip
+- **Source Code (tar.gz):** https://github.com/sepiroth-x/vantapress/archive/refs/tags/v1.0.12-complete.tar.gz
 - **Repository:** https://github.com/sepiroth-x/vantapress
-- **Clone:** `git clone -b v1.0.0 https://github.com/sepiroth-x/vantapress.git`
+- **Clone:** `git clone -b v1.0.12-complete https://github.com/sepiroth-x/vantapress.git`
 
 ---
 
