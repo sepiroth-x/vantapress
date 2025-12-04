@@ -298,6 +298,81 @@ These files map `Modules\HelloWorld\HelloWorldServiceProvider` to the file path.
 
 ## Development Standards
 
+### Local Development Server
+
+⚠️ **IMPORTANT:** You cannot use `php artisan serve` with VantaPress because it requires a `public/` folder which we don't have.
+
+Instead, create two PHP files in your project root:
+
+#### 1. Create `serve.php`
+
+```php
+<?php
+/**
+ * VantaPress Development Server
+ * 
+ * Use this instead of `php artisan serve` for local development
+ * Since we don't have a public/ folder structure
+ */
+
+$host = $argv[1] ?? '127.0.0.1';
+$port = $argv[2] ?? '8000';
+
+echo "VantaPress Development Server\n";
+echo "==============================\n";
+echo "Server: http://{$host}:{$port}\n";
+echo "Document Root: " . __DIR__ . "\n";
+echo "Press Ctrl+C to stop\n\n";
+
+// Start PHP built-in server from root directory with router
+$command = sprintf(
+    'php -S %s:%s -t %s %s',
+    escapeshellarg($host),
+    escapeshellarg($port),
+    escapeshellarg(__DIR__),
+    escapeshellarg(__DIR__ . '/server.php')
+);
+
+passthru($command);
+```
+
+#### 2. Create `server.php`
+
+```php
+<?php
+/**
+ * Laravel development server router
+ * Handles static files and routes requests through index.php
+ */
+
+$uri = urldecode(
+    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? ''
+);
+
+// Serve static files directly
+if ($uri !== '/' && file_exists(__DIR__ . $uri)) {
+    // Let PHP's built-in server handle static files
+    return false;
+}
+
+// Route everything else through Laravel's index.php
+require_once __DIR__ . '/index.php';
+```
+
+#### 3. Usage
+
+```bash
+# Start development server (default: http://127.0.0.1:8000)
+php serve.php
+
+# Custom host and port
+php serve.php 0.0.0.0 8080
+```
+
+**Note:** These files are in `.gitignore` and won't be included in production deployments. Production hosting uses Apache/Nginx which handles routing automatically.
+
+---
+
 ### General Principles
 
 1. **Think Shared Hosting First**

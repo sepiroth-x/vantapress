@@ -15,12 +15,13 @@ echo "Server: http://{$host}:{$port}\n";
 echo "Document Root: " . __DIR__ . "\n";
 echo "Press Ctrl+C to stop\n\n";
 
-// Start PHP built-in server from root directory
+// Start PHP built-in server from root directory with router
 $command = sprintf(
-    'php -S %s:%s -t %s',
+    'php -S %s:%s -t %s %s',
     escapeshellarg($host),
     escapeshellarg($port),
-    escapeshellarg(__DIR__)
+    escapeshellarg(__DIR__),
+    escapeshellarg(__DIR__ . '/server.php')
 );
 
 passthru($command);

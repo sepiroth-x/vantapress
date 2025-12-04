@@ -36,7 +36,6 @@ use App\Services\ModuleInstaller;
 use App\Services\ThemeLoader;
 use App\Services\ThemeInstaller;
 use Illuminate\Support\Facades\File;
-
 class CMSServiceProvider extends ServiceProvider
 {
     /**

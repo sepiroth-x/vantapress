@@ -23,6 +23,10 @@ yarn-error.log
 /scripts/fix-*.php
 /scripts/create-admin-quick.php
 
+# Local development server scripts - not needed in production
+serve.php
+server.php
+
 # Log files
 *.log
 access-log.txt
