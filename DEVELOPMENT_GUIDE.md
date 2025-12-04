@@ -17,6 +17,9 @@
 7. [Module Development Guide](#module-development-guide)
 8. [Theme Development Guide](#theme-development-guide)
 9. [Deployment Guidelines](#deployment-guidelines)
+   - [Architecture & Security Considerations](#️-critical-architecture--security-considerations)
+   - [Root-Level vs public/ Folder](#root-level-vs-public-folder-structure)
+   - [VPS/Dedicated Server Options](#for-vpsdedicated-server-users)
 10. [Future Roadmap](#future-roadmap)
 
 ---
@@ -881,6 +884,111 @@ The theme loader automatically discovers themes in the `vantapress/` directory.
 ---
 
 ## Deployment Guidelines
+
+### ⚠️ CRITICAL: Architecture & Security Considerations
+
+#### Root-Level vs public/ Folder Structure
+
+VantaPress uses a **root-level architecture** optimized for shared hosting. This is **different from traditional Laravel applications** and requires understanding:
+
+**Traditional Laravel (VPS/Dedicated Server):**
+```
+/var/www/myapp/           ← NOT web-accessible
+├── .env                   ← Protected by directory structure
+├── app/                   ← Protected
+├── config/                ← Protected
+├── vendor/                ← Protected
+└── public/                ← ONLY this folder is web root (document root)
+    ├── index.php          ← Entry point
+    ├── css/
+    └── js/
+```
+
+**VantaPress (Shared Hosting):**
+```
+/public_html/              ← EVERYTHING is in web root
+├── .env                   ← Protected by .htaccess
+├── app/                   ← Protected by .htaccess
+├── config/                ← Protected by .htaccess
+├── vendor/                ← Protected by .htaccess
+├── index.php              ← Entry point
+├── css/                   ← Publicly accessible (intended)
+├── js/                    ← Publicly accessible (intended)
+└── images/                ← Publicly accessible (intended)
+```
+
+#### Why No public/ Folder?
+
+**Shared Hosting Constraints:**
+- You CANNOT change the document root (it's controlled by the host)
+- The web root IS the main directory (`public_html/`, `www/`, `htdocs/`)
+- Traditional Laravel's `public/` folder structure doesn't work
+- FTP access is the only deployment method
+
+**Security Through .htaccess:**
+
+VantaPress protects sensitive files via `.htaccess` rules:
+
+```apache
+# Block sensitive file extensions
+<FilesMatch "\.(env|log|json|lock|yml|yaml|xml|sql)$">
+    Deny from all
+</FilesMatch>
+
+# Block sensitive directories
+RedirectMatch 403 ^/(app|bootstrap|config|database|vendor|storage)/
+
+# Block composer files
+<FilesMatch "^(composer\.(json|lock)|artisan)$">
+    Deny from all
+</FilesMatch>
+
+# Disable directory browsing
+Options -Indexes
+```
+
+**Protected (Cannot Access):**
+- ❌ `/.env` - Environment configuration
+- ❌ `/app/` - Application code
+- ❌ `/config/` - Configuration files
+- ❌ `/vendor/` - Composer dependencies
+- ❌ `/composer.json` - Dependency manifest
+- ❌ `/artisan` - CLI tool
+
+**Public (Can Access):**
+- ✅ `/index.php` - Entry point (required)
+- ✅ `/install.php` - Installer (delete after use)
+- ✅ `/css/` - Stylesheets (intended)
+- ✅ `/js/` - JavaScript files (intended)
+- ✅ `/images/` - Image assets (intended)
+
+#### For VPS/Dedicated Server Users
+
+If you're deploying to a VPS or dedicated server where you CAN control the document root:
+
+**Option 1: Use as-is (Recommended for consistency)**
+- Point document root to the main directory
+- VantaPress's `.htaccess` will protect sensitive files
+- Same structure works on both shared hosting and VPS
+
+**Option 2: Create public/ symlink structure (Advanced)**
+- Create a `public/` directory
+- Move `index.php`, `css/`, `js/`, `images/` into `public/`
+- Update paths in `index.php` (`require __DIR__.'/../vendor/autoload.php'`)
+- Point document root to `public/` directory
+- Update `.htaccess` to remove directory blocking rules
+- **Note:** This breaks shared hosting compatibility
+
+**We recommend Option 1** to maintain compatibility across all hosting types.
+
+#### WordPress/Joomla Comparison
+
+Popular CMSs use the same approach:
+- **WordPress**: Root-level structure, `.htaccess` protection, powers 43% of the web
+- **Joomla**: Root-level structure, `.htaccess` protection, millions of sites
+- **Drupal**: Root-level structure (can also use public/ on VPS)
+
+VantaPress follows proven patterns used by industry-leading CMSs.
 
 ### Pre-Deployment Checklist
 
