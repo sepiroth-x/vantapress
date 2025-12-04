@@ -9,7 +9,7 @@ VantaPress uses a **manual versioning system** with the following components:
 1. **config/version.php** - Central version configuration
    ```php
    return [
-       'version' => env('APP_VERSION', '1.0.12-complete'),
+       'version' => env('APP_VERSION', '1.0.13-complete'),
        'github_repo' => 'sepiroth-x/vantapress',
        'check_updates' => env('CHECK_FOR_UPDATES', true),
    ];
@@ -17,12 +17,12 @@ VantaPress uses a **manual versioning system** with the following components:
 
 2. **.env** file - Runtime version override
    ```env
-   APP_VERSION=1.0.12-complete
+   APP_VERSION=1.0.13-complete
    ```
 
 3. **.env.example** - Default version for new installations
    ```env
-   APP_VERSION=1.0.12-complete
+   APP_VERSION=1.0.13-complete
    ```
 
 ### Update Detection
@@ -39,8 +39,8 @@ The **Update System** in the admin panel (`/admin/updates`) checks for new relea
 **Pattern:** `MAJOR.MINOR.PATCH-SUFFIX`
 
 **Examples:**
-- `1.0.12-complete` - Production release
-- `1.0.11` - Standard release
+- `1.0.13-complete` - Production release
+- `1.0.12-complete` - Previous release
 - `1.1.0-beta` - Beta release
 - `2.0.0` - Major version
 
@@ -107,7 +107,7 @@ When releasing a new version:
 **Cause:** Version not updated in `config/version.php` or `.env` file
 
 **Fix:**
-1. Check `.env` file has: `APP_VERSION=1.0.12-complete`
+1. Check `.env` file has: `APP_VERSION=1.0.13-complete`
 2. If missing, add it after `APP_URL` line
 3. Clear config cache: `php artisan config:clear`
 4. Refresh admin panel
@@ -118,7 +118,7 @@ When releasing a new version:
 
 **Fix:**
 1. Check local tags: `git tag -l`
-2. Push tag: `git push origin v1.0.12-complete`
+2. Push tag: `git push origin v1.0.13-complete`
 3. Create GitHub Release from the tag
 4. Wait 5 minutes for GitHub API cache
 5. Click "Check for Updates" in admin panel
@@ -195,4 +195,4 @@ Full version history and release notes:
 
 ---
 
-**Last Updated:** v1.0.12-complete (December 4, 2025)
+**Last Updated:** v1.0.13-complete (December 4, 2025)

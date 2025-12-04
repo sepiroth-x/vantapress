@@ -1,12 +1,20 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.12-complete  
+**Current Version:** v1.0.13-complete  
 **Release Date:** December 4, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.12-complete
+## 📌 Latest Version: v1.0.13-complete
+
+### 🎯 What's New in v1.0.13-complete
+- **🚀 WordPress-Style Auto-Updates** - One-click automatic updates with background download
+- **💾 Automatic Backup System** - Complete backup before every update
+- **🛡️ Protected Files** - .env, storage/, and critical files never touched
+- **↩️ Rollback on Failure** - Automatic restore if update fails
+- **⚡ Background Installation** - Download, extract, and install automatically
+- **🔄 Auto-Refresh** - Page reloads with new version after successful update
 
 ### 🎯 What's New in v1.0.12-complete
 - **Theme-Based Admin Styling** - Admin CSS now controlled by active theme
