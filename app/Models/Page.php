@@ -16,7 +16,7 @@ class Page extends Model
         'slug',
         'content',
         'excerpt',
-        'featured_image',
+        'featured_image_id',
         'template',
         'status',
         'author_id',
@@ -53,6 +53,14 @@ class Page extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    /**
+     * Get the featured image
+     */
+    public function featuredImage()
+    {
+        return $this->belongsTo(Media::class, 'featured_image_id');
     }
 
     /**

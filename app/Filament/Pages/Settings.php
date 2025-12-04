@@ -32,21 +32,23 @@ class Settings extends Page
         // Convert to array only if it's a string (TagsInput expects array)
         if (is_string($allowedTypes)) {
             $allowedTypes = array_filter(array_map('trim', explode(',', $allowedTypes)));
+        } elseif (!is_array($allowedTypes)) {
+            $allowedTypes = [];
         }
         
         return [
             // General Settings
-            'site_name' => Setting::get('site_name', 'VantaPress'),
-            'site_tagline' => Setting::get('site_tagline', 'A WordPress-inspired CMS'),
-            'site_description' => Setting::get('site_description', ''),
-            'admin_email' => Setting::get('admin_email', ''),
-            'timezone' => Setting::get('timezone', 'UTC'),
-            'date_format' => Setting::get('date_format', 'Y-m-d'),
-            'time_format' => Setting::get('time_format', 'H:i:s'),
+            'site_name' => (string) Setting::get('site_name', 'VantaPress'),
+            'site_tagline' => (string) Setting::get('site_tagline', 'A WordPress-inspired CMS'),
+            'site_description' => (string) Setting::get('site_description', ''),
+            'admin_email' => (string) Setting::get('admin_email', auth()->user()->email ?? ''),
+            'timezone' => (string) Setting::get('timezone', 'UTC'),
+            'date_format' => (string) Setting::get('date_format', 'Y-m-d'),
+            'time_format' => (string) Setting::get('time_format', 'H:i:s'),
             
             // Reading Settings
             'posts_per_page' => (int) Setting::get('posts_per_page', 10),
-            'homepage_type' => Setting::get('homepage_type', 'latest'),
+            'homepage_type' => (string) Setting::get('homepage_type', 'latest'),
             'homepage_page_id' => Setting::get('homepage_page_id', null),
             
             // Media Settings
@@ -55,12 +57,12 @@ class Settings extends Page
             
             // SEO Settings
             'seo_enabled' => (bool) Setting::get('seo_enabled', true),
-            'robots_txt' => Setting::get('robots_txt', ''),
-            'google_analytics' => Setting::get('google_analytics', ''),
+            'robots_txt' => (string) Setting::get('robots_txt', ''),
+            'google_analytics' => (string) Setting::get('google_analytics', ''),
             
             // Maintenance Mode
             'maintenance_mode' => (bool) Setting::get('maintenance_mode', false),
-            'maintenance_message' => Setting::get('maintenance_message', 'Site is under maintenance. Please check back soon.'),
+            'maintenance_message' => (string) Setting::get('maintenance_message', 'Site is under maintenance. Please check back soon.'),
         ];
     }
 
@@ -76,14 +78,17 @@ class Settings extends Page
                                 Forms\Components\TextInput::make('site_name')
                                     ->label('Site Name')
                                     ->required()
+                                    ->default('VantaPress')
                                     ->maxLength(255),
                                 
                                 Forms\Components\TextInput::make('site_tagline')
                                     ->label('Tagline')
+                                    ->default('A WordPress-inspired CMS')
                                     ->maxLength(255),
                                 
                                 Forms\Components\Textarea::make('site_description')
                                     ->label('Site Description')
+                                    ->default('')
                                     ->maxLength(500)
                                     ->rows(3),
                                 
@@ -94,6 +99,7 @@ class Settings extends Page
                                 
                                 Forms\Components\Select::make('timezone')
                                     ->label('Timezone')
+                                    ->default('UTC')
                                     ->options([
                                         'UTC' => 'UTC',
                                         'America/New_York' => 'America/New York',
@@ -108,10 +114,12 @@ class Settings extends Page
                                 
                                 Forms\Components\TextInput::make('date_format')
                                     ->label('Date Format')
+                                    ->default('Y-m-d')
                                     ->placeholder('Y-m-d'),
                                 
                                 Forms\Components\TextInput::make('time_format')
                                     ->label('Time Format')
+                                    ->default('H:i:s')
                                     ->placeholder('H:i:s'),
                             ])
                             ->columns(2),
@@ -136,7 +144,9 @@ class Settings extends Page
                                 
                                 Forms\Components\Select::make('homepage_page_id')
                                     ->label('Homepage Page')
-                                    ->relationship('page', 'title')
+                                    ->options(function () {
+                                        return \App\Models\Page::pluck('title', 'id');
+                                    })
                                     ->searchable()
                                     ->visible(fn (Forms\Get $get) => $get('homepage_type') === 'static'),
                             ]),
@@ -167,11 +177,13 @@ class Settings extends Page
                                 
                                 Forms\Components\Textarea::make('robots_txt')
                                     ->label('Robots.txt Content')
+                                    ->default('')
                                     ->rows(5)
                                     ->helperText('Custom robots.txt content'),
                                 
                                 Forms\Components\Textarea::make('google_analytics')
                                     ->label('Google Analytics Code')
+                                    ->default('')
                                     ->rows(3)
                                     ->placeholder('UA-XXXXX-X or G-XXXXXXXXXX')
                                     ->helperText('Enter your Google Analytics tracking ID'),
@@ -220,14 +232,5 @@ class Settings extends Page
             ->title('Settings saved successfully')
             ->success()
             ->send();
-    }
-
-    protected function getFormActions(): array
-    {
-        return [
-            Forms\Components\Actions\Action::make('save')
-                ->label('Save Settings')
-                ->submit('save'),
-        ];
     }
 }

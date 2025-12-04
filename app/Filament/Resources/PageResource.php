@@ -100,11 +100,12 @@ class PageResource extends Resource
                             ->default(0)
                             ->helperText('Display order (lower numbers first)'),
                         
-                        Forms\Components\FileUpload::make('featured_image')
-                            ->image()
-                            ->directory('pages')
-                            ->maxSize(2048)
-                            ->imageEditor(),
+                        Forms\Components\Select::make('featured_image_id')
+                            ->label('Featured Image')
+                            ->relationship('featuredImage', 'file_name')
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('Select an image'),
                     ])
                     ->columns(2)
                     ->collapsible(),
