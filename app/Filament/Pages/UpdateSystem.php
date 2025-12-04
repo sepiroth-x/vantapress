@@ -6,6 +6,7 @@ use Filament\Pages\Page;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Artisan;
+use App\Services\AutoUpdateService;
 
 class UpdateSystem extends Page
 {
@@ -21,6 +22,8 @@ class UpdateSystem extends Page
     public ?string $currentVersion = null;
     public bool $updateAvailable = false;
     public bool $checking = false;
+    public bool $updating = false;
+    public ?array $updateProgress = null;
 
     public function mount(): void
     {
@@ -86,6 +89,55 @@ class UpdateSystem extends Page
             \Log::error('Update check failed: ' . $e->getMessage());
         } finally {
             $this->checking = false;
+        }
+    }
+    
+    public function installUpdate(): void
+    {
+        try {
+            if (!$this->latestRelease || !$this->updateAvailable) {
+                throw new \Exception('No update available');
+            }
+
+            $this->updating = true;
+            $version = $this->latestRelease['version'];
+
+            Notification::make()
+                ->title('Update Started')
+                ->body("Installing version {$version}... This may take a few minutes.")
+                ->info()
+                ->send();
+
+            // Perform update using AutoUpdateService
+            $updateService = new AutoUpdateService();
+            $result = $updateService->performUpdate('v' . $version);
+
+            $this->updateProgress = $result;
+
+            if ($result['success']) {
+                Notification::make()
+                    ->title('Update Successful!')
+                    ->body("VantaPress has been updated to v{$version}. Page will refresh in 3 seconds...")
+                    ->success()
+                    ->duration(5000)
+                    ->send();
+
+                // Refresh page after 3 seconds to load new version
+                $this->dispatch('refresh-page', delay: 3000);
+            } else {
+                throw new \Exception($result['message'] ?? 'Update failed');
+            }
+
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('Update Failed')
+                ->body($e->getMessage())
+                ->danger()
+                ->send();
+            
+            \Log::error('Update installation failed: ' . $e->getMessage());
+        } finally {
+            $this->updating = false;
         }
     }
     
