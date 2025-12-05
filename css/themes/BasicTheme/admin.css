@@ -405,6 +405,23 @@
     color: var(--primary-blue) !important;
 }
 
+/* Footer Styling */
+.dark .fi-footer {
+    background: var(--dark-surface) !important;
+    border-top: 1px solid var(--gray-700) !important;
+    color: var(--gray-400) !important;
+    padding: 1rem 1.5rem !important;
+}
+
+.dark .fi-footer a {
+    color: var(--primary-blue-light) !important;
+    transition: color 0.15s ease !important;
+}
+
+.dark .fi-footer a:hover {
+    color: var(--primary-blue) !important;
+}
+
 /* ============================================
    LIGHT MODE - CLEAN WHITE
    ============================================ */
@@ -577,4 +594,21 @@ html:not(.dark) .fi-simple-main .fi-input:focus {
     border-color: var(--primary-blue) !important;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
     background: white !important;
+}
+
+/* Light Mode Footer */
+html:not(.dark) .fi-footer {
+    background: white !important;
+    border-top: 1px solid var(--gray-200) !important;
+    color: var(--gray-600) !important;
+    padding: 1rem 1.5rem !important;
+}
+
+html:not(.dark) .fi-footer a {
+    color: var(--primary-blue) !important;
+    transition: color 0.15s ease !important;
+}
+
+html:not(.dark) .fi-footer a:hover {
+    color: var(--primary-blue-hover) !important;
 }
