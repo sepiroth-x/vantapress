@@ -1,7 +1,7 @@
 <x-filament-panels::page>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <!-- Customizer Panel (Left Side) -->
-        <div class="lg:col-span-1 overflow-y-auto pr-4 customizer-panel">
+        <div class="xl:col-span-1 overflow-y-auto customizer-panel">
             <div class="space-y-6">
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
                     <h3 class="text-lg font-semibold mb-2">Theme: {{ $record->name }}</h3>
@@ -23,7 +23,7 @@
         </div>
         
         <!-- Live Preview (Right Side) -->
-        <div class="lg:col-span-2 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden preview-container">
+        <div class="xl:col-span-2 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden preview-container">
             <div class="bg-white dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@
             </div>
             
             <div class="h-[calc(100%-56px)] bg-gray-200 dark:bg-gray-900 flex items-center justify-center preview-wrapper">
-                <div id="preview-container" class="preview-desktop bg-white shadow-2xl h-full w-full overflow-hidden transition-all duration-300">
+                <div id="preview-container" class="preview-desktop bg-white shadow-2xl overflow-hidden transition-all duration-300" style="height: 100%; width: 100%;">
                     <iframe 
                         id="preview-frame"
                         src="{{ $previewUrl }}"
@@ -93,33 +93,60 @@
     </div>
     
     <style>
+        /* Ensure the customizer fits within Filament's content area */
         .customizer-panel {
-            max-height: calc(100vh - 200px);
+            max-height: 800px;
+            padding-right: 1rem;
         }
         
         .preview-container {
             position: relative;
+            min-height: 600px;
+            height: 800px;
         }
         
         .preview-wrapper {
             padding: 20px;
+            height: 100%;
         }
         
         .preview-desktop {
             width: 100%;
             max-width: 100%;
+            height: 100%;
         }
         
         .preview-tablet {
             width: 768px;
             max-width: 90%;
-            height: 90%;
+            height: 100%;
+            margin: 0 auto;
         }
         
         .preview-mobile {
             width: 375px;
             max-width: 90%;
-            height: 90%;
+            height: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 1279px) {
+            .preview-container {
+                height: 600px;
+                min-height: 500px;
+            }
+            
+            .customizer-panel {
+                max-height: none;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .preview-container {
+                height: 500px;
+            }
         }
         
         .preview-mode-btn.active {
