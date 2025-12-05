@@ -153,9 +153,11 @@ git push origin v1.0.0-complete
 
 ## Version History Reference
 
-**Current Version:** v1.0.13-complete
+**Current Version:** v1.0.18-complete
 
 **Version Timeline:**
+- v1.0.18 - Page creation and media upload bug fixes
+- v1.0.17 - Admin footer with developer attribution
 - v1.0.14 - Villain-themed installer UI & developer standards
 - v1.0.13 - WordPress-style auto-updates system
 - v1.0.12 - Theme-based admin styling architecture

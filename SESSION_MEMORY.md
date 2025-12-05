@@ -180,6 +180,54 @@ When creating new features:
 
 ## Recent Updates (December 5, 2025)
 
+### 🎉 v1.0.18-complete Release
+
+**Released:** December 5, 2025
+
+**Major Features:**
+1. **Page Creation Bug Fixes**
+   - Fixed redirect: Now returns to page list after creation
+   - Made content field optional (allows blank pages for theme population)
+   - Fixed slug uniqueness to ignore soft-deleted records
+
+2. **Media Upload Bug Fixes**
+   - Fixed SQL error: "Field 'title' doesn't have a default value"
+   - Made title field nullable in database schema
+   - Enhanced auto-generation of title from filename
+   - Converts filename to human-readable format (ucwords, replaces separators)
+   - Added redirect to media list after upload
+
+3. **Module Management**
+   - Configured .gitignore to track only 3 core modules: HelloWorld, VPEssential1, VPToDoList
+   - Custom modules should be in separate repositories
+
+**Files Modified:**
+- `app/Filament/Resources/PageResource.php` - Content optional, slug uniqueness fixed
+- `app/Filament/Resources/PageResource/Pages/CreatePage.php` - Added redirect
+- `app/Filament/Resources/MediaResource.php` - Title optional
+- `app/Filament/Resources/MediaResource/Pages/CreateMedia.php` - Enhanced title generation + redirect
+- `app/Models/Media.php` - Added 'title' and 'path' to fillable
+- `database/migrations/2025_01_14_000002_create_media_table.php` - Title nullable
+- `database/migrations/2025_12_05_000001_make_media_title_nullable.php` - NEW migration for existing DBs
+- `.gitignore` - Module exclusions configured
+- Version files updated to v1.0.18-complete
+
+**Git Workflow:**
+```bash
+git add -A
+git commit -m "Release v1.0.18-complete: Page creation and media upload bug fixes"
+git checkout release
+git merge development
+git tag -a "v1.0.18-complete" -m "VantaPress v1.0.18-complete: Critical Bug Fixes"
+git push origin release v1.0.18-complete
+git checkout master
+git merge release
+git push origin master
+git checkout development
+```
+
+---
+
 ### 🎉 v1.0.17-complete Release
 
 **Released:** December 5, 2025
