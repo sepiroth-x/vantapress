@@ -86,15 +86,22 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
                 fn (): string => '<script>
-                    // Force dark mode - Set localStorage before Filament checks it
-                    localStorage.setItem("theme", "dark");
-                </script>'
-            )
-            ->renderHook(
-                PanelsRenderHook::BODY_START,
-                fn (): string => '<script>
-                    // Immediate dark class injection at body start
-                    document.documentElement.classList.add("dark");
+                    // OVERRIDE: Force dark mode by hijacking Filament\'s loadDarkMode function
+                    (function() {
+                        "use strict";
+                        
+                        // Set localStorage to dark
+                        localStorage.setItem("theme", "dark");
+                        
+                        // Override loadDarkMode to always add dark class
+                        window.loadDarkMode = function() {
+                            document.documentElement.classList.add("dark");
+                            console.log("[VantaPress] Dark mode forced via loadDarkMode override");
+                        };
+                        
+                        // Add dark class immediately
+                        document.documentElement.classList.add("dark");
+                    })();
                 </script>'
             )
             ->renderHook(
