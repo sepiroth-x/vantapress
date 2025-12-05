@@ -74,10 +74,10 @@ class AdminPanelProvider extends PanelProvider
                     $activeTheme = $themeManager->getActiveTheme();
                     
                     // Load root admin CSS first, then theme-specific CSS
-                    // Don't reload Filament's CSS - it's already loaded automatically
+                    // Theme assets are copied to css/themes/ directory for root-level access
                     $version = config('version.version', '1.0.21');
                     $rootAdminCss = asset('css/vantapress-admin.css') . '?v=' . $version;
-                    $themeAdminCss = asset("themes/{$activeTheme}/assets/css/admin.css") . '?v=' . $version;
+                    $themeAdminCss = asset("css/themes/{$activeTheme}/admin.css") . '?v=' . $version;
                     
                     return '<link rel="stylesheet" href="' . $rootAdminCss . '">' .
                            '<link rel="stylesheet" href="' . $themeAdminCss . '">';
