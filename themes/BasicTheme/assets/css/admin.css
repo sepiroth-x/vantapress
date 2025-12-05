@@ -317,77 +317,82 @@
    LOGIN PAGE - CLEAN & PROFESSIONAL
    ============================================ */
 
-.dark .fi-simple-page {
+.dark .fi-simple-layout {
     background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-surface) 100%) !important;
+}
+
+.dark .fi-simple-page {
+    background: transparent !important;
 }
 
 .dark .fi-simple-main {
     background: var(--dark-surface) !important;
     border: 1px solid var(--gray-700) !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
     box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.4),
-        0 0 1px rgba(59, 130, 246, 0.5) !important;
-    padding: 3rem !important;
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 1px rgba(59, 130, 246, 0.3) !important;
     backdrop-filter: blur(10px) !important;
 }
 
 /* Login form heading */
-.dark .fi-simple-main h1,
-.dark .fi-simple-main h2 {
+.dark .fi-simple-header-heading {
     color: var(--gray-100) !important;
     font-weight: 700 !important;
-    margin-bottom: 2rem !important;
-    text-align: center !important;
 }
 
-/* Login button */
-.dark .fi-simple-main .fi-btn {
+/* Login button - respect Filament's structure */
+.dark button[type="submit"].fi-btn {
     background: var(--primary-blue) !important;
     border: none !important;
     border-radius: 8px !important;
-    padding: 14px 32px !important;
     font-weight: 600 !important;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
-    width: 100% !important;
     transition: all 0.15s ease !important;
-    color: white !important;
 }
 
-.dark .fi-simple-main .fi-btn:hover {
+.dark button[type="submit"].fi-btn:hover {
     background: var(--primary-blue-hover) !important;
-    transform: translateY(-2px) !important;
+    transform: translateY(-1px) !important;
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4) !important;
 }
 
-/* Login form inputs */
-.dark .fi-simple-main .fi-input {
+/* Login form input wrappers - don't override width/padding */
+.dark .fi-input-wrp {
     background: var(--dark-bg) !important;
-    border: 1px solid var(--gray-600) !important;
-    color: var(--gray-100) !important;
-    padding: 14px !important;
-    font-size: 15px !important;
-    margin-bottom: 1.5rem !important;
-    border-radius: 8px !important;
+    border-color: var(--gray-600) !important;
 }
 
-.dark .fi-simple-main .fi-input:focus {
+.dark .fi-input-wrp:focus-within {
     border-color: var(--primary-blue) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+    background: var(--dark-elevated) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
 }
 
-.dark .fi-simple-main .fi-input::placeholder {
+/* Actual input fields */
+.dark .fi-input {
+    background: transparent !important;
+    color: var(--gray-100) !important;
+}
+
+.dark .fi-input::placeholder {
     color: var(--gray-500) !important;
 }
 
 /* Remember me checkbox */
-.dark .fi-simple-main .fi-checkbox {
+.dark .fi-checkbox-input {
     border-color: var(--gray-600) !important;
+    background: var(--dark-bg) !important;
 }
 
-.dark .fi-simple-main .fi-checkbox:checked {
+.dark .fi-checkbox-input:checked {
     background: var(--primary-blue) !important;
     border-color: var(--primary-blue) !important;
+}
+
+/* Field labels */
+.dark .fi-fo-field-wrp-label {
+    color: var(--gray-300) !important;
 }
 
 /* Links */
