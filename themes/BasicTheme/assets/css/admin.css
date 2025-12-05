@@ -1,8 +1,10 @@
-/* VantaPress Retro Game Theme - Flat Modern Design */
-/* Inspired by 16-bit era with modern flat aesthetics */
+/* ============================================
+   THE BASIC THEME - RETRO ARCADE ADMIN STYLING
+   "The Beginning" - Complete visual theme
+   ============================================ */
 
 :root {
-    /* Retro Game Color Palette */
+    /* Retro Arcade Color Palette */
     --retro-red: #FF6B6B;
     --retro-orange: #FFA06B;
     --retro-yellow: #FFD93D;
@@ -12,14 +14,7 @@
     --retro-purple: #A393EB;
     --retro-pink: #FF87B2;
     
-    /* Primary - Adjusted for retro */
-    --primary-500: #FF0033;
-    
-    /* Neutral Grays - Flat */
-    --gray-400: #ADB5BD;
-    --gray-500: #6C757D;
-    
-    /* Retro Brand Colors */
+    /* Primary Colors */
     --pixel-black: #1A1A2E;
     --deep-navy: #16213E;
     --electric-cyan: #0F4C75;
@@ -29,9 +24,11 @@
     --pure-white: #FFFFFF;
 }
 
-/* === DARK MODE - RETRO ARCADE === */
+/* ============================================
+   DARK MODE - RETRO ARCADE
+   ============================================ */
 
-/* Sidebar - Flat retro design */
+/* Sidebar - Arcade cabinet style */
 .dark .fi-sidebar {
     background: linear-gradient(180deg, #16213E 0%, #1A1A2E 100%) !important;
     border-right: 3px solid var(--neon-red) !important;
@@ -71,14 +68,14 @@
     font-weight: 800 !important;
 }
 
-/* Topbar - Flat design with bright accent */
+/* Topbar - Retro game bar */
 .dark .fi-topbar {
     background: linear-gradient(90deg, #0F4C75 0%, #16213E 100%) !important;
     border-bottom: 4px solid var(--neon-red) !important;
     box-shadow: 0 4px 0 var(--arcade-yellow) !important;
 }
 
-/* Main content - Pixel grid pattern */
+/* Main content - Pixel grid background */
 .dark .fi-main {
     background: 
         repeating-linear-gradient(
@@ -96,10 +93,9 @@
             rgba(15, 76, 117, 0.03) 8px
         ),
         var(--pixel-black) !important;
-    /* DO NOT set position or z-index - handled by root CSS */
 }
 
-/* Cards - Flat retro game style */
+/* Cards - Arcade machine panels */
 .dark .fi-section,
 .dark .fi-card,
 .dark .fi-stats-card {
@@ -128,7 +124,7 @@
     border-color: var(--arcade-yellow) !important;
 }
 
-/* Buttons - Arcade style */
+/* Buttons - Arcade buttons */
 .fi-btn-primary {
     background: var(--neon-red) !important;
     color: var(--pure-white) !important;
@@ -149,7 +145,7 @@
     box-shadow: 9px 9px 0 var(--deep-navy) !important;
 }
 
-/* Inputs - Retro terminal style */
+/* Inputs - Retro terminal */
 .dark .fi-input,
 .dark .fi-select,
 .dark .fi-textarea {
@@ -171,7 +167,7 @@
     outline: none !important;
 }
 
-/* Headings - Pixelated game style */
+/* Headings - Pixel font style */
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
     color: var(--arcade-yellow) !important;
     font-weight: 900 !important;
@@ -180,7 +176,7 @@
     text-shadow: 4px 4px 0 var(--neon-red) !important;
 }
 
-/* Tables - Retro data display */
+/* Tables - Retro data grid */
 .dark .fi-table {
     background: var(--deep-navy) !important;
     border: 4px solid var(--electric-cyan) !important;
@@ -205,7 +201,10 @@
     background: rgba(255, 0, 51, 0.15) !important;
 }
 
-/* Login page - Arcade cabinet style */
+/* ============================================
+   LOGIN PAGE - ARCADE CABINET
+   ============================================ */
+
 .dark .fi-simple-page {
     background: 
         repeating-linear-gradient(
@@ -225,8 +224,44 @@
     box-shadow: 
         12px 12px 0 var(--arcade-yellow),
         12px 12px 0 4px var(--pixel-black) !important;
+    padding: 2.5rem !important;
+    position: relative !important;
 }
 
+/* Arcade cabinet corner dots */
+.dark .fi-simple-main::before,
+.dark .fi-simple-main::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--arcade-yellow);
+    border: 4px solid var(--pixel-black);
+}
+
+.dark .fi-simple-main::before {
+    top: -4px;
+    left: -4px;
+}
+
+.dark .fi-simple-main::after {
+    top: -4px;
+    right: -4px;
+}
+
+/* Login form heading */
+.dark .fi-simple-main h1,
+.dark .fi-simple-main h2 {
+    color: var(--arcade-yellow) !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 4px !important;
+    text-shadow: 4px 4px 0 var(--neon-red) !important;
+    margin-bottom: 2rem !important;
+    text-align: center !important;
+}
+
+/* Login button */
 .dark .fi-simple-main .fi-btn {
     background: var(--neon-red) !important;
     border: 4px solid var(--arcade-yellow) !important;
@@ -236,6 +271,8 @@
     text-transform: uppercase !important;
     letter-spacing: 2px !important;
     box-shadow: 6px 6px 0 var(--deep-navy) !important;
+    width: 100% !important;
+    transition: all 0.1s ease !important;
 }
 
 .dark .fi-simple-main .fi-btn:hover {
@@ -245,7 +282,24 @@
     box-shadow: 8px 8px 0 var(--deep-navy) !important;
 }
 
-/* === LIGHT MODE - RETRO PASTEL === */
+/* Login form inputs */
+.dark .fi-simple-main .fi-input {
+    background: var(--pixel-black) !important;
+    border: 3px solid var(--electric-cyan) !important;
+    color: var(--retro-cyan) !important;
+    padding: 14px !important;
+    font-size: 16px !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.dark .fi-simple-main .fi-input:focus {
+    border-color: var(--arcade-yellow) !important;
+    box-shadow: 6px 6px 0 var(--neon-red) !important;
+}
+
+/* ============================================
+   LIGHT MODE - RETRO PASTEL
+   ============================================ */
 
 html:not(.dark) .fi-sidebar {
     background: linear-gradient(180deg, #F8F9FA 0%, #E9ECEF 100%) !important;
@@ -283,7 +337,6 @@ html:not(.dark) .fi-main {
             rgba(255, 107, 107, 0.03) 8px
         ),
         #F8F9FA !important;
-    /* DO NOT set position or z-index - handled by root CSS */
 }
 
 html:not(.dark) .fi-section,
@@ -306,4 +359,36 @@ html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3 {
     text-transform: uppercase !important;
     letter-spacing: 2px !important;
     text-shadow: none !important;
+}
+
+/* Light mode login */
+html:not(.dark) .fi-simple-page {
+    background: linear-gradient(135deg, #FFD93D 0%, #FF87B2 100%) !important;
+}
+
+html:not(.dark) .fi-simple-main {
+    background: white !important;
+    border: 6px solid var(--neon-red) !important;
+    border-radius: 0px !important;
+    box-shadow: 
+        12px 12px 0 var(--arcade-yellow),
+        12px 12px 0 4px #333 !important;
+    padding: 2.5rem !important;
+}
+
+html:not(.dark) .fi-simple-main .fi-btn {
+    background: var(--neon-red) !important;
+    color: white !important;
+    border: 4px solid var(--arcade-yellow) !important;
+    box-shadow: 6px 6px 0 #333 !important;
+    padding: 14px 32px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+}
+
+html:not(.dark) .fi-simple-main .fi-btn:hover {
+    background: var(--arcade-yellow) !important;
+    color: #333 !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 8px 8px 0 #333 !important;
 }

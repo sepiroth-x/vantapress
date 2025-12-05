@@ -1,36 +1,10 @@
 /* ============================================
-   VANTAPRESS ADMIN - BASE STYLES
-   Root CSS for admin panel (loaded first)
-   Theme CSS can override these
+   VANTAPRESS ADMIN - LAYOUT ONLY
+   Root CSS for admin panel structure
+   Themes handle ALL visual styling
    ============================================ */
 
-:root {
-    /* VantaPress Brand Colors */
-    --vp-crimson: #D40026;
-    --vp-dark-crimson: #b0001f;
-    --vp-light-crimson: #ff1f4b;
-    
-    /* Neutral Palette */
-    --vp-black: #0A0A0A;
-    --vp-gray-950: #1b1c1e;
-    --vp-gray-900: #36383a;
-    --vp-gray-800: #525457;
-    --vp-gray-700: #6d6f73;
-    --vp-gray-600: #888A8F;
-    --vp-gray-500: #a3a5a9;
-    --vp-gray-400: #babcbf;
-    --vp-gray-300: #d1d2d4;
-    --vp-gray-200: #e8e9ea;
-    --vp-gray-100: #f5f5f6;
-    --vp-white: #ffffff;
-}
-
-/* ============================================
-   CRITICAL: LAYOUT STRUCTURE
-   DO NOT OVERRIDE IN THEME FILES
-   ============================================ */
-
-/* Ensure proper flex layout (Filament default) */
+/* Main layout - flex container */
 .fi-layout {
     display: flex !important;
     min-height: 100vh !important;
@@ -45,7 +19,7 @@
     flex-direction: column !important;
 }
 
-/* Sidebar MUST stay on top and in place */
+/* Sidebar - fixed width column */
 .fi-sidebar {
     position: sticky !important;
     top: 0 !important;
@@ -57,49 +31,49 @@
     max-width: 260px !important;
 }
 
-/* Force sidebar to be visible and NOT overlay on medium+ screens (1024px+) */
+/* Force sidebar visible on desktop (1024px+) */
 @media (min-width: 1024px) {
     .fi-sidebar {
         position: sticky !important;
-        transform: translateX(0) !important; /* Prevent sidebar from hiding */
+        transform: translateX(0) !important;
         display: block !important;
     }
     
     .fi-sidebar-close-overlay {
-        display: none !important; /* Hide the overlay backdrop */
+        display: none !important;
     }
     
-    /* Ensure layout stays flex on desktop */
     .fi-layout {
         display: flex !important;
         flex-direction: row-reverse !important;
     }
 }
 
-/* Main content wrapper */
+/* Main content - relative positioning */
 .fi-main {
     z-index: 10 !important;
     position: relative !important;
 }
 
-/* Topbar */
+/* Topbar - stays on top */
 .fi-topbar {
     z-index: 30 !important;
 }
 
-/* Login page layout */
+/* Login page - centered flexbox */
 .fi-simple-page {
     min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
+    padding: 2rem !important;
 }
 
+/* Login form container */
 .fi-simple-main {
-    max-width: 28rem !important;
+    max-width: 420px !important;
     width: 100% !important;
-    margin: 2rem !important;
 }
 
 /* Footer positioning */
@@ -108,91 +82,21 @@
     z-index: 20 !important;
 }
 
-/* ============================================
-   MINIMAL THEME STYLING
-   Theme files can enhance these
-   ============================================ */
-
-/* Dark Mode Base */
-.dark {
-    background: var(--vp-black);
-    color: var(--vp-gray-200);
+/* Mobile sidebar overlay */
+@media (max-width: 1023px) {
+    .fi-sidebar {
+        position: fixed !important;
+        left: -100% !important;
+        transition: left 0.3s ease !important;
+    }
+    
+    .fi-sidebar.open {
+        left: 0 !important;
+    }
+    
+    .fi-main-ctn {
+        width: 100% !important;
+    }
 }
 
-.dark .fi-sidebar {
-    background: var(--vp-gray-950);
-    border-right: 1px solid var(--vp-gray-900);
-}
-
-.dark .fi-main {
-    background: var(--vp-black);
-}
-
-.dark .fi-topbar {
-    background: var(--vp-gray-950);
-    border-bottom: 1px solid var(--vp-gray-900);
-}
-
-/* Light Mode Base */
-html:not(.dark) {
-    background: var(--vp-gray-100);
-    color: var(--vp-gray-900);
-}
-
-html:not(.dark) .fi-sidebar {
-    background: var(--vp-white);
-    border-right: 1px solid var(--vp-gray-200);
-}
-
-html:not(.dark) .fi-main {
-    background: var(--vp-gray-100);
-}
-
-html:not(.dark) .fi-topbar {
-    background: var(--vp-white);
-    border-bottom: 1px solid var(--vp-gray-200);
-}
-
-/* ============================================
-   LOGIN PAGE BASE
-   Minimal styling, theme can enhance
-   ============================================ */
-
-.dark .fi-simple-page {
-    background: linear-gradient(135deg, var(--vp-gray-950) 0%, var(--vp-black) 100%);
-}
-
-.dark .fi-simple-main {
-    background: var(--vp-gray-950);
-    border: 1px solid var(--vp-gray-800);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-}
-
-html:not(.dark) .fi-simple-page {
-    background: linear-gradient(135deg, var(--vp-gray-100) 0%, var(--vp-white) 100%);
-}
-
-html:not(.dark) .fi-simple-main {
-    background: var(--vp-white);
-    border: 1px solid var(--vp-gray-300);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-}
-
-/* Footer styling */
-.fi-footer {
-    padding: 1.5rem;
-    border-top: 1px solid var(--vp-gray-200);
-}
-
-.dark .fi-footer {
-    border-top-color: var(--vp-gray-900);
-    background: var(--vp-gray-950);
-}
-
-html:not(.dark) .fi-footer {
-    background: var(--vp-white);
-}
+/* That's it! All visual styling is in theme CSS files. */
