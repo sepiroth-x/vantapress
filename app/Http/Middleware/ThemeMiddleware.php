@@ -47,6 +47,11 @@ class ThemeMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Skip theme loading for admin panel routes
+        if ($request->is('admin') || $request->is('admin/*')) {
+            return $next($request);
+        }
+
         try {
             // Check for theme preview mode (for customizer)
             $previewTheme = $request->query('theme_preview');
