@@ -1,0 +1,942 @@
+/* VantaPress Retro Game Theme - Flat Modern Design */
+/* Inspired by 16-bit era with modern flat aesthetics */
+
+:root {
+    /* Retro Game Color Palette */
+    --retro-red: #FF6B6B;
+    --retro-orange: #FFA06B;
+    --retro-yellow: #FFD93D;
+    --retro-green: #6BCF7F;
+    --retro-cyan: #4ECDC4;
+    --retro-blue: #5DADE2;
+    --retro-purple: #A393EB;
+    --retro-pink: #FF87B2;
+    
+    /* Primary - Crimson (Adjusted for retro) */
+    --primary-50: #FFE5E9;
+    --primary-100: #FFCCD4;
+    --primary-200: #FF99A9;
+    --primary-300: #FF667E;
+    --primary-400: #FF3353;
+    --primary-500: #FF0033;
+    --primary-600: #CC0029;
+    --primary-700: #99001F;
+    --primary-800: #660014;
+    --primary-900: #33000A;
+    --primary-950: #1A0005;
+    
+    /* Neutral Grays - Flat */
+    --gray-50: #F8F9FA;
+    --gray-100: #E9ECEF;
+    --gray-200: #DEE2E6;
+    --gray-300: #CED4DA;
+    --gray-400: #ADB5BD;
+    --gray-500: #6C757D;
+    --gray-600: #495057;
+    --gray-700: #343A40;
+    --gray-800: #212529;
+    --gray-900: #121416;
+    --gray-950: #0A0B0C;
+    
+    /* Retro Brand Colors */
+    --pixel-black: #1A1A2E;
+    --deep-navy: #16213E;
+    --electric-cyan: #0F4C75;
+    --neon-red: #FF0033;
+    --arcade-yellow: #FFD93D;
+    --power-green: #6BCF7F;
+    --pure-white: #FFFFFF;
+    --off-white: #F8F9FA;
+}
+
+
+/* Dark mode - Retro arcade night theme */
+.dark {
+    --color-bg-base: var(--pixel-black);
+    --color-bg-surface: var(--deep-navy);
+    --color-text-base: var(--pure-white);
+    --color-text-subtle: var(--gray-400);
+}
+
+/* Sidebar - Dark mode with flat retro design */
+.dark .fi-sidebar {
+    background: linear-gradient(180deg, #16213E 0%, #1A1A2E 100%) !important;
+    border-right: 3px solid var(--neon-red) !important;
+    box-shadow: none !important;
+}
+
+.dark .fi-sidebar-header {
+    background: var(--electric-cyan) !important;
+    border-bottom: 3px solid var(--neon-red) !important;
+    padding: 1.5rem !important;
+}
+
+.dark .fi-sidebar-nav-item {
+    color: var(--retro-cyan) !important;
+    transition: all 0.2s ease !important;
+    border-radius: 4px !important;
+    margin: 6px 12px !important;
+    padding: 10px 12px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 13px !important;
+    letter-spacing: 0.5px !important;
+}
+
+.dark .fi-sidebar-nav-item:hover {
+    background: var(--neon-red) !important;
+    color: var(--pure-white) !important;
+    transform: translateX(8px) !important;
+    box-shadow: -4px 0 0 0 var(--arcade-yellow) !important;
+}
+
+.dark .fi-sidebar-item-active,
+.dark .fi-active {
+    background: var(--neon-red) !important;
+    border-left: 6px solid var(--arcade-yellow) !important;
+    color: var(--pure-white) !important;
+    font-weight: 700 !important;
+    box-shadow: -4px 0 0 0 var(--arcade-yellow), inset 0 0 20px rgba(255, 0, 51, 0.3) !important;
+}
+
+/* Topbar - Dark mode flat design */
+.dark .fi-topbar {
+    background: linear-gradient(90deg, #0F4C75 0%, #16213E 100%) !important;
+    border-bottom: 4px solid var(--neon-red) !important;
+    box-shadow: 0 4px 0 var(--arcade-yellow) !important;
+}
+
+/* Main content - Dark mode with pixel grid pattern */
+.dark .fi-main {
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(15, 76, 117, 0.05) 2px,
+            rgba(15, 76, 117, 0.05) 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(15, 76, 117, 0.05) 2px,
+            rgba(15, 76, 117, 0.05) 4px
+        ),
+        var(--pixel-black) !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Fix layout to prevent content overlap */
+.dark .fi-sidebar {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.dark .fi-layout {
+    display: flex !important;
+    position: relative !important;
+}
+
+/* Cards - Dark mode with flat retro game design */
+.dark .fi-section,
+.dark .fi-card,
+.dark .fi-stats-card {
+    background: var(--deep-navy) !important;
+    border: 4px solid var(--electric-cyan) !important;
+    border-radius: 0px !important;
+    box-shadow: 8px 8px 0 var(--neon-red) !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+}
+
+.dark .fi-stats-card::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    background: var(--arcade-yellow);
+    border: 4px solid var(--pixel-black);
+}
+
+.dark .fi-stats-card:hover {
+    transform: translate(-4px, -4px) !important;
+    box-shadow: 12px 12px 0 var(--neon-red) !important;
+    border-color: var(--arcade-yellow) !important;
+}
+
+/* Primary buttons - Retro arcade style */
+.fi-btn-primary {
+    background: var(--neon-red) !important;
+    color: var(--pure-white) !important;
+    border: 4px solid var(--arcade-yellow) !important;
+    border-radius: 0px !important;
+    box-shadow: 6px 6px 0 var(--deep-navy) !important;
+    transition: all 0.15s ease !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    padding: 12px 24px !important;
+}
+
+.fi-btn-primary:hover {
+    background: var(--arcade-yellow) !important;
+    color: var(--pixel-black) !important;
+    transform: translate(-3px, -3px) !important;
+    box-shadow: 9px 9px 0 var(--deep-navy) !important;
+}
+
+/* Input fields - dark mode with villainous accents */
+.dark .fi-input,
+.dark .fi-select,
+.dark .fi-textarea {
+    background: rgba(5, 5, 5, 0.5) !important;
+    border: 2px solid rgba(212, 0, 38, 0.2) !important;
+    border-radius: 8px !important;
+    color: var(--pure-white) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark .fi-input:focus,
+.dark .fi-select:focus,
+.dark .fi-textarea:focus {
+    border-color: var(--crimson-villain) !important;
+    background: rgba(10, 10, 10, 0.8) !important;
+    box-shadow: 
+        0 0 0 4px rgba(212, 0, 38, 0.15),
+        0 0 20px rgba(212, 0, 38, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Input fields - light mode with subtle crimson focus */
+html:not(.dark) .fi-input,
+html:not(.dark) .fi-select,
+html:not(.dark) .fi-textarea {
+    background: #ffffff !important;
+    border: 2px solid rgba(212, 0, 38, 0.15) !important;
+    border-radius: 8px !important;
+    color: #1a1a1a !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html:not(.dark) .fi-input:focus,
+html:not(.dark) .fi-select:focus,
+html:not(.dark) .fi-textarea:focus {
+    border-color: var(--crimson-villain) !important;
+    box-shadow: 
+        0 0 0 4px rgba(212, 0, 38, 0.1),
+        0 2px 8px rgba(212, 0, 38, 0.15) !important;
+}
+
+/* Tables - dark mode with villainous styling */
+.dark .fi-table {
+    background: var(--deep-obsidian) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(212, 0, 38, 0.2) !important;
+}
+
+.dark .fi-table-row:hover {
+    background: rgba(212, 0, 38, 0.05) !important;
+    transition: background 0.2s ease !important;
+}
+
+.dark .fi-table-header-cell {
+    background: linear-gradient(135deg, rgba(212, 0, 38, 0.1) 0%, rgba(106, 15, 145, 0.1) 100%) !important;
+    color: var(--pure-white) !important;
+    border-bottom: 2px solid rgba(212, 0, 38, 0.3) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.025em !important;
+}
+
+.dark .fi-table-cell {
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
+    color: var(--steel-gray) !important;
+}
+
+/* Modals - dark mode */
+.dark .fi-modal {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.2) !important;
+}
+
+.dark .fi-modal-header {
+    background: var(--vanta-black) !important;
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+/* Notifications - dark mode */
+.dark .fi-notification {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark .fi-notification-success {
+    border-left: 4px solid #22c55e !important;
+}
+
+.dark .fi-notification-error {
+    border-left: 4px solid var(--crimson-villain) !important;
+}
+
+.dark .fi-notification-warning {
+    border-left: 4px solid #f59e0b !important;
+}
+
+.dark .fi-notification-info {
+    border-left: 4px solid #3b82f6 !important;
+}
+
+/* Badges - dark mode */
+.dark .fi-badge {
+    background: rgba(212, 0, 38, 0.1) !important;
+    color: var(--crimson-villain) !important;
+    border: 1px solid rgba(212, 0, 38, 0.3) !important;
+}
+
+/* Links - dark mode */
+.dark a {
+    color: var(--crimson-villain) !important;
+    transition: color 0.3s ease !important;
+}
+
+.dark a:hover {
+    color: var(--dark-violet) !important;
+}
+
+/* Dropdown menus - dark mode */
+.dark .fi-dropdown-list {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark .fi-dropdown-list-item:hover {
+    background: rgba(212, 0, 38, 0.1) !important;
+}
+
+/* Tabs - dark mode */
+.dark .fi-tabs-item {
+    color: var(--steel-gray) !important;
+}
+
+.dark .fi-tabs-item-active {
+    color: var(--crimson-villain) !important;
+    border-bottom: 2px solid var(--crimson-villain) !important;
+}
+
+/* Toggle switches - dark mode */
+.dark .fi-toggle:checked {
+    background: var(--crimson-villain) !important;
+}
+
+/* Checkboxes and radio buttons - dark mode */
+.dark .fi-checkbox:checked,
+.dark .fi-radio:checked {
+    background: var(--crimson-villain) !important;
+    border-color: var(--crimson-villain) !important;
+}
+
+/* Progress bars - dark mode */
+.dark .fi-progress-bar {
+    background: rgba(136, 138, 143, 0.2) !important;
+}
+
+.dark .fi-progress-bar-fill {
+    background: linear-gradient(90deg, var(--crimson-villain), var(--dark-violet)) !important;
+}
+
+/* Loading indicators - dark mode */
+.dark .fi-loading {
+    border-color: var(--crimson-villain) !important;
+}
+
+/* Scrollbars - dark mode */
+.dark ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: var(--vanta-black);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: var(--steel-gray);
+    border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: var(--crimson-villain);
+}
+
+/* Login page specific - dark mode with dramatic villainous design */
+.dark .fi-simple-page {
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(212, 0, 38, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(106, 15, 145, 0.15) 0%, transparent 50%),
+        linear-gradient(135deg, var(--vanta-black) 0%, var(--deep-obsidian) 50%, var(--vanta-black) 100%) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.dark .fi-simple-page::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(212, 0, 38, 0.03) 2px,
+        rgba(212, 0, 38, 0.03) 4px
+    );
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(50px); }
+}
+
+.dark .fi-simple-main {
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.95) 0%, rgba(5, 5, 5, 0.98) 100%) !important;
+    border: 2px solid var(--crimson-villain) !important;
+    border-radius: 16px !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 80px rgba(212, 0, 38, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(212, 0, 38, 0.3) !important;
+    backdrop-filter: blur(20px) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.dark .fi-simple-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent,
+        var(--crimson-villain) 20%,
+        var(--dark-violet) 50%,
+        var(--crimson-villain) 80%,
+        transparent
+    );
+    animation: glow-sweep 3s ease-in-out infinite;
+}
+
+@keyframes glow-sweep {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* Login page - light mode with sophisticated design */
+html:not(.dark) .fi-simple-page {
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(212, 0, 38, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(106, 15, 145, 0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #fafafa 0%, #ffffff 50%, #f5f5f6 100%) !important;
+}
+
+html:not(.dark) .fi-simple-main {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.98) 100%) !important;
+    border: 2px solid rgba(212, 0, 38, 0.3) !important;
+    border-radius: 16px !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        0 0 60px rgba(212, 0, 38, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        inset 0 -1px 0 rgba(212, 0, 38, 0.2) !important;
+    backdrop-filter: blur(20px) !important;
+    position: relative !important;
+}
+
+html:not(.dark) .fi-simple-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent,
+        var(--crimson-villain) 20%,
+        var(--dark-violet) 50%,
+        var(--crimson-villain) 80%,
+        transparent
+    );
+    opacity: 0.6;
+}
+
+/* Brand logo in header and login - dark mode with dramatic effect */
+.dark .fi-logo {
+    filter: brightness(1.3) drop-shadow(0 0 20px rgba(212, 0, 38, 0.6));
+    transition: all 0.3s ease;
+}
+
+.dark .fi-logo:hover {
+    filter: brightness(1.5) drop-shadow(0 0 30px rgba(212, 0, 38, 0.8));
+    transform: scale(1.05);
+}
+
+/* Brand logo - light mode */
+html:not(.dark) .fi-logo {
+    filter: drop-shadow(0 2px 8px rgba(212, 0, 38, 0.3));
+    transition: all 0.3s ease;
+}
+
+html:not(.dark) .fi-logo:hover {
+    filter: drop-shadow(0 4px 12px rgba(212, 0, 38, 0.5));
+    transform: scale(1.05);
+}
+
+/* Widget styling - dark mode */
+.dark .fi-wi-stats-overview-stat {
+    background: var(--deep-obsidian) !important;
+    border: 1px solid rgba(136, 138, 143, 0.1) !important;
+}
+
+.dark .fi-wi-stats-overview-stat-value {
+    color: var(--crimson-villain) !important;
+}
+
+/* Chart colors - dark mode */
+.dark .apexcharts-theme-light {
+    --apexcharts-bg: var(--deep-obsidian) !important;
+}
+
+/* Headings - villainous modern typography for dark mode */
+.dark h1, 
+.dark h2, 
+.dark h3, 
+.dark h4, 
+.dark h5, 
+.dark h6 {
+    color: var(--pure-white) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+    text-shadow: 0 0 30px rgba(212, 0, 38, 0.3) !important;
+}
+
+/* Headings - light mode with subtle emphasis */
+html:not(.dark) h1,
+html:not(.dark) h2, 
+html:not(.dark) h3, 
+html:not(.dark) h4, 
+html:not(.dark) h5, 
+html:not(.dark) h6 {
+    color: #1a1a1a !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* Muted text in dark mode */
+.dark .fi-helper-text,
+.dark .fi-description {
+    color: var(--steel-gray) !important;
+}
+
+/* Light mode - sophisticated with villainous accents */
+.light, [data-theme="light"], html:not(.dark) {
+    --color-bg-base: #fafafa !important;
+    --color-bg-surface: #ffffff !important;
+    --color-text-base: #1a1a1a !important;
+    --color-text-subtle: #6b7280 !important;
+}
+
+/* Light mode sidebar - clean with crimson accent */
+html:not(.dark) .fi-sidebar {
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%) !important;
+    border-right: 2px solid rgba(212, 0, 38, 0.15) !important;
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+html:not(.dark) .fi-sidebar-header {
+    background: linear-gradient(135deg, rgba(212, 0, 38, 0.08) 0%, rgba(106, 15, 145, 0.08) 100%) !important;
+    border-bottom: 2px solid rgba(212, 0, 38, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+html:not(.dark) .fi-sidebar-nav-item {
+    color: #6b7280 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 8px !important;
+    margin: 4px 8px !important;
+}
+
+html:not(.dark) .fi-sidebar-nav-item:hover {
+    background: linear-gradient(90deg, rgba(212, 0, 38, 0.08), rgba(106, 15, 145, 0.08)) !important;
+    color: var(--crimson-villain) !important;
+    box-shadow: 0 2px 8px rgba(212, 0, 38, 0.15) !important;
+    transform: translateX(4px) !important;
+}
+
+html:not(.dark) .fi-sidebar-item-active,
+html:not(.dark) .fi-active {
+    background: linear-gradient(90deg, rgba(212, 0, 38, 0.15), rgba(106, 15, 145, 0.15)) !important;
+    border-left: 4px solid var(--crimson-villain) !important;
+    color: var(--crimson-villain) !important;
+    box-shadow: 0 2px 12px rgba(212, 0, 38, 0.2) !important;
+    font-weight: 600 !important;
+}
+
+html:not(.dark) .fi-topbar {
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%) !important;
+    border-bottom: 2px solid rgba(212, 0, 38, 0.15) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+html:not(.dark) .fi-main {
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(212, 0, 38, 0.02) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(106, 15, 145, 0.02) 0%, transparent 50%),
+        #fafafa !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Fix layout to prevent content overlap in light mode */
+html:not(.dark) .fi-sidebar {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+html:not(.dark) .fi-layout {
+    display: flex !important;
+    position: relative !important;
+}
+
+html:not(.dark) .fi-section,
+html:not(.dark) .fi-card,
+html:not(.dark) .fi-stats-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 250, 251, 0.95) 100%) !important;
+    border: 2px solid rgba(212, 0, 38, 0.12) !important;
+    border-radius: 12px !important;
+    box-shadow: 
+        0 2px 12px rgba(0, 0, 0, 0.06),
+        0 0 1px rgba(212, 0, 38, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+html:not(.dark) .fi-stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--crimson-villain), var(--dark-violet), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+html:not(.dark) .fi-stats-card:hover {
+    border-color: rgba(212, 0, 38, 0.3) !important;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.1),
+        0 0 30px rgba(212, 0, 38, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+}
+
+html:not(.dark) .fi-stats-card:hover::before {
+    opacity: 1;
+}
+
+html:not(.dark) .fi-input,
+html:not(.dark) .fi-select,
+html:not(.dark) .fi-textarea {
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #1a1a1a !important;
+}
+
+/* Tables - dark mode with villainous styling */
+.dark .fi-table {
+    background: var(--deep-obsidian) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+.dark .fi-table-header-cell {
+    background: linear-gradient(135deg, rgba(212, 0, 38, 0.1) 0%, rgba(106, 15, 145, 0.1) 100%) !important;
+    color: var(--pure-white) !important;
+    border-bottom: 2px solid rgba(212, 0, 38, 0.3) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.025em !important;
+}
+
+.dark .fi-table-cell {
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1) !important;
+    color: var(--steel-gray) !important;
+}
+
+.dark .fi-table-row:hover {
+    background: rgba(212, 0, 38, 0.05) !important;
+}
+
+/* Tables - light mode */
+html:not(.dark) .fi-table {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+html:not(.dark) .fi-table-header-cell {
+    background: linear-gradient(135deg, rgba(212, 0, 38, 0.05) 0%, rgba(106, 15, 145, 0.05) 100%) !important;
+    color: #374151 !important;
+    border-bottom: 2px solid rgba(212, 0, 38, 0.2) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.025em !important;
+}
+
+html:not(.dark) .fi-table-cell {
+    border-bottom: 1px solid #f3f4f6 !important;
+}
+
+html:not(.dark) .fi-table-row:hover {
+    background: rgba(212, 0, 38, 0.03) !important;
+}
+
+html:not(.dark) .fi-sidebar-nav-item {
+    color: #6b7280 !important;
+}
+
+html:not(.dark) .fi-sidebar-nav-item:hover {
+    background: rgba(212, 0, 38, 0.05) !important;
+    color: var(--crimson-villain) !important;
+}
+
+html:not(.dark) .fi-sidebar-item-active,
+html:not(.dark) .fi-active {
+    background: rgba(212, 0, 38, 0.1) !important;
+    border-left: 3px solid var(--crimson-villain) !important;
+    color: var(--crimson-villain) !important;
+}
+
+html:not(.dark) h1,
+html:not(.dark) h2, 
+html:not(.dark) h3, 
+html:not(.dark) h4, 
+html:not(.dark) h5, 
+html:not(.dark) h6 {
+    color: #1a1a1a !important;
+}
+
+html:not(.dark) .fi-helper-text,
+html:not(.dark) .fi-description {
+    color: #6b7280 !important;
+}
+
+html:not(.dark) .fi-modal {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+html:not(.dark) .fi-modal-header {
+    background: #f9fafb !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+html:not(.dark) .fi-dropdown-list {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+html:not(.dark) ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Compact table spacing */
+.fi-table-cell {
+    padding: 0.5rem !important;
+}
+
+.fi-table-header-cell {
+    padding: 0.5rem !important;
+}
+
+/* Responsive table adjustments */
+@media (max-width: 1280px) {
+    .fi-table-cell,
+    .fi-table-header-cell {
+        padding: 0.375rem !important;
+        font-size: 0.875rem !important;
+    }
+}
+
+/* Login form enhancements - dark mode */
+.dark .fi-simple-main .fi-input-wrapper input,
+.dark .fi-simple-main .fi-input-wrapper input[type='email'],
+.dark .fi-simple-main .fi-input-wrapper input[type='password'] {
+    background: rgba(5, 5, 5, 0.6) !important;
+    border: 2px solid rgba(212, 0, 38, 0.3) !important;
+    border-radius: 10px !important;
+    color: var(--pure-white) !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark .fi-simple-main .fi-input-wrapper input:focus {
+    border-color: var(--crimson-villain) !important;
+    background: rgba(10, 10, 10, 0.8) !important;
+    box-shadow: 
+        0 0 0 4px rgba(212, 0, 38, 0.2),
+        0 0 30px rgba(212, 0, 38, 0.3) !important;
+    transform: translateY(-2px) !important;
+}
+
+.dark .fi-simple-main .fi-btn {
+    background: linear-gradient(135deg, var(--crimson-villain) 0%, #b0001f 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 
+        0 4px 20px rgba(212, 0, 38, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dark .fi-simple-main .fi-btn:hover {
+    background: linear-gradient(135deg, #b0001f 0%, var(--crimson-villain) 100%) !important;
+    box-shadow: 
+        0 6px 30px rgba(212, 0, 38, 0.7),
+        0 0 50px rgba(212, 0, 38, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-3px) scale(1.02) !important;
+}
+
+.dark .fi-simple-main a {
+    color: var(--crimson-villain) !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+}
+
+.dark .fi-simple-main a:hover {
+    color: var(--pure-white) !important;
+    text-shadow: 0 0 10px rgba(212, 0, 38, 0.8) !important;
+}
+
+.dark .fi-simple-main .fi-label {
+    color: var(--pure-white) !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.025em !important;
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Login form enhancements - light mode */
+html:not(.dark) .fi-simple-main .fi-input-wrapper input,
+html:not(.dark) .fi-simple-main .fi-input-wrapper input[type='email'],
+html:not(.dark) .fi-simple-main .fi-input-wrapper input[type='password'] {
+    background: #ffffff !important;
+    border: 2px solid rgba(212, 0, 38, 0.2) !important;
+    border-radius: 10px !important;
+    color: #1a1a1a !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html:not(.dark) .fi-simple-main .fi-input-wrapper input:focus {
+    border-color: var(--crimson-villain) !important;
+    box-shadow: 
+        0 0 0 4px rgba(212, 0, 38, 0.15),
+        0 4px 12px rgba(212, 0, 38, 0.2) !important;
+    transform: translateY(-2px) !important;
+}
+
+html:not(.dark) .fi-simple-main .fi-btn {
+    background: linear-gradient(135deg, var(--crimson-villain) 0%, #b0001f 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 
+        0 4px 20px rgba(212, 0, 38, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html:not(.dark) .fi-simple-main .fi-btn:hover {
+    background: linear-gradient(135deg, #b0001f 0%, var(--crimson-villain) 100%) !important;
+    box-shadow: 
+        0 6px 30px rgba(212, 0, 38, 0.6),
+        0 0 40px rgba(212, 0, 38, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+    transform: translateY(-3px) scale(1.02) !important;
+}
+
+html:not(.dark) .fi-simple-main a {
+    color: var(--crimson-villain) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+html:not(.dark) .fi-simple-main a:hover {
+    color: #b0001f !important;
+    text-decoration: underline !important;
+}
+
+html:not(.dark) .fi-simple-main .fi-label {
+    color: #1a1a1a !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.025em !important;
+    text-transform: uppercase !important;
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Remember me checkbox styling */
+.dark .fi-simple-main input[type='checkbox'] {
+    accent-color: var(--crimson-villain) !important;
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer !important;
+}
+
+html:not(.dark) .fi-simple-main input[type='checkbox'] {
+    accent-color: var(--crimson-villain) !important;
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer !important;
+}
+
+/* Compact table spacing */
+.fi-table-cell {
+    padding: 0.5rem !important;
+}
