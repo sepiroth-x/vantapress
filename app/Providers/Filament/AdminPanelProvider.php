@@ -90,9 +90,27 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
                 fn (): string => '<script>
-                    // Force dark mode for BasicTheme styling
+                    // Force dark mode for BasicTheme styling - Set localStorage first
                     localStorage.setItem("theme", "dark");
-                    document.documentElement.classList.add("dark");
+                </script>'
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => '<script>
+                    // Force dark class after Filament\'s loadDarkMode runs
+                    (function() {
+                        document.documentElement.classList.add("dark");
+                        // Observe and re-add if Filament removes it
+                        const observer = new MutationObserver(() => {
+                            if (!document.documentElement.classList.contains("dark")) {
+                                document.documentElement.classList.add("dark");
+                            }
+                        });
+                        observer.observe(document.documentElement, { 
+                            attributes: true, 
+                            attributeFilter: ["class"] 
+                        });
+                    })();
                 </script>'
             )
             ->renderHook(
