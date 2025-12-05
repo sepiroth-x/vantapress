@@ -216,15 +216,19 @@ vantapress/
 │   │   └── README.md       # Module documentation
 │   ├── VPEssential1/
 │   └── VPToDoList/
-├── vantapress/             # Themes directory
+├── themes/                 # Themes directory
 │   └── default/            # Default theme
 │       ├── views/          # Theme templates
+│       ├── assets/         # Theme assets (CSS/JS)
 │       ├── theme.json      # Theme metadata
 │       └── functions.php   # Theme functions (optional)
-├── public/                 # Public web root
-│   ├── index.php           # Application entry point
-│   ├── css/                # Compiled CSS (for deployment)
-│   └── js/                 # Compiled JS (for deployment)
+├── css/                    # Root-level CSS (accessible via asset() helper)
+│   ├── filament/           # Filament compiled assets
+│   ├── themes/             # Theme CSS (synced from themes/*/assets/css/)
+│   └── vantapress-admin.css # Root admin CSS (layout only)
+├── js/                     # Root-level JS (accessible via asset() helper)
+│   ├── filament/           # Filament compiled scripts
+│   └── themes/             # Theme JS (synced from themes/*/assets/js/)
 ├── resources/              # Development assets
 │   ├── views/              # Core blade templates
 │   ├── css/                # Source CSS files
@@ -301,51 +305,44 @@ These files map `Modules\HelloWorld\HelloWorldServiceProvider` to the file path.
 
 ### ⚠️ Must Know: Filament Asset Management
 
-**CRITICAL:** VantaPress uses a **root-level structure** (no `public/` folder), but Filament's asset publisher (`php artisan filament:assets`) is designed to publish assets to `public/css/` and `public/js/` by default.
+**CRITICAL:** VantaPress uses a **root-level structure** (NO `public/` folder EVER), and we override Laravel's public path to publish directly to the root.
 
-#### The Problem
-When you run `php artisan filament:assets`, Filament will:
-- ❌ Create a `public/` folder in your project root
-- ❌ Publish CSS/JS assets to `public/css/filament/` and `public/js/filament/`
-- ❌ Break the root-level structure
-- ❌ Cause asset loading issues in the admin panel
+#### The Architecture
+**VantaPress NEVER uses a public/ folder:**
+- ✅ All assets load from root: `/css/`, `/js/`, `/images/`
+- ✅ Filament assets: `/css/filament/`, `/js/filament/`
+- ✅ Theme assets: `/css/themes/{theme}/`, `/js/themes/{theme}/`
+- ✅ Root admin CSS: `/css/vantapress-admin.css`
+- ❌ NEVER create or use `public/` directory
 
-#### Our Solution
-VantaPress overrides Laravel's public path to point to the **root directory** instead of `public/`:
+#### Public Path Override - The Foundation
+VantaPress overrides Laravel's public path to point to **root directory ONLY**:
 
-**1. In `index.php`:**
+**1. In `index.php` (REQUIRED):**
+```php
+$app = require_once __DIR__.'/bootstrap/app.php';
+
+// Override public path to use base directory (root-level structure)
+// This makes asset() point to root, not public/
+$app->usePublicPath(__DIR__);
+```
+
+**2. In `artisan` (REQUIRED):**
 ```php
 $app = require_once __DIR__.'/bootstrap/app.php';
 
 // Override public path to use base directory (root-level structure)
 $app->usePublicPath(__DIR__);
-```
-
-**2. In `artisan`:**
-```php
-$app = require_once __DIR__.'/bootstrap/app.php';
-
-// Override public path to use base directory (root-level structure)
-$app->usePublicPath(__DIR__);
-```
-
-**3. AppServiceProvider (optional binding):**
-```php
-public function boot(): void
-{
-    // Set public path to base directory (root-level structure)
-    $this->app->bind('path.public', function() {
-        return base_path();
-    });
-}
 ```
 
 #### Result
 With this configuration:
-- ✅ `php artisan filament:assets` publishes directly to `/css/filament/` and `/js/filament/`
-- ✅ No `public/` folder is created
-- ✅ Assets are accessible at root level (e.g., `/css/filament/filament/app.css`)
+- ✅ `php artisan filament:assets` publishes directly to root `/css/filament/` and `/js/filament/`
+- ✅ NO `public/` folder is ever created
+- ✅ `asset('css/file.css')` returns `/css/file.css` (not `/public/css/file.css`)
+- ✅ Theme assets load from `/css/themes/{theme}/admin.css`
 - ✅ Works perfectly in both development and production
+- ✅ Compatible with shared hosting (FTP deployment)
 
 #### Asset Loading in Admin Panel
 Filament's render hooks inject the required CSS/JS files in `AdminPanelProvider.php`:
@@ -370,36 +367,47 @@ use Filament\View\PanelsRenderHook;
 When you need to update Filament assets (after updating Filament version):
 
 ```bash
-# This will now publish to root /css/ and /js/ folders (not public/)
+# Publishes directly to root /css/filament/ and /js/filament/ (NO public/ folder)
 php artisan filament:assets
 ```
 
-#### Helper Script (Optional)
-If you ever need to copy assets from `public/` to root (e.g., if public path override fails):
+#### Helper Scripts
 
+**1. Sync Filament Assets (if public path override fails):**
 ```bash
 php sync-filament-assets.php
 ```
+Copies Filament assets from `public/` (if accidentally created) to root directories.
 
-This script copies assets from `public/css/filament/` and `public/js/filament/` to the root directories.
+**2. Sync Theme Assets (REQUIRED after theme changes):**
+```bash
+php sync-theme-assets.php
+```
+Copies theme assets from `themes/` to `css/themes/` and `js/themes/` for root-level access.
+
+**3. Sync All Assets:**
+```bash
+php sync-filament-assets.php
+php sync-theme-assets.php
+```
 
 ---
 
 ### Local Development Server
 
-⚠️ **IMPORTANT:** You cannot use `php artisan serve` with VantaPress because it requires a `public/` folder which we don't have.
+⚠️ **IMPORTANT:** You cannot use `php artisan serve` with VantaPress because Laravel's serve command expects a `public/` folder which we NEVER use.
 
-Instead, create two PHP files in your project root:
+VantaPress includes custom server scripts for local development:
 
-#### 1. Create `serve.php`
+#### 1. `serve.php` - Development Server
 
 ```php
 <?php
 /**
  * VantaPress Development Server
  * 
- * Use this instead of `php artisan serve` for local development
- * Since we don't have a public/ folder structure
+ * Use this instead of `php artisan serve`
+ * Serves from root directory (NO public/ folder)
  */
 
 $host = $argv[1] ?? '127.0.0.1';
@@ -1261,24 +1269,41 @@ VantaPress uses a **root-level architecture** optimized for shared hosting. This
 
 **VantaPress (Shared Hosting):**
 ```
-/public_html/              ← EVERYTHING is in web root
+/public_html/              ← EVERYTHING is in web root (NO public/ subfolder)
 ├── .env                   ← Protected by .htaccess
+├── .htaccess              ← Protects sensitive files/directories
 ├── app/                   ← Protected by .htaccess
 ├── config/                ← Protected by .htaccess
 ├── vendor/                ← Protected by .htaccess
-├── index.php              ← Entry point
+├── themes/                ← Protected by .htaccess (source files)
+├── Modules/               ← Protected by .htaccess
+├── index.php              ← Entry point (root-level)
 ├── css/                   ← Publicly accessible (intended)
+│   ├── filament/          ← Filament compiled CSS
+│   ├── themes/            ← Theme CSS (synced from themes/*/assets/)
+│   └── vantapress-admin.css ← Root admin CSS
 ├── js/                    ← Publicly accessible (intended)
+│   ├── filament/          ← Filament compiled JS
+│   └── themes/            ← Theme JS (synced from themes/*/assets/)
 └── images/                ← Publicly accessible (intended)
 ```
 
-#### Why No public/ Folder?
+#### Why NO public/ Folder EVER?
 
-**Shared Hosting Constraints:**
-- You CANNOT change the document root (it's controlled by the host)
+**Shared Hosting Reality:**
+- You CANNOT change the document root (controlled by hosting provider)
 - The web root IS the main directory (`public_html/`, `www/`, `htdocs/`)
-- Traditional Laravel's `public/` folder structure doesn't work
-- FTP access is the only deployment method
+- Traditional Laravel's `public/` subfolder structure DOES NOT WORK
+- FTP/cPanel file manager is the only deployment method
+- Users cannot access parent directories above web root
+
+**VantaPress Solution:**
+- ✅ Everything in root directory (`public_html/` is the root)
+- ✅ Sensitive files protected by `.htaccess` rules
+- ✅ Assets accessible at `/css/`, `/js/`, `/images/`
+- ✅ Theme assets synced to `/css/themes/` and `/js/themes/`
+- ❌ NEVER create `public/` subdirectory
+- ❌ NEVER use `/public/css/` or `/public/js/` paths
 
 **Security Through .htaccess:**
 
