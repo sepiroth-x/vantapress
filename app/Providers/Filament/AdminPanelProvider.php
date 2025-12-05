@@ -90,10 +90,9 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
                 fn (): string => '<script>
-                    // Force dark mode as default for BasicTheme styling
-                    if (!localStorage.getItem("theme")) {
-                        localStorage.setItem("theme", "dark");
-                    }
+                    // Force dark mode for BasicTheme styling
+                    localStorage.setItem("theme", "dark");
+                    document.documentElement.classList.add("dark");
                 </script>'
             )
             ->renderHook(
