@@ -64,7 +64,6 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Orange,
             ])
             ->darkMode(true) // Enable dark mode toggle
-            ->darkModeForced() // Force dark mode as default (required for BasicTheme styling)
             ->font('Inter')
             ->brandLogo(asset('images/vantapress-logo.svg'))
             ->favicon(asset('images/favicon.ico'))
@@ -87,6 +86,15 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::SCRIPTS_AFTER,
                 fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>'
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                fn (): string => '<script>
+                    // Force dark mode as default for BasicTheme styling
+                    if (!localStorage.getItem("theme")) {
+                        localStorage.setItem("theme", "dark");
+                    }
+                </script>'
             )
             ->renderHook(
                 PanelsRenderHook::FOOTER,
