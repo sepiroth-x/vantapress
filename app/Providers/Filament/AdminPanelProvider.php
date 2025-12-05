@@ -84,59 +84,69 @@ class AdminPanelProvider extends PanelProvider
                 }
             )
             ->renderHook(
-                PanelsRenderHook::SCRIPTS_AFTER,
-                fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>'
-            )
-            ->renderHook(
                 PanelsRenderHook::HEAD_START,
                 fn (): string => '<script>
-                    // Force dark mode for BasicTheme styling - Set localStorage first
+                    // Force dark mode - Set localStorage before Filament checks it
                     localStorage.setItem("theme", "dark");
                 </script>'
             )
             ->renderHook(
-                PanelsRenderHook::SCRIPTS_AFTER,
+                PanelsRenderHook::BODY_START,
                 fn (): string => '<script>
-                    // Force dark mode - runs AFTER all Filament scripts including loadDarkMode()
-                    (function forceDarkMode() {
-                        // Add dark class immediately
-                        document.documentElement.classList.add("dark");
-                        
-                        // Create MutationObserver to maintain dark class
-                        const observer = new MutationObserver((mutations) => {
-                            mutations.forEach((mutation) => {
-                                if (mutation.type === "attributes" && mutation.attributeName === "class") {
-                                    if (!document.documentElement.classList.contains("dark")) {
-                                        console.log("Dark class removed - re-adding");
-                                        document.documentElement.classList.add("dark");
-                                    }
-                                }
-                            });
-                        });
-                        
-                        // Start observing
-                        observer.observe(document.documentElement, { 
-                            attributes: true, 
-                            attributeFilter: ["class"] 
-                        });
-                        
-                        // Also listen for DOMContentLoaded and load events
-                        window.addEventListener("DOMContentLoaded", () => {
-                            document.documentElement.classList.add("dark");
-                        });
-                        
-                        window.addEventListener("load", () => {
-                            document.documentElement.classList.add("dark");
-                        });
-                        
-                        // Set interval as final safeguard (will be overridden by observer)
-                        setInterval(() => {
-                            if (!document.documentElement.classList.contains("dark")) {
-                                document.documentElement.classList.add("dark");
-                            }
-                        }, 100);
-                    })();
+                    // Immediate dark class injection at body start
+                    document.documentElement.classList.add("dark");
                 </script>'
+            )
+            ->renderHook(
+                PanelsRenderHook::SCRIPTS_AFTER,
+                fn (): string => '
+                    <script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>
+                    <script>
+                        // Force dark mode - Final enforcement after all scripts
+                        (function() {
+                            "use strict";
+                            
+                            // Aggressive dark mode enforcer
+                            function enforceDarkMode() {
+                                if (!document.documentElement.classList.contains("dark")) {
+                                    document.documentElement.classList.add("dark");
+                                    console.log("[VantaPress] Dark mode enforced");
+                                }
+                            }
+                            
+                            // Run immediately
+                            enforceDarkMode();
+                            
+                            // MutationObserver to catch any removal attempts
+                            const observer = new MutationObserver(function(mutations) {
+                                mutations.forEach(function(mutation) {
+                                    if (mutation.type === "attributes" && mutation.attributeName === "class") {
+                                        enforceDarkMode();
+                                    }
+                                });
+                            });
+                            
+                            observer.observe(document.documentElement, { 
+                                attributes: true, 
+                                attributeFilter: ["class"] 
+                            });
+                            
+                            // Multiple event listeners as backup
+                            if (document.readyState === "loading") {
+                                document.addEventListener("DOMContentLoaded", enforceDarkMode);
+                            } else {
+                                enforceDarkMode();
+                            }
+                            
+                            window.addEventListener("load", enforceDarkMode);
+                            
+                            // Interval as final safeguard (check every 100ms)
+                            setInterval(enforceDarkMode, 100);
+                            
+                            console.log("[VantaPress] Dark mode enforcer initialized");
+                        })();
+                    </script>
+                '
             )
             ->renderHook(
                 PanelsRenderHook::FOOTER,
