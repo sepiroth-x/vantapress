@@ -11,23 +11,22 @@
 --}}
 <div class="fi-footer border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 py-6 px-6">
     <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-            {{-- Left: Attribution --}}
-            <div class="text-center md:text-left">
-                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Proudly created by 
-                    <span class="font-bold text-primary-600 dark:text-primary-400">
-                        Sepiroth X Villainous (Richard Cebel Cupal, LPT)
-                    </span>
-                </p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    VantaPress v{{ config('version.version', '1.0.17-complete') }} • 
-                    WordPress Philosophy, Laravel Power
-                </p>
-            </div>
+        {{-- Top: Attribution (Centered) --}}
+        <div class="text-center mb-4">
+            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Proudly created by 
+                <span class="font-bold text-primary-600 dark:text-primary-400">
+                    Richard Cebel Cupal, LPT a.k.a Xenroth Vantablack
+                </span>
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                VantaPress v{{ config('version.version', '1.0.21-complete') }} • 
+                WordPress Philosophy, Laravel Power
+            </p>
+        </div>
 
-            {{-- Right: Social Links --}}
-            <div class="flex items-center gap-4">
+        {{-- Social Links (Centered) --}}
+        <div class="flex items-center justify-center gap-4">
                 {{-- Email --}}
                 <a href="mailto:chardy.tsadiq02@gmail.com" 
                    class="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition"
@@ -84,7 +83,7 @@
         {{-- Bottom: Copyright --}}
         <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 text-center">
             <p class="text-xs text-gray-500 dark:text-gray-500">
-                Copyright © {{ date('Y') }} Sepiroth X Villainous. Licensed under MIT. 
+                Copyright © {{ date('Y') }} Richard Cebel Cupal (Xenroth Vantablack). Licensed under MIT. 
                 <a href="https://github.com/sepiroth-x/vantapress" 
                    class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:underline transition"
                    target="_blank">

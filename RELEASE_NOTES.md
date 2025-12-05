@@ -1,12 +1,58 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.20-complete  
+**Current Version:** v1.0.21-complete  
 **Release Date:** December 5, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.20-complete
+## 📌 Latest Version: v1.0.21-complete
+
+### 🎯 What's New in v1.0.21-complete
+- **🎨 Dynamic Theme Customization System** - VantaPress-driven theme customization (reads from theme.json)
+- **🛡️ Enhanced Danger Zone UX** - Hide Danger Zone when Debug Mode is OFF for better security UX
+- **🔧 Fixed Debug Mode Logic** - Corrected inverted button states (buttons now properly disabled when debug OFF)
+- **📱 Dynamic Footer Version** - Footer now reads version from config/version.php dynamically
+- **👤 Updated Attribution** - Added "a.k.a Xenroth Vantablack" to footer, centered layout
+- **🚫 Improved .gitignore** - Excluded sync-*.php files from repository
+
+### 🎨 Theme System Improvements
+- **VantaPress-Driven Customization** - Themes define capabilities in theme.json, VantaPress generates admin UI
+- **Dynamic Form Generation** - CustomizeTheme page now reads customization object from theme.json
+- **Conditional Tabs** - Only show tabs that the theme supports (Colors, Hero Section, Typography, Layout, Custom CSS)
+- **New Methods in ThemeLoader:**
+  - `getCustomizableElements()` - Reads theme customization options
+  - `getWidgetAreas()` - Discovers theme widget areas
+  - `getMenuLocations()` - Discovers theme menu locations
+- **Reduced Theme Complexity** - Theme developers only define JSON, VantaPress handles admin interface
+
+### 🔐 Security & UX Enhancements
+- **Danger Zone Visibility** - Entire Danger Zone section now hidden when Debug Mode is OFF
+- **Fixed Logic Error** - Corrected inverted button states (buttons were enabled when debug OFF, disabled when ON)
+- **Better Developer Experience** - Clear visual indicator when dangerous operations are available
+- **Production Safe** - No confusing disabled buttons in production, section simply doesn't appear
+
+### 🐛 Bug Fixes
+- Fixed Danger Zone buttons being enabled when Debug Mode was OFF (logic was inverted)
+- Fixed footer version showing hardcoded v1.0.17 instead of reading from config
+- Fixed footer layout not centering attribution text properly
+
+### 🔧 Technical Improvements
+- **Settings.php:** Danger Zone section now uses `->visible(fn () => $this->isDebugMode())` to hide when debug OFF
+- **Settings.php:** Removed redundant `->disabled()` checks from all Danger Zone buttons
+- **footer.blade.php:** Changed layout from flex-row (left/right) to centered vertical stack
+- **footer.blade.php:** Version now reads from `config('version.version')` dynamically
+- **config/version.php:** Updated to v1.0.21-complete
+- **.gitignore:** Added `sync-*.php` to exclude sync scripts from repository
+
+### 📚 Documentation Updates
+- Attribution now includes full name with alias: "Richard Cebel Cupal, LPT a.k.a Xenroth Vantablack"
+- Footer layout improved for better mobile and desktop presentation
+- Social links now centered below attribution for cleaner layout
+
+---
+
+## 📌 Previous Version: v1.0.20-complete
 
 ### 🎯 What's New in v1.0.20-complete
 - **🛡️ Enhanced Error Handling** - Comprehensive global error handling system to prevent crashes

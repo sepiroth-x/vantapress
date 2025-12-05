@@ -27,6 +27,9 @@ yarn-error.log
 serve.php
 server.php
 
+# Sync scripts - local development only
+sync-*.php
+
 # Log files
 *.log
 access-log.txt
