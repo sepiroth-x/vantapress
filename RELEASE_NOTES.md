@@ -1,12 +1,33 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.18-complete  
+**Current Version:** v1.0.19-complete  
 **Release Date:** December 5, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.18-complete
+## 📌 Latest Version: v1.0.19-complete
+
+### 🎯 What's New in v1.0.19-complete
+- **🖼️ Media Upload Size Fix** - Fixed SQL error: "Field 'size' doesn't have a default value"
+- **📊 Improved File Size Detection** - Enhanced file path detection for uploads
+- **🔧 Database Schema Update** - Made media size field nullable
+
+### 🐛 Bug Fixes
+- Fixed SQL error when uploading media without size field
+- Fixed file size calculation to handle multiple path variations
+- Added error suppression for getimagesize() to prevent warnings
+
+### 🔧 Technical Improvements
+- Made media `size` field nullable in database schema
+- Added `size` to Media model fillable fields
+- Enhanced CreateMedia to try multiple file path variations
+- Created migration for existing databases (make media size nullable)
+- Improved error handling in file size detection
+
+---
+
+## 📌 Previous Version: v1.0.18-complete
 
 ### 🎯 What's New in v1.0.18-complete
 - **✅ Page Creation Enhanced** - Pages now redirect to list after creation

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('file_name');
             $table->string('path');
             $table->string('mime_type');
-            $table->bigInteger('size')->unsigned();
+            $table->bigInteger('size')->unsigned()->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
             $table->string('alt_text')->nullable();

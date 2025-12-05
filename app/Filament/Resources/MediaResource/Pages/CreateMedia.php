@@ -18,9 +18,22 @@ class CreateMedia extends CreateRecord
     {
         // Extract file information
         if (isset($data['path'])) {
-            $file = storage_path('app/public/' . $data['path']);
+            // Try multiple path variations
+            $possiblePaths = [
+                storage_path('app/public/' . $data['path']),
+                public_path($data['path']),
+                storage_path('app/' . $data['path']),
+            ];
             
-            if (file_exists($file)) {
+            $file = null;
+            foreach ($possiblePaths as $path) {
+                if (file_exists($path)) {
+                    $file = $path;
+                    break;
+                }
+            }
+            
+            if ($file && file_exists($file)) {
                 $data['file_name'] = basename($data['path']);
                 $data['mime_type'] = mime_content_type($file);
                 
@@ -29,7 +42,7 @@ class CreateMedia extends CreateRecord
                 
                 // Get image dimensions if it's an image
                 if (str_starts_with($data['mime_type'], 'image/')) {
-                    $imageInfo = getimagesize($file);
+                    $imageInfo = @getimagesize($file);
                     if ($imageInfo) {
                         $data['width'] = $imageInfo[0];
                         $data['height'] = $imageInfo[1];

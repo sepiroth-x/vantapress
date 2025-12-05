@@ -27,6 +27,7 @@ class Media extends Model
         'height',
         'uploaded_by',
         'path',
+        'size',
     ];
 
     protected $casts = [
