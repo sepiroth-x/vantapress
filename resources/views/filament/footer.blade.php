@@ -15,7 +15,7 @@
         <div class="text-center mb-4">
             <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Proudly created by 
-                <span class="font-bold text-primary-600 dark:text-primary-400">
+                <span class="font-bold text-blue-600 dark:text-blue-400">
                     Richard Cebel Cupal, LPT a.k.a Xenroth Vantablack
                 </span>
             </p>
@@ -28,7 +28,7 @@
         <div class="flex items-center justify-center gap-4">
                 {{-- Email --}}
                 <a href="mailto:chardy.tsadiq02@gmail.com" 
-                   class="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition"
+                   class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition"
                    title="Email: chardy.tsadiq02@gmail.com"
                    target="_blank">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -39,7 +39,7 @@
 
                 {{-- GitHub --}}
                 <a href="https://github.com/sepiroth-x" 
-                   class="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition"
+                   class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition"
                    title="GitHub: @sepiroth-x"
                    target="_blank">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -49,7 +49,7 @@
 
                 {{-- Facebook --}}
                 <a href="https://www.facebook.com/sepirothx/" 
-                   class="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition"
+                   class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition"
                    title="Facebook: @sepirothx"
                    target="_blank">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -59,7 +59,7 @@
 
                 {{-- Twitter/X --}}
                 <a href="https://x.com/sepirothx000" 
-                   class="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition"
+                   class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition"
                    title="Twitter/X: @sepirothx000"
                    target="_blank">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@
 
                 {{-- Mobile --}}
                 <a href="tel:+639150388448" 
-                   class="text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition"
+                   class="text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition"
                    title="Mobile: +63 915 0388 448"
                    target="_blank">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -84,7 +84,7 @@
             <p class="text-xs text-gray-500 dark:text-gray-500">
                 Copyright © {{ date('Y') }} Richard Cebel Cupal (Xenroth Vantablack). Licensed under MIT. 
                 <a href="https://github.com/sepiroth-x/vantapress" 
-                   class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:underline transition"
+                   class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline transition"
                    target="_blank">
                     View on GitHub
                 </a>

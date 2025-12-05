@@ -422,6 +422,28 @@
     color: var(--primary-blue) !important;
 }
 
+/* Force blue color for footer text (override primary-red) */
+.dark .fi-footer .text-primary-600,
+.dark .fi-footer .text-primary-400 {
+    color: rgb(96 165 250) !important; /* blue-400 */
+}
+
+.dark .fi-footer .hover\:text-primary-600:hover,
+.dark .fi-footer .hover\:text-primary-400:hover {
+    color: rgb(59 130 246) !important; /* blue-500 */
+}
+
+.dark .fi-footer .text-blue-600,
+.dark .fi-footer .text-blue-400 {
+    color: rgb(96 165 250) !important; /* blue-400 for dark mode */
+}
+
+.dark .fi-footer .hover\:text-blue-600:hover,
+.dark .fi-footer .hover\:text-blue-400:hover {
+    color: rgb(59 130 246) !important; /* blue-500 */
+}
+
+
 /* ============================================
    LIGHT MODE - CLEAN WHITE
    ============================================ */
@@ -611,4 +633,23 @@ html:not(.dark) .fi-footer a {
 
 html:not(.dark) .fi-footer a:hover {
     color: var(--primary-blue-hover) !important;
+}
+
+/* Force blue color for footer text in light mode (override primary-red) */
+html:not(.dark) .fi-footer .text-primary-600,
+html:not(.dark) .fi-footer .text-primary-400 {
+    color: rgb(37 99 235) !important; /* blue-600 */
+}
+
+html:not(.dark) .fi-footer .hover\:text-primary-600:hover,
+html:not(.dark) .fi-footer .hover\:text-primary-700:hover {
+    color: rgb(29 78 216) !important; /* blue-700 */
+}
+
+html:not(.dark) .fi-footer .text-blue-600 {
+    color: rgb(37 99 235) !important; /* blue-600 for light mode */
+}
+
+html:not(.dark) .fi-footer .hover\:text-blue-700:hover {
+    color: rgb(29 78 216) !important; /* blue-700 */
 }
