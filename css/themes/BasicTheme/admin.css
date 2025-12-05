@@ -326,13 +326,15 @@
 }
 
 .dark .fi-simple-main {
-    background: var(--dark-surface) !important;
-    border: 1px solid var(--gray-700) !important;
-    border-radius: 12px !important;
+    background: rgba(30, 41, 59, 0.8) !important;
+    border: 1px solid rgba(71, 85, 105, 0.5) !important;
+    border-radius: 16px !important;
     box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.3),
-        0 0 1px rgba(59, 130, 246, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 1px rgba(59, 130, 246, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
 }
 
 /* Login form heading */
@@ -358,15 +360,26 @@
 }
 
 /* Login form input wrappers - don't override width/padding */
-.dark .fi-input-wrp {
-    background: var(--dark-bg) !important;
-    border-color: var(--gray-600) !important;
+.dark .fi-simple-main .fi-input-wrp {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(71, 85, 105, 0.6) !important;
+    transition: all 0.2s ease !important;
 }
 
-.dark .fi-input-wrp:focus-within {
+.dark .fi-simple-main .fi-input-wrp:focus-within {
     border-color: var(--primary-blue) !important;
-    background: var(--dark-elevated) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+    background: rgba(30, 41, 59, 0.8) !important;
+    box-shadow: 
+        0 0 0 3px rgba(37, 99, 235, 0.2),
+        0 0 20px rgba(37, 99, 235, 0.15) !important;
+}
+
+.dark .fi-simple-main .fi-input {
+    color: var(--gray-100) !important;
+}
+
+.dark .fi-simple-main .fi-input::placeholder {
+    color: var(--gray-500) !important;
 }
 
 /* Actual input fields */
