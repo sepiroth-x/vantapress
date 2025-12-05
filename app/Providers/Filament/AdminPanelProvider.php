@@ -72,10 +72,14 @@ class AdminPanelProvider extends PanelProvider
                 function (): string {
                     $themeManager = app(\App\Services\CMS\ThemeManager::class);
                     $activeTheme = $themeManager->getActiveTheme();
-                    $adminCss = asset("themes/{$activeTheme}/assets/css/admin.css") . '?v=' . time();
                     
-                    return '<link rel="stylesheet" href="' . asset('css/filament/filament/app.css') . '?v=3.3.45">' .
-                           '<link rel="stylesheet" href="' . $adminCss . '">';
+                    // Load root admin CSS first, then theme-specific CSS
+                    // Don't reload Filament's CSS - it's already loaded automatically
+                    $rootAdminCss = asset('css/vantapress-admin.css') . '?v=' . time();
+                    $themeAdminCss = asset("themes/{$activeTheme}/assets/css/admin.css") . '?v=' . time();
+                    
+                    return '<link rel="stylesheet" href="' . $rootAdminCss . '">' .
+                           '<link rel="stylesheet" href="' . $themeAdminCss . '">';
                 }
             )
             ->renderHook(
