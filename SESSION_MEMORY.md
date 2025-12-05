@@ -1,6 +1,61 @@
 # VantaPress Session Memory
 
-**Last Updated:** December 5, 2025
+**Last Updated:** December 5, 2025 - 10:17 PM
+
+## 🚨 CURRENT BLOCKER: Sidebar Overlap Issue (Dec 5, 10:17 PM)
+
+**Status**: CRITICAL - Admin panel main content overlapped by sidebar on desktop
+
+### Problem Analysis (Attempt #6)
+After complete CSS refactor removing 200+ `!important` declarations, sidebar STILL overlaps main content. User provided screenshot showing clear evidence.
+
+**Root Cause Identified**:
+Filament's HTML applies `w-screen` (width: 100vw) to `.fi-main-ctn`, which overrides flex layout:
+```html
+<div class="fi-main-ctn w-screen flex-1 flex-col">
+```
+
+This makes main content full screen width, ignoring sidebar's space allocation.
+
+**Solution Implemented Tonight**:
+Added responsive width override to `css/vantapress-admin.css`:
+```css
+/* Desktop: Override w-screen to allow flex behavior */
+@media (min-width: 1024px) {
+    .fi-main-ctn {
+        width: auto !important;      /* Let flexbox calculate */
+        max-width: 100% !important;  /* Prevent overflow */
+    }
+}
+
+/* Mobile: Keep full width (sidebar overlays) */
+@media (max-width: 1023px) {
+    .fi-main-ctn {
+        width: 100vw;
+    }
+}
+```
+
+**Files Modified**:
+- `css/vantapress-admin.css` → Added responsive width fix
+- `css/themes/BasicTheme/vantapress-admin.css` → Synced
+- Cleared Laravel caches (view:clear, cache:clear)
+
+**Next Steps Tomorrow**:
+1. Hard refresh browser (Ctrl+Shift+R) to clear cache
+2. Test sidebar no longer overlaps
+3. If still broken: Check browser DevTools → Network tab → Verify CSS loaded
+4. If CSS correct: Investigate Filament's JavaScript sidebar behavior
+5. Commit to development branch (NOT release yet)
+
+**Previous Failed Attempts**:
+1. Removed all custom CSS → Browser cache issue
+2. Forced dark mode → Broke toggle
+3. Color change RED→BLUE → Correct but didn't fix layout
+4. Class name fixes → Correct but didn't fix layout
+5. Complete refactor → Correct approach but w-screen still broke it
+
+---
 
 ## Critical Architecture Decisions
 
