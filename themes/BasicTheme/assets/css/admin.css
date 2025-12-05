@@ -96,6 +96,19 @@
             rgba(15, 76, 117, 0.03) 8px
         ),
         var(--pixel-black) !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Ensure sidebar stays on top and main content doesn't overlap */
+.dark .fi-sidebar {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.dark .fi-layout {
+    display: flex !important;
+    position: relative !important;
 }
 
 /* Cards - Flat retro game style */
@@ -282,6 +295,19 @@ html:not(.dark) .fi-main {
             rgba(255, 107, 107, 0.03) 8px
         ),
         #F8F9FA !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Ensure sidebar stays on top and main content doesn't overlap */
+html:not(.dark) .fi-sidebar {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+html:not(.dark) .fi-layout {
+    display: flex !important;
+    position: relative !important;
 }
 
 html:not(.dark) .fi-section,

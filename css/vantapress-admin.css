@@ -124,6 +124,19 @@
             rgba(15, 76, 117, 0.05) 4px
         ),
         var(--pixel-black) !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Fix layout to prevent content overlap */
+.dark .fi-sidebar {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.dark .fi-layout {
+    display: flex !important;
+    position: relative !important;
 }
 
 /* Cards - Dark mode with flat retro game design */
@@ -593,6 +606,19 @@ html:not(.dark) .fi-main {
         radial-gradient(circle at 20% 50%, rgba(212, 0, 38, 0.02) 0%, transparent 50%),
         radial-gradient(circle at 80% 80%, rgba(106, 15, 145, 0.02) 0%, transparent 50%),
         #fafafa !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Fix layout to prevent content overlap in light mode */
+html:not(.dark) .fi-sidebar {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+html:not(.dark) .fi-layout {
+    display: flex !important;
+    position: relative !important;
 }
 
 html:not(.dark) .fi-section,

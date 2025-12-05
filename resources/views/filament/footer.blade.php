@@ -20,8 +20,7 @@
                 </span>
             </p>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                VantaPress v{{ config('version.version', '1.0.21-complete') }} • 
-                WordPress Philosophy, Laravel Power
+                VantaPress v{{ config('version.version', '1.0.21-complete') }} • WordPress Philosophy, Laravel Power
             </p>
         </div>
 
