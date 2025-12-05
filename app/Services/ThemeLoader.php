@@ -219,6 +219,47 @@ class ThemeLoader
     }
 
     /**
+     * Get customizable elements from theme
+     * Returns array of customization options defined in theme.json
+     */
+    public function getCustomizableElements(string $themeName): array
+    {
+        $metadata = $this->getThemeMetadata($themeName);
+        
+        if (!$metadata || !isset($metadata['customization'])) {
+            // Return default customizable elements if not defined
+            return [
+                'logo' => true,
+                'colors' => true,
+                'hero_section' => true,
+                'typography' => false,
+                'layout' => false,
+                'custom_css' => true,
+            ];
+        }
+        
+        return $metadata['customization'];
+    }
+
+    /**
+     * Get widget areas from theme
+     */
+    public function getWidgetAreas(string $themeName): array
+    {
+        $metadata = $this->getThemeMetadata($themeName);
+        return $metadata['widget_areas'] ?? [];
+    }
+
+    /**
+     * Get menu locations from theme
+     */
+    public function getMenuLocations(string $themeName): array
+    {
+        $metadata = $this->getThemeMetadata($themeName);
+        return $metadata['menu_locations'] ?? [];
+    }
+
+    /**
      * Activate theme
      */
     public function activateTheme(string $themeName): bool

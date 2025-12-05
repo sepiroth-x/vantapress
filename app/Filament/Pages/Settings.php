@@ -240,42 +240,57 @@ class Settings extends Page
                                                 ->color('warning')
                                                 ->icon('heroicon-o-wrench-screwdriver')
                                                 ->requiresConfirmation()
+                                                ->disabled(fn () => !$this->isDebugMode())
                                                 ->modalHeading('Fix Duplicate Page Slugs?')
                                                 ->modalDescription('This will find and remove duplicate page slugs, keeping the most recent one.')
                                                 ->modalSubmitActionLabel('Yes, fix duplicates')
                                                 ->action(function () {
-                                                    $duplicates = \Illuminate\Support\Facades\DB::table('pages')
-                                                        ->select('slug', \Illuminate\Support\Facades\DB::raw('COUNT(*) as count'))
-                                                        ->whereNull('deleted_at')
-                                                        ->groupBy('slug')
-                                                        ->having('count', '>', 1)
-                                                        ->get();
-                                                    
-                                                    $deleted = 0;
-                                                    foreach ($duplicates as $duplicate) {
-                                                        // Keep the most recent, delete others
-                                                        $pages = \App\Models\Page::where('slug', $duplicate->slug)
-                                                            ->orderBy('created_at', 'desc')
+                                                    try {
+                                                        $duplicates = \Illuminate\Support\Facades\DB::table('pages')
+                                                            ->select('slug', \Illuminate\Support\Facades\DB::raw('COUNT(*) as count'))
+                                                            ->whereNull('deleted_at')
+                                                            ->groupBy('slug')
+                                                            ->having('count', '>', 1)
                                                             ->get();
                                                         
-                                                        foreach ($pages->skip(1) as $page) {
-                                                            $page->delete();
-                                                            $deleted++;
+                                                        $deleted = 0;
+                                                        foreach ($duplicates as $duplicate) {
+                                                            // Keep the most recent, delete others
+                                                            $pages = \App\Models\Page::where('slug', $duplicate->slug)
+                                                                ->orderBy('created_at', 'desc')
+                                                                ->get();
+                                                            
+                                                            foreach ($pages->skip(1) as $page) {
+                                                                $page->delete();
+                                                                $deleted++;
+                                                            }
                                                         }
+                                                        
+                                                        Notification::make()
+                                                            ->success()
+                                                            ->title('✅ Duplicates Fixed')
+                                                            ->body($deleted > 0 ? "Successfully removed {$deleted} duplicate page(s)." : 'No duplicate pages found in the database.')
+                                                            ->duration(5000)
+                                                            ->send();
+                                                    } catch (\Exception $e) {
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('❌ Operation Failed')
+                                                            ->body('Error: ' . $e->getMessage())
+                                                            ->persistent()
+                                                            ->send();
                                                     }
-                                                    
-                                                    Notification::make()
-                                                        ->success()
-                                                        ->title('Duplicates Fixed')
-                                                        ->body($deleted > 0 ? "{$deleted} duplicate pages removed." : 'No duplicates found.')
-                                                        ->send();
                                                 }),
                                             
                                             Forms\Components\Actions\Action::make('clear_cache')
                                                 ->label('Clear All Cache')
-                                                ->color('info')
+                                                ->color('warning')
                                                 ->icon('heroicon-o-arrow-path')
                                                 ->requiresConfirmation()
+                                                ->disabled(fn () => !$this->isDebugMode())
+                                                ->modalHeading('Clear Application Cache?')
+                                                ->modalDescription('This will clear all cached data including config, routes, and views.')
+                                                ->modalSubmitActionLabel('Yes, clear cache')
                                                 ->action(function () {
                                                     try {
                                                         \Illuminate\Support\Facades\Artisan::call('cache:clear');
@@ -285,14 +300,16 @@ class Settings extends Page
                                                         
                                                         Notification::make()
                                                             ->success()
-                                                            ->title('Cache Cleared')
-                                                            ->body('All cache has been cleared successfully.')
+                                                            ->title('✅ Cache Cleared Successfully')
+                                                            ->body('Application cache, config cache, route cache, and view cache have all been cleared.')
+                                                            ->duration(5000)
                                                             ->send();
                                                     } catch (\Exception $e) {
                                                         Notification::make()
                                                             ->danger()
-                                                            ->title('Error')
-                                                            ->body('Failed to clear cache: ' . $e->getMessage())
+                                                            ->title('❌ Cache Clear Failed')
+                                                            ->body('Error: ' . $e->getMessage())
+                                                            ->persistent()
                                                             ->send();
                                                     }
                                                 }),
@@ -302,6 +319,7 @@ class Settings extends Page
                                                 ->color('danger')
                                                 ->icon('heroicon-o-trash')
                                                 ->requiresConfirmation()
+                                                ->disabled(fn () => !$this->isDebugMode())
                                                 ->modalHeading('Delete All Pages?')
                                                 ->modalDescription('⚠️ This will permanently delete all pages from the database.')
                                                 ->modalSubmitActionLabel('Yes, delete all pages')
@@ -312,14 +330,16 @@ class Settings extends Page
                                                         
                                                         Notification::make()
                                                             ->success()
-                                                            ->title('Pages Cleared')
-                                                            ->body("{$count} pages have been deleted.")
+                                                            ->title('✅ Pages Cleared Successfully')
+                                                            ->body("Successfully deleted {$count} page(s) from the database.")
+                                                            ->duration(5000)
                                                             ->send();
                                                     } catch (\Exception $e) {
                                                         Notification::make()
                                                             ->danger()
-                                                            ->title('Error')
-                                                            ->body('Failed to clear pages: ' . $e->getMessage())
+                                                            ->title('❌ Delete Pages Failed')
+                                                            ->body('Error: ' . $e->getMessage())
+                                                            ->persistent()
                                                             ->send();
                                                     }
                                                 }),
@@ -329,8 +349,9 @@ class Settings extends Page
                                                 ->color('danger')
                                                 ->icon('heroicon-o-photo')
                                                 ->requiresConfirmation()
+                                                ->disabled(fn () => !$this->isDebugMode())
                                                 ->modalHeading('Delete All Media?')
-                                                ->modalDescription('⚠️ This will delete all media records and files.')
+                                                ->modalDescription('⚠️ This will permanently delete all media files and their database records.')
                                                 ->modalSubmitActionLabel('Yes, delete all media')
                                                 ->action(function () {
                                                     try {
@@ -346,14 +367,16 @@ class Settings extends Page
                                                         
                                                         Notification::make()
                                                             ->success()
-                                                            ->title('Media Cleared')
-                                                            ->body("{$count} media files have been deleted.")
+                                                            ->title('✅ Media Cleared Successfully')
+                                                            ->body("Successfully deleted {$count} media file(s) and their records from the database.")
+                                                            ->duration(5000)
                                                             ->send();
                                                     } catch (\Exception $e) {
                                                         Notification::make()
                                                             ->danger()
-                                                            ->title('Error')
-                                                            ->body('Failed to clear media: ' . $e->getMessage())
+                                                            ->title('❌ Delete Media Failed')
+                                                            ->body('Error: ' . $e->getMessage())
+                                                            ->persistent()
                                                             ->send();
                                                     }
                                                 }),
@@ -363,6 +386,7 @@ class Settings extends Page
                                                 ->color('danger')
                                                 ->icon('heroicon-o-exclamation-triangle')
                                                 ->requiresConfirmation()
+                                                ->disabled(fn () => !$this->isDebugMode())
                                                 ->modalHeading('⚠️ DANGER: Reset Database?')
                                                 ->modalDescription('This will DELETE ALL DATA and run migrations again. This action is IRREVERSIBLE! You will need to reinstall VantaPress.')
                                                 ->modalSubmitActionLabel('Yes, I understand - RESET EVERYTHING')
@@ -372,8 +396,8 @@ class Settings extends Page
                                                         
                                                         Notification::make()
                                                             ->warning()
-                                                            ->title('Database Reset Complete')
-                                                            ->body('Database has been reset. Please visit /install.php to reinstall VantaPress.')
+                                                            ->title('⚠️ Database Reset Complete')
+                                                            ->body('All data has been permanently deleted. Please visit /install.php to reinstall VantaPress.')
                                                             ->persistent()
                                                             ->send();
                                                             
@@ -383,7 +407,7 @@ class Settings extends Page
                                                     } catch (\Exception $e) {
                                                         Notification::make()
                                                             ->danger()
-                                                            ->title('Reset Failed')
+                                                            ->title('❌ Database Reset Failed')
                                                             ->body('Error: ' . $e->getMessage())
                                                             ->persistent()
                                                             ->send();
@@ -477,5 +501,10 @@ class Settings extends Page
                 ->body('Failed to update debug mode: ' . $e->getMessage())
                 ->send();
         }
+    }
+
+    protected function isDebugMode(): bool
+    {
+        return config('app.debug', false);
     }
 }
