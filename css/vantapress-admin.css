@@ -34,6 +34,15 @@
 .fi-layout {
     display: flex !important;
     min-height: 100vh !important;
+    flex-direction: row-reverse !important;
+}
+
+/* Main container - takes remaining space */
+.fi-main-ctn {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 /* Sidebar MUST stay on top and in place */
@@ -43,17 +52,14 @@
     height: 100vh !important;
     z-index: 40 !important;
     flex-shrink: 0 !important;
-    width: auto !important;
+    width: 260px !important;
     min-width: 260px !important;
     max-width: 260px !important;
 }
 
-/* Main content below sidebar in z-index */
+/* Main content wrapper */
 .fi-main {
-    flex: 1 1 0% !important;
     z-index: 10 !important;
-    overflow-x: hidden !important;
-    min-width: 0 !important;
     position: relative !important;
 }
 
