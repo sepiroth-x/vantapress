@@ -57,6 +57,25 @@
     max-width: 260px !important;
 }
 
+/* Force sidebar to be visible and NOT overlay on medium+ screens (1024px+) */
+@media (min-width: 1024px) {
+    .fi-sidebar {
+        position: sticky !important;
+        transform: translateX(0) !important; /* Prevent sidebar from hiding */
+        display: block !important;
+    }
+    
+    .fi-sidebar-close-overlay {
+        display: none !important; /* Hide the overlay backdrop */
+    }
+    
+    /* Ensure layout stays flex on desktop */
+    .fi-layout {
+        display: flex !important;
+        flex-direction: row-reverse !important;
+    }
+}
+
 /* Main content wrapper */
 .fi-main {
     z-index: 10 !important;
