@@ -95,21 +95,46 @@ class AdminPanelProvider extends PanelProvider
                 </script>'
             )
             ->renderHook(
-                PanelsRenderHook::HEAD_END,
+                PanelsRenderHook::SCRIPTS_AFTER,
                 fn (): string => '<script>
-                    // Force dark class after Filament\'s loadDarkMode runs
-                    (function() {
+                    // Force dark mode - runs AFTER all Filament scripts including loadDarkMode()
+                    (function forceDarkMode() {
+                        // Add dark class immediately
                         document.documentElement.classList.add("dark");
-                        // Observe and re-add if Filament removes it
-                        const observer = new MutationObserver(() => {
-                            if (!document.documentElement.classList.contains("dark")) {
-                                document.documentElement.classList.add("dark");
-                            }
+                        
+                        // Create MutationObserver to maintain dark class
+                        const observer = new MutationObserver((mutations) => {
+                            mutations.forEach((mutation) => {
+                                if (mutation.type === "attributes" && mutation.attributeName === "class") {
+                                    if (!document.documentElement.classList.contains("dark")) {
+                                        console.log("Dark class removed - re-adding");
+                                        document.documentElement.classList.add("dark");
+                                    }
+                                }
+                            });
                         });
+                        
+                        // Start observing
                         observer.observe(document.documentElement, { 
                             attributes: true, 
                             attributeFilter: ["class"] 
                         });
+                        
+                        // Also listen for DOMContentLoaded and load events
+                        window.addEventListener("DOMContentLoaded", () => {
+                            document.documentElement.classList.add("dark");
+                        });
+                        
+                        window.addEventListener("load", () => {
+                            document.documentElement.classList.add("dark");
+                        });
+                        
+                        // Set interval as final safeguard (will be overridden by observer)
+                        setInterval(() => {
+                            if (!document.documentElement.classList.contains("dark")) {
+                                document.documentElement.classList.add("dark");
+                            }
+                        }, 100);
                     })();
                 </script>'
             )
