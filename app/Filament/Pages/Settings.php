@@ -63,6 +63,9 @@ class Settings extends Page
             // Maintenance Mode
             'maintenance_mode' => (bool) Setting::get('maintenance_mode', false),
             'maintenance_message' => (string) Setting::get('maintenance_message', 'Site is under maintenance. Please check back soon.'),
+            
+            // Developer Options
+            'debug_mode' => (bool) config('app.debug', false),
         ];
     }
 
@@ -201,6 +204,196 @@ class Settings extends Page
                                     ->rows(3)
                                     ->default('Site is under maintenance. Please check back soon.'),
                             ]),
+                        
+                        Forms\Components\Tabs\Tab::make('Developer')
+                            ->icon('heroicon-o-code-bracket')
+                            ->schema([
+                                Forms\Components\Section::make('Debug Settings')
+                                    ->description('Advanced debugging options for developers')
+                                    ->schema([
+                                        Forms\Components\Toggle::make('debug_mode')
+                                            ->label('Enable Debug Mode')
+                                            ->helperText('⚠️ WARNING: Shows detailed error messages. DO NOT enable in production!')
+                                            ->live()
+                                            ->afterStateUpdated(function ($state) {
+                                                $this->updateDebugMode($state);
+                                            }),
+                                    ])
+                                    ->collapsible(),
+                                
+                                Forms\Components\Section::make('Danger Zone')
+                                    ->description('⚠️ WARNING: These actions cannot be undone!')
+                                    ->schema([
+                                        Forms\Components\Placeholder::make('delete_info')
+                                            ->label('Delete Conflicting Data')
+                                            ->content('Use these tools to fix database issues and remove duplicate or conflicting data:
+
+• **Fix Duplicate Slugs** - Removes duplicate page slugs (keeps most recent)
+• **Clear All Pages** - Deletes all pages from database
+• **Clear All Media** - Deletes all media files and records
+• **Clear Cache** - Clears application, config, route, and view cache
+• **Reset Database** - ⚠️ DANGER: Wipes entire database and runs migrations'),
+                                        
+                                        Forms\Components\Actions::make([
+                                            Forms\Components\Actions\Action::make('fix_duplicates')
+                                                ->label('Fix Duplicate Slugs')
+                                                ->color('warning')
+                                                ->icon('heroicon-o-wrench-screwdriver')
+                                                ->requiresConfirmation()
+                                                ->modalHeading('Fix Duplicate Page Slugs?')
+                                                ->modalDescription('This will find and remove duplicate page slugs, keeping the most recent one.')
+                                                ->modalSubmitActionLabel('Yes, fix duplicates')
+                                                ->action(function () {
+                                                    $duplicates = \Illuminate\Support\Facades\DB::table('pages')
+                                                        ->select('slug', \Illuminate\Support\Facades\DB::raw('COUNT(*) as count'))
+                                                        ->whereNull('deleted_at')
+                                                        ->groupBy('slug')
+                                                        ->having('count', '>', 1)
+                                                        ->get();
+                                                    
+                                                    $deleted = 0;
+                                                    foreach ($duplicates as $duplicate) {
+                                                        // Keep the most recent, delete others
+                                                        $pages = \App\Models\Page::where('slug', $duplicate->slug)
+                                                            ->orderBy('created_at', 'desc')
+                                                            ->get();
+                                                        
+                                                        foreach ($pages->skip(1) as $page) {
+                                                            $page->delete();
+                                                            $deleted++;
+                                                        }
+                                                    }
+                                                    
+                                                    Notification::make()
+                                                        ->success()
+                                                        ->title('Duplicates Fixed')
+                                                        ->body($deleted > 0 ? "{$deleted} duplicate pages removed." : 'No duplicates found.')
+                                                        ->send();
+                                                }),
+                                            
+                                            Forms\Components\Actions\Action::make('clear_cache')
+                                                ->label('Clear All Cache')
+                                                ->color('info')
+                                                ->icon('heroicon-o-arrow-path')
+                                                ->requiresConfirmation()
+                                                ->action(function () {
+                                                    try {
+                                                        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+                                                        \Illuminate\Support\Facades\Artisan::call('config:clear');
+                                                        \Illuminate\Support\Facades\Artisan::call('route:clear');
+                                                        \Illuminate\Support\Facades\Artisan::call('view:clear');
+                                                        
+                                                        Notification::make()
+                                                            ->success()
+                                                            ->title('Cache Cleared')
+                                                            ->body('All cache has been cleared successfully.')
+                                                            ->send();
+                                                    } catch (\Exception $e) {
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('Error')
+                                                            ->body('Failed to clear cache: ' . $e->getMessage())
+                                                            ->send();
+                                                    }
+                                                }),
+                                            
+                                            Forms\Components\Actions\Action::make('delete_pages')
+                                                ->label('Clear All Pages')
+                                                ->color('danger')
+                                                ->icon('heroicon-o-trash')
+                                                ->requiresConfirmation()
+                                                ->modalHeading('Delete All Pages?')
+                                                ->modalDescription('⚠️ This will permanently delete all pages from the database.')
+                                                ->modalSubmitActionLabel('Yes, delete all pages')
+                                                ->action(function () {
+                                                    try {
+                                                        $count = \App\Models\Page::count();
+                                                        \App\Models\Page::query()->forceDelete();
+                                                        
+                                                        Notification::make()
+                                                            ->success()
+                                                            ->title('Pages Cleared')
+                                                            ->body("{$count} pages have been deleted.")
+                                                            ->send();
+                                                    } catch (\Exception $e) {
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('Error')
+                                                            ->body('Failed to clear pages: ' . $e->getMessage())
+                                                            ->send();
+                                                    }
+                                                }),
+                                            
+                                            Forms\Components\Actions\Action::make('delete_media')
+                                                ->label('Clear All Media')
+                                                ->color('danger')
+                                                ->icon('heroicon-o-photo')
+                                                ->requiresConfirmation()
+                                                ->modalHeading('Delete All Media?')
+                                                ->modalDescription('⚠️ This will delete all media records and files.')
+                                                ->modalSubmitActionLabel('Yes, delete all media')
+                                                ->action(function () {
+                                                    try {
+                                                        $count = \App\Models\Media::count();
+                                                        
+                                                        // Delete media files
+                                                        $mediaPath = storage_path('app/public/media');
+                                                        if (\Illuminate\Support\Facades\File::exists($mediaPath)) {
+                                                            \Illuminate\Support\Facades\File::cleanDirectory($mediaPath);
+                                                        }
+                                                        
+                                                        \App\Models\Media::query()->forceDelete();
+                                                        
+                                                        Notification::make()
+                                                            ->success()
+                                                            ->title('Media Cleared')
+                                                            ->body("{$count} media files have been deleted.")
+                                                            ->send();
+                                                    } catch (\Exception $e) {
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('Error')
+                                                            ->body('Failed to clear media: ' . $e->getMessage())
+                                                            ->send();
+                                                    }
+                                                }),
+                                            
+                                            Forms\Components\Actions\Action::make('reset_database')
+                                                ->label('Reset Entire Database')
+                                                ->color('danger')
+                                                ->icon('heroicon-o-exclamation-triangle')
+                                                ->requiresConfirmation()
+                                                ->modalHeading('⚠️ DANGER: Reset Database?')
+                                                ->modalDescription('This will DELETE ALL DATA and run migrations again. This action is IRREVERSIBLE! You will need to reinstall VantaPress.')
+                                                ->modalSubmitActionLabel('Yes, I understand - RESET EVERYTHING')
+                                                ->action(function () {
+                                                    try {
+                                                        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true]);
+                                                        
+                                                        Notification::make()
+                                                            ->warning()
+                                                            ->title('Database Reset Complete')
+                                                            ->body('Database has been reset. Please visit /install.php to reinstall VantaPress.')
+                                                            ->persistent()
+                                                            ->send();
+                                                            
+                                                        // Logout user
+                                                        auth()->logout();
+                                                        redirect('/');
+                                                    } catch (\Exception $e) {
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('Reset Failed')
+                                                            ->body('Error: ' . $e->getMessage())
+                                                            ->persistent()
+                                                            ->send();
+                                                    }
+                                                }),
+                                        ]),
+                                    ])
+                                    ->collapsible()
+                                    ->collapsed(),
+                            ]),
                     ])
                     ->columnSpanFull(),
             ])
@@ -212,6 +405,11 @@ class Settings extends Page
         $data = $this->form->getState();
         
         foreach ($data as $key => $value) {
+            // Skip debug_mode as it's handled separately
+            if ($key === 'debug_mode') {
+                continue;
+            }
+            
             // Determine the type based on the value
             $type = 'string';
             
@@ -232,5 +430,52 @@ class Settings extends Page
             ->title('Settings saved successfully')
             ->success()
             ->send();
+    }
+    
+    protected function updateDebugMode(bool $enabled): void
+    {
+        try {
+            $envPath = base_path('.env');
+            
+            if (!\Illuminate\Support\Facades\File::exists($envPath)) {
+                Notification::make()
+                    ->danger()
+                    ->title('Error')
+                    ->body('.env file not found')
+                    ->send();
+                return;
+            }
+            
+            $envContent = \Illuminate\Support\Facades\File::get($envPath);
+            
+            // Update APP_DEBUG
+            if (preg_match('/^APP_DEBUG=.*$/m', $envContent)) {
+                $envContent = preg_replace(
+                    '/^APP_DEBUG=.*$/m',
+                    'APP_DEBUG=' . ($enabled ? 'true' : 'false'),
+                    $envContent
+                );
+            } else {
+                $envContent .= "\nAPP_DEBUG=" . ($enabled ? 'true' : 'false');
+            }
+            
+            \Illuminate\Support\Facades\File::put($envPath, $envContent);
+            
+            // Clear config cache
+            \Illuminate\Support\Facades\Artisan::call('config:clear');
+            
+            Notification::make()
+                ->success()
+                ->title('Debug Mode ' . ($enabled ? 'Enabled' : 'Disabled'))
+                ->body($enabled ? '⚠️ Remember to disable this in production!' : 'Debug mode has been disabled.')
+                ->send();
+                
+        } catch (\Exception $e) {
+            Notification::make()
+                ->danger()
+                ->title('Error')
+                ->body('Failed to update debug mode: ' . $e->getMessage())
+                ->send();
+        }
     }
 }

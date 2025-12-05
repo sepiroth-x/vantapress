@@ -122,7 +122,7 @@
                     </div>
                     
                     {{-- Action Buttons --}}
-                    <div class="flex space-x-3 mt-4">
+                    <div class="flex flex-col sm:flex-row gap-3 mt-4">
                         @if($updateAvailable)
                             <x-filament::button
                                 wire:click="installUpdate"
@@ -130,6 +130,7 @@
                                 icon="heroicon-o-arrow-down-circle"
                                 color="success"
                                 size="lg"
+                                class="w-full sm:w-auto justify-center"
                             >
                                 <span wire:loading.remove wire:target="installUpdate">
                                     🚀 Install Update Automatically
@@ -144,9 +145,11 @@
                             wire:click="viewReleaseNotes"
                             icon="heroicon-o-document-text"
                             color="primary"
+                            size="lg"
                             tag="a"
                             href="{{ $latestRelease['html_url'] }}"
                             target="_blank"
+                            class="w-full sm:w-auto justify-center"
                         >
                             View Full Release Notes
                         </x-filament::button>
@@ -155,9 +158,11 @@
                             <x-filament::button
                                 icon="heroicon-o-arrow-down-tray"
                                 color="gray"
+                                size="lg"
                                 tag="a"
                                 href="{{ $latestRelease['zipball_url'] }}"
                                 target="_blank"
+                                class="w-full sm:w-auto justify-center"
                             >
                                 Download Manually
                             </x-filament::button>

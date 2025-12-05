@@ -1,12 +1,53 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.19-complete  
+**Current Version:** v1.0.20-complete  
 **Release Date:** December 5, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.19-complete
+## 📌 Latest Version: v1.0.20-complete
+
+### 🎯 What's New in v1.0.20-complete
+- **🛡️ Enhanced Error Handling** - Comprehensive global error handling system to prevent crashes
+- **🐛 Duplicate Slug Protection** - Fixed page creation errors with duplicate slugs
+- **🔧 Developer Settings Panel** - New developer tools in Settings with debug mode toggle
+- **🗑️ Data Management Tools** - Delete conflicting data, fix duplicates, clear cache
+- **📱 Responsive Update Buttons** - Improved button spacing and mobile responsiveness
+- **🚀 Development Server Fixed** - Added missing server.php router file
+
+### 🐛 Bug Fixes
+- Fixed duplicate slug error when creating pages with existing slugs
+- Fixed media upload error handling with better notifications
+- Fixed page creation to detect both active and soft-deleted slug conflicts
+- Fixed development server failing due to missing server.php file
+- Added proper error messages for database constraint violations
+
+### 🔧 Technical Improvements
+- **New Middleware:** `HandleFilamentErrors` - Global error catcher for all Filament operations
+- **Enhanced CreatePage:** Pre-creation validation with duplicate detection
+- **Enhanced CreateMedia:** Comprehensive error handling with try-catch blocks
+- **Smart Error Messages:** Production-safe messages, debug mode shows full details
+- **Error Logging:** All errors logged with context (user, URL, SQL query)
+- **Settings Panel:** New "Developer" tab with 5 powerful tools:
+  - Debug Mode toggle (updates .env automatically)
+  - Fix Duplicate Slugs
+  - Clear All Pages/Media
+  - Clear Cache
+  - Reset Database
+- **Responsive Design:** Update system buttons now stack on mobile, horizontal on desktop
+- **Created server.php:** Router file for PHP built-in development server
+
+### 🎨 UI/UX Improvements
+- Update system buttons now responsive (flex-col on mobile, flex-row on desktop)
+- All buttons use consistent sizing (lg)
+- Better gap spacing with Tailwind's gap-3
+- Full-width buttons on mobile for better touch targets
+- Centered button text across all screen sizes
+
+---
+
+## 📌 Previous Version: v1.0.19-complete
 
 ### 🎯 What's New in v1.0.19-complete
 - **🖼️ Media Upload Size Fix** - Fixed SQL error: "Field 'size' doesn't have a default value"

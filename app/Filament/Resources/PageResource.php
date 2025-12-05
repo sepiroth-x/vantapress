@@ -38,10 +38,17 @@ class PageResource extends Resource
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule) {
-                                return $rule->withoutTrashed();
+                            ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, $record) {
+                                $rule = $rule->withoutTrashed();
+                                if ($record) {
+                                    $rule = $rule->ignore($record->id);
+                                }
+                                return $rule;
                             })
-                            ->helperText('URL-friendly version of the title'),
+                            ->helperText('URL-friendly version of the title. Must be unique.')
+                            ->validationMessages([
+                                'unique' => 'This slug is already in use. Please choose a different one.',
+                            ]),
                         
                         Forms\Components\RichEditor::make('content')
                             ->columnSpanFull()
