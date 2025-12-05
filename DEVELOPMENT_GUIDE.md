@@ -909,11 +909,21 @@ config('yourmodule.setting_name');
 
 ## Theme Development Guide
 
+### VantaPress Theme System Overview
+
+VantaPress uses a **theme-based styling system** where the active theme controls **ALL visual styling** of both the admin panel and public site. The structure stays consistent, but colors, shadows, borders, and visual aesthetics come from the active theme.
+
+**Available Themes (2 total):**
+1. **BasicTheme** - Clean professional design (DEFAULT & CURRENTLY ACTIVE)
+2. **TheVillainArise** - Custom themed design
+
+**IMPORTANT:** There is NO "default" theme! The active theme MUST be set to an actual theme name like `'BasicTheme'` or `'TheVillainArise'` in `config/cms.php`.
+
 ### Theme Structure
 
 ```
-vantapress/your-theme/
-├── views/                # Theme templates
+themes/YourTheme/
+├── views/                # Theme templates (public site)
 │   ├── layouts/
 │   │   ├── app.blade.php       # Main layout
 │   │   ├── header.blade.php    # Header partial
@@ -926,11 +936,14 @@ vantapress/your-theme/
 │   │   └── show.blade.php      # Single post
 │   └── partials/
 │       └── sidebar.blade.php   # Reusable components
-├── assets/               # Theme assets (optional)
+├── assets/               # Theme assets (MUST BE SYNCED!)
 │   ├── css/
-│   ├── js/
-│   └── images/
+│   │   ├── admin.css          # Admin panel styling (IMPORTANT!)
+│   │   └── theme.css          # Public site styling
+│   └── js/
+│       └── theme.js           # Theme JavaScript
 ├── theme.json           # Theme metadata (REQUIRED)
+├── theme.php            # Theme configuration (optional)
 ├── functions.php        # Theme functions (optional)
 ├── screenshot.png       # Theme preview (optional)
 └── README.md            # Theme documentation
@@ -1055,23 +1068,40 @@ The theme loader automatically discovers themes in the `vantapress/` directory.
 
 ### Theme-Based Admin Styling
 
-**NEW IN v1.0.12**: Admin panel styling is now controlled by the active theme, providing a unified design experience across frontend and backend.
+**CRITICAL**: Admin panel styling is controlled by the **active theme**, providing a unified design experience across frontend and backend.
 
 #### Architecture
 
-Each theme controls **both** the frontend website appearance AND the admin panel aesthetics through two CSS files:
+Each theme controls **both** the frontend website appearance AND the admin panel aesthetics through CSS files:
 
 ```
 themes/YourTheme/
 ├── assets/
 │   └── css/
 │       ├── theme.css    ← Frontend website styling
-│       └── admin.css    ← Admin panel styling ⭐
+│       └── admin.css    ← Admin panel styling ⭐ (IMPORTANT!)
 ```
+
+**Asset Syncing Required:**
+
+Theme assets MUST be synced to root-level directories for web access:
+
+```bash
+php sync-theme-assets.php
+```
+
+This copies:
+```
+themes/BasicTheme/assets/css/admin.css  →  css/themes/BasicTheme/admin.css
+themes/BasicTheme/assets/css/theme.css  →  css/themes/BasicTheme/theme.css
+themes/BasicTheme/assets/js/theme.js    →  js/themes/BasicTheme/theme.js
+```
+
+**Run this command after editing any theme CSS/JS files!**
 
 #### How It Works
 
-The `AdminPanelProvider` automatically detects the active theme and loads its `admin.css`:
+The `AdminPanelProvider` automatically loads the active theme's CSS:
 
 ```php
 // app/Providers/Filament/AdminPanelProvider.php
@@ -1080,11 +1110,27 @@ The `AdminPanelProvider` automatically detects the active theme and loads its `a
     function (): string {
         $themeManager = app(\App\Services\CMS\ThemeManager::class);
         $activeTheme = $themeManager->getActiveTheme();
-        $adminCss = asset("themes/{$activeTheme}/assets/css/admin.css") . '?v=' . time();
         
-        return '<link rel="stylesheet" href="' . $adminCss . '">';
+        // Load root admin CSS first (layout only)
+        $version = config('version.version', '1.0.21');
+        $rootAdminCss = asset('css/vantapress-admin.css') . '?v=' . $version;
+        
+        // Then load theme-specific CSS (all visual styling)
+        $themeAdminCss = asset("css/themes/{$activeTheme}/admin.css") . '?v=' . $version;
+        
+        return '<link rel="stylesheet" href="' . $rootAdminCss . '">' .
+               '<link rel="stylesheet" href="' . $themeAdminCss . '">';
     }
 )
+```
+
+#### CSS Loading Order
+
+1. **Filament Base CSS** (auto-loaded by FilamentPHP)
+2. **VantaPress Layout CSS** (`css/vantapress-admin.css`) - Structure only
+3. **Active Theme CSS** (`css/themes/{ActiveTheme}/admin.css`) - All visual styling
+
+**Key Principle:** Layout/structure is in root CSS, ALL visual styling comes from theme CSS.
 ```
 
 #### What Themes Can Style

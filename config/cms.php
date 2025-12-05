@@ -18,12 +18,12 @@ return array (
   'themes' => 
   array (
     'path' => 'themes',
-    'active' => 'default',
-    'active_theme' => 'default',
+    'active' => 'BasicTheme',
+    'active_theme' => 'BasicTheme',
     'cache_enabled' => true,
     'cache_key' => 'cms_themes',
     'cache_lifetime' => 3600,
-    'fallback_theme' => 'default',
+    'fallback_theme' => 'BasicTheme',
     'allowed_extensions' => 
     array (
       0 => 'blade.php',
