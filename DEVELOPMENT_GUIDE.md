@@ -6,6 +6,44 @@
 
 ---
 
+## ⚠️ ALWAYS REMEMBER
+
+### 1. **NO public/ Folder Structure**
+VantaPress uses a **root-level directory structure** - there is NO `public/` folder!
+
+```
+✅ CORRECT:
+/css/
+/js/
+/images/
+/themes/
+/index.php
+
+❌ WRONG:
+/public/css/
+/public/js/
+/public/images/
+```
+
+**All assets are served directly from the root directory.** Never reference `/public/` in any code, configuration, or documentation.
+
+### 2. **Styling Comes from Active Theme**
+ALL visual styling (colors, shadows, borders, fonts) comes from the **Active Theme** CSS files.
+
+- **Active Theme:** Set in `config/cms.php` (`'active_theme' => 'BasicTheme'`)
+- **Theme CSS Location:** `themes/{ThemeName}/assets/css/admin.css` (source)
+- **Synced Location:** `css/themes/{ThemeName}/admin.css` (web-accessible)
+- **Sync Command:** `php sync-theme-assets.php` (run after editing theme CSS)
+
+**CSS Loading Order:**
+1. Filament Base CSS (structure)
+2. `css/vantapress-admin.css` (layout only - NO visual styling)
+3. `css/themes/{ActiveTheme}/admin.css` (ALL colors, shadows, visual design)
+
+**Available Themes:** BasicTheme (default), TheVillainArise
+
+---
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
