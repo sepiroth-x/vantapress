@@ -73,16 +73,41 @@ const loadDarkMode = () => {
 ->darkMode(true) // Enable dark mode toggle (user can switch)
 ```
 
-**AFTER** (Lines 67-68):
+**AFTER** (Lines 67 + Lines 87-95):
 ```php
 ->darkMode(true) // Enable dark mode toggle
-->darkModeForced() // Force dark mode as default (required for BasicTheme styling)
+->font('Inter')
+// ... other configuration ...
+->renderHook(
+    PanelsRenderHook::HEAD_START,
+    fn (): string => '<script>
+        // Force dark mode as default for BasicTheme styling
+        if (!localStorage.getItem("theme")) {
+            localStorage.setItem("theme", "dark");
+        }
+    </script>'
+)
 ```
 
 ### What This Does
 
 - **`->darkMode(true)`**: Enables dark mode toggle button in admin panel
-- **`->darkModeForced()`**: Forces dark mode to be active by default, always adding `.dark` class to `<html>`
+- **JavaScript Injection**: Sets localStorage theme to 'dark' by default on first visit
+- **Preserves User Choice**: If user has already set a preference, it's respected
+
+### Why This Approach
+
+**Previous Attempt** (FAILED):
+```php
+->darkModeForced() // ❌ This method doesn't exist in Filament 3.x!
+```
+This caused a 500 server error.
+
+**Correct Approach** (SUCCESS):
+- Inject JavaScript via `HEAD_START` render hook
+- Set default theme in localStorage before page loads
+- Works with Filament's existing dark mode system
+- Compatible with Filament 3.x API
 
 ### Result
 
