@@ -1,12 +1,40 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.17-complete  
+**Current Version:** v1.0.18-complete  
 **Release Date:** December 5, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.17-complete
+## 📌 Latest Version: v1.0.18-complete
+
+### 🎯 What's New in v1.0.18-complete
+- **✅ Page Creation Enhanced** - Pages now redirect to list after creation
+- **📝 Content Field Optional** - Allow blank pages for theme/developer population
+- **🔄 Slug Recreation Fixed** - Can now recreate deleted pages with same slug
+- **🖼️ Media Upload Fixed** - Title field no longer required, auto-generates from filename
+- **↩️ Media Redirect Added** - Returns to media list after upload
+- **🎨 Module Flexibility** - Improved .gitignore to support separate module repositories
+- **📚 Developer Manual Created** - Comprehensive eBook-style documentation (private)
+
+### 🐛 Bug Fixes
+- Fixed page creation staying on same view instead of redirecting to list
+- Fixed slug uniqueness error when recreating deleted pages (now ignores soft-deleted records)
+- Fixed SQL error: "Field 'title' doesn't have a default value" on media upload
+- Fixed media title auto-generation from filename
+- Fixed page content required validation (now optional for blank pages)
+
+### 🔧 Technical Improvements
+- Added `withoutTrashed()` modifier to page slug uniqueness validation
+- Made media `title` field nullable in database
+- Enhanced CreateMedia with better title auto-generation
+- Added redirect methods to CreatePage and CreateMedia resources
+- Updated Media model fillable fields to include 'title' and 'path'
+- Created migration to update existing databases (make media title nullable)
+
+---
+
+## 📌 Previous Version: v1.0.17-complete
 
 ### 🎯 What's New in v1.0.17-complete
 - **🏆 Admin Footer Added** - Proudly display developer attribution in admin panel

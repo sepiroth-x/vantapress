@@ -53,9 +53,8 @@ class MediaResource extends Resource
                 Forms\Components\Section::make('File Information')
                     ->schema([
                         Forms\Components\TextInput::make('title')
-                            ->required()
                             ->maxLength(255)
-                            ->helperText('Descriptive title for this media file'),
+                            ->helperText('Descriptive title for this media file (auto-generated from filename if left empty)'),
                         
                         Forms\Components\Textarea::make('alt_text')
                             ->maxLength(500)

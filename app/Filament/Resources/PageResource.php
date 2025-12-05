@@ -38,11 +38,12 @@ class PageResource extends Resource
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true)
+                            ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule) {
+                                return $rule->withoutTrashed();
+                            })
                             ->helperText('URL-friendly version of the title'),
                         
                         Forms\Components\RichEditor::make('content')
-                            ->required()
                             ->columnSpanFull()
                             ->toolbarButtons([
                                 'bold',

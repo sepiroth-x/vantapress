@@ -46,3 +46,9 @@ desktop.ini
 
 # Developer Manual (Private eBook)
 VantaPress Developer Manual.md
+
+# Modules - Ignore all except core modules
+/Modules/*
+!/Modules/HelloWorld/
+!/Modules/VPEssential1/
+!/Modules/VPToDoList/

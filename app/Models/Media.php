@@ -11,6 +11,7 @@ class Media extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'title',
         'name',
         'file_name',
         'file_path',
@@ -25,6 +26,7 @@ class Media extends Model
         'width',
         'height',
         'uploaded_by',
+        'path',
     ];
 
     protected $casts = [

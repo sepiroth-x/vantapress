@@ -9,6 +9,11 @@ class CreateMedia extends CreateRecord
 {
     protected static string $resource = MediaResource::class;
     
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+    
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Extract file information
@@ -18,6 +23,8 @@ class CreateMedia extends CreateRecord
             if (file_exists($file)) {
                 $data['file_name'] = basename($data['path']);
                 $data['mime_type'] = mime_content_type($file);
+                
+                // Get file size
                 $data['size'] = filesize($file);
                 
                 // Get image dimensions if it's an image
@@ -28,16 +35,16 @@ class CreateMedia extends CreateRecord
                         $data['height'] = $imageInfo[1];
                     }
                 }
+                
+                // Auto-generate title from filename if not provided
+                if (empty($data['title'])) {
+                    $data['title'] = ucwords(str_replace(['-', '_'], ' ', pathinfo($data['file_name'], PATHINFO_FILENAME)));
+                }
             }
         }
         
         // Set the uploader
         $data['uploaded_by'] = auth()->id();
-        
-        // Auto-set title from filename if not provided
-        if (empty($data['title']) && isset($data['file_name'])) {
-            $data['title'] = pathinfo($data['file_name'], PATHINFO_FILENAME);
-        }
         
         return $data;
     }
