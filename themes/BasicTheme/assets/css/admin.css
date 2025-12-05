@@ -96,8 +96,7 @@
             rgba(15, 76, 117, 0.03) 8px
         ),
         var(--pixel-black) !important;
-    position: relative !important;
-    z-index: 1 !important;
+    /* DO NOT set position or z-index - handled by root CSS */
 }
 
 /* Cards - Flat retro game style */
@@ -284,8 +283,7 @@ html:not(.dark) .fi-main {
             rgba(255, 107, 107, 0.03) 8px
         ),
         #F8F9FA !important;
-    position: relative !important;
-    z-index: 1 !important;
+    /* DO NOT set position or z-index - handled by root CSS */
 }
 
 html:not(.dark) .fi-section,

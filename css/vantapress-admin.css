@@ -43,6 +43,9 @@
     height: 100vh !important;
     z-index: 40 !important;
     flex-shrink: 0 !important;
+    width: auto !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
 }
 
 /* Main content below sidebar in z-index */
@@ -50,6 +53,9 @@
     flex: 1 !important;
     z-index: 10 !important;
     overflow-x: hidden !important;
+    width: auto !important;
+    max-width: 100% !important;
+    position: relative !important;
 }
 
 /* Topbar */
