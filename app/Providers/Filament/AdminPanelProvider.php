@@ -63,7 +63,8 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Green,
                 'warning' => Color::Orange,
             ])
-            ->darkMode(true) // Enable dark mode toggle (user can switch)
+            ->darkMode(true) // Enable dark mode toggle
+            ->darkModeForced() // Force dark mode as default (required for BasicTheme styling)
             ->font('Inter')
             ->brandLogo(asset('images/vantapress-logo.svg'))
             ->favicon(asset('images/favicon.ico'))
