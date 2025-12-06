@@ -95,57 +95,139 @@ class WebMigrationService
     }
 
     /**
-     * Fix conflicting database tables before migration
+     * Execute migration fix scripts from database/migration-fixes directory
      * 
-     * Handles legacy table conflicts that may exist from previous versions.
-     * This ensures migrations can run cleanly without "table already exists" errors.
+     * This system allows deploying fix scripts with updates that automatically
+     * resolve migration conflicts without requiring manual user intervention.
      * 
-     * @return void
+     * Each fix script:
+     * - Checks if it needs to run (shouldRun method)
+     * - Executes fix logic (execute method)
+     * - Returns detailed results
+     * - Logs all actions
+     * 
+     * @return array Summary of fixes executed
+     */
+    protected function executeMigrationFixes(): array
+    {
+        $fixesPath = database_path('migration-fixes');
+        $fixesExecuted = [];
+        $fixesSkipped = [];
+        
+        try {
+            // Check if migration-fixes directory exists
+            if (!file_exists($fixesPath) || !is_dir($fixesPath)) {
+                Log::info('[Migration Fixes] No migration-fixes directory found, skipping fixes');
+                return [
+                    'executed' => [],
+                    'skipped' => [],
+                    'total' => 0,
+                    'message' => 'No migration fixes available'
+                ];
+            }
+
+            // Get all PHP files in migration-fixes directory (sorted alphabetically)
+            $fixFiles = glob($fixesPath . '/*.php');
+            
+            if (empty($fixFiles)) {
+                Log::info('[Migration Fixes] No fix scripts found');
+                return [
+                    'executed' => [],
+                    'skipped' => [],
+                    'total' => 0,
+                    'message' => 'No migration fixes available'
+                ];
+            }
+
+            sort($fixFiles); // Ensure alphabetical execution order
+
+            Log::info('[Migration Fixes] Found ' . count($fixFiles) . ' fix script(s)', [
+                'scripts' => array_map('basename', $fixFiles)
+            ]);
+
+            // Execute each fix script
+            foreach ($fixFiles as $fixFile) {
+                $fixName = basename($fixFile, '.php');
+                
+                try {
+                    // Include the fix script (returns an anonymous class instance)
+                    $fixInstance = include $fixFile;
+
+                    // Check if fix should run
+                    if (method_exists($fixInstance, 'shouldRun') && !$fixInstance->shouldRun()) {
+                        $fixesSkipped[] = $fixName;
+                        Log::info("[Migration Fixes] Skipped: {$fixName} (not needed)");
+                        continue;
+                    }
+
+                    // Execute the fix
+                    if (method_exists($fixInstance, 'execute')) {
+                        $result = $fixInstance->execute();
+                        
+                        if ($result['executed'] ?? false) {
+                            $fixesExecuted[] = [
+                                'name' => $fixName,
+                                'message' => $result['message'] ?? 'Executed successfully',
+                                'details' => $result
+                            ];
+                            Log::info("[Migration Fixes] Executed: {$fixName}", $result);
+                        } else {
+                            $fixesSkipped[] = $fixName;
+                            Log::info("[Migration Fixes] Skipped: {$fixName} - " . ($result['message'] ?? 'No action needed'));
+                        }
+                    } else {
+                        Log::warning("[Migration Fixes] Invalid fix script: {$fixName} (missing execute method)");
+                    }
+
+                } catch (Exception $e) {
+                    Log::error("[Migration Fixes] Error executing fix: {$fixName}", [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                    // Continue with other fixes even if one fails
+                }
+            }
+
+            $summary = [
+                'executed' => $fixesExecuted,
+                'skipped' => $fixesSkipped,
+                'total' => count($fixesExecuted),
+                'message' => count($fixesExecuted) > 0 
+                    ? 'Executed ' . count($fixesExecuted) . ' migration fix(es)' 
+                    : 'No migration fixes needed'
+            ];
+
+            Log::info('[Migration Fixes] Completed', $summary);
+            
+            return $summary;
+
+        } catch (Exception $e) {
+            Log::error('[Migration Fixes] Failed to execute fixes', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return [
+                'executed' => $fixesExecuted,
+                'skipped' => $fixesSkipped,
+                'total' => count($fixesExecuted),
+                'message' => 'Fix execution had errors: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * Legacy method for backward compatibility
+     * Now redirects to the new script-based system
+     * 
+     * @deprecated Use executeMigrationFixes() instead
      */
     protected function fixConflictingTables(): void
     {
-        try {
-            $tablesFixed = [];
-
-            // Check for legacy menus tables (v1.0.41 and earlier)
-            // These tables may exist but not be tracked in migrations table
-            if (Schema::hasTable('menu_items')) {
-                // Check if migration exists but table isn't tracked
-                $migrationExists = DB::table('migrations')
-                    ->where('migration', 'like', '%create_menu_items_table')
-                    ->exists();
-                
-                if (!$migrationExists) {
-                    Schema::dropIfExists('menu_items');
-                    $tablesFixed[] = 'menu_items';
-                    Log::info('Dropped legacy table: menu_items');
-                }
-            }
-
-            if (Schema::hasTable('menus')) {
-                $migrationExists = DB::table('migrations')
-                    ->where('migration', 'like', '%create_menus_table')
-                    ->exists();
-                
-                if (!$migrationExists) {
-                    Schema::dropIfExists('menus');
-                    $tablesFixed[] = 'menus';
-                    Log::info('Dropped legacy table: menus');
-                }
-            }
-
-            if (count($tablesFixed) > 0) {
-                Log::info('Fixed conflicting tables before migration', [
-                    'tables' => $tablesFixed
-                ]);
-            }
-
-        } catch (Exception $e) {
-            Log::warning('Failed to fix conflicting tables (non-critical)', [
-                'error' => $e->getMessage()
-            ]);
-            // Don't throw - this is a cleanup step, not critical
-        }
+        // This method is now handled by migration fix scripts
+        // Kept for backward compatibility
+        Log::info('[Migration Fixes] Legacy fixConflictingTables() called - now using script-based system');
     }
 
     /**
@@ -175,11 +257,11 @@ class WebMigrationService
                 'migrations' => $pendingMigrations
             ]);
 
-            // CRITICAL: Fix conflicting tables before running migrations
+            // STEP 1: Execute migration fix scripts (automatic conflict resolution)
             // This prevents "table already exists" errors on production deployments
-            $this->fixConflictingTables();
+            $fixResults = $this->executeMigrationFixes();
 
-            // Run migrations with force flag (bypasses production check)
+            // STEP 2: Run migrations with force flag (bypasses production check)
             $exitCode = Artisan::call('migrate', ['--force' => true]);
 
             // Get migrations that were actually run
@@ -189,14 +271,22 @@ class WebMigrationService
             if ($exitCode === 0) {
                 Log::info('Web-based migrations completed successfully', [
                     'migrations_run' => $migrationsRun,
-                    'count' => count($migrationsRun)
+                    'count' => count($migrationsRun),
+                    'fixes_executed' => $fixResults['total'] ?? 0
                 ]);
+
+                // Build success message with fix details
+                $message = 'Database updated successfully! ' . count($migrationsRun) . ' migration(s) executed.';
+                if (($fixResults['total'] ?? 0) > 0) {
+                    $message .= ' (' . $fixResults['total'] . ' fix(es) applied automatically)';
+                }
 
                 return [
                     'success' => true,
-                    'message' => 'Database updated successfully! ' . count($migrationsRun) . ' migration(s) executed.',
+                    'message' => $message,
                     'migrations_run' => array_values($migrationsRun),
                     'count' => count($migrationsRun),
+                    'fixes_applied' => $fixResults,
                     'output' => Artisan::output()
                 ];
             } else {
