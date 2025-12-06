@@ -10,6 +10,8 @@ class ThemeCustomizerLiveEdit {
         this.editableAttr = options.editableAttr || 'data-vp-element';
         this.hoverClass = options.hoverClass || 'vp-customizer-hover';
         this.activeElements = [];
+        this.maxElements = options.maxElements || 500; // Limit to prevent timeout
+        this.processingTimeout = options.processingTimeout || 5000; // 5 second max
         
         this.init();
     }
@@ -24,20 +26,35 @@ class ThemeCustomizerLiveEdit {
     }
 
     setup() {
-        // Inject edit icon styles
-        this.injectStyles();
-        
-        // Find all editable elements
-        this.discoverEditableElements();
-        
-        // Attach edit icons
-        this.attachEditIcons();
-        
-        // Send detected elements to parent
-        this.sendDetectedElementsToParent();
-        
-        // Listen for customizer events
-        this.setupCustomizerBridge();
+        try {
+            const startTime = Date.now();
+            
+            // Inject edit icon styles
+            this.injectStyles();
+            
+            // Find all editable elements with timeout protection
+            this.discoverEditableElements();
+            
+            const elapsed = Date.now() - startTime;
+            if (elapsed > this.processingTimeout) {
+                console.warn('Element detection took too long, stopping early');
+                return;
+            }
+            
+            // Attach edit icons
+            this.attachEditIcons();
+            
+            // Send detected elements to parent
+            this.sendDetectedElementsToParent();
+            
+            // Listen for customizer events
+            this.setupCustomizerBridge();
+            
+            console.log(`✓ Theme Customizer Live Edit initialized (${elapsed}ms, ${this.activeElements.length} elements)`);
+        } catch (error) {
+            console.error('Error initializing live edit:', error);
+            this.notifyParentOfError(error.message);
+        }
     }
 
     injectStyles() {
@@ -144,21 +161,28 @@ class ThemeCustomizerLiveEdit {
             // Headings
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
             // Text content
-            'p', 'span', 'div', 'section', 'article',
+            'p', 'span:not(.vp-edit-icon):not(.vp-editable-badge)', 'div:not(.vp-edit-icon)', 'section', 'article',
             // Links and buttons
             'a', 'button',
             // Lists
-            'li', 'ul', 'ol',
+            'li',
             // Images
             'img',
             // Other semantic elements
             'header', 'footer', 'nav', 'aside', 'main',
-            'label', 'figcaption', 'blockquote', 'pre', 'code'
+            'label', 'figcaption', 'blockquote'
         ];
 
         const allElements = document.querySelectorAll(editableSelectors.join(', '));
         
-        allElements.forEach((element, index) => {
+        // Limit processing to prevent timeout
+        const maxToProcess = Math.min(allElements.length, this.maxElements);
+        if (allElements.length > this.maxElements) {
+            console.warn(`Found ${allElements.length} elements, limiting to ${this.maxElements} to prevent timeout`);
+        }
+        
+        for (let index = 0; index < maxToProcess; index++) {
+            const element = allElements[index];
             // Skip if already marked
             if (element.hasAttribute(this.editableAttr)) {
                 return;
@@ -188,28 +212,46 @@ class ThemeCustomizerLiveEdit {
                 type: this.detectElementType(element),
                 label: this.generateLabel(element, elementId),
             });
-        });
+            
+            // Safety check - stop if we hit the limit
+            if (this.activeElements.length >= this.maxElements) {
+                console.warn(`Reached maximum element limit (${this.maxElements}), stopping detection`);
+                break;
+            }
+        }
     }
 
     shouldSkipElement(element) {
         // Skip script, style, svg elements
-        if (['script', 'style', 'svg', 'path'].includes(element.tagName.toLowerCase())) {
+        if (['script', 'style', 'svg', 'path', 'noscript', 'iframe'].includes(element.tagName.toLowerCase())) {
             return true;
         }
 
         // Skip if inside script or style
-        if (element.closest('script, style, svg')) {
+        if (element.closest('script, style, svg, noscript')) {
+            return true;
+        }
+
+        // Skip edit icons themselves (important to prevent infinite loops)
+        if (element.classList.contains('vp-edit-icon') || 
+            element.classList.contains('vp-editable-badge') ||
+            element.closest('.vp-edit-icon, .vp-editable-badge')) {
             return true;
         }
 
         // Skip if hidden
-        const style = window.getComputedStyle(element);
-        if (style.display === 'none' || style.visibility === 'hidden') {
+        try {
+            const style = window.getComputedStyle(element);
+            if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+                return true;
+            }
+        } catch (error) {
+            // If we can't get computed style, skip this element
             return true;
         }
 
-        // Skip edit icons themselves
-        if (element.classList.contains('vp-edit-icon') || element.classList.contains('vp-editable-badge')) {
+        // Skip elements with no dimensions (likely hidden)
+        if (element.offsetWidth === 0 && element.offsetHeight === 0) {
             return true;
         }
 
@@ -442,6 +484,17 @@ class ThemeCustomizerLiveEdit {
         }
     }
 
+    notifyParentOfError(errorMessage) {
+        try {
+            window.parent.postMessage({
+                type: 'vp-customizer-error',
+                error: errorMessage
+            }, '*');
+        } catch (error) {
+            console.error('Could not notify parent of error:', error);
+        }
+    }
+
     organizeElementsByContainer() {
         const organized = {};
         
@@ -512,7 +565,15 @@ class ThemeCustomizerLiveEdit {
 
 // Auto-initialize if in iframe
 if (window.self !== window.top) {
-    window.vpCustomizerLiveEdit = new ThemeCustomizerLiveEdit();
+    // Prevent multiple initializations
+    if (!window.vpCustomizerLiveEdit) {
+        // Add a small delay to ensure DOM is fully ready
+        setTimeout(() => {
+            if (!window.vpCustomizerLiveEdit) {
+                window.vpCustomizerLiveEdit = new ThemeCustomizerLiveEdit();
+            }
+        }, 100);
+    }
 }
 
 // Export for manual initialization

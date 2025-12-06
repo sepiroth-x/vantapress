@@ -919,6 +919,9 @@
             } else if (event.data.type === 'vp-customizer-elements-detected') {
                 // Handle detected elements from iframe
                 handleDetectedElements(event.data.elements, event.data.totalCount);
+            } else if (event.data.type === 'vp-customizer-error') {
+                // Handle errors from iframe
+                handleCustomizerError(event.data.error);
             }
         });
         
@@ -1122,6 +1125,69 @@
             
             return formGroup;
         }
+
+        // Handle errors from iframe
+        function handleCustomizerError(errorMessage) {
+            console.error('Customizer error:', errorMessage);
+            
+            // Show error notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #dc2626;
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-size: 14px;
+                max-width: 500px;
+                text-align: center;
+            `;
+            notification.innerHTML = `
+                <div style="font-weight: 600; margin-bottom: 8px;">⚠️ Customizer Error</div>
+                <div style="font-size: 13px; margin-bottom: 12px;">${errorMessage}</div>
+                <button onclick="location.reload()" style="
+                    background: white;
+                    color: #dc2626;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    font-size: 13px;
+                ">
+                    🔄 Refresh Page
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 10 seconds
+            setTimeout(() => {
+                notification.style.transition = 'opacity 0.3s';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 10000);
+        }
+
+        // Detect if iframe is taking too long to load
+        let iframeLoadTimeout;
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframe = document.getElementById('preview-frame');
+            
+            // Set timeout for iframe loading
+            iframeLoadTimeout = setTimeout(function() {
+                handleCustomizerError('Preview is taking too long to load. The page might be too complex.');
+            }, 30000); // 30 seconds
+            
+            iframe.addEventListener('load', function() {
+                clearTimeout(iframeLoadTimeout);
+            });
+        });
     </script>
 </body>
 </html>
