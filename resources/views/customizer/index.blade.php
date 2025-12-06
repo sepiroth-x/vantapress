@@ -901,7 +901,7 @@
                     // Inject live edit script
                     const script = iframeDoc.createElement('script');
                     script.setAttribute('data-vp-live-edit', 'true');
-                    script.src = '{{ asset("js/theme-customizer-live-edit.js") }}';
+                    script.src = '/js/theme-customizer-live-edit.js';
                     iframeDoc.body.appendChild(script);
                     
                     console.log('✓ Live edit script injected into preview iframe');
