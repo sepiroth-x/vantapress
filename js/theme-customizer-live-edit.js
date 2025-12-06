@@ -33,6 +33,9 @@ class ThemeCustomizerLiveEdit {
         // Attach edit icons
         this.attachEditIcons();
         
+        // Send detected elements to parent
+        this.sendDetectedElementsToParent();
+        
         // Listen for customizer events
         this.setupCustomizerBridge();
     }
@@ -118,47 +121,181 @@ class ThemeCustomizerLiveEdit {
     }
 
     discoverEditableElements() {
-        // Find elements with data-customizer-element attribute
-        const elements = document.querySelectorAll(`[${this.editableAttr}]`);
+        // First, find elements explicitly marked with data-vp-element
+        const markedElements = document.querySelectorAll(`[${this.editableAttr}]`);
         
-        elements.forEach(element => {
+        markedElements.forEach(element => {
             const elementId = element.getAttribute(this.editableAttr);
             this.activeElements.push({
                 id: elementId,
                 element: element,
                 type: this.detectElementType(element),
+                label: this.generateLabel(element, elementId),
             });
         });
 
-        // Auto-detect common editable areas if not marked
-        this.autoDetectEditableAreas();
+        // Auto-detect ALL editable content on the page
+        this.autoDetectAllEditableContent();
     }
 
-    autoDetectEditableAreas() {
-        const commonSelectors = [
-            { selector: 'header', id: 'header', label: 'Header' },
-            { selector: '.hero, .hero-section', id: 'hero', label: 'Hero Section' },
-            { selector: 'footer', id: 'footer', label: 'Footer' },
-            { selector: '.site-title, h1.title', id: 'site_title', label: 'Site Title' },
-            { selector: '.tagline, .site-tagline', id: 'site_tagline', label: 'Tagline' },
-            { selector: 'nav, .navigation', id: 'navigation', label: 'Navigation' },
+    autoDetectAllEditableContent() {
+        // Find ALL text-containing elements that should be editable
+        const editableSelectors = [
+            // Headings
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            // Text content
+            'p', 'span', 'div', 'section', 'article',
+            // Links and buttons
+            'a', 'button',
+            // Lists
+            'li', 'ul', 'ol',
+            // Images
+            'img',
+            // Other semantic elements
+            'header', 'footer', 'nav', 'aside', 'main',
+            'label', 'figcaption', 'blockquote', 'pre', 'code'
         ];
 
-        commonSelectors.forEach(({ selector, id, label }) => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(element => {
-                // Only add if not already marked
-                if (!element.hasAttribute(this.editableAttr)) {
-                    element.setAttribute(this.editableAttr, id);
-                    this.activeElements.push({
-                        id: id,
-                        element: element,
-                        type: this.detectElementType(element),
-                        label: label,
-                    });
-                }
+        const allElements = document.querySelectorAll(editableSelectors.join(', '));
+        
+        allElements.forEach((element, index) => {
+            // Skip if already marked
+            if (element.hasAttribute(this.editableAttr)) {
+                return;
+            }
+
+            // Skip elements inside scripts, styles, or that are hidden
+            if (this.shouldSkipElement(element)) {
+                return;
+            }
+
+            // Skip empty elements (unless they're images or containers)
+            const hasContent = this.elementHasContent(element);
+            if (!hasContent && !['img', 'div', 'section', 'header', 'footer', 'nav'].includes(element.tagName.toLowerCase())) {
+                return;
+            }
+
+            // Generate a unique ID for this element
+            const elementId = this.generateElementId(element, index);
+            
+            // Mark the element
+            element.setAttribute(this.editableAttr, elementId);
+            
+            // Add to active elements
+            this.activeElements.push({
+                id: elementId,
+                element: element,
+                type: this.detectElementType(element),
+                label: this.generateLabel(element, elementId),
             });
         });
+    }
+
+    shouldSkipElement(element) {
+        // Skip script, style, svg elements
+        if (['script', 'style', 'svg', 'path'].includes(element.tagName.toLowerCase())) {
+            return true;
+        }
+
+        // Skip if inside script or style
+        if (element.closest('script, style, svg')) {
+            return true;
+        }
+
+        // Skip if hidden
+        const style = window.getComputedStyle(element);
+        if (style.display === 'none' || style.visibility === 'hidden') {
+            return true;
+        }
+
+        // Skip edit icons themselves
+        if (element.classList.contains('vp-edit-icon') || element.classList.contains('vp-editable-badge')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    elementHasContent(element) {
+        // Images always have content
+        if (element.tagName.toLowerCase() === 'img') {
+            return true;
+        }
+
+        // Check if element has text content (trim whitespace)
+        const text = element.textContent.trim();
+        if (text.length > 0) {
+            return true;
+        }
+
+        // Check if element has child elements
+        if (element.children.length > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    generateElementId(element, index) {
+        // Try to use existing ID
+        if (element.id) {
+            return element.id;
+        }
+
+        // Try to use class name
+        if (element.className && typeof element.className === 'string') {
+            const firstClass = element.className.split(' ')[0];
+            if (firstClass) {
+                return `${firstClass}_${index}`;
+            }
+        }
+
+        // Use tag name and index
+        const tagName = element.tagName.toLowerCase();
+        return `${tagName}_${index}`;
+    }
+
+    generateLabel(element, elementId) {
+        const tagName = element.tagName.toLowerCase();
+        
+        // For headings, use the heading text
+        if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(tagName)) {
+            const text = element.textContent.trim().substring(0, 30);
+            return text || `${tagName.toUpperCase()} Heading`;
+        }
+
+        // For paragraphs, use first few words
+        if (tagName === 'p') {
+            const text = element.textContent.trim().substring(0, 30);
+            return text ? `${text}...` : 'Paragraph';
+        }
+
+        // For links, use link text
+        if (tagName === 'a') {
+            const text = element.textContent.trim().substring(0, 30);
+            return text ? `Link: ${text}` : 'Link';
+        }
+
+        // For images, use alt text or "Image"
+        if (tagName === 'img') {
+            return element.alt || 'Image';
+        }
+
+        // For buttons
+        if (tagName === 'button') {
+            const text = element.textContent.trim().substring(0, 30);
+            return text ? `Button: ${text}` : 'Button';
+        }
+
+        // For other elements, use class or tag name
+        if (element.className && typeof element.className === 'string') {
+            const firstClass = element.className.split(' ')[0];
+            if (firstClass) {
+                return firstClass.replace(/-/g, ' ').replace(/_/g, ' ');
+            }
+        }
+
+        return tagName.charAt(0).toUpperCase() + tagName.slice(1);
     }
 
     detectElementType(element) {
@@ -284,6 +421,92 @@ class ThemeCustomizerLiveEdit {
         
         this.discoverEditableElements();
         this.attachEditIcons();
+        this.sendDetectedElementsToParent();
+    }
+
+    sendDetectedElementsToParent() {
+        // Organize elements by container/section
+        const organizedElements = this.organizeElementsByContainer();
+        
+        // Send to parent window
+        try {
+            window.parent.postMessage({
+                type: 'vp-customizer-elements-detected',
+                elements: organizedElements,
+                totalCount: this.activeElements.length
+            }, '*');
+            
+            console.log(`✓ Sent ${this.activeElements.length} detected elements to customizer`);
+        } catch (error) {
+            console.warn('Could not send elements to parent:', error);
+        }
+    }
+
+    organizeElementsByContainer() {
+        const organized = {};
+        
+        this.activeElements.forEach(({ id, element, type, label }) => {
+            // Determine which section this element belongs to
+            let sectionId = 'content';
+            let sectionLabel = 'Page Content';
+            
+            // Check parent containers
+            const header = element.closest('header');
+            const footer = element.closest('footer');
+            const nav = element.closest('nav');
+            const hero = element.closest('.hero, .hero-section, [class*="hero"]');
+            const sidebar = element.closest('aside, .sidebar, [class*="sidebar"]');
+            
+            if (header) {
+                sectionId = 'header';
+                sectionLabel = 'Header';
+            } else if (footer) {
+                sectionId = 'footer';
+                sectionLabel = 'Footer';
+            } else if (nav) {
+                sectionId = 'navigation';
+                sectionLabel = 'Navigation';
+            } else if (hero) {
+                sectionId = 'hero';
+                sectionLabel = 'Hero Section';
+            } else if (sidebar) {
+                sectionId = 'sidebar';
+                sectionLabel = 'Sidebar';
+            } else {
+                // Try to determine by element type
+                if (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(element.tagName.toLowerCase())) {
+                    sectionId = 'headings';
+                    sectionLabel = 'Headings';
+                } else if (element.tagName.toLowerCase() === 'img') {
+                    sectionId = 'images';
+                    sectionLabel = 'Images';
+                } else if (element.tagName.toLowerCase() === 'a') {
+                    sectionId = 'links';
+                    sectionLabel = 'Links';
+                } else if (element.tagName.toLowerCase() === 'button') {
+                    sectionId = 'buttons';
+                    sectionLabel = 'Buttons';
+                }
+            }
+            
+            // Initialize section if not exists
+            if (!organized[sectionId]) {
+                organized[sectionId] = {
+                    label: sectionLabel,
+                    elements: []
+                };
+            }
+            
+            // Add element to section
+            organized[sectionId].elements.push({
+                id: id,
+                type: type,
+                label: label,
+                tagName: element.tagName.toLowerCase()
+            });
+        });
+        
+        return organized;
     }
 }
 

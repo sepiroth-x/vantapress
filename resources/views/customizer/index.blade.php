@@ -916,6 +916,9 @@
             if (event.data.type === 'vp-customizer-focus-element') {
                 const elementId = event.data.elementId;
                 focusCustomizerElement(elementId);
+            } else if (event.data.type === 'vp-customizer-elements-detected') {
+                // Handle detected elements from iframe
+                handleDetectedElements(event.data.elements, event.data.totalCount);
             }
         });
         
@@ -959,6 +962,165 @@
             } else {
                 console.warn('Element not found in customizer:', elementId);
             }
+        }
+
+        // Handle detected elements from iframe
+        function handleDetectedElements(organizedElements, totalCount) {
+            console.log(`✓ Received ${totalCount} detected elements from iframe`);
+            
+            // Find the form container
+            const form = document.getElementById('customizer-form');
+            if (!form) return;
+            
+            // Check if we already have a detected elements section
+            let detectedSection = document.getElementById('detected-elements-section');
+            
+            if (!detectedSection) {
+                // Create a new section after existing sections
+                detectedSection = document.createElement('div');
+                detectedSection.id = 'detected-elements-section';
+                detectedSection.style.borderTop = '2px solid #e5e7eb';
+                detectedSection.style.marginTop = '16px';
+                detectedSection.style.paddingTop = '16px';
+                
+                // Add a header
+                const header = document.createElement('div');
+                header.style.padding = '12px 20px';
+                header.style.background = '#f9fafb';
+                header.style.borderBottom = '1px solid #e5e7eb';
+                header.innerHTML = `
+                    <h3 style="font-size: 14px; font-weight: 600; color: #1e293b; margin: 0;">
+                        🔍 Auto-Detected Elements (${totalCount})
+                    </h3>
+                    <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
+                        Click any element in the preview to edit its content
+                    </p>
+                `;
+                detectedSection.appendChild(header);
+                
+                form.appendChild(detectedSection);
+            } else {
+                // Clear existing content (except header)
+                const children = Array.from(detectedSection.children);
+                children.slice(1).forEach(child => child.remove());
+                
+                // Update count in header
+                const countElement = detectedSection.querySelector('h3');
+                if (countElement) {
+                    countElement.textContent = `🔍 Auto-Detected Elements (${totalCount})`;
+                }
+            }
+            
+            // Create accordions for each section
+            const sectionIcons = {
+                'header': '📋',
+                'footer': '📄',
+                'navigation': '🧭',
+                'hero': '🖼️',
+                'sidebar': '📌',
+                'headings': '📝',
+                'images': '🖼️',
+                'links': '🔗',
+                'buttons': '🔘',
+                'content': '📄'
+            };
+            
+            Object.entries(organizedElements).forEach(([sectionId, section]) => {
+                const accordion = createDetectedElementsAccordion(
+                    sectionId,
+                    section.label,
+                    section.elements,
+                    sectionIcons[sectionId] || '⚙️'
+                );
+                detectedSection.appendChild(accordion);
+            });
+        }
+
+        // Create accordion for detected elements
+        function createDetectedElementsAccordion(sectionId, sectionLabel, elements, icon) {
+            const accordion = document.createElement('div');
+            accordion.className = 'accordion';
+            accordion.setAttribute('data-section-id', sectionId);
+            
+            // Header
+            const header = document.createElement('div');
+            header.className = 'accordion-header';
+            header.innerHTML = `
+                <span>${icon} ${sectionLabel} (${elements.length})</span>
+                <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+            `;
+            header.onclick = function() { toggleAccordion(this); };
+            
+            // Content
+            const content = document.createElement('div');
+            content.className = 'accordion-content';
+            
+            elements.forEach(element => {
+                const formGroup = createElementControl(element);
+                content.appendChild(formGroup);
+            });
+            
+            accordion.appendChild(header);
+            accordion.appendChild(content);
+            
+            return accordion;
+        }
+
+        // Create control for a detected element
+        function createElementControl(element) {
+            const formGroup = document.createElement('div');
+            formGroup.className = 'form-group';
+            
+            const label = document.createElement('label');
+            label.className = 'form-label';
+            label.textContent = element.label;
+            
+            let input;
+            
+            if (element.type === 'image') {
+                input = document.createElement('input');
+                input.type = 'text';
+                input.name = element.id;
+                input.className = 'form-input';
+                input.placeholder = 'Enter image URL...';
+                input.onchange = autoSave;
+                
+                const hint = document.createElement('small');
+                hint.style.cssText = 'color: #64748b; font-size: 12px; display: block; margin-top: 4px;';
+                hint.textContent = 'Enter image URL';
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+                formGroup.appendChild(hint);
+            } else if (element.type === 'color') {
+                input = document.createElement('input');
+                input.type = 'color';
+                input.name = element.id;
+                input.className = 'form-color';
+                input.onchange = autoSave;
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+            } else if (element.type === 'heading' || element.tagName === 'h1' || element.tagName === 'h2' || element.tagName === 'h3') {
+                input = document.createElement('input');
+                input.type = 'text';
+                input.name = element.id;
+                input.className = 'form-input';
+                input.onchange = autoSave;
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+            } else {
+                // Default: textarea for text content
+                input = document.createElement('textarea');
+                input.name = element.id;
+                input.className = 'form-textarea';
+                input.rows = 2;
+                input.onchange = autoSave;
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+            }
+            
+            return formGroup;
         }
     </script>
 </body>
