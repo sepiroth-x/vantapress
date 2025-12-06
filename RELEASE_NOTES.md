@@ -1,12 +1,58 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.41-complete  
+**Current Version:** v1.0.42-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.41-complete
+## 📌 Latest Version: v1.0.42-complete
+
+### 🐛 Critical Fix: Laravel Storage Structure & Migration Tracking
+
+This release fixes a critical storage structure issue that prevented all `php artisan` commands from running.
+
+#### 🐛 Problem Identified
+- Missing `storage/framework/views` directory caused "Please provide a valid cache path" error
+- All PHP artisan commands failed (migrate, optimize:clear, etc.)
+- Menu tables existed physically but weren't tracked in migrations table
+- Migration conflict: "Table 'menus' already exists" error
+
+#### ✅ Solution Implemented
+- **Created missing storage directory**: `storage/framework/views/.gitignore`
+- **Dropped conflicting tables**: Removed duplicate menus and menu_items tables
+- **Verified migration tracking**: All 26 migrations now properly recorded
+- **Complete storage structure**: cache/, sessions/, views/ directories all present
+
+#### 📋 What This Fixes
+- ✅ All PHP artisan commands now work (migrate, cache:clear, etc.)
+- ✅ Migration system fully functional
+- ✅ No more "cache path" errors
+- ✅ All 26 migrations properly tracked in database
+- ✅ Web-based Database Updates page works correctly
+
+#### 🔧 Technical Details
+**Storage Structure Fixed:**
+```
+storage/framework/
+├── cache/
+├── sessions/
+└── views/          ← CREATED (was missing)
+    └── .gitignore  ← Ensures Git tracks empty directory
+```
+
+**Migration Tracking Verified:**
+- Batch 1: 18 migrations (core system)
+- Batch 2: 6 migrations (VPEssential1 module)
+- Batch 3: 2 migrations (layout templates)
+- Total: 26 migrations all showing [Ran] status
+
+**Root Cause:**
+Laravel requires complete `storage/framework` structure (cache, sessions, views) for proper operation. Missing the views directory caused all artisan commands to fail with cryptic "cache path" errors.
+
+---
+
+## 📌 Previous Version: v1.0.41-complete
 
 ### 🐛 Bug Fix: Database Updates Page Access
 
