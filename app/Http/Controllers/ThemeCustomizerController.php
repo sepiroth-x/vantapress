@@ -86,14 +86,30 @@ class ThemeCustomizerController extends Controller
             }
         }
 
-        // Legacy settings for backward compatibility
-        $legacyKeys = ['site_title', 'site_tagline', 'logo', 'primary_color', 'accent_color'];
-        foreach ($legacyKeys as $key) {
+        // Legacy settings for backward compatibility with old customizer view
+        $legacyKeys = [
+            'site_title' => config('app.name', 'VantaPress'),
+            'site_tagline' => '',
+            'logo' => '',
+            'primary_color' => '#dc2626',
+            'accent_color' => '#991b1b',
+            'hero_title' => 'Welcome',
+            'hero_subtitle' => '',
+            'hero_description' => '',
+            'hero_primary_button_text' => 'Get Started',
+            'hero_primary_button_url' => '#',
+            'hero_secondary_button_text' => 'Learn More',
+            'hero_secondary_button_url' => '#',
+            'footer_text' => '© 2025 VantaPress',
+            'custom_css' => '',
+        ];
+        
+        foreach ($legacyKeys as $key => $default) {
             if (!isset($settings[$key])) {
                 if (function_exists('vp_get_theme_setting')) {
-                    $settings[$key] = vp_get_theme_setting($key, '');
+                    $settings[$key] = vp_get_theme_setting($key, $default);
                 } else {
-                    $settings[$key] = '';
+                    $settings[$key] = $default;
                 }
             }
         }
