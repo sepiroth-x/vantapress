@@ -55,3 +55,6 @@ VantaPress Developer Manual.md
 !/Modules/HelloWorld/
 !/Modules/VPEssential1/
 !/Modules/VPToDoList/
+
+# Production Diagnostic Files
+production-diagnostic.php

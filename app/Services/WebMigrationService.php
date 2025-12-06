@@ -284,6 +284,12 @@ class WebMigrationService
     public function runMigrations(): array
     {
         try {
+            // STEP 0: ALWAYS run migration fix scripts FIRST (before any checks)
+            // This ensures orphaned migration entries are cleaned up before we check pending status
+            Log::warning('[WebMigrationService] FORCING fix scripts to run FIRST');
+            $fixResults = $this->executeMigrationFixes();
+            Log::warning('[WebMigrationService] Fix scripts completed', $fixResults);
+
             // Get pending migrations before running
             $beforeCheck = $this->checkPendingMigrations();
             
@@ -292,7 +298,8 @@ class WebMigrationService
                     'success' => true,
                     'message' => 'Database is already up to date',
                     'migrations_run' => [],
-                    'count' => 0
+                    'count' => 0,
+                    'fixes_applied' => $fixResults
                 ];
             }
 
@@ -302,10 +309,6 @@ class WebMigrationService
                 'pending_count' => count($pendingMigrations),
                 'migrations' => $pendingMigrations
             ]);
-
-            // STEP 1: Execute migration fix scripts (automatic conflict resolution)
-            // This prevents "table already exists" errors on production deployments
-            $fixResults = $this->executeMigrationFixes();
 
             // STEP 2: Run migrations with force flag (bypasses production check)
             $exitCode = Artisan::call('migrate', ['--force' => true]);
