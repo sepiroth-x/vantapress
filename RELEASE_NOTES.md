@@ -1,12 +1,33 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.23-complete  
+**Current Version:** v1.0.24-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.23-complete
+## 📌 Latest Version: v1.0.24-complete
+
+### 🎯 What's New in v1.0.24-complete
+- **🎨 CRITICAL FIX: AdminPanelProvider Color Registration** - Removed hardcoded crimson colors from PHP
+- **🔧 Neutral Color Scheme** - Changed from custom crimson arrays to Filament `Color::Blue` and `Color::Gray` presets
+- **✅ Complete Color Fix** - Admin panel now properly uses neutral blue/gray palette at the Filament API level
+
+### 🐛 Bug Fixes
+- **Fixed root cause of crimson colors** - Was in AdminPanelProvider PHP registration, not CSS or theme config
+- Removed hardcoded crimson primary color array (#D40026) from lines 35-47
+- Removed custom gray scale array from lines 49-60
+- Replaced with Filament preset colors: `Color::Blue` (primary) and `Color::Gray` (grayscale)
+
+### 🔧 Technical Improvements
+- **AdminPanelProvider.php:** Changed `'primary'` from custom crimson array to `Color::Blue`
+- **AdminPanelProvider.php:** Changed `'gray'` from custom dark array to `Color::Gray`
+- Simplified color configuration using Filament's built-in color presets
+- Cleared config, cache, and view caches to apply changes
+
+---
+
+## 📌 Previous Version: v1.0.23-complete
 
 ### 🎯 What's New in v1.0.23-complete
 - **🎨 Theme Configuration Fix** - Switched active theme from TheVillainArise to BasicTheme for neutral color scheme
