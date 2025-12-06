@@ -269,10 +269,16 @@ class ThemeCustomizerInlineEdit {
         this.currentlyEditing = element;
 
         // Listen for blur (click outside)
-        const blurHandler = () => {
-            this.stopEditing(element);
-            this.saveChanges(element, elementId);
-            element.removeEventListener('blur', blurHandler);
+        const blurHandler = (e) => {
+            // Small delay to ensure we're really leaving the element
+            setTimeout(() => {
+                // Only save if we're no longer editing this element
+                if (!element.contains(document.activeElement)) {
+                    this.stopEditing(element);
+                    this.saveChanges(element, elementId);
+                    element.removeEventListener('blur', blurHandler);
+                }
+            }, 100);
         };
         
         element.addEventListener('blur', blurHandler);
@@ -319,7 +325,7 @@ class ThemeCustomizerInlineEdit {
             // Update stored content
             element.dataset.originalContent = newContent;
             
-            // Notify parent window
+            // Notify parent window (this will save to DB without refreshing)
             this.notifyCustomizerOfChange(elementId, newContent);
             
             // Update customizer input

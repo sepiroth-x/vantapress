@@ -955,7 +955,7 @@
             }, 1000);
         }
         
-        function saveSettings(silent = false) {
+        function saveSettings(silent = false, skipRefresh = false) {
             if (!silent) {
                 showSavingIndicator('Saving changes...');
             }
@@ -984,7 +984,10 @@
                     if (!silent) {
                         showSavingIndicator('✓ Changes saved!', true);
                     }
-                    setTimeout(() => refreshPreview(), 500);
+                    // Only refresh if not skipped (inline editing should skip refresh)
+                    if (!skipRefresh) {
+                        setTimeout(() => refreshPreview(), 500);
+                    }
                 } else {
                     showSavingIndicator('❌ ' + (data.message || 'Error saving'), true);
                 }
@@ -1390,8 +1393,10 @@
             
             if (input) {
                 input.value = content;
-                // Trigger auto-save
-                autoSave(true);
+                // Save to history without auto-save to prevent refresh
+                saveToHistory();
+                // Save to database silently without refreshing preview
+                saveSettings(true, false);
             }
         }
 
