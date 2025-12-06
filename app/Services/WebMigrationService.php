@@ -114,10 +114,27 @@ class WebMigrationService
         $fixesExecuted = [];
         $fixesSkipped = [];
         
+        // AGGRESSIVE LOGGING: Always log entry to this method
+        Log::warning('[Migration Fixes] ========================================');
+        Log::warning('[Migration Fixes] ENTERED executeMigrationFixes() method');
+        Log::warning('[Migration Fixes] Looking for fixes at: ' . $fixesPath);
+        Log::warning('[Migration Fixes] ========================================');
+        
         try {
             // Check if migration-fixes directory exists
-            if (!file_exists($fixesPath) || !is_dir($fixesPath)) {
-                Log::info('[Migration Fixes] No migration-fixes directory found, skipping fixes');
+            $dirExists = file_exists($fixesPath);
+            $isDir = is_dir($fixesPath);
+            
+            Log::warning('[Migration Fixes] Directory check:', [
+                'path' => $fixesPath,
+                'exists' => $dirExists ? 'YES' : 'NO',
+                'is_directory' => $isDir ? 'YES' : 'NO'
+            ]);
+            
+            if (!$dirExists || !$isDir) {
+                Log::error('[Migration Fixes] ❌ CRITICAL: Directory NOT FOUND!');
+                Log::error('[Migration Fixes] This is why fix script cannot run!');
+                Log::error('[Migration Fixes] User must upload database/migration-fixes/ directory!');
                 return [
                     'executed' => [],
                     'skipped' => [],
@@ -125,12 +142,23 @@ class WebMigrationService
                     'message' => 'No migration fixes available'
                 ];
             }
+            
+            Log::warning('[Migration Fixes] ✓ Directory exists, scanning for scripts...');
+
+            Log::warning('[Migration Fixes] ✓ Directory exists, scanning for scripts...');
 
             // Get all PHP files in migration-fixes directory (sorted alphabetically)
             $fixFiles = glob($fixesPath . '/*.php');
             
+            Log::warning('[Migration Fixes] Glob scan result:', [
+                'pattern' => $fixesPath . '/*.php',
+                'files_found' => count($fixFiles),
+                'files' => $fixFiles ? array_map('basename', $fixFiles) : []
+            ]);
+            
             if (empty($fixFiles)) {
-                Log::info('[Migration Fixes] No fix scripts found');
+                Log::error('[Migration Fixes] ❌ No PHP files found in directory!');
+                Log::error('[Migration Fixes] Expected: 001_drop_legacy_menu_tables.php');
                 return [
                     'executed' => [],
                     'skipped' => [],
@@ -141,7 +169,7 @@ class WebMigrationService
 
             sort($fixFiles); // Ensure alphabetical execution order
 
-            Log::info('[Migration Fixes] Found ' . count($fixFiles) . ' fix script(s)', [
+            Log::warning('[Migration Fixes] ✓✓✓ Found ' . count($fixFiles) . ' fix script(s) - WILL EXECUTE', [
                 'scripts' => array_map('basename', $fixFiles)
             ]);
 
@@ -149,20 +177,31 @@ class WebMigrationService
             foreach ($fixFiles as $fixFile) {
                 $fixName = basename($fixFile, '.php');
                 
+                Log::warning("[Migration Fixes] ----------------------------------------");
+                Log::warning("[Migration Fixes] Processing: {$fixName}");
+                Log::warning("[Migration Fixes] File: {$fixFile}");
+                
                 try {
                     // Include the fix script (returns an anonymous class instance)
+                    Log::warning("[Migration Fixes] Including script file...");
                     $fixInstance = include $fixFile;
+                    Log::warning("[Migration Fixes] ✓ Script included successfully");
 
                     // Check if fix should run
+                    Log::warning("[Migration Fixes] Calling shouldRun() method...");
                     if (method_exists($fixInstance, 'shouldRun') && !$fixInstance->shouldRun()) {
                         $fixesSkipped[] = $fixName;
-                        Log::info("[Migration Fixes] Skipped: {$fixName} (not needed)");
+                        Log::warning("[Migration Fixes] Script returned FALSE - skipping");
                         continue;
                     }
+                    
+                    Log::warning("[Migration Fixes] ✓✓✓ Script returned TRUE - EXECUTING!");
 
                     // Execute the fix
                     if (method_exists($fixInstance, 'execute')) {
+                        Log::warning("[Migration Fixes] Calling execute() method...");
                         $result = $fixInstance->execute();
+                        Log::warning("[Migration Fixes] Execute completed", $result);
                         
                         if ($result['executed'] ?? false) {
                             $fixesExecuted[] = [
@@ -170,18 +209,20 @@ class WebMigrationService
                                 'message' => $result['message'] ?? 'Executed successfully',
                                 'details' => $result
                             ];
-                            Log::info("[Migration Fixes] Executed: {$fixName}", $result);
+                            Log::warning("[Migration Fixes] ✓ SUCCESS: {$fixName}", $result);
                         } else {
                             $fixesSkipped[] = $fixName;
                             Log::info("[Migration Fixes] Skipped: {$fixName} - " . ($result['message'] ?? 'No action needed'));
                         }
                     } else {
-                        Log::warning("[Migration Fixes] Invalid fix script: {$fixName} (missing execute method)");
+                        Log::error("[Migration Fixes] ❌ Invalid script: {$fixName} (missing execute method)");
                     }
 
                 } catch (Exception $e) {
-                    Log::error("[Migration Fixes] Error executing fix: {$fixName}", [
+                    Log::error("[Migration Fixes] ❌ ERROR executing fix: {$fixName}", [
                         'error' => $e->getMessage(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
                         'trace' => $e->getTraceAsString()
                     ]);
                     // Continue with other fixes even if one fails
@@ -197,7 +238,9 @@ class WebMigrationService
                     : 'No migration fixes needed'
             ];
 
-            Log::info('[Migration Fixes] Completed', $summary);
+            Log::warning('[Migration Fixes] ========================================');
+            Log::warning('[Migration Fixes] COMPLETED - Summary:', $summary);
+            Log::warning('[Migration Fixes] ========================================');
             
             return $summary;
 
