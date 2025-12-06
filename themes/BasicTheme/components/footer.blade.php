@@ -1,9 +1,9 @@
-<footer class="site-footer">
+<footer class="site-footer" data-vp-element="footer">
     <div class="container">
         <div class="footer-content">
             <div class="footer-section">
-                <h4>{{ config('app.name') }}</h4>
-                <p>A powerful CMS built with Laravel</p>
+                <h4 data-vp-element="site_title">{{ vp_get_theme_setting('site_title', config('app.name')) }}</h4>
+                <p data-vp-element="site_tagline">{{ vp_get_theme_setting('site_tagline', 'A powerful CMS built with Laravel') }}</p>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
@@ -23,7 +23,9 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+            <p data-vp-element="footer_text">
+                {!! vp_get_theme_setting('footer_text', '&copy; ' . date('Y') . ' ' . config('app.name') . '. All rights reserved.') !!}
+            </p>
             <p class="footer-attribution">
                 Theme by <strong>Sepiroth X Villainous</strong> | Open Source | 
                 <a href="https://github.com/sepiroth-x" target="_blank">GitHub</a> | 

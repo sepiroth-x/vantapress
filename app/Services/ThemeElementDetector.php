@@ -8,24 +8,108 @@ use Illuminate\Support\Str;
 
 /**
  * Theme Element Detector Service
- * Automatically detects all customizable elements in a theme
+ * Detects customizable elements using standardized approach:
+ * 1. Read theme.json customizer schema (primary source)
+ * 2. Scan HTML for data-vp-element attributes
+ * 3. Auto-detect common patterns (fallback)
  */
 class ThemeElementDetector
 {
     protected $themePath;
     protected $themeSlug;
+    protected $themeConfig = [];
     protected $detectedElements = [];
 
     public function __construct($themeSlug)
     {
         $this->themeSlug = $themeSlug;
         $this->themePath = base_path("themes/{$themeSlug}");
+        $this->loadThemeConfig();
+    }
+
+    /**
+     * Load theme.json configuration
+     */
+    protected function loadThemeConfig()
+    {
+        $configPath = $this->themePath . '/theme.json';
+        
+        if (File::exists($configPath)) {
+            $json = File::get($configPath);
+            $this->themeConfig = json_decode($json, true) ?? [];
+        }
     }
 
     /**
      * Detect all elements in the active theme
+     * Priority: theme.json > data attributes > auto-detection
      */
     public function detectElements(): array
+    {
+        // Priority 1: Read from theme.json (highest priority)
+        if (isset($this->themeConfig['customizer']['sections'])) {
+            return $this->detectFromThemeJson();
+        }
+
+        // Priority 2: Fallback to auto-detection
+        return $this->detectFromFiles();
+    }
+
+    /**
+     * Detect elements from theme.json customizer schema
+     */
+    protected function detectFromThemeJson(): array
+    {
+        $sections = $this->themeConfig['customizer']['sections'] ?? [];
+        $grouped = [];
+
+        foreach ($sections as $sectionId => $sectionData) {
+            $elements = $sectionData['elements'] ?? [];
+            
+            foreach ($elements as $element) {
+                // Ensure element has required fields
+                if (!isset($element['id']) || !isset($element['label'])) {
+                    continue;
+                }
+
+                // Add section reference
+                $element['section'] = $sectionId;
+                $element['editable'] = true;
+                
+                // Ensure default is set
+                if (!isset($element['default'])) {
+                    $element['default'] = $this->getDefaultForType($element['type'] ?? 'text');
+                }
+
+                $grouped[$sectionId][] = $element;
+            }
+        }
+
+        return $grouped;
+    }
+
+    /**
+     * Get default value based on field type
+     */
+    protected function getDefaultForType(string $type)
+    {
+        $defaults = [
+            'text' => '',
+            'textarea' => '',
+            'image' => '',
+            'color' => '#000000',
+            'toggle' => false,
+            'select' => '',
+            'range' => 0,
+        ];
+
+        return $defaults[$type] ?? '';
+    }
+
+    /**
+     * Fallback: Detect elements from theme files
+     */
+    protected function detectFromFiles(): array
     {
         $elements = [
             'site' => $this->detectSiteElements(),
