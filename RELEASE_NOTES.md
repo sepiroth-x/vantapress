@@ -1,12 +1,31 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.28-complete  
+**Current Version:** v1.0.29-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.28-complete
+## 📌 Latest Version: v1.0.29-complete
+
+### 🧪 Version Update Test Release
+
+This is a test release to verify that production environments properly update their version numbers after deployment.
+
+#### 🔧 Changes
+- **Version Number Test** - Updated to v1.0.29-complete to test production `.env` update workflow
+- **Documentation Enhancement** - Added production `.env` update instructions to deployment guide
+- **Version Management** - Improved documentation for `.env` version synchronization
+
+#### 📋 Testing Instructions
+After deploying this version:
+1. Verify production `.env` has `APP_VERSION=1.0.29-complete`
+2. Run `php artisan optimize:clear`
+3. Check `/admin/updates` dashboard shows v1.0.29-complete
+
+---
+
+## 📌 Previous Version: v1.0.28-complete
 
 ### 🐛 Critical Bug Fixes Release
 
