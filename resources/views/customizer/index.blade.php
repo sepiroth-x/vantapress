@@ -50,6 +50,27 @@
             font-weight: 600;
         }
         
+        .action-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .action-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .action-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
         .close-customizer {
             background: transparent;
             border: none;
@@ -466,12 +487,29 @@
         <div class="customizer-sidebar">
             <div class="customizer-header">
                 <h1>🎨 Theme Customizer</h1>
-                <button type="button" class="close-customizer" onclick="window.location.href='/admin/themes'">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                    Close
-                </button>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button type="button" class="action-btn" onclick="undoChanges()" id="undo-btn" disabled title="Undo">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button type="button" class="action-btn" onclick="redoChanges()" id="redo-btn" disabled title="Redo">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button type="button" class="action-btn" onclick="resetChanges()" title="Reset to defaults">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <button type="button" class="close-customizer" onclick="closeCustomizer()">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        Close
+                    </button>
+                </div>
             </div>
             
             <div class="theme-info">
@@ -735,6 +773,135 @@
         let saveTimeout;
         const themeId = {{ $theme->id }};
         
+        // Undo/Redo system
+        let historyStack = [];
+        let historyIndex = -1;
+        let maxHistorySize = 50;
+        
+        // Initialize history with current state
+        function initHistory() {
+            const form = document.getElementById('customizer-form');
+            const formData = new FormData(form);
+            const state = {};
+            for (let [key, value] of formData.entries()) {
+                state[key] = value;
+            }
+            historyStack.push(state);
+            historyIndex = 0;
+            updateUndoRedoButtons();
+        }
+        
+        // Save state to history
+        function saveToHistory() {
+            const form = document.getElementById('customizer-form');
+            const formData = new FormData(form);
+            const state = {};
+            for (let [key, value] of formData.entries()) {
+                state[key] = value;
+            }
+            
+            // Remove any states after current index
+            historyStack = historyStack.slice(0, historyIndex + 1);
+            
+            // Add new state
+            historyStack.push(state);
+            
+            // Limit history size
+            if (historyStack.length > maxHistorySize) {
+                historyStack.shift();
+            } else {
+                historyIndex++;
+            }
+            
+            updateUndoRedoButtons();
+        }
+        
+        // Undo changes
+        function undoChanges() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                restoreState(historyStack[historyIndex]);
+                updateUndoRedoButtons();
+            }
+        }
+        
+        // Redo changes
+        function redoChanges() {
+            if (historyIndex < historyStack.length - 1) {
+                historyIndex++;
+                restoreState(historyStack[historyIndex]);
+                updateUndoRedoButtons();
+            }
+        }
+        
+        // Restore state from history
+        function restoreState(state) {
+            const form = document.getElementById('customizer-form');
+            
+            Object.entries(state).forEach(([key, value]) => {
+                const input = form.querySelector(`[name="${key}"]`);
+                if (input) {
+                    if (input.type === 'checkbox') {
+                        input.checked = value === '1';
+                    } else {
+                        input.value = value;
+                    }
+                    // Send update to preview
+                    sendUpdateToPreview(key, value);
+                }
+            });
+            
+            // Save to database
+            saveSettings(true);
+            refreshPreview();
+        }
+        
+        // Reset to defaults
+        function resetChanges() {
+            if (!confirm('Reset all settings to default values? This cannot be undone.')) {
+                return;
+            }
+            
+            showSavingIndicator('Resetting to defaults...');
+            
+            fetch(`/theme-customizer/${themeId}/reset`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSavingIndicator('✓ Reset successful! Reloading...', true);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showSavingIndicator('❌ Reset failed', true);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showSavingIndicator('❌ Error resetting', true);
+            });
+        }
+        
+        // Update undo/redo button states
+        function updateUndoRedoButtons() {
+            const undoBtn = document.getElementById('undo-btn');
+            const redoBtn = document.getElementById('redo-btn');
+            
+            if (undoBtn) undoBtn.disabled = historyIndex <= 0;
+            if (redoBtn) redoBtn.disabled = historyIndex >= historyStack.length - 1;
+        }
+        
+        // Close customizer
+        function closeCustomizer() {
+            window.location.href = '{{ route('filament.admin.resources.themes.index') }}';
+        }
+        
         function toggleAccordion(header) {
             const accordion = header.parentElement;
             accordion.classList.toggle('active');
@@ -783,6 +950,7 @@
         function autoSave() {
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(() => {
+                saveToHistory(); // Save to undo/redo history
                 saveSettings(true);
             }, 1000);
         }
@@ -887,6 +1055,9 @@
         
         // Inject live edit script into preview iframe
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize undo/redo history
+            initHistory();
+            
             const iframe = document.getElementById('preview-frame');
             
             iframe.addEventListener('load', function() {

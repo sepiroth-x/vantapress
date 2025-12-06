@@ -173,6 +173,66 @@ class ThemeCustomizerController extends Controller
     }
 
     /**
+     * Reset theme settings to defaults
+     */
+    public function reset(Request $request, $id)
+    {
+        $theme = Theme::findOrFail($id);
+        
+        try {
+            // Load theme metadata
+            $themeLoader = app(ThemeLoader::class);
+            $themeMetadata = $themeLoader->loadTheme($theme->slug);
+            
+            if (!$themeMetadata) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Could not load theme metadata'
+                ], 404);
+            }
+            
+            // Get all customizer elements with defaults
+            $elements = [];
+            if (isset($themeMetadata['customizer']['sections'])) {
+                foreach ($themeMetadata['customizer']['sections'] as $section) {
+                    if (isset($section['elements'])) {
+                        foreach ($section['elements'] as $element) {
+                            $elements[$element['id']] = $element['default'] ?? '';
+                        }
+                    }
+                }
+            }
+            
+            // Delete all existing settings for this theme
+            if (function_exists('vp_delete_theme_settings')) {
+                vp_delete_theme_settings();
+            }
+            
+            // Set default values
+            if (function_exists('vp_set_theme_setting')) {
+                foreach ($elements as $key => $value) {
+                    $type = is_bool($value) ? 'boolean' : 'string';
+                    vp_set_theme_setting($key, $value, $type, 'theme');
+                }
+            }
+            
+            // Clear cache
+            Cache::flush();
+            \Illuminate\Support\Facades\Artisan::call('view:clear');
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Settings reset to defaults'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error resetting settings: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Activate theme via AJAX
      */
     public function activate(Request $request, $id)

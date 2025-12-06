@@ -64,6 +64,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('theme-customizer.show');
     Route::post('/theme-customizer/{id}/save', [App\Http\Controllers\ThemeCustomizerController::class, 'save'])
         ->name('theme-customizer.save');
+    Route::post('/theme-customizer/{id}/reset', [App\Http\Controllers\ThemeCustomizerController::class, 'reset'])
+        ->name('theme-customizer.reset');
     Route::post('/theme-customizer/{id}/activate', [App\Http\Controllers\ThemeCustomizerController::class, 'activate'])
         ->name('theme-customizer.activate');
     Route::get('/theme-customizer/{id}/elements', [App\Http\Controllers\ThemeCustomizerController::class, 'getElements'])
