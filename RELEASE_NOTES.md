@@ -1,12 +1,31 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.22-complete  
+**Current Version:** v1.0.23-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.22-complete
+## 📌 Latest Version: v1.0.23-complete
+
+### 🎯 What's New in v1.0.23-complete
+- **🎨 Theme Configuration Fix** - Switched active theme from TheVillainArise to BasicTheme for neutral color scheme
+- **🔧 Footer Version Display** - Fixed double-v bug from previous version (now properly displays single "v")
+- **🎨 Color Scheme Consistency** - Admin panel now uses neutral blue/gray palette instead of crimson/yellow
+
+### 🐛 Bug Fixes
+- Fixed active theme configuration pointing to TheVillainArise instead of BasicTheme
+- Ensured consistent neutral color scheme across admin panel
+- Maintained footer fix from v1.0.22 (removed duplicate "v" prefix)
+
+### 🔧 Technical Improvements
+- **config/cms.php:** Updated `active_theme` from 'TheVillainArise' to 'BasicTheme' (line 172)
+- Verified Filament color registration in AdminPanelProvider (Filament-first approach)
+- Confirmed layout CSS fix remains intact in `css/vantapress-admin.css`
+
+---
+
+## 📌 Previous Version: v1.0.22-complete
 
 ### 🎯 What's New in v1.0.22-complete
 - **🎨 Dynamic Theme Customization System** - VantaPress-driven theme customization (reads from theme.json)
