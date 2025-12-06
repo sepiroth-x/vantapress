@@ -32,12 +32,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Blue, // Use Filament's built-in Blue palette
                 'danger' => Color::Red,
-                'gray' => Color::Gray,
-                'info' => Color::Blue,
-                'success' => Color::Green,
-                'warning' => Color::Orange,
+                'gray' => Color::Slate, // Use Filament's Slate for modern dark mode
+                'info' => Color::Sky,
+                'success' => Color::Emerald,
+                'warning' => Color::Amber,
             ])
             ->darkMode(true) // Enable dark mode toggle (system, light, dark)
             ->font('Inter')
@@ -63,11 +63,7 @@ class AdminPanelProvider extends PanelProvider
                 }
             )
             ->renderHook(
-                PanelsRenderHook::SCRIPTS_AFTER,
-                fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>'
-            )
-            ->renderHook(
-                PanelsRenderHook::BODY_END,
+                PanelsRenderHook::FOOTER,
                 fn (): string => view('filament.footer')->render()
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

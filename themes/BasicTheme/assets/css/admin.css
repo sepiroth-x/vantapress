@@ -1,39 +1,71 @@
 /* ============================================
-   BASIC THEME - FILAMENT-COMPLIMENTING STYLES
-   Enhances Filament's default styling
-   ============================================
-   
-   PHILOSOPHY:
-   - Filament provides structure, we add polish
-   - Use CSS custom properties for theming
-   - Subtle enhancements, never overrides
-   - Dark mode handled by Filament
+   THE BASIC THEME - FILAMENT-FIRST APPROACH
+   "The Beginning" - Enhances, Never Overrides
    ============================================ */
 
-:root {
-    /* Theme Color Palette */
-    --theme-primary: #3b82f6;
-    --theme-primary-dark: #2563eb;
-    --theme-gray-50: #f9fafb;
-    --theme-gray-900: #111827;
-    --theme-gray-950: #030712;
+/* IMPORTANT PHILOSOPHY:
+ * 1. Filament handles ALL base styling and responsiveness
+ * 2. This CSS ONLY adds subtle enhancements
+ * 3. NO !important declarations (let Filament's media queries work)
+ * 4. Work WITH Filament's classes, not against them
+ * 5. ONLY enhance specific modes (dark OR light), never both
+ */
+
+/* ============================================
+   DARK MODE ENHANCEMENTS ONLY
+   ============================================ */
+
+/* Login page - subtle glass effect in dark mode */
+.dark .fi-simple-page section {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }
 
-/* Subtle background enhancements for dark mode */
-.dark {
-    --theme-bg: #0f172a;
-    --theme-surface: #1e293b;
+/* Sidebar - smooth transitions in dark mode */
+.dark .fi-sidebar-item-button {
+    transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-/* Smooth transitions on interactive elements */
-a, button, [role="button"] {
-    transition: all 0.15s ease;
+.dark .fi-sidebar-item-button:hover {
+    transform: translateX(4px);
 }
 
-/* Subtle hover effects */
-.dark [class*="fi-sidebar-item"]:hover {
-    background: rgba(59, 130, 246, 0.1);
+/* Cards - subtle hover effects in dark mode */
+.dark .fi-stats-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* That's it! Clean, minimal, Filament-first. */
+.dark .fi-stats-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Buttons - subtle lift effect in dark mode */
+.dark button[type="submit"],
+.dark .fi-btn-primary {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dark button[type="submit"]:hover,
+.dark .fi-btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+/* ============================================
+   LIGHT MODE ENHANCEMENTS (OPTIONAL)
+   ============================================ */
+
+/* Add light mode specific enhancements here if needed */
+/* Example:
+html:not(.dark) .fi-sidebar-item-button:hover {
+    transform: translateX(2px);
+}
+*/
+
+/* ============================================
+   RESPONSIVE BEHAVIOR
+   ============================================ */
+
+/* NO media queries needed - Filament handles ALL responsive behavior */
+/* Tailwind's responsive utilities work automatically */
+/* Our enhancements scale with Filament's breakpoints (sm, md, lg, xl, 2xl) */
 
