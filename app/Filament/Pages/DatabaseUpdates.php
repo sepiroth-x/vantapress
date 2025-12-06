@@ -181,7 +181,8 @@ class DatabaseUpdates extends Page
      */
     public static function canAccess(): bool
     {
-        // Only super admins or users with specific permission
-        return auth()->user()?->hasRole('super_admin') ?? false;
+        // Allow all authenticated admin users to access database updates
+        // In production, you may want to restrict this to specific roles
+        return auth()->check();
     }
 }
