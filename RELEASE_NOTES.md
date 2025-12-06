@@ -33,6 +33,28 @@ Confirm the regex-based version extraction and .env sync works as expected:
 - ✅ No PHP env() caching issues
 - ✅ Complete deployment workflow verified
 
+#### 🔧 Enhanced Auto-Update Features
+- **Automatic Database Migrations** - Migrations run automatically after updates
+- **Migration Tracking** - Lists which migrations were executed
+- **Error Handling** - Graceful handling of migration failures
+- **Detailed Logging** - All migration activity logged to storage/logs/laravel.log
+
+**How It Works:**
+1. User clicks "Install Update" button in admin
+2. System downloads and extracts new version
+3. Files are updated (protected files skipped)
+4. **Migrations run automatically with `--force` flag**
+5. Caches cleared
+6. Version updated in .env
+7. User sees success message with migration details
+
+**Benefits:**
+- ✅ No manual SQL file uploads needed
+- ✅ No terminal access required
+- ✅ Migrations tracked and logged
+- ✅ WordPress-style user experience
+- ✅ Safe and automatic database updates
+
 ---
 
 ## 📌 Previous Version: v1.0.38-complete

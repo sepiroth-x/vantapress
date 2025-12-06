@@ -317,6 +317,7 @@ class AutoUpdateService
     {
         try {
             $tasks = [];
+            $migrations = [];
 
             // Clear caches
             Artisan::call('config:clear');
@@ -331,9 +332,44 @@ class AutoUpdateService
             Artisan::call('route:clear');
             $tasks[] = 'Cleared route cache';
 
-            // Run migrations
-            Artisan::call('migrate', ['--force' => true]);
-            $tasks[] = 'Ran database migrations';
+            // Run migrations with detailed tracking
+            try {
+                Log::info("Running database migrations for version {$newVersion}");
+                
+                // Get pending migrations before running
+                $pendingMigrations = \DB::table('migrations')
+                    ->pluck('migration')
+                    ->toArray();
+                
+                // Run migrations with force flag (no interaction needed)
+                $migrationResult = Artisan::call('migrate', ['--force' => true]);
+                
+                // Get newly run migrations
+                $allMigrations = \DB::table('migrations')
+                    ->pluck('migration')
+                    ->toArray();
+                
+                $newMigrations = array_diff($allMigrations, $pendingMigrations);
+                
+                if (count($newMigrations) > 0) {
+                    $migrations = $newMigrations;
+                    $migrationList = implode(', ', $newMigrations);
+                    $tasks[] = 'Ran ' . count($newMigrations) . ' database migration(s): ' . $migrationList;
+                    Log::info("Successfully ran " . count($newMigrations) . " migration(s): " . $migrationList);
+                } else {
+                    $tasks[] = 'No new database migrations to run';
+                    Log::info("No new migrations found for version {$newVersion}");
+                }
+                
+            } catch (Exception $e) {
+                // Migration failed - log but continue with other tasks
+                $error = 'Database migration failed: ' . $e->getMessage();
+                $tasks[] = $error;
+                Log::error($error);
+                Log::error($e->getTraceAsString());
+                
+                // Don't throw - allow other post-update tasks to continue
+            }
 
             // Update version in .env
             $this->updateVersionInEnv($newVersion);
@@ -342,6 +378,7 @@ class AutoUpdateService
             return [
                 'success' => true,
                 'tasks' => $tasks,
+                'migrations' => $migrations,
                 'message' => 'Post-update tasks completed successfully'
             ];
         } catch (Exception $e) {
