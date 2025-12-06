@@ -171,7 +171,7 @@ class ThemeResource extends Resource
                     ->url(fn ($record) => route('theme-customizer.show', ['id' => $record->id]))
                     ->openUrlInNewTab()
                     ->tooltip('Customize theme appearance and settings')
-                    ->visible(fn () => true), // Allow customizing any theme
+                    ->visible(fn ($record) => $record->is_active), // Only show for active theme
                 
                 Tables\Actions\Action::make('activate')
                     ->label('Activate')
