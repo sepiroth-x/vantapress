@@ -70,6 +70,42 @@ class DatabaseUpdates extends Page
         try {
             $this->isRunning = true;
 
+            // AGGRESSIVE: Clear all caches before running migrations
+            Log::info('Clearing all caches before migration', [
+                'user_id' => auth()->id()
+            ]);
+            
+            try {
+                \Artisan::call('config:clear');
+                \Artisan::call('cache:clear');
+                \Artisan::call('view:clear');
+                \Artisan::call('route:clear');
+                
+                // Clear OPcache if available
+                if (function_exists('opcache_reset')) {
+                    opcache_reset();
+                    Log::info('OPcache cleared successfully');
+                }
+                
+                // Clear bootstrap cache files
+                $bootstrapCache = base_path('bootstrap/cache');
+                if (file_exists($bootstrapCache . '/config.php')) {
+                    @unlink($bootstrapCache . '/config.php');
+                }
+                if (file_exists($bootstrapCache . '/services.php')) {
+                    @unlink($bootstrapCache . '/services.php');
+                }
+                if (file_exists($bootstrapCache . '/packages.php')) {
+                    @unlink($bootstrapCache . '/packages.php');
+                }
+                
+                Log::info('All caches cleared successfully');
+            } catch (\Exception $cacheError) {
+                Log::warning('Cache clearing had errors (continuing)', [
+                    'error' => $cacheError->getMessage()
+                ]);
+            }
+
             Log::info('User initiated web-based migration', [
                 'user_id' => auth()->id(),
                 'pending_count' => count($this->pendingMigrations)
