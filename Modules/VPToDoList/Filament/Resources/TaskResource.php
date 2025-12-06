@@ -215,8 +215,15 @@ class TaskResource extends Resource
                 
                 Tables\Filters\SelectFilter::make('project_id')
                     ->label('Project')
-                    ->options(fn () => Project::where('user_id', auth()->id())
-                        ->pluck('name', 'id')),
+                    ->options(function () {
+                        try {
+                            return Project::where('user_id', auth()->id())
+                                ->pluck('name', 'id');
+                        } catch (\Exception $e) {
+                            // Return empty array if projects table doesn't exist
+                            return [];
+                        }
+                    }),
                 
                 Tables\Filters\TernaryFilter::make('is_pinned')
                     ->label('Pinned'),
