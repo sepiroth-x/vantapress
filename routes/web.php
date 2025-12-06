@@ -66,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('theme-customizer.save');
     Route::post('/theme-customizer/{id}/activate', [App\Http\Controllers\ThemeCustomizerController::class, 'activate'])
         ->name('theme-customizer.activate');
+    Route::get('/theme-customizer/{id}/elements', [App\Http\Controllers\ThemeCustomizerController::class, 'getElements'])
+        ->name('theme-customizer.elements');
+    Route::get('/theme-customizer/{id}/pages', [App\Http\Controllers\ThemeCustomizerController::class, 'getPages'])
+        ->name('theme-customizer.pages');
 });
 
 // Catch-all route for dynamic pages (must be last)

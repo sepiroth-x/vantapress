@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Theme;
+use App\Services\ThemeElementDetector;
+use App\Services\ThemePageDetector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Cache;
 
 class ThemeCustomizerController extends Controller
 {
     /**
      * Display the theme customizer
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $theme = Theme::findOrFail($id);
         
@@ -24,45 +27,94 @@ class ThemeCustomizerController extends Controller
         if (File::exists($metadataPath)) {
             $themeMetadata = json_decode(File::get($metadataPath), true) ?? [];
         }
-        
+
+        // Initialize detectors
+        $elementDetector = new ThemeElementDetector($themeSlug);
+        $pageDetector = new ThemePageDetector($themeSlug);
+
+        // Get detected elements
+        $elements = $elementDetector->getGroupedElements();
+        $allElements = $elementDetector->getAllElements();
+
+        // Get detected pages
+        $pages = $pageDetector->detectPages();
+        $pagesByType = $pageDetector->getPagesByType();
+
         // Get current settings
-        $settings = [
-            'site_title' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('site_title', config('app.name', 'VantaPress'))
-                : config('app.name', 'VantaPress'),
-            'site_tagline' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('site_tagline', '') : '',
-            'logo' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('logo', '') : '',
-            'primary_color' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('primary_color', '#dc2626') : '#dc2626',
-            'accent_color' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('accent_color', '#991b1b') : '#991b1b',
-            'hero_title' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('hero_title', 'Welcome') : 'Welcome',
-            'hero_subtitle' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('hero_subtitle', '') : '',
-            'hero_description' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('hero_description', '') : '',
-            'hero_primary_button_text' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('hero_primary_button_text', 'Get Started') : 'Get Started',
-            'hero_primary_button_url' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('hero_primary_button_url', '#') : '#',
-            'hero_secondary_button_text' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('hero_secondary_button_text', 'Learn More') : 'Learn More',
-            'hero_secondary_button_url' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('hero_secondary_button_url', '#') : '#',
-            'footer_text' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('footer_text', '© 2025 VantaPress') : '© 2025 VantaPress',
-            'custom_css' => function_exists('vp_get_theme_setting') 
-                ? vp_get_theme_setting('custom_css', '') : '',
-        ];
+        $settings = $this->getCurrentSettings($allElements);
         
-        $previewUrl = url('/?theme_preview=' . urlencode($themeSlug));
+        // Determine preview mode (frontend or admin)
+        $previewMode = $request->get('mode', 'frontend');
         
-        return view('customizer.index', compact('theme', 'themeMetadata', 'settings', 'previewUrl'));
+        // Generate preview URL
+        if ($previewMode === 'admin') {
+            $previewUrl = route('filament.admin.pages.dashboard') . '?theme_preview=' . urlencode($themeSlug);
+        } else {
+            $selectedPage = $request->get('page', 'home');
+            $pageUrl = $this->getPagePreviewUrl($pages, $selectedPage, $themeSlug);
+            $previewUrl = $pageUrl ?? url('/?theme_preview=' . urlencode($themeSlug));
+        }
+        
+        return view('customizer.index', compact(
+            'theme',
+            'themeMetadata',
+            'elements',
+            'allElements',
+            'pages',
+            'pagesByType',
+            'settings',
+            'previewUrl',
+            'previewMode'
+        ));
     }
-    
+
+    /**
+     * Get current settings for all elements
+     */
+    protected function getCurrentSettings(array $elements): array
+    {
+        $settings = [];
+
+        foreach ($elements as $element) {
+            $key = $element['id'];
+            $default = $element['default'] ?? '';
+
+            if (function_exists('vp_get_theme_setting')) {
+                $settings[$key] = vp_get_theme_setting($key, $default);
+            } else {
+                $settings[$key] = $default;
+            }
+        }
+
+        // Legacy settings for backward compatibility
+        $legacyKeys = ['site_title', 'site_tagline', 'logo', 'primary_color', 'accent_color'];
+        foreach ($legacyKeys as $key) {
+            if (!isset($settings[$key])) {
+                if (function_exists('vp_get_theme_setting')) {
+                    $settings[$key] = vp_get_theme_setting($key, '');
+                } else {
+                    $settings[$key] = '';
+                }
+            }
+        }
+
+        return $settings;
+    }
+
+    /**
+     * Get preview URL for specific page
+     */
+    protected function getPagePreviewUrl(array $pages, string $pageSlug, string $themeSlug): ?string
+    {
+        foreach ($pages as $page) {
+            if ($page['slug'] === $pageSlug) {
+                return $page['url'] ?? url("/?preview_page={$pageSlug}&theme_preview={$themeSlug}");
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Save theme settings via AJAX
      */
@@ -95,7 +147,7 @@ class ThemeCustomizerController extends Controller
         }
         
         // Clear cache to ensure changes are reflected
-        \Illuminate\Support\Facades\Cache::flush();
+        Cache::flush();
         \Illuminate\Support\Facades\Artisan::call('view:clear');
         
         return response()->json([
@@ -103,7 +155,7 @@ class ThemeCustomizerController extends Controller
             'message' => 'Settings saved successfully'
         ]);
     }
-    
+
     /**
      * Activate theme via AJAX
      */
@@ -116,6 +168,35 @@ class ThemeCustomizerController extends Controller
             'success' => true,
             'message' => 'Theme activated successfully',
             'redirect' => route('filament.admin.resources.themes.index')
+        ]);
+    }
+
+    /**
+     * Get theme elements via AJAX
+     */
+    public function getElements($id)
+    {
+        $theme = Theme::findOrFail($id);
+        $detector = new ThemeElementDetector($theme->slug);
+        
+        return response()->json([
+            'success' => true,
+            'elements' => $detector->getGroupedElements(),
+        ]);
+    }
+
+    /**
+     * Get theme pages via AJAX
+     */
+    public function getPages($id)
+    {
+        $theme = Theme::findOrFail($id);
+        $detector = new ThemePageDetector($theme->slug);
+        
+        return response()->json([
+            'success' => true,
+            'pages' => $detector->detectPages(),
+            'pagesByType' => $detector->getPagesByType(),
         ]);
     }
 }
