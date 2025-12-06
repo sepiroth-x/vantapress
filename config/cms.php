@@ -167,5 +167,5 @@ return array (
     'enable_route_cache' => true,
     'enable_config_cache' => true,
   ),
-  'active_theme' => 'TheVillainArise',
+  'active_theme' => 'BasicTheme',
 );
