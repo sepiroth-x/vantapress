@@ -910,6 +910,56 @@
                 }
             });
         });
+        
+        // Listen for messages from iframe (edit icon clicks)
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'vp-customizer-focus-element') {
+                const elementId = event.data.elementId;
+                focusCustomizerElement(elementId);
+            }
+        });
+        
+        // Focus on a specific element in the customizer
+        function focusCustomizerElement(elementId) {
+            console.log('Focusing element:', elementId);
+            
+            // Find the input/control for this element
+            const input = document.querySelector(`[name="${elementId}"]`);
+            
+            if (input) {
+                // Find the accordion section containing this input
+                const accordion = input.closest('.accordion');
+                
+                if (accordion && !accordion.classList.contains('active')) {
+                    // Open the accordion if it's closed
+                    const header = accordion.querySelector('.accordion-header');
+                    if (header) {
+                        header.click();
+                    }
+                }
+                
+                // Scroll the input into view
+                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Focus the input
+                setTimeout(() => {
+                    input.focus();
+                    
+                    // Add a highlight effect
+                    const formGroup = input.closest('.form-group');
+                    if (formGroup) {
+                        formGroup.style.transition = 'background-color 0.3s';
+                        formGroup.style.backgroundColor = '#fef3c7';
+                        
+                        setTimeout(() => {
+                            formGroup.style.backgroundColor = '';
+                        }, 2000);
+                    }
+                }, 300);
+            } else {
+                console.warn('Element not found in customizer:', elementId);
+            }
+        }
     </script>
 </body>
 </html>
