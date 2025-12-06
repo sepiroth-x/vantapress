@@ -1,12 +1,65 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.36-complete  
+**Current Version:** v1.0.37-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.36-complete
+## 📌 Latest Version: v1.0.37-complete
+
+### 🔄 Enhanced Version Refresh System
+
+This release adds a dedicated `refreshCurrentVersion()` method to ensure version display updates immediately when checking for updates or after installing updates.
+
+#### 🐛 Problem Identified
+- Version still showed old value (e.g., 1.0.28) even after deploying new version
+- Clicking "Check for Updates" didn't refresh the displayed current version
+- After auto-update install, version display wasn't refreshed before page reload
+- Root cause: `mount()` only runs on first page load, not on button clicks
+
+#### ✅ Solution Implemented
+- **Added `refreshCurrentVersion()` method** - Dedicated method to reload version from .env
+- **Call on every update check** - When "Check for Updates" clicked, refresh version first
+- **Call after update install** - After successful update, refresh version before notification
+- **Enhanced logging** - Logs when version is refreshed for debugging
+- **Double cache clear** - Clears config and cache before reading .env
+
+#### 🔧 How It Works
+1. User clicks "Check for Updates" button
+2. `checkForUpdates()` calls `refreshCurrentVersion()` first
+3. Method clears Laravel config/cache
+4. Reads APP_VERSION directly from .env file
+5. Updates `$this->currentVersion` property
+6. Logs the refreshed version
+7. Then checks GitHub for latest release
+8. Compares refreshed version with latest
+
+After auto-update:
+1. Update installs successfully
+2. Calls `refreshCurrentVersion()` immediately
+3. Shows updated version in success notification
+4. Then refreshes page after 3 seconds
+
+#### 📋 Testing Instructions
+After deploying v1.0.37:
+1. Deploy via `git pull origin release` or auto-updater
+2. Visit `/admin/updates` - should show old version initially
+3. Click **"Check for Updates"** button
+4. **Expected:** Current version refreshes to v1.0.37-complete
+5. **Expected:** "You're up to date!" notification
+6. Check logs: `storage/logs/laravel.log` for "Refreshed current version from .env: 1.0.37-complete"
+
+#### ✅ What This Fixes
+- ✅ Version display now refreshes when clicking "Check for Updates"
+- ✅ After auto-update, shows correct new version immediately
+- ✅ No need to hard-refresh browser to see updated version
+- ✅ Eliminates confusion about which version is actually installed
+- ✅ Works with both git pull and auto-updater deployments
+
+---
+
+## 📌 Previous Version: v1.0.36-complete
 
 ### 🧪 Testing Version Display Fix
 

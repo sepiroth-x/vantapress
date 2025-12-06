@@ -106,11 +106,44 @@ class UpdateSystem extends Page
             \Log::error('Failed to sync .env version: ' . $e->getMessage());
         }
     }
+    
+    /**
+     * Refresh current version from .env file
+     * Call this to reload version after updates
+     */
+    protected function refreshCurrentVersion(): void
+    {
+        // Clear caches first
+        try {
+            \Artisan::call('config:clear');
+            \Artisan::call('cache:clear');
+        } catch (\Exception $e) {
+            // Silently fail
+        }
+        
+        // Read version DIRECTLY from .env file
+        $envPath = base_path('.env');
+        if (\File::exists($envPath)) {
+            $envContent = \File::get($envPath);
+            if (preg_match('/^APP_VERSION=(.*)$/m', $envContent, $matches)) {
+                $this->currentVersion = trim($matches[1]);
+                \Log::info("Refreshed current version from .env: {$this->currentVersion}");
+                return;
+            }
+        }
+        
+        // Fallback to config file
+        $versionConfig = include(base_path('config/version.php'));
+        $this->currentVersion = $versionConfig['version'] ?? '1.0.0';
+    }
 
     public function checkForUpdates(): void
     {
         try {
             $this->checking = true;
+            
+            // Refresh current version from .env (in case it was updated)
+            $this->refreshCurrentVersion();
             
             // Fetch latest release from GitHub
             $response = Http::timeout(10)
@@ -195,9 +228,12 @@ class UpdateSystem extends Page
             $this->updateProgress = $result;
 
             if ($result['success']) {
+                // Refresh current version to show the new version immediately
+                $this->refreshCurrentVersion();
+                
                 Notification::make()
                     ->title('Update Successful!')
-                    ->body("VantaPress has been updated to v{$version}. Page will refresh in 3 seconds...")
+                    ->body("VantaPress has been updated to v{$this->currentVersion}. Page will refresh in 3 seconds...")
                     ->success()
                     ->duration(5000)
                     ->send();
