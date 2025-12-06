@@ -7,7 +7,7 @@
  * Ultra-compact single-line layout.
  * 
  * @package VantaPress
- * @version 1.0.21
+ * @version 1.0.22
  */
 --}}
 <div class="w-full border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 py-1.5">
@@ -21,7 +21,7 @@
         
         {{-- Version --}}
         <span class="text-gray-500 dark:text-gray-500">
-            VantaPress v{{ config('version.version', '1.0.21-complete') }}
+            VantaPress {{ config('version.version', '1.0.22-complete') }}
         </span>
         
         <span class="text-gray-400 dark:text-gray-600">•</span>

@@ -15,6 +15,8 @@
 - **📱 Dynamic Footer Version** - Footer now reads version from config/version.php dynamically
 - **👤 Updated Attribution** - Added "a.k.a Xenroth Vantablack" to footer, centered layout
 - **🚫 Improved .gitignore** - Excluded sync-*.php files from repository
+- **🔧 Fixed Double-V Bug** - Removed duplicate "v" prefix in footer (was showing "VantaPress vv1.0.22")
+- **🎨 Circular VP Icon** - New circular gradient icon with VP letters
 
 ### 🎨 Theme System Improvements
 - **VantaPress-Driven Customization** - Themes define capabilities in theme.json, VantaPress generates admin UI
