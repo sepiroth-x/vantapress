@@ -284,6 +284,24 @@ class WebMigrationService
     public function runMigrations(): array
     {
         try {
+            // STEP -1: FORCE CLEAR ALL CACHES (ensure we're using latest code)
+            Log::warning('[WebMigrationService] ===== CLEARING ALL CACHES =====');
+            try {
+                Artisan::call('config:clear');
+                Artisan::call('cache:clear');
+                Artisan::call('view:clear');
+                Artisan::call('route:clear');
+                if (function_exists('opcache_reset')) {
+                    opcache_reset();
+                    Log::warning('[WebMigrationService] ✓ OPcache cleared');
+                }
+                Log::warning('[WebMigrationService] ✓ All Laravel caches cleared');
+            } catch (Exception $cacheException) {
+                Log::warning('[WebMigrationService] Cache clear had errors (continuing anyway)', [
+                    'error' => $cacheException->getMessage()
+                ]);
+            }
+
             // STEP 0: ALWAYS run migration fix scripts FIRST (before any checks)
             // This ensures orphaned migration entries are cleaned up before we check pending status
             Log::warning('[WebMigrationService] FORCING fix scripts to run FIRST');
