@@ -8,20 +8,38 @@
 
 ## 📌 Latest Version: v1.0.29-complete
 
-### 🧪 Version Update Test Release
+### 🧪 Version Update Test Release + Auto-Sync Fix
 
-This is a test release to verify that production environments properly update their version numbers after deployment.
+This release fixes the automatic version synchronization during updates and serves as a test of the improved workflow.
 
 #### 🔧 Changes
-- **Version Number Test** - Updated to v1.0.29-complete to test production `.env` update workflow
-- **Documentation Enhancement** - Added production `.env` update instructions to deployment guide
-- **Version Management** - Improved documentation for `.env` version synchronization
+- **🔄 Automatic .env Version Sync** - Update system now automatically updates `APP_VERSION` in `.env` file during updates
+- **🐛 Version Prefix Fix** - Strips 'v' prefix from version when writing to `.env` (e.g., v1.0.29-complete → 1.0.29-complete)
+- **📝 Enhanced Logging** - Added version change logging to track `.env` updates
+- **✅ Production Ready** - No manual `.env` editing required after deploying updates
 
-#### 📋 Testing Instructions
-After deploying this version:
-1. Verify production `.env` has `APP_VERSION=1.0.29-complete`
-2. Run `php artisan optimize:clear`
-3. Check `/admin/updates` dashboard shows v1.0.29-complete
+#### 📋 What Was Fixed
+Previously, when deploying updates:
+- ❌ `.env` file kept old `APP_VERSION` value
+- ❌ Update Dashboard showed old version despite new files
+- ❌ Required manual `.env` editing and cache clearing
+
+Now, the update system automatically:
+- ✅ Updates `APP_VERSION` in `.env` during post-update tasks
+- ✅ Strips version prefix for correct format
+- ✅ Logs version changes to `storage/logs/laravel.log`
+- ✅ Clears all caches automatically
+
+#### 🧪 Testing This Release
+This release serves two purposes:
+1. **Test the automatic .env sync feature** - Deploy and verify version updates automatically
+2. **Validate the fix works in production** - Confirm no manual `.env` editing needed
+
+After deploying v1.0.29:
+1. Pull latest code: `git pull origin release`
+2. Check Update Dashboard should automatically show v1.0.29-complete
+3. Verify `/storage/logs/laravel.log` shows version update entry
+4. No manual `.env` editing should be needed
 
 ---
 

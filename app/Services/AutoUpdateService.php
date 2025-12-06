@@ -361,19 +361,27 @@ class AutoUpdateService
         $envPath = base_path('.env');
         
         if (File::exists($envPath)) {
+            // Strip 'v' prefix if present (e.g., v1.0.29-complete → 1.0.29-complete)
+            $cleanVersion = ltrim($version, 'v');
+            
             $envContent = File::get($envPath);
+            $oldVersion = env('APP_VERSION', 'unknown');
             
             if (preg_match('/^APP_VERSION=.*$/m', $envContent)) {
                 $envContent = preg_replace(
                     '/^APP_VERSION=.*$/m',
-                    'APP_VERSION=' . $version,
+                    'APP_VERSION=' . $cleanVersion,
                     $envContent
                 );
             } else {
-                $envContent .= "\nAPP_VERSION=" . $version . "\n";
+                $envContent .= "\nAPP_VERSION=" . $cleanVersion . "\n";
             }
             
             File::put($envPath, $envContent);
+            
+            Log::info("Updated .env APP_VERSION: {$oldVersion} → {$cleanVersion}");
+        } else {
+            Log::warning("Could not update .env version: file not found at {$envPath}");
         }
     }
 
