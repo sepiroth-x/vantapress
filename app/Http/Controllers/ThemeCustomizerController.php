@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Theme;
+use App\Models\LayoutTemplate;
 use App\Services\ThemeElementDetector;
 use App\Services\ThemePageDetector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class ThemeCustomizerController extends Controller
 {
@@ -276,5 +278,69 @@ class ThemeCustomizerController extends Controller
             'pages' => $detector->detectPages(),
             'pagesByType' => $detector->getPagesByType(),
         ]);
+    }
+
+    /**
+     * Save layout template
+     */
+    public function saveLayoutTemplate(Request $request, $id)
+    {
+        try {
+            $theme = Theme::findOrFail($id);
+            
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'layout_data' => 'required|array',
+                'category' => 'nullable|string|max:50',
+            ]);
+
+            $slug = Str::slug($validated['name']) . '-' . time();
+
+            $template = LayoutTemplate::create([
+                'name' => $validated['name'],
+                'slug' => $slug,
+                'description' => 'Auto-captured layout from ' . ($validated['layout_data']['url'] ?? 'unknown page'),
+                'layout_data' => $validated['layout_data'],
+                'category' => $validated['category'] ?? 'general',
+                'theme_id' => $theme->id,
+                'is_global' => false,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Layout template saved successfully',
+                'template' => $template,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error saving layout template: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get layout templates for a theme
+     */
+    public function getLayoutTemplates($id)
+    {
+        try {
+            $theme = Theme::findOrFail($id);
+            
+            $templates = LayoutTemplate::where('theme_id', $theme->id)
+                ->orWhere('is_global', true)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'templates' => $templates,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching templates: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

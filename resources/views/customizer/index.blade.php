@@ -40,14 +40,42 @@
             background: #1e293b;
             color: white;
             display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        
+        .header-top {
+            display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-shrink: 0;
         }
         
         .customizer-header h1 {
             font-size: 18px;
             font-weight: 600;
+        }
+        
+        .page-tracker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .page-tracker svg {
+            flex-shrink: 0;
+        }
+        
+        .current-page-url {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            opacity: 0.9;
         }
         
         .action-btn {
@@ -486,29 +514,42 @@
         <!-- Sidebar -->
         <div class="customizer-sidebar">
             <div class="customizer-header">
-                <h1>🎨 Theme Customizer</h1>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    <button type="button" class="action-btn" onclick="undoChanges()" id="undo-btn" disabled title="Undo">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <button type="button" class="action-btn" onclick="redoChanges()" id="redo-btn" disabled title="Redo">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <button type="button" class="action-btn" onclick="resetChanges()" title="Reset to defaults">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                    <button type="button" class="close-customizer" onclick="closeCustomizer()">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                        </svg>
-                        Close
-                    </button>
+                <div class="header-top">
+                    <h1>🎨 Theme Customizer</h1>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button type="button" class="action-btn" onclick="undoChanges()" id="undo-btn" disabled title="Undo">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <button type="button" class="action-btn" onclick="redoChanges()" id="redo-btn" disabled title="Redo">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <button type="button" class="action-btn" onclick="resetChanges()" title="Reset to defaults">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <button type="button" class="action-btn" onclick="captureCurrentLayout()" title="Save current layout as template">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z" />
+                            </svg>
+                        </button>
+                        <button type="button" class="close-customizer" onclick="closeCustomizer()">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                            Close
+                        </button>
+                    </div>
+                </div>
+                <div class="page-tracker">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="current-page-url" id="current-page-url">Loading...</span>
                 </div>
             </div>
             
@@ -680,6 +721,51 @@
                             </div>
                         @endif
                     @endforeach
+                    
+                    <!-- Page Builder Section -->
+                    <div class="accordion">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span>🏗️ Page Builder</span>
+                            <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="form-group">
+                                <label class="form-label">Layout Templates</label>
+                                <button type="button" class="btn btn-secondary" onclick="openLayoutTemplates()" style="width: 100%; margin-bottom: 12px;">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" style="margin-right: 8px;">
+                                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                                    </svg>
+                                    Browse Templates
+                                </button>
+                                <p style="font-size: 12px; color: #64748b; margin: 0 0 12px 0;">
+                                    Apply pre-built layouts to your pages
+                                </p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Quick Actions</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <button type="button" class="btn btn-secondary" onclick="addSection('hero')" style="font-size: 13px; padding: 8px 12px;">
+                                        + Hero Section
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" onclick="addSection('content')" style="font-size: 13px; padding: 8px 12px;">
+                                        + Content Block
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" onclick="addSection('gallery')" style="font-size: 13px; padding: 8px 12px;">
+                                        + Gallery
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" onclick="addSection('contact')" style="font-size: 13px; padding: 8px 12px;">
+                                        + Contact Form
+                                    </button>
+                                </div>
+                                <p style="font-size: 12px; color: #64748b; margin: 8px 0 0 0;">
+                                    Click elements in preview to edit them
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     
                     <!-- Custom CSS (Always show this section) -->
                     <div class="accordion">
@@ -1433,6 +1519,303 @@
                 sendUpdateToPreview(key, value);
             }
         };
+
+        // Page tracking - update current page URL
+        function updateCurrentPageUrl() {
+            const iframe = document.getElementById('preview-frame');
+            if (iframe && iframe.contentWindow) {
+                try {
+                    const iframeUrl = iframe.contentWindow.location.href;
+                    const urlDisplay = document.getElementById('current-page-url');
+                    if (urlDisplay) {
+                        // Extract path from full URL
+                        const url = new URL(iframeUrl);
+                        urlDisplay.textContent = url.pathname === '/' ? 'Home' : url.pathname;
+                    }
+                } catch (e) {
+                    // Cross-origin error, can't access iframe URL
+                    console.log('Cannot track page (cross-origin)');
+                }
+            }
+        }
+
+        // Track page changes in iframe
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframe = document.getElementById('preview-frame');
+            
+            iframe.addEventListener('load', function() {
+                updateCurrentPageUrl();
+                
+                // Track navigation within iframe
+                try {
+                    const iframeWindow = iframe.contentWindow;
+                    if (iframeWindow) {
+                        // Listen for navigation events
+                        iframeWindow.addEventListener('popstate', updateCurrentPageUrl);
+                        
+                        // Override pushState and replaceState to track SPA navigation
+                        const originalPushState = iframeWindow.history.pushState;
+                        const originalReplaceState = iframeWindow.history.replaceState;
+                        
+                        iframeWindow.history.pushState = function() {
+                            originalPushState.apply(this, arguments);
+                            updateCurrentPageUrl();
+                        };
+                        
+                        iframeWindow.history.replaceState = function() {
+                            originalReplaceState.apply(this, arguments);
+                            updateCurrentPageUrl();
+                        };
+                    }
+                } catch (e) {
+                    console.log('Cannot track iframe navigation:', e);
+                }
+            });
+        });
+
+        // Capture current layout as template
+        function captureCurrentLayout() {
+            const iframe = document.getElementById('preview-frame');
+            if (!iframe || !iframe.contentWindow) {
+                alert('Preview not loaded. Please wait for the page to load.');
+                return;
+            }
+
+            // Get layout data from iframe
+            try {
+                const iframeDoc = iframe.contentWindow.document;
+                const layoutData = {
+                    url: iframe.contentWindow.location.pathname,
+                    elements: [],
+                    timestamp: new Date().toISOString()
+                };
+
+                // Capture all elements with data-vp-editable
+                const editableElements = iframeDoc.querySelectorAll('[data-vp-editable]');
+                editableElements.forEach(element => {
+                    const elementId = element.getAttribute('data-vp-editable');
+                    layoutData.elements.push({
+                        id: elementId,
+                        tag: element.tagName.toLowerCase(),
+                        content: element.textContent.substring(0, 100), // First 100 chars
+                        classes: Array.from(element.classList),
+                        type: element.getAttribute('data-vp-type') || 'text'
+                    });
+                });
+
+                // Prompt for template name
+                const templateName = prompt(
+                    `Save this layout as a template?\n\nFound ${layoutData.elements.length} elements.\n\nEnter template name:`,
+                    `Layout - ${layoutData.url}`
+                );
+
+                if (!templateName) {
+                    return; // User cancelled
+                }
+
+                // Save to server
+                showSavingIndicator('Saving layout template...');
+                
+                fetch(`/theme-customizer/${themeId}/save-layout-template`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: templateName,
+                        layout_data: layoutData,
+                        category: getCategoryFromUrl(layoutData.url)
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showSavingIndicator('✓ Layout template saved!', true);
+                        showNotification(
+                            'success',
+                            'Layout Saved',
+                            `Template "${templateName}" has been saved with ${layoutData.elements.length} elements.`
+                        );
+                    } else {
+                        showSavingIndicator('❌ ' + (data.message || 'Error saving template'), true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showSavingIndicator('❌ Error saving template', true);
+                });
+
+            } catch (e) {
+                console.error('Error capturing layout:', e);
+                alert('Could not capture layout. The page might be from a different domain.');
+            }
+        }
+
+        // Helper to determine category from URL
+        function getCategoryFromUrl(url) {
+            if (url === '/' || url === '/home') return 'home';
+            if (url.includes('/blog')) return 'blog';
+            if (url.includes('/about')) return 'about';
+            if (url.includes('/contact')) return 'contact';
+            return 'general';
+        }
+
+        // Notification system
+        function showNotification(type, title, message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                max-width: 350px;
+                padding: 16px;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                animation: slideInRight 0.3s ease-out;
+            `;
+
+            const bgColors = {
+                success: '#10b981',
+                error: '#ef4444',
+                warning: '#f59e0b',
+                info: '#3b82f6'
+            };
+
+            notification.innerHTML = `
+                <div style="display: flex; align-items: start; gap: 12px;">
+                    <div style="width: 4px; height: 100%; background: ${bgColors[type] || bgColors.info}; border-radius: 2px; flex-shrink: 0;"></div>
+                    <div style="flex: 1;">
+                        <h4 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1e293b;">${title}</h4>
+                        <p style="margin: 0; font-size: 13px; color: #64748b;">${message}</p>
+                    </div>
+                    <button onclick="this.closest('div').style.display='none'" style="background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 18px; line-height: 1; padding: 0;">&times;</button>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                notification.style.transition = 'opacity 0.3s';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+
+        // Page Builder Functions
+        function openLayoutTemplates() {
+            showSavingIndicator('Loading templates...');
+            
+            fetch(`/theme-customizer/${themeId}/layout-templates`, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                showSavingIndicator('✓ Templates loaded', true);
+                
+                if (data.success) {
+                    showTemplateSelector(data.templates);
+                } else {
+                    showNotification('error', 'Error', 'Could not load templates');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showSavingIndicator('❌ Error loading templates', true);
+            });
+        }
+
+        function showTemplateSelector(templates) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 24px;
+                border-radius: 12px;
+                max-width: 800px;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            `;
+
+            content.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #1e293b;">📐 Layout Templates</h2>
+                    <button onclick="this.closest('div').parentElement.parentElement.remove()" style="background: none; border: none; cursor: pointer; font-size: 24px; color: #94a3b8;">&times;</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+                    ${templates.length === 0 ? '<p style="grid-column: 1/-1; text-align: center; color: #64748b; padding: 40px;">No templates available. Create one by clicking the save button in the customizer.</p>' : ''}
+                    ${templates.map(template => `
+                        <div onclick="applyTemplate(${template.id})" style="
+                            border: 2px solid #e5e7eb;
+                            border-radius: 8px;
+                            padding: 16px;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                        " onmouseover="this.style.borderColor='#3b82f6'" onmouseout="this.style.borderColor='#e5e7eb'">
+                            <div style="background: #f9fafb; height: 120px; border-radius: 6px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px;">
+                                ${template.category === 'header' ? '📋' : template.category === 'footer' ? '📄' : template.category === 'hero' ? '🖼️' : '📄'}
+                            </div>
+                            <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1e293b;">${template.name}</h3>
+                            <p style="margin: 0; font-size: 12px; color: #64748b;">${template.category}</p>
+                            <p style="margin: 8px 0 0 0; font-size: 11px; color: #94a3b8;">${template.layout_data?.elements?.length || 0} elements</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+
+            // Close on backdrop click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
+        function applyTemplate(templateId) {
+            if (!confirm('Apply this template to the current page? This will modify the page structure.')) {
+                return;
+            }
+
+            showNotification('info', 'Template Application', 'This feature will be available in the next update. For now, use inline editing to customize elements.');
+        }
+
+        function addSection(type) {
+            const iframe = document.getElementById('preview-frame');
+            if (!iframe || !iframe.contentWindow) {
+                alert('Preview not loaded. Please wait for the page to load.');
+                return;
+            }
+
+            showNotification(
+                'info',
+                'Section Builder',
+                `Adding ${type} sections will be available in the next update. For now, edit existing elements by clicking them in the preview.`
+            );
+        }
     </script>
 </body>
 </html>

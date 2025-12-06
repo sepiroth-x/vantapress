@@ -65,12 +65,15 @@ class ThemeCustomizerInlineEdit {
                 background: rgba(59, 130, 246, 0.05);
             }
 
-            /* Editing state - no hover effects */
+            /* Editing state - no hover effects, preserve text color */
             [data-vp-editable].vp-editing {
                 outline: 2px solid #10b981 !important;
                 outline-offset: 2px;
                 background: rgba(16, 185, 129, 0.05) !important;
                 cursor: text;
+                /* Ensure text remains visible with high contrast */
+                color: inherit !important;
+                -webkit-text-fill-color: inherit !important;
             }
 
             /* Edit Label - only when NOT editing */
@@ -168,27 +171,31 @@ class ThemeCustomizerInlineEdit {
 
     detectColorElements() {
         // Find elements with inline colors or CSS color properties
-        const allElements = document.querySelectorAll('*');
+        // Only detect elements in the current viewport
+        const viewportElements = this.getElementsInViewport();
         
-        allElements.forEach((element, index) => {
+        viewportElements.forEach((element, index) => {
             if (this.isHidden(element)) return;
             if (element.closest('script, style, svg, noscript')) return;
             if (element.hasAttribute(this.editableAttr)) return; // Skip already marked
             
             const style = window.getComputedStyle(element);
             const bgColor = style.backgroundColor;
-            const textColor = style.color;
             
             // Check if element has a significant background color (not transparent/default)
-            const hasSignificantBg = bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent';
+            const hasSignificantBg = bgColor && 
+                bgColor !== 'rgba(0, 0, 0, 0)' && 
+                bgColor !== 'transparent' &&
+                bgColor !== 'rgb(255, 255, 255)' && // Skip white backgrounds
+                bgColor !== 'rgba(255, 255, 255, 1)';
             
-            // Only detect elements that are likely to be styled containers
-            const isStyledContainer = hasSignificantBg && (
-                element.classList.length > 0 ||
-                ['header', 'footer', 'nav', 'section', 'aside', 'div'].includes(element.tagName.toLowerCase())
+            // Only detect major styled containers (not every small element)
+            const isMajorContainer = hasSignificantBg && (
+                ['header', 'footer', 'nav', 'section', 'aside', 'main'].includes(element.tagName.toLowerCase()) ||
+                (element.classList.length > 0 && element.offsetHeight > 50) // Must have class and be substantial
             );
             
-            if (isStyledContainer) {
+            if (isMajorContainer) {
                 const elementId = this.generateElementId(element, index + 10000);
                 element.setAttribute(this.editableAttr, elementId);
                 element.setAttribute('data-vp-color-element', 'true');
@@ -202,6 +209,26 @@ class ThemeCustomizerInlineEdit {
                     colorValue: bgColor
                 });
             }
+        });
+    }
+
+    getElementsInViewport() {
+        // Get all potential color containers
+        const allElements = Array.from(document.querySelectorAll('header, footer, nav, section, aside, main, div[class], article'));
+        
+        // Filter to only those visible in viewport or near it
+        return allElements.filter(element => {
+            const rect = element.getBoundingClientRect();
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+            const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+            
+            // Element is in viewport or within 200px of viewport
+            return (
+                rect.top < windowHeight + 200 &&
+                rect.bottom > -200 &&
+                rect.left < windowWidth + 200 &&
+                rect.right > -200
+            );
         });
     }
 
@@ -323,14 +350,19 @@ class ThemeCustomizerInlineEdit {
             return;
         }
 
-        // Store original content
-        if (!element.dataset.originalContent) {
-            element.dataset.originalContent = element.textContent;
+        // Store original content ONCE
+        if (!element.dataset.vpOriginalContent) {
+            element.dataset.vpOriginalContent = element.textContent;
         }
 
         // Make editable
         element.contentEditable = true;
         element.classList.add('vp-editing');
+        
+        // Preserve color and styles
+        const computedStyle = window.getComputedStyle(element);
+        element.dataset.vpOriginalColor = computedStyle.color;
+        element.style.color = computedStyle.color; // Lock color during editing
         
         // Small delay to ensure class is applied before focus
         setTimeout(() => {
@@ -369,7 +401,7 @@ class ThemeCustomizerInlineEdit {
             }
             
             if (e.key === 'Escape') {
-                element.textContent = element.dataset.originalContent;
+                element.textContent = element.dataset.vpOriginalContent;
                 element.blur();
             }
         };
@@ -384,6 +416,12 @@ class ThemeCustomizerInlineEdit {
         element.contentEditable = false;
         element.classList.remove('vp-editing');
         
+        // Restore original color if it was changed
+        if (element.dataset.vpOriginalColor) {
+            element.style.color = '';
+            delete element.dataset.vpOriginalColor;
+        }
+        
         // Clean up event listener
         if (element._keydownHandler) {
             element.removeEventListener('keydown', element._keydownHandler);
@@ -395,19 +433,22 @@ class ThemeCustomizerInlineEdit {
 
     saveChanges(element, elementId) {
         const newContent = element.textContent.trim();
-        const originalContent = element.dataset.originalContent;
+        const originalContent = element.dataset.vpOriginalContent;
 
-        if (newContent !== originalContent) {
-            console.log(`💾 Saving changes for ${elementId}`);
+        if (newContent !== originalContent && newContent.length > 0) {
+            console.log(`💾 Saving changes for ${elementId}: "${originalContent}" → "${newContent}"`);
             
             // Update stored content
-            element.dataset.originalContent = newContent;
+            element.dataset.vpOriginalContent = newContent;
             
             // Notify parent window (this will save to DB without refreshing)
             this.notifyCustomizerOfChange(elementId, newContent);
             
             // Update customizer input
             this.updateCustomizerInput(elementId, newContent);
+        } else if (newContent.length === 0) {
+            // Restore if empty
+            element.textContent = originalContent;
         }
     }
 

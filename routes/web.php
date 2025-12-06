@@ -72,6 +72,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('theme-customizer.elements');
     Route::get('/theme-customizer/{id}/pages', [App\Http\Controllers\ThemeCustomizerController::class, 'getPages'])
         ->name('theme-customizer.pages');
+    Route::post('/theme-customizer/{id}/save-layout-template', [App\Http\Controllers\ThemeCustomizerController::class, 'saveLayoutTemplate'])
+        ->name('theme-customizer.save-layout-template');
+    Route::get('/theme-customizer/{id}/layout-templates', [App\Http\Controllers\ThemeCustomizerController::class, 'getLayoutTemplates'])
+        ->name('theme-customizer.layout-templates');
 });
 
 // Catch-all route for dynamic pages (must be last)
