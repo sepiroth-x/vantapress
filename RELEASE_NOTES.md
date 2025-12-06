@@ -1,12 +1,35 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.24-complete  
+**Current Version:** v1.0.25-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.24-complete
+## 📌 Latest Version: v1.0.25-complete
+
+### 🎯 What's New in v1.0.25-complete
+- **🧹 Code Quality Refactor** - Removed ALL inline styles from templates for Filament-first approach
+- **✨ CSS Class Abstraction** - Added semantic CSS classes (.footer-attribution, .form-textarea-code, .preview-header-title)
+- **🗑️ Massive Cleanup** - Deleted 674-line obsolete override file with bad practices
+- **📐 Best Practices Enforcement** - Zero inline styles, zero !important rules, zero .fi-* overrides
+
+### 🐛 Bug Fixes
+- Removed 4 inline style attributes from BasicTheme footer component
+- Removed 3 inline style attributes from customizer view
+- Eliminated all hardcoded styles in favor of proper CSS classes
+
+### 🔧 Technical Improvements
+- **themes/BasicTheme/components/footer.blade.php:** Replaced inline styles with `.footer-attribution` class
+- **resources/views/customizer/index.blade.php:** Replaced inline styles with `.form-textarea-code` and `.preview-header-title` classes
+- **themes/BasicTheme/assets/css/theme.css:** Added 3 new semantic CSS class definitions
+- **Deleted admin.OLD-OVERRIDE.css:** Removed 674 lines of obsolete code (direct .fi-* overrides, !important rules, custom gradients)
+- Net code reduction: -643 lines for cleaner, more maintainable codebase
+- Enforced Filament-first philosophy: use Filament APIs, not CSS overrides
+
+---
+
+## 📌 Previous Version: v1.0.24-complete
 
 ### 🎯 What's New in v1.0.24-complete
 - **🎨 CRITICAL FIX: AdminPanelProvider Color Registration** - Removed hardcoded crimson colors from PHP
