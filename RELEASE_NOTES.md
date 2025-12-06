@@ -1,12 +1,100 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.25-complete  
+**Current Version:** v1.0.26-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.25-complete
+## 📌 Latest Version: v1.0.26-complete
+
+### 🎉 Major Theme Customizer Enhancements
+
+#### ✨ New Features
+- **🎨 Page Tracking** - Live display of current page being edited in customizer header
+- **💾 Layout Template System** - Capture and save page layouts with all elements
+- **🏗️ Page Builder Foundation** - UI foundation for future drag-drop builder
+- **📐 Layout Templates Admin** - Full Filament resource for managing saved templates
+- **🔔 Notification System** - User-friendly notifications for actions and feedback
+
+#### 🐛 Critical Bug Fixes
+- **Fixed Text Editing** - Text now remains visible while typing (was invisible due to background color override)
+- **Fixed Content Persistence** - Text changes now save correctly (unified data property names)
+- **Fixed Color Detection** - Only scans visible viewport elements, not entire DOM
+- **Fixed Module Check** - Customize button hidden when VPEssential1 module is disabled
+
+#### 🔧 Technical Improvements
+
+**Inline Editing Fixes:**
+- Added `color: inherit !important` to preserve text color during editing
+- Lock original text color with explicit style during edit mode
+- Unified property names from `originalContent` to `vpOriginalContent`
+- Prevent empty text deletion with content restoration
+- Fixed blur event to save changes properly
+
+**Smart Color Detection:**
+- Only scan viewport ±200px buffer (not entire document)
+- Filter to major containers: header, footer, nav, section, aside, main
+- Ignore white/transparent backgrounds
+- Require CSS classes and >50px element height
+- Added `getElementsInViewport()` helper function
+
+**Page Tracking System:**
+- Real-time iframe URL tracking in customizer header
+- Display page path (e.g., "Home" for `/` or "/about")
+- SPA navigation detection (pushState/replaceState listeners)
+- Cross-origin error handling
+
+**Layout Template Capture:**
+- Click save icon in toolbar to capture current page structure
+- Automatically scans all elements with `data-vp-editable`
+- Captures: element IDs, tags, content (first 100 chars), CSS classes, types
+- Auto-categorizes by page type (home, blog, about, contact, general)
+- Saves to database with theme association
+
+**Module Integration:**
+- Check VPEssential1 module status in ThemeResource
+- Redirect with warning in CustomizeTheme page mount
+- Block access in ThemeCustomizerController
+- Clear notification explaining module requirement
+
+#### 📦 New Database & Models
+- **Migration:** `2025_12_06_162738_create_layout_templates_table`
+- **Model:** `LayoutTemplate` with theme relationships
+- **Fields:** name, slug, description, thumbnail, layout_data (JSON), category, is_global, theme_id
+
+#### 🗂️ New Admin Features
+- **Layout Templates Resource** - Full CRUD interface in Appearance menu
+- **Template Browser** - Modal showing all saved templates with preview
+- **Category Filters** - Filter templates by type (header, footer, hero, content, etc.)
+- **Global Templates** - Mark templates as available to all themes
+
+#### 📝 Modified Files
+- `js/theme-customizer-inline-edit.js` - Fixed text editing, improved color detection (887 lines modified)
+- `resources/views/customizer/index.blade.php` - Added page tracker, layout capture UI, page builder section
+- `app/Http/Controllers/ThemeCustomizerController.php` - Added template save/retrieve endpoints, module check
+- `routes/web.php` - Added layout template routes
+- `app/Filament/Resources/ThemeResource.php` - Module-aware customize button visibility
+- `app/Filament/Resources/ThemeResource/Pages/CustomizeTheme.php` - Module check in mount method
+- `app/Filament/Resources/LayoutTemplateResource.php` - Full admin interface for templates
+
+#### 🔮 Future Roadmap
+This release lays the foundation for a full Elementor-style page builder. Coming soon:
+- Drag-drop section builder
+- Pre-built section library (hero, gallery, contact form, etc.)
+- Visual layout editing with live preview
+- Section duplication and deletion
+- Responsive editing controls
+
+### 🎓 User Clarification
+User provided important feedback about desired page builder functionality:
+- Wants Elementor/Divi-style visual builder
+- Ability to add new sections and layouts, not just edit existing
+- Current implementation is foundation - full builder requires additional development
+
+---
+
+## 📌 Previous Version: v1.0.25-complete
 
 ### 🎯 What's New in v1.0.25-complete
 - **🧹 Code Quality Refactor** - Removed ALL inline styles from templates for Filament-first approach
