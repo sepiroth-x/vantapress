@@ -15,11 +15,14 @@
 
 ### 🐛 Bug Fixes
 - Fixed active theme configuration pointing to TheVillainArise instead of BasicTheme
+- **Fixed AdminPanelProvider crimson color registration** - Changed from hardcoded crimson (#D40026) to neutral Filament Color::Blue
 - Ensured consistent neutral color scheme across admin panel
 - Maintained footer fix from v1.0.22 (removed duplicate "v" prefix)
 
 ### 🔧 Technical Improvements
 - **config/cms.php:** Updated `active_theme` from 'TheVillainArise' to 'BasicTheme' (line 172)
+- **AdminPanelProvider.php:** Replaced custom crimson primary color array with `Color::Blue` preset (lines 35-47)
+- **AdminPanelProvider.php:** Replaced custom gray scale array with `Color::Gray` preset (lines 49-60)
 - Verified Filament color registration in AdminPanelProvider (Filament-first approach)
 - Confirmed layout CSS fix remains intact in `css/vantapress-admin.css`
 
