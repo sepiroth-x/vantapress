@@ -211,6 +211,11 @@
             min-height: 80px;
         }
         
+        .form-textarea-code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
         .form-color {
             width: 100%;
             height: 42px;
@@ -257,6 +262,11 @@
             display: flex;
             align-items: center;
             gap: 12px;
+        }
+        
+        .preview-header-title {
+            font-weight: 500;
+            font-size: 14px;
         }
         
         .preview-url {
@@ -592,7 +602,7 @@
                         <div class="accordion-content">
                             <div class="form-group">
                                 <label class="form-label">Additional CSS</label>
-                                <textarea name="custom_css" class="form-textarea" rows="8" style="font-family: monospace; font-size: 12px;">{{ $settings['custom_css'] }}</textarea>
+                                <textarea name="custom_css" class="form-textarea form-textarea-code" rows="8">{{ $settings['custom_css'] }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -626,7 +636,7 @@
                         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
                         <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
                     </svg>
-                    <span style="font-weight: 500; font-size: 14px;">Live Preview</span>
+                    <span class="preview-header-title">Live Preview</span>
                 </div>
                 
                 <div class="preview-actions">

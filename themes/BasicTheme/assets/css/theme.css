@@ -188,3 +188,18 @@ body {
     border-top: 1px solid #374151;
     color: #9ca3af;
 }
+
+.footer-attribution {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+.footer-attribution a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-attribution a:hover {
+    text-decoration: underline;
+}

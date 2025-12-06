@@ -24,11 +24,11 @@
         </div>
         <div class="footer-bottom">
             <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.8;">
+            <p class="footer-attribution">
                 Theme by <strong>Sepiroth X Villainous</strong> | Open Source | 
-                <a href="https://github.com/sepiroth-x" target="_blank" style="color: inherit;">GitHub</a> | 
-                <a href="https://www.facebook.com/sepirothx/" target="_blank" style="color: inherit;">Facebook</a> | 
-                <a href="https://x.com/sepirothx000" target="_blank" style="color: inherit;">Twitter</a>
+                <a href="https://github.com/sepiroth-x" target="_blank">GitHub</a> | 
+                <a href="https://www.facebook.com/sepirothx/" target="_blank">Facebook</a> | 
+                <a href="https://x.com/sepirothx000" target="_blank">Twitter</a>
             </p>
         </div>
     </div>
