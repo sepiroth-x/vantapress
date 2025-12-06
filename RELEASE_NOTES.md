@@ -16,18 +16,40 @@ This release fixes a critical storage structure issue that prevented all `php ar
 - Missing `storage/framework/views` directory caused "Please provide a valid cache path" error
 - All PHP artisan commands failed (migrate, optimize:clear, etc.)
 - Menu tables existed physically but weren't tracked in migrations table
-- Migration conflict: "Table 'menus' already exists" error
+- Migration conflict: "Table 'menus' already exists" error on production servers
 
 #### ✅ Solution Implemented
 - **Created missing storage directory**: `storage/framework/views/.gitignore`
-- **Dropped conflicting tables**: Removed duplicate menus and menu_items tables
+- **Dropped conflicting tables**: Removed duplicate menus and menu_items tables (local development)
+- **Production fix script**: `fix-production-menus.php` - Upload and run once to drop conflicting tables
 - **Verified migration tracking**: All 26 migrations now properly recorded
 - **Complete storage structure**: cache/, sessions/, views/ directories all present
 
+#### 🚨 Production Deployment Instructions
+
+If you're deploying v1.0.42-complete to production and see "Table 'menus' already exists" error:
+
+**Step 1: Upload Fix Script**
+- Upload `fix-production-menus.php` to your VantaPress root directory (same folder as `index.php`)
+
+**Step 2: Run Fix Script**
+- Visit: `https://yourdomain.com/fix-production-menus.php` in your browser
+- The script will safely drop the conflicting `menus` and `menu_items` tables
+- You'll see a success message
+
+**Step 3: Delete Fix Script**
+- **IMPORTANT:** Delete `fix-production-menus.php` from your server for security
+
+**Step 4: Run Migrations**
+- Go to `/admin/database-updates` in your admin panel
+- Click **"Update Database Now"** button
+- All 26 migrations should now run successfully
+
 #### 📋 What This Fixes
 - ✅ All PHP artisan commands now work (migrate, cache:clear, etc.)
-- ✅ Migration system fully functional
+- ✅ Migration system fully functional on shared hosting
 - ✅ No more "cache path" errors
+- ✅ Production deployment with conflicting tables fixed
 - ✅ All 26 migrations properly tracked in database
 - ✅ Web-based Database Updates page works correctly
 
