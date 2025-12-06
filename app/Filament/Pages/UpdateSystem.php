@@ -78,16 +78,26 @@ class UpdateSystem extends Page
                 return;
             }
             
-            // Get version from config file (the source of truth)
-            $versionConfig = include(base_path('config/version.php'));
-            $configVersion = $versionConfig['version'] ?? null;
+            // Get DEFAULT version from config/version.php by parsing the file
+            // We need the hardcoded default, not env('APP_VERSION') which is cached
+            $configPath = base_path('config/version.php');
+            $configContent = \File::get($configPath);
+            
+            // Extract the default version: 'version' => env('APP_VERSION', '1.0.37-complete')
+            // We want the second parameter (the default)
+            if (preg_match("/'version'\s*=>\s*env\([^,]+,\s*['\"]([^'\"]+)['\"]\)/", $configContent, $matches)) {
+                $configVersion = $matches[1];
+            } else {
+                \Log::warning('Could not extract default version from config/version.php');
+                return;
+            }
             
             // Get current version from .env
             $envContent = \File::get($envPath);
             preg_match('/^APP_VERSION=(.*)$/m', $envContent, $matches);
             $envVersion = $matches[1] ?? null;
             
-            // If versions differ, update .env to match config
+            // If versions differ, update .env to match config default
             if ($configVersion && $envVersion !== $configVersion) {
                 if (preg_match('/^APP_VERSION=.*$/m', $envContent)) {
                     $envContent = preg_replace(
@@ -132,9 +142,18 @@ class UpdateSystem extends Page
             }
         }
         
-        // Fallback to config file
-        $versionConfig = include(base_path('config/version.php'));
-        $this->currentVersion = $versionConfig['version'] ?? '1.0.0';
+        // Fallback: Extract default version from config/version.php
+        $configPath = base_path('config/version.php');
+        if (\File::exists($configPath)) {
+            $configContent = \File::get($configPath);
+            if (preg_match("/'version'\s*=>\s*env\([^,]+,\s*['\"]([^'\"]+)['\"]\)/", $configContent, $matches)) {
+                $this->currentVersion = $matches[1];
+                return;
+            }
+        }
+        
+        // Last resort fallback
+        $this->currentVersion = '1.0.0';
     }
 
     public function checkForUpdates(): void

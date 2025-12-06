@@ -1,12 +1,91 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.37-complete  
+**Current Version:** v1.0.38-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.37-complete
+## 📌 Latest Version: v1.0.38-complete
+
+### 🎯 PROPER FIX: Extract Default Version from config/version.php
+
+This release implements the CORRECT solution for version synchronization by extracting the hardcoded default version from `config/version.php` instead of relying on the cached `env()` function.
+
+#### 💡 The Real Problem
+Previous versions tried to use `config('version.version')` which internally calls:
+```php
+'version' => env('APP_VERSION', '1.0.38-complete')
+```
+
+The issue: `env('APP_VERSION')` returns the **cached old value** from when PHP process started, not the new value written to `.env`.
+
+#### ✅ The Simple Solution
+**Parse `config/version.php` and extract ONLY the default value (second parameter)!**
+
+Instead of:
+```php
+$config = include('config/version.php');
+$version = $config['version']; // Returns OLD cached env value
+```
+
+Now:
+```php
+$content = File::get('config/version.php');
+preg_match("/'version'.*env\([^,]+,\s*['\"]([^'\"]+)['\"]/", $content, $m);
+$version = $m[1]; // Gets '1.0.38-complete' directly!
+```
+
+#### 🔧 How It Works
+
+**Source of Truth:** `config/version.php` default parameter
+```php
+'version' => env('APP_VERSION', '1.0.38-complete')
+                                 ^^^^^^^^^^^^^^^^ This hardcoded value!
+```
+
+**After Update:**
+1. New files deployed with `config/version.php` containing `'1.0.38-complete'`
+2. `syncEnvVersion()` parses config file with regex
+3. Extracts `'1.0.38-complete'` from the default parameter
+4. Overwrites `.env`: `APP_VERSION=1.0.38-complete`
+5. Version display reads from `.env` and shows `1.0.38-complete` ✅
+
+**Regex Pattern:**
+```regex
+/'version'\s*=>\s*env\([^,]+,\s*['"]([^'"]+)['"]/
+```
+
+Captures the default version string between quotes after the comma.
+
+#### 📋 Testing Instructions
+After deploying v1.0.38:
+1. Deploy via `git pull origin release` or FTP upload
+2. Visit `/admin/updates` (may show old version initially)
+3. Click **"Check for Updates"** button
+4. **Expected:** Current version refreshes to v1.0.38-complete immediately
+5. **Expected:** "You're up to date!" notification
+6. Check logs: `storage/logs/laravel.log` for:
+   - `Auto-synced .env APP_VERSION: 1.0.xx → 1.0.38-complete`
+   - `Refreshed current version from .env: 1.0.38-complete`
+
+#### ✅ Why This Works
+- ✅ Bypasses PHP's `env()` caching completely
+- ✅ Reads hardcoded default from updated config file
+- ✅ Simple regex extraction, no complex logic
+- ✅ Works immediately after file deployment
+- ✅ No reliance on Laravel's config cache
+- ✅ Source of truth is the newly deployed config file
+
+#### 📦 Files Modified
+- `app/Filament/Pages/UpdateSystem.php`:
+  - `syncEnvVersion()`: Now parses config file content with regex
+  - `refreshCurrentVersion()`: Fallback also uses regex parsing
+  - Both methods extract default version, not cached env value
+
+---
+
+## 📌 Previous Version: v1.0.37-complete
 
 ### 🔄 Enhanced Version Refresh System
 
