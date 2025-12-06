@@ -101,28 +101,35 @@ return new class {
     /**
      * Determine if this fix should run
      * 
+     * AGGRESSIVE MODE: Always run if tables exist, regardless of tracking
+     * This ensures production conflicts are always resolved
+     * 
      * @return bool
      */
     public function shouldRun(): bool
     {
-        Log::info('[Migration Fix 001] Checking if fix should run...');
+        Log::info('[Migration Fix 001] ========================================');
+        Log::info('[Migration Fix 001] AGGRESSIVE CHECK - Always drop untracked tables');
+        Log::info('[Migration Fix 001] ========================================');
         
-        // Only run if migrations table exists (system is initialized)
+        // Check if migrations table exists
         if (!Schema::hasTable('migrations')) {
-            Log::info('[Migration Fix 001] Skipping - migrations table does not exist yet');
+            Log::warning('[Migration Fix 001] Skipping - migrations table does not exist yet');
             return false;
         }
 
-        // Check if legacy tables exist but aren't tracked
+        // Check if legacy tables exist
         $menuItemsExists = Schema::hasTable('menu_items');
         $menusExists = Schema::hasTable('menus');
         
         Log::info('[Migration Fix 001] Table existence check', [
-            'menu_items_exists' => $menuItemsExists,
-            'menus_exists' => $menusExists
+            'menu_items_exists' => $menuItemsExists ? 'YES' : 'NO',
+            'menus_exists' => $menusExists ? 'YES' : 'NO'
         ]);
         
+        // If either table exists, check tracking
         if ($menuItemsExists || $menusExists) {
+            // Check if migrations are tracked in database
             $menuItemsMigrationExists = DB::table('migrations')
                 ->where('migration', 'like', '%create_menu_items_table')
                 ->exists();
@@ -131,24 +138,29 @@ return new class {
                 ->where('migration', 'like', '%create_menus_table')
                 ->exists();
 
-            Log::info('[Migration Fix 001] Migration tracking check', [
-                'menu_items_tracked' => $menuItemsMigrationExists,
-                'menus_tracked' => $menusMigrationExists
+            Log::info('[Migration Fix 001] Migration tracking status', [
+                'menu_items_tracked' => $menuItemsMigrationExists ? 'YES' : 'NO',
+                'menus_tracked' => $menusMigrationExists ? 'YES' : 'NO'
             ]);
 
-            // Run if tables exist but migrations don't
-            $shouldRun = !$menuItemsMigrationExists || !$menusMigrationExists;
+            // AGGRESSIVE: Run if ANY table exists but is NOT tracked
+            $shouldRun = ($menuItemsExists && !$menuItemsMigrationExists) || 
+                         ($menusExists && !$menusMigrationExists);
             
-            Log::info('[Migration Fix 001] Decision: ' . ($shouldRun ? 'SHOULD RUN' : 'SKIP'), [
-                'reason' => $shouldRun 
-                    ? 'Legacy tables exist without migration tracking'
-                    : 'All tables are properly tracked'
-            ]);
+            if ($shouldRun) {
+                Log::warning('[Migration Fix 001] ✓✓✓ DECISION: WILL RUN - Untracked tables detected!');
+                Log::warning('[Migration Fix 001] Tables to drop: ' . 
+                    ($menuItemsExists && !$menuItemsMigrationExists ? 'menu_items ' : '') .
+                    ($menusExists && !$menusMigrationExists ? 'menus' : '')
+                );
+            } else {
+                Log::info('[Migration Fix 001] DECISION: SKIP - All tables properly tracked or don\'t exist');
+            }
             
             return $shouldRun;
         }
 
-        Log::info('[Migration Fix 001] Skipping - no legacy tables found');
+        Log::info('[Migration Fix 001] DECISION: SKIP - No menu tables found');
         return false;
     }
 };
