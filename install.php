@@ -1344,15 +1344,15 @@ ini_set('display_errors', 1);
             $rootDir = __DIR__;
             $publicDir = __DIR__ . '/public';
             
-            // Always delete index.html first (pre-installation landing page)
+            // Rename index.html to index-off.html (preserve pre-installation page)
             if (file_exists("$rootDir/index.html")) {
-                unlink("$rootDir/index.html");
-                echo "<!-- Removed pre-installation landing page (index.html) -->\n";
+                rename("$rootDir/index.html", "$rootDir/index-off.html");
+                echo "<!-- Renamed pre-installation landing page: index.html → index-off.html -->\n";
             }
             
             if (file_exists("$publicDir/index.html")) {
-                unlink("$publicDir/index.html");
-                echo "<!-- Removed public/index.html -->\n";
+                rename("$publicDir/index.html", "$publicDir/index-off.html");
+                echo "<!-- Renamed public/index.html → public/index-off.html -->\n";
             }
             
             // Check both locations and activate whichever exists
