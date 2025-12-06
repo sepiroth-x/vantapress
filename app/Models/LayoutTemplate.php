@@ -15,7 +15,7 @@ class LayoutTemplate extends Model
         'layout_data',
         'category',
         'is_global',
-        'theme_id',
+        'theme_slug',
     ];
 
     protected $casts = [
@@ -24,10 +24,10 @@ class LayoutTemplate extends Model
     ];
 
     /**
-     * Get the theme this template belongs to
+     * Get the theme slug for this template
      */
-    public function theme(): BelongsTo
+    public function getThemeSlug(): ?string
     {
-        return $this->belongsTo(Theme::class);
+        return $this->theme_slug;
     }
 }

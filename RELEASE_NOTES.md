@@ -1,12 +1,45 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.27-complete  
+**Current Version:** v1.0.28-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.27-complete
+## 📌 Latest Version: v1.0.28-complete
+
+### 🐛 Critical Bug Fixes Release
+
+This release addresses critical production issues affecting layout templates and page editing functionality.
+
+#### 🔧 Fixed Issues
+- **Layout Templates 500 Error** - Fixed foreign key constraint to non-existent `themes` table
+  - Changed `theme_id` (database foreign key) to `theme_slug` (filesystem reference)
+  - Aligned with VantaPress's WordPress-inspired filesystem architecture
+  - Updated LayoutTemplate model, resource, and migrations
+  - Safe migration included for existing deployments
+- **Page Editing Not Saving** - Fixed missing author attribution during page updates
+  - Added author_id preservation in EditPage resource
+  - Ensures content ownership remains intact during edits
+- **Version Display Bug** - Fixed inconsistent version display across deployment files
+  - Updated index.html (was stuck at v1.0.25)
+  - Synchronized all version files to match actual release
+
+#### 📦 Technical Changes
+- Modified `database/migrations/2025_12_06_162738_create_layout_templates_table.php`
+- Updated `app/Models/LayoutTemplate.php` 
+- Updated `app/Filament/Resources/LayoutTemplateResource.php`
+- Fixed `app/Filament/Resources/PageResource/Pages/EditPage.php`
+- Created safe migration: `2025_12_06_175855_update_layout_templates_table_remove_theme_id.php`
+
+#### 🚀 Deployment Notes
+- Run `php artisan migrate` after pulling this release
+- No data loss - migration includes rollback capability
+- See `DEPLOYMENT_FIXES_DEC6.md` for detailed deployment guide
+
+---
+
+## 📌 Previous Version: v1.0.27-complete
 
 ### 🔄 Repository Synchronization Release
 

@@ -52,10 +52,10 @@ class LayoutTemplateResource extends Resource
                             ->default('general')
                             ->required(),
                         
-                        Forms\Components\Select::make('theme_id')
-                            ->relationship('theme', 'name')
-                            ->label('Theme')
-                            ->helperText('Leave empty for global templates'),
+                        Forms\Components\TextInput::make('theme_slug')
+                            ->label('Theme Slug')
+                            ->helperText('e.g., BasicTheme, TheVillainArise (Leave empty for global templates)')
+                            ->placeholder('BasicTheme'),
                         
                         Forms\Components\Textarea::make('description')
                             ->rows(3)
@@ -100,9 +100,10 @@ class LayoutTemplateResource extends Resource
                     ])
                     ->sortable(),
                 
-                Tables\Columns\TextColumn::make('theme.name')
+                Tables\Columns\TextColumn::make('theme_slug')
                     ->label('Theme')
                     ->sortable()
+                    ->placeholder('Global')
                     ->default('Global'),
                 
                 Tables\Columns\IconColumn::make('is_global')
@@ -126,8 +127,11 @@ class LayoutTemplateResource extends Resource
                         'general' => 'General',
                     ]),
                 
-                Tables\Filters\SelectFilter::make('theme_id')
-                    ->relationship('theme', 'name')
+                Tables\Filters\SelectFilter::make('theme_slug')
+                    ->options([
+                        'BasicTheme' => 'BasicTheme',
+                        'TheVillainArise' => 'TheVillainArise',
+                    ])
                     ->label('Theme'),
                 
                 Tables\Filters\TernaryFilter::make('is_global')

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->json('layout_data'); // Stores the layout structure
             $table->string('category')->default('general'); // header, footer, hero, content, etc.
             $table->boolean('is_global')->default(false);
-            $table->foreignId('theme_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('theme_slug')->nullable(); // Reference theme by slug (not foreign key)
             $table->timestamps();
         });
     }
