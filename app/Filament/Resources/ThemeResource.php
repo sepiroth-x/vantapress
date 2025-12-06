@@ -171,7 +171,15 @@ class ThemeResource extends Resource
                     ->url(fn ($record) => route('theme-customizer.show', ['id' => $record->id]))
                     ->openUrlInNewTab()
                     ->tooltip('Customize theme appearance and settings')
-                    ->visible(fn ($record) => $record->is_active), // Only show for active theme
+                    ->visible(function ($record) {
+                        // Only show for active theme AND if VPEssential1 module is enabled
+                        if (!$record->is_active) {
+                            return false;
+                        }
+                        
+                        $vpEssentialModule = \App\Models\Module::where('slug', 'VPEssential1')->first();
+                        return $vpEssentialModule && $vpEssentialModule->is_enabled;
+                    }),
                 
                 Tables\Actions\Action::make('activate')
                     ->label('Activate')

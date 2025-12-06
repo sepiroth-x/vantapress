@@ -18,6 +18,13 @@ class ThemeCustomizerController extends Controller
      */
     public function show($id, Request $request)
     {
+        // Check if VPEssential1 module is enabled
+        $vpEssentialModule = \App\Models\Module::where('slug', 'VPEssential1')->first();
+        if (!$vpEssentialModule || !$vpEssentialModule->is_enabled) {
+            return redirect()->route('filament.admin.resources.themes.index')
+                ->with('error', 'The VPEssential1 module is disabled. Please enable it to use the theme customizer.');
+        }
+        
         $theme = Theme::findOrFail($id);
         
         // Get theme metadata

@@ -28,6 +28,19 @@ class CustomizeTheme extends Page implements HasForms
     public function mount(int | string | Theme $record): void
     {
         try {
+            // Check if VPEssential1 module is enabled
+            $vpEssentialModule = \App\Models\Module::where('slug', 'VPEssential1')->first();
+            if (!$vpEssentialModule || !$vpEssentialModule->is_enabled) {
+                Notification::make()
+                    ->title('Theme Customizer Unavailable')
+                    ->body('The VPEssential1 module is disabled. Please enable it to use the theme customizer.')
+                    ->warning()
+                    ->send();
+                
+                $this->redirect(ThemeResource::getUrl('index'));
+                return;
+            }
+            
             // Handle if $record is already a Theme model instance
             if ($record instanceof Theme) {
                 $this->record = $record;
