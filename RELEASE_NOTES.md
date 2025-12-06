@@ -1,12 +1,38 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.40-complete  
+**Current Version:** v1.0.41-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.40-complete
+## 📌 Latest Version: v1.0.41-complete
+
+### 🐛 Bug Fix: Database Updates Page Access
+
+This release fixes a critical 403 Forbidden error that prevented users from accessing the Database Updates page.
+
+#### 🐛 Problem Identified
+- `/admin/database-updates` returned 403 Forbidden error
+- Root cause: `canAccess()` method checked for non-existent `'super_admin'` role (with underscore)
+- VantaPress uses `'super-admin'` (with hyphen) for role names
+- All authenticated admin users were blocked from accessing the page
+
+#### ✅ Solution Implemented
+- Changed `canAccess()` to simply check `auth()->check()`
+- Since page is already protected by Filament admin middleware, this is secure
+- Any logged-in admin user can now access Database Updates
+- Alternative: Use `hasRole('super-admin')` with hyphen for strict role checking
+
+#### 📋 What This Fixes
+- ✅ Database Updates page now accessible at `/admin/database-updates`
+- ✅ All admin users can run web-based migrations
+- ✅ Notification banner "Update Database Now" button works correctly
+- ✅ Post-update redirect to Database Updates page works
+
+---
+
+## 📌 Previous Version: v1.0.40-complete
 
 ### 🎯 CRITICAL FIX: Web-Based Migration Runner for Shared Hosting
 
