@@ -1,10 +1,10 @@
-<header class="site-header">
+<header class="site-header" data-vp-element="header">
     <div class="container">
         <div class="header-content">
-            <div class="logo">
-                <a href="/">{{ config('app.name', 'VantaPress') }}</a>
+            <div class="logo" data-vp-element="site_logo">
+                <a href="/">{{ vp_get_theme_setting('site_title', config('app.name', 'VantaPress')) }}</a>
             </div>
-            <nav class="main-nav">
+            <nav class="main-nav" data-vp-element="primary_navigation">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/about">About</a></li>

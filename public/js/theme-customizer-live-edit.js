@@ -7,7 +7,7 @@ class ThemeCustomizerLiveEdit {
     constructor(options = {}) {
         this.customizerWindow = options.customizerWindow || window.parent;
         this.editIconClass = options.editIconClass || 'vp-edit-icon';
-        this.editableAttr = options.editableAttr || 'data-customizer-element';
+        this.editableAttr = options.editableAttr || 'data-vp-element';
         this.hoverClass = options.hoverClass || 'vp-customizer-hover';
         this.activeElements = [];
         
@@ -72,13 +72,13 @@ class ThemeCustomizerLiveEdit {
             }
 
             /* Editable Element Hover */
-            [data-customizer-element]:hover {
+            [data-vp-element]:hover {
                 outline: 2px dashed #dc2626;
                 outline-offset: 2px;
                 position: relative;
             }
 
-            [data-customizer-element]:hover .vp-edit-icon {
+            [data-vp-element]:hover .vp-edit-icon {
                 display: flex !important;
             }
 
@@ -104,12 +104,12 @@ class ThemeCustomizerLiveEdit {
                 display: none;
             }
 
-            [data-customizer-element]:hover .vp-editable-badge {
+            [data-vp-element]:hover .vp-editable-badge {
                 display: block;
             }
 
             /* Prevent icon overlap */
-            [data-customizer-element] {
+            [data-vp-element] {
                 position: relative;
             }
         `;

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Customize: {{ $theme->name }} - VantaPress</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title>Customize: <?php echo e($theme->name); ?> - VantaPress</title>
     
     <style>
         * {
@@ -475,23 +475,23 @@
             </div>
             
             <div class="theme-info">
-                <h2>{{ $theme->name }}</h2>
-                <p>{{ $theme->description }}</p>
-                @if($theme->is_active)
+                <h2><?php echo e($theme->name); ?></h2>
+                <p><?php echo e($theme->description); ?></p>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($theme->is_active): ?>
                     <span class="theme-badge">
                         <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                         </svg>
                         Active Theme
                     </span>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
             
             <div class="customizer-controls">
                 <form id="customizer-form">
-                    @csrf
+                    <?php echo csrf_field(); ?>
                     
-                    @php
+                    <?php
                         $sectionIcons = [
                             'site' => '🏠',
                             'header' => '📋',
@@ -514,70 +514,70 @@
                             'components' => 'Components',
                             'widgets' => 'Widget Areas',
                         ];
-                    @endphp
+                    ?>
                     
-                    @foreach($elements as $sectionId => $sectionElements)
-                        @if(count($sectionElements) > 0)
-                            @php
+                    <?php $__currentLoopData = $elements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sectionId => $sectionElements): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($sectionElements) > 0): ?>
+                            <?php
                                 // Get section info from theme.json if available
                                 $sectionInfo = $themeMetadata['customizer']['sections'][$sectionId] ?? null;
                                 $sectionLabel = $sectionInfo['label'] ?? ($sectionLabels[$sectionId] ?? ucfirst($sectionId));
                                 $sectionIcon = $sectionIcons[$sectionId] ?? '⚙️';
                                 $isActive = in_array($sectionId, ['site', 'colors', 'header', 'footer']);
-                            @endphp
+                            ?>
                             
-                            <div class="accordion {{ $isActive ? 'active' : '' }}">
+                            <div class="accordion <?php echo e($isActive ? 'active' : ''); ?>">
                                 <div class="accordion-header" onclick="toggleAccordion(this)">
-                                    <span>{{ $sectionIcon }} {{ $sectionLabel }}</span>
+                                    <span><?php echo e($sectionIcon); ?> <?php echo e($sectionLabel); ?></span>
                                     <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
                                     </svg>
                                 </div>
                                 <div class="accordion-content">
-                                    @foreach($sectionElements as $element)
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $sectionElements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $element): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div class="form-group">
-                                            <label class="form-label">{{ $element['label'] }}</label>
+                                            <label class="form-label"><?php echo e($element['label']); ?></label>
                                             
-                                            @php
+                                            <?php
                                                 $elementId = $element['id'];
                                                 $elementValue = $settings[$elementId] ?? ($element['default'] ?? '');
                                                 $elementType = $element['type'] ?? 'text';
-                                            @endphp
+                                            ?>
                                             
-                                            @if($elementType === 'text')
+                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($elementType === 'text'): ?>
                                                 <input 
                                                     type="text" 
-                                                    name="{{ $elementId }}" 
+                                                    name="<?php echo e($elementId); ?>" 
                                                     class="form-input" 
-                                                    value="{{ $elementValue }}" 
+                                                    value="<?php echo e($elementValue); ?>" 
                                                     onchange="autoSave()"
-                                                    placeholder="{{ $element['default'] ?? '' }}"
+                                                    placeholder="<?php echo e($element['default'] ?? ''); ?>"
                                                 >
                                             
-                                            @elseif($elementType === 'textarea')
+                                            <?php elseif($elementType === 'textarea'): ?>
                                                 <textarea 
-                                                    name="{{ $elementId }}" 
+                                                    name="<?php echo e($elementId); ?>" 
                                                     class="form-textarea" 
                                                     rows="3" 
                                                     onchange="autoSave()"
-                                                    placeholder="{{ $element['default'] ?? '' }}"
-                                                >{{ $elementValue }}</textarea>
+                                                    placeholder="<?php echo e($element['default'] ?? ''); ?>"
+                                                ><?php echo e($elementValue); ?></textarea>
                                             
-                                            @elseif($elementType === 'color')
+                                            <?php elseif($elementType === 'color'): ?>
                                                 <input 
                                                     type="color" 
-                                                    name="{{ $elementId }}" 
+                                                    name="<?php echo e($elementId); ?>" 
                                                     class="form-color" 
-                                                    value="{{ $elementValue }}" 
+                                                    value="<?php echo e($elementValue); ?>" 
                                                     onchange="autoSave()"
                                                 >
                                             
-                                            @elseif($elementType === 'image')
+                                            <?php elseif($elementType === 'image'): ?>
                                                 <input 
                                                     type="text" 
-                                                    name="{{ $elementId }}" 
+                                                    name="<?php echo e($elementId); ?>" 
                                                     class="form-input" 
-                                                    value="{{ $elementValue }}" 
+                                                    value="<?php echo e($elementValue); ?>" 
                                                     onchange="autoSave()"
                                                     placeholder="Enter image URL..."
                                                 >
@@ -585,63 +585,66 @@
                                                     Enter image URL or upload via Media Library
                                                 </small>
                                             
-                                            @elseif($elementType === 'toggle')
+                                            <?php elseif($elementType === 'toggle'): ?>
                                                 <label style="display: flex; align-items: center; gap: 8px;">
                                                     <input 
                                                         type="checkbox" 
-                                                        name="{{ $elementId }}" 
+                                                        name="<?php echo e($elementId); ?>" 
                                                         value="1"
-                                                        {{ $elementValue ? 'checked' : '' }}
+                                                        <?php echo e($elementValue ? 'checked' : ''); ?>
+
                                                         onchange="autoSave()"
                                                     >
                                                     <span style="font-size: 13px; color: #64748b;">Enable</span>
                                                 </label>
                                             
-                                            @elseif($elementType === 'select')
+                                            <?php elseif($elementType === 'select'): ?>
                                                 <select 
-                                                    name="{{ $elementId }}" 
+                                                    name="<?php echo e($elementId); ?>" 
                                                     class="form-select" 
                                                     onchange="autoSave()"
                                                 >
-                                                    @foreach(($element['options'] ?? []) as $optionValue => $optionLabel)
+                                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = ($element['options'] ?? []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $optionValue => $optionLabel): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                         <option 
-                                                            value="{{ is_numeric($optionValue) ? $optionLabel : $optionValue }}" 
-                                                            {{ $elementValue == (is_numeric($optionValue) ? $optionLabel : $optionValue) ? 'selected' : '' }}
+                                                            value="<?php echo e(is_numeric($optionValue) ? $optionLabel : $optionValue); ?>" 
+                                                            <?php echo e($elementValue == (is_numeric($optionValue) ? $optionLabel : $optionValue) ? 'selected' : ''); ?>
+
                                                         >
-                                                            {{ is_numeric($optionValue) ? $optionLabel : $optionLabel }}
+                                                            <?php echo e(is_numeric($optionValue) ? $optionLabel : $optionLabel); ?>
+
                                                         </option>
-                                                    @endforeach
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                 </select>
                                             
-                                            @elseif($elementType === 'range')
+                                            <?php elseif($elementType === 'range'): ?>
                                                 <input 
                                                     type="range" 
-                                                    name="{{ $elementId }}" 
+                                                    name="<?php echo e($elementId); ?>" 
                                                     class="form-input" 
-                                                    value="{{ $elementValue }}" 
-                                                    min="{{ $element['min'] ?? 0 }}"
-                                                    max="{{ $element['max'] ?? 100 }}"
-                                                    step="{{ $element['step'] ?? 1 }}"
+                                                    value="<?php echo e($elementValue); ?>" 
+                                                    min="<?php echo e($element['min'] ?? 0); ?>"
+                                                    max="<?php echo e($element['max'] ?? 100); ?>"
+                                                    step="<?php echo e($element['step'] ?? 1); ?>"
                                                     onchange="autoSave()"
                                                     oninput="this.nextElementSibling.value = this.value"
                                                 >
-                                                <output style="font-size: 12px; color: #64748b;">{{ $elementValue }}</output>
+                                                <output style="font-size: 12px; color: #64748b;"><?php echo e($elementValue); ?></output>
                                             
-                                            @else
+                                            <?php else: ?>
                                                 <input 
                                                     type="text" 
-                                                    name="{{ $elementId }}" 
+                                                    name="<?php echo e($elementId); ?>" 
                                                     class="form-input" 
-                                                    value="{{ $elementValue }}" 
+                                                    value="<?php echo e($elementValue); ?>" 
                                                     onchange="autoSave()"
                                                 >
-                                            @endif
+                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                         </div>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </div>
                             </div>
-                        @endif
-                    @endforeach
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     
                     <!-- Custom CSS (Always show this section) -->
                     <div class="accordion">
@@ -654,7 +657,7 @@
                         <div class="accordion-content">
                             <div class="form-group">
                                 <label class="form-label">Additional CSS</label>
-                                <textarea name="custom_css" class="form-textarea form-textarea-code" rows="8">{{ $settings['custom_css'] ?? '' }}</textarea>
+                                <textarea name="custom_css" class="form-textarea form-textarea-code" rows="8"><?php echo e($settings['custom_css'] ?? ''); ?></textarea>
                             </div>
                         </div>
                     </div>
@@ -662,21 +665,21 @@
             </div>
             
             <div class="customizer-footer">
-                @if(!$theme->is_active)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$theme->is_active): ?>
                     <button type="button" class="btn btn-success" onclick="activateTheme()">
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                         </svg>
                         Activate & Publish
                     </button>
-                @else
+                <?php else: ?>
                     <button type="button" class="btn btn-primary" onclick="saveSettings()">
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z"/>
                         </svg>
                         Save Changes
                     </button>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
         
@@ -720,7 +723,7 @@
             
             <div class="preview-container">
                 <div class="preview-frame-wrapper" id="preview-wrapper">
-                    <iframe id="preview-frame" src="{{ $previewUrl }}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                    <iframe id="preview-frame" src="<?php echo e($previewUrl); ?>" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
                 </div>
             </div>
         </div>
@@ -733,7 +736,7 @@
     
     <script>
         let saveTimeout;
-        const themeId = {{ $theme->id }};
+        const themeId = <?php echo e($theme->id); ?>;
         
         function toggleAccordion(header) {
             const accordion = header.parentElement;
@@ -884,32 +887,7 @@
                 showSavingIndicator('❌ ' + error.message, true);
             });
         }
-        
-        // Inject live edit script into preview iframe
-        document.addEventListener('DOMContentLoaded', function() {
-            const iframe = document.getElementById('preview-frame');
-            
-            iframe.addEventListener('load', function() {
-                try {
-                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    
-                    // Check if script already injected
-                    if (iframeDoc.querySelector('script[data-vp-live-edit]')) {
-                        return;
-                    }
-                    
-                    // Inject live edit script
-                    const script = iframeDoc.createElement('script');
-                    script.setAttribute('data-vp-live-edit', 'true');
-                    script.src = '{{ asset("js/theme-customizer-live-edit.js") }}';
-                    iframeDoc.body.appendChild(script);
-                    
-                    console.log('✓ Live edit script injected into preview iframe');
-                } catch (error) {
-                    console.warn('Could not inject live edit script:', error);
-                }
-            });
-        });
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\sepirothx\Documents\3. Laravel Development\vantapress\resources\views/customizer/index.blade.php ENDPATH**/ ?>
