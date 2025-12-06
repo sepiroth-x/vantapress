@@ -95,6 +95,60 @@ class WebMigrationService
     }
 
     /**
+     * Fix conflicting database tables before migration
+     * 
+     * Handles legacy table conflicts that may exist from previous versions.
+     * This ensures migrations can run cleanly without "table already exists" errors.
+     * 
+     * @return void
+     */
+    protected function fixConflictingTables(): void
+    {
+        try {
+            $tablesFixed = [];
+
+            // Check for legacy menus tables (v1.0.41 and earlier)
+            // These tables may exist but not be tracked in migrations table
+            if (Schema::hasTable('menu_items')) {
+                // Check if migration exists but table isn't tracked
+                $migrationExists = DB::table('migrations')
+                    ->where('migration', 'like', '%create_menu_items_table')
+                    ->exists();
+                
+                if (!$migrationExists) {
+                    Schema::dropIfExists('menu_items');
+                    $tablesFixed[] = 'menu_items';
+                    Log::info('Dropped legacy table: menu_items');
+                }
+            }
+
+            if (Schema::hasTable('menus')) {
+                $migrationExists = DB::table('migrations')
+                    ->where('migration', 'like', '%create_menus_table')
+                    ->exists();
+                
+                if (!$migrationExists) {
+                    Schema::dropIfExists('menus');
+                    $tablesFixed[] = 'menus';
+                    Log::info('Dropped legacy table: menus');
+                }
+            }
+
+            if (count($tablesFixed) > 0) {
+                Log::info('Fixed conflicting tables before migration', [
+                    'tables' => $tablesFixed
+                ]);
+            }
+
+        } catch (Exception $e) {
+            Log::warning('Failed to fix conflicting tables (non-critical)', [
+                'error' => $e->getMessage()
+            ]);
+            // Don't throw - this is a cleanup step, not critical
+        }
+    }
+
+    /**
      * Run pending migrations via web interface
      * 
      * @return array
@@ -120,6 +174,10 @@ class WebMigrationService
                 'pending_count' => count($pendingMigrations),
                 'migrations' => $pendingMigrations
             ]);
+
+            // CRITICAL: Fix conflicting tables before running migrations
+            // This prevents "table already exists" errors on production deployments
+            $this->fixConflictingTables();
 
             // Run migrations with force flag (bypasses production check)
             $exitCode = Artisan::call('migrate', ['--force' => true]);
