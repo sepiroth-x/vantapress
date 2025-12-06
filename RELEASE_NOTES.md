@@ -1,12 +1,26 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.26-complete  
+**Current Version:** v1.0.27-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.26-complete
+## 📌 Latest Version: v1.0.27-complete
+
+### 🔄 Repository Synchronization Release
+
+This is a maintenance release to ensure all branches are synchronized with the latest changes.
+
+#### 📦 Changes
+- Synchronized development and release branches
+- Updated version numbers across all configuration files
+- Ensured `index.html` pre-installation page is present in release branch
+- Updated README.md with current version badge
+
+---
+
+## 📌 Previous Version: v1.0.26-complete
 
 ### 🎉 Major Theme Customizer Enhancements
 
