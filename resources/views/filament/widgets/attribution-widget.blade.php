@@ -1,25 +1,17 @@
 <x-filament::widget class="fi-wi-attribution">
     <x-filament::card class="w-full">
         <div class="p-6">
-            <!-- Profile and Info Section -->
-            <div class="flex items-start space-x-4 mb-6">
-                <div class="flex-shrink-0">
-                    <!-- Shield icon representing Sepiroth X Villainous -->
-                    <svg class="w-24 h-24 text-crimson-500" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.31-.98-6-4.65-6-9V8.3l6-3.11v14.82z"/>
-                    </svg>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                        VantaPress CMS - Open Source
-                    </h3>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        Created with passion by <strong class="text-crimson-500">Sepiroth X Villainous</strong> a.k.a <strong class="text-crimson-500">Xenroth Vantablack</strong> (Richard Cebel Cupal, LPT)
-                    </p>
-                    <p class="mt-2 text-xs text-gray-500 dark:text-gray-500">
-                        A powerful modular CMS built with Laravel & Filament. All themes and modules are open source and free to use.
-                    </p>
-                </div>
+            <!-- Centered Attribution Section -->
+            <div class="text-center mb-6">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    VantaPress CMS - Open Source
+                </h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Created with passion by <strong class="text-crimson-500">Sepiroth X Villainous</strong> a.k.a <strong class="text-crimson-500">Xenroth Vantablack</strong> (Richard Cebel Cupal, LPT)
+                </p>
+                <p class="mt-2 text-xs text-gray-500 dark:text-gray-500">
+                    A powerful modular CMS built with Laravel & Filament. All themes and modules are open source and free to use.
+                </p>
             </div>
             
             <!-- Social Links Section -->

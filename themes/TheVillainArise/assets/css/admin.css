@@ -1,10 +1,18 @@
 /* ============================================
-   THE VILLAIN ARISE - DARK VILLAIN ADMIN STYLING
-   Official VantaPress theme with villain aesthetic
+   THE VILLAIN ARISE - FILAMENT-FIRST APPROACH
+   CSS Custom Properties ONLY - Zero Overrides
+   ============================================
+   
+   CRITICAL: This file does NOT override Filament!
+   - Filament handles ALL layout, spacing, components
+   - We only provide CSS variables for theming
+   - Villain aesthetic through color palette only
+   - NO targeting of .fi- classes allowed
+   - NO !important rules allowed
    ============================================ */
 
 :root {
-    /* Villain Color Palette */
+    /* Villain Color Palette - For Filament's color system */
     --villain-crimson: #D40026;
     --villain-dark-crimson: #b0001f;
     --villain-blood: #8B0000;
@@ -13,282 +21,20 @@
     --villain-steel: #36383a;
     --villain-silver: #888A8F;
     --villain-platinum: #d1d2d4;
-    --villain-white: #ffffff;
+    
+    /* Map to Filament's expected variables if needed */
+    --theme-primary: var(--villain-crimson);
+    --theme-dark-bg: var(--villain-shadow);
+    --theme-dark-surface: var(--villain-charcoal);
 }
 
 /* ============================================
-   DARK MODE - VILLAIN AESTHETIC
+   That's it! Filament does the rest.
+   
+   To apply Villain colors:
+   Configure via AdminPanelProvider->colors([
+       'primary' => Color::hex('#D40026'),
+       'gray' => [...villain grays...]
+   ])
    ============================================ */
 
-/* Sidebar - Villain's lair */
-.dark .fi-sidebar {
-    background: linear-gradient(180deg, #1b1c1e 0%, #0A0A0A 100%) !important;
-    border-right: 2px solid var(--villain-crimson) !important;
-    box-shadow: 2px 0 20px rgba(212, 0, 38, 0.3) !important;
-}
-
-.dark .fi-sidebar-header {
-    background: var(--villain-charcoal) !important;
-    border-bottom: 2px solid var(--villain-crimson) !important;
-    padding: 1.5rem !important;
-}
-
-.dark .fi-sidebar-nav-item {
-    color: var(--villain-silver) !important;
-    transition: all 0.3s ease !important;
-    border-radius: 8px !important;
-    margin: 4px 8px !important;
-    padding: 12px 16px !important;
-    font-weight: 500 !important;
-}
-
-.dark .fi-sidebar-nav-item:hover {
-    background: rgba(212, 0, 38, 0.1) !important;
-    color: var(--villain-crimson) !important;
-    transform: translateX(4px) !important;
-    border-left: 3px solid var(--villain-crimson) !important;
-}
-
-.dark .fi-sidebar-item-active,
-.dark .fi-active {
-    background: rgba(212, 0, 38, 0.2) !important;
-    border-left: 4px solid var(--villain-crimson) !important;
-    color: var(--villain-crimson) !important;
-    font-weight: 700 !important;
-}
-
-/* Topbar - Command center */
-.dark .fi-topbar {
-    background: var(--villain-charcoal) !important;
-    border-bottom: 1px solid var(--villain-steel) !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
-}
-
-/* Main content - Dark command center */
-.dark .fi-main {
-    background: var(--villain-shadow) !important;
-}
-
-/* Cards - Villain panels */
-.dark .fi-section,
-.dark .fi-card,
-.dark .fi-stats-card {
-    background: var(--villain-charcoal) !important;
-    border: 1px solid var(--villain-steel) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-    transition: all 0.3s ease !important;
-}
-
-.dark .fi-stats-card:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 8px 30px rgba(212, 0, 38, 0.3) !important;
-    border-color: var(--villain-crimson) !important;
-}
-
-/* Buttons - Villain actions */
-.fi-btn-primary {
-    background: linear-gradient(135deg, var(--villain-crimson) 0%, var(--villain-dark-crimson) 100%) !important;
-    color: var(--villain-white) !important;
-    border: 1px solid var(--villain-dark-crimson) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 15px rgba(212, 0, 38, 0.4) !important;
-    transition: all 0.3s ease !important;
-    font-weight: 700 !important;
-    padding: 12px 24px !important;
-}
-
-.fi-btn-primary:hover {
-    background: linear-gradient(135deg, var(--villain-dark-crimson) 0%, var(--villain-blood) 100%) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 25px rgba(212, 0, 38, 0.6) !important;
-}
-
-/* Inputs - Dark interface */
-.dark .fi-input,
-.dark .fi-select,
-.dark .fi-textarea {
-    background: var(--villain-shadow) !important;
-    border: 1px solid var(--villain-steel) !important;
-    border-radius: 8px !important;
-    color: var(--villain-platinum) !important;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    padding: 12px !important;
-}
-
-.dark .fi-input:focus,
-.dark .fi-select:focus,
-.dark .fi-textarea:focus {
-    border-color: var(--villain-crimson) !important;
-    box-shadow: 
-        inset 0 2px 8px rgba(0, 0, 0, 0.3),
-        0 0 15px rgba(212, 0, 38, 0.3) !important;
-    outline: none !important;
-}
-
-/* Headings - Villain typography */
-.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-    color: var(--villain-crimson) !important;
-    font-weight: 800 !important;
-    letter-spacing: 1px !important;
-}
-
-/* Tables - Data grids */
-.dark .fi-table {
-    background: var(--villain-charcoal) !important;
-    border: 1px solid var(--villain-steel) !important;
-    border-radius: 12px !important;
-}
-
-.dark .fi-table-header-cell {
-    background: var(--villain-steel) !important;
-    color: var(--villain-platinum) !important;
-    border-bottom: 2px solid var(--villain-crimson) !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1px !important;
-}
-
-.dark .fi-table-cell {
-    border-bottom: 1px solid var(--villain-steel) !important;
-    color: var(--villain-silver) !important;
-}
-
-.dark .fi-table-row:hover {
-    background: rgba(212, 0, 38, 0.05) !important;
-}
-
-/* ============================================
-   LOGIN PAGE - VILLAIN'S ENTRANCE
-   ============================================ */
-
-.dark .fi-simple-page {
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(212, 0, 38, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(139, 0, 0, 0.1) 0%, transparent 50%),
-        linear-gradient(180deg, #0A0A0A 0%, #1b1c1e 100%) !important;
-}
-
-.dark .fi-simple-main {
-    background: rgba(27, 28, 30, 0.95) !important;
-    border: 1px solid var(--villain-steel) !important;
-    border-radius: 16px !important;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.8),
-        0 0 40px rgba(212, 0, 38, 0.2) !important;
-    padding: 3rem !important;
-    backdrop-filter: blur(10px) !important;
-}
-
-/* Login form heading */
-.dark .fi-simple-main h1,
-.dark .fi-simple-main h2 {
-    color: var(--villain-crimson) !important;
-    font-weight: 900 !important;
-    letter-spacing: 2px !important;
-    margin-bottom: 2rem !important;
-    text-align: center !important;
-    text-shadow: 0 0 20px rgba(212, 0, 38, 0.5) !important;
-}
-
-/* Login button */
-.dark .fi-simple-main .fi-btn {
-    background: linear-gradient(135deg, var(--villain-crimson) 0%, var(--villain-dark-crimson) 100%) !important;
-    border: 1px solid var(--villain-dark-crimson) !important;
-    border-radius: 8px !important;
-    padding: 14px 32px !important;
-    font-weight: 700 !important;
-    box-shadow: 0 4px 20px rgba(212, 0, 38, 0.4) !important;
-    width: 100% !important;
-    transition: all 0.3s ease !important;
-    color: var(--villain-white) !important;
-}
-
-.dark .fi-simple-main .fi-btn:hover {
-    background: linear-gradient(135deg, var(--villain-dark-crimson) 0%, var(--villain-blood) 100%) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 30px rgba(212, 0, 38, 0.6) !important;
-}
-
-/* Login form inputs */
-.dark .fi-simple-main .fi-input {
-    background: var(--villain-shadow) !important;
-    border: 1px solid var(--villain-steel) !important;
-    border-radius: 8px !important;
-    color: var(--villain-platinum) !important;
-    padding: 14px !important;
-    font-size: 16px !important;
-    margin-bottom: 1.5rem !important;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-}
-
-.dark .fi-simple-main .fi-input:focus {
-    border-color: var(--villain-crimson) !important;
-    box-shadow: 
-        inset 0 2px 8px rgba(0, 0, 0, 0.3),
-        0 0 15px rgba(212, 0, 38, 0.3) !important;
-}
-
-/* ============================================
-   LIGHT MODE - PROFESSIONAL CLEAN
-   ============================================ */
-
-html:not(.dark) .fi-sidebar {
-    background: linear-gradient(180deg, #ffffff 0%, #f5f5f6 100%) !important;
-    border-right: 1px solid #e8e9ea !important;
-}
-
-html:not(.dark) .fi-sidebar-nav-item {
-    color: #6d6f73 !important;
-    font-weight: 500 !important;
-}
-
-html:not(.dark) .fi-sidebar-nav-item:hover {
-    background: rgba(212, 0, 38, 0.05) !important;
-    color: var(--villain-crimson) !important;
-}
-
-html:not(.dark) .fi-main {
-    background: #f5f5f6 !important;
-}
-
-html:not(.dark) .fi-section,
-html:not(.dark) .fi-card,
-html:not(.dark) .fi-stats-card {
-    background: white !important;
-    border: 1px solid #e8e9ea !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
-}
-
-html:not(.dark) .fi-stats-card:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 20px rgba(212, 0, 38, 0.1) !important;
-}
-
-/* Light mode login */
-html:not(.dark) .fi-simple-page {
-    background: linear-gradient(135deg, #f5f5f6 0%, #ffffff 100%) !important;
-}
-
-html:not(.dark) .fi-simple-main {
-    background: white !important;
-    border: 1px solid #e8e9ea !important;
-    border-radius: 16px !important;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
-    padding: 3rem !important;
-}
-
-html:not(.dark) .fi-simple-main .fi-btn {
-    background: linear-gradient(135deg, var(--villain-crimson) 0%, var(--villain-dark-crimson) 100%) !important;
-    color: white !important;
-    border: none !important;
-    box-shadow: 0 4px 20px rgba(212, 0, 38, 0.3) !important;
-    padding: 14px 32px !important;
-    font-weight: 700 !important;
-}
-
-html:not(.dark) .fi-simple-main .fi-btn:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 30px rgba(212, 0, 38, 0.4) !important;
-}

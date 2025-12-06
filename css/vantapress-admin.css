@@ -1,46 +1,33 @@
-/* ============================================
-   VANTAPRESS ADMIN - FILAMENT-FIRST APPROACH
-   Zero layout CSS - Filament handles everything
-   ============================================ */
-
-/* PHILOSOPHY:
- * - Filament has complete responsive layout built-in
- * - Filament handles sidebar collapse/expand on mobile
- * - Filament handles all spacing, widths, and positioning
- * - This file should be EMPTY or minimal enhancements only
- */
+/* VANTAPRESS ADMIN CSS - FILAMENT-FIRST APPROACH
+   NO overrides - Filament handles everything
+   All visual styling comes from Active Theme CSS */
 
 /* ============================================
-   NO LAYOUT RULES - LET FILAMENT WORK
+   CRITICAL LAYOUT FIX
+   Filament uses w-screen on main container which causes overlap
+   This is a Filament v3 layout issue - surgical fix only
    ============================================ */
 
-/* If you need to add anything, ask yourself:
- * 1. Does Filament already handle this? (Answer: probably yes)
- * 2. Am I using !important? (If yes, you're doing it wrong)
- * 3. Am I overriding Filament's classes? (Don't do it)
- * 4. Is this a visual enhancement only? (Only acceptable case)
- */
-
-/* ============================================
-   CRITICAL FIX: Main Content Width
-   Bug: Filament's w-screen class ignores sidebar
-   Solution: Override ONLY width on desktop
-   ============================================ */
-
-/* On desktop (lg+), main content should NOT be full screen width */
-/* It should flex to fill remaining space after sidebar */
 @media (min-width: 1024px) {
-    .fi-main-ctn {
+    /* Ensure parent layout container uses proper flexbox */
+    .fi-layout.flex {
+        overflow-x: visible !important;
+    }
+    
+    /* Fix main content container width when sidebar is open - ULTRA SPECIFIC */
+    div.fi-main-ctn.w-screen.flex-1.flex-col {
         width: auto !important;
-        max-width: 100% !important;
+        max-width: calc(100vw - 16rem) !important;
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+    }
+    
+    /* Also target when sidebar is collapsed */
+    div.fi-main-ctn.w-screen {
+        width: auto !important;
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
     }
 }
 
-/* On mobile, keep full screen (sidebar is overlaid) */
-@media (max-width: 1023px) {
-    .fi-main-ctn {
-        width: 100vw;
-    }
-}
-
-/* That's it! All visual styling is in theme CSS files. */
+/* That's it - surgical fix for Filament's w-screen layout quirk */

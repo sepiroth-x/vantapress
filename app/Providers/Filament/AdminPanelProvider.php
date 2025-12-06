@@ -63,10 +63,13 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Green,
                 'warning' => Color::Orange,
             ])
-            ->darkMode(true) // Enable dark mode toggle
+            ->darkMode(true) // Enable dark mode toggle (system, light, dark)
             ->font('Inter')
             ->brandLogo(asset('images/vantapress-logo.svg'))
             ->favicon(asset('images/favicon.ico'))
+            ->sidebarCollapsibleOnDesktop() // Allow sidebar collapse on desktop
+            ->sidebarWidth('16rem') // Set sidebar width (256px)
+            ->maxContentWidth('full') // Full width content area
             ->renderHook(
                 PanelsRenderHook::STYLES_AFTER,
                 function (): string {
@@ -84,79 +87,11 @@ class AdminPanelProvider extends PanelProvider
                 }
             )
             ->renderHook(
-                PanelsRenderHook::HEAD_START,
-                fn (): string => '<script>
-                    // OVERRIDE: Force dark mode by hijacking Filament\'s loadDarkMode function
-                    (function() {
-                        "use strict";
-                        
-                        // Set localStorage to dark
-                        localStorage.setItem("theme", "dark");
-                        
-                        // Override loadDarkMode to always add dark class
-                        window.loadDarkMode = function() {
-                            document.documentElement.classList.add("dark");
-                            console.log("[VantaPress] Dark mode forced via loadDarkMode override");
-                        };
-                        
-                        // Add dark class immediately
-                        document.documentElement.classList.add("dark");
-                    })();
-                </script>'
-            )
-            ->renderHook(
                 PanelsRenderHook::SCRIPTS_AFTER,
-                fn (): string => '
-                    <script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>
-                    <script>
-                        // Force dark mode - Final enforcement after all scripts
-                        (function() {
-                            "use strict";
-                            
-                            // Aggressive dark mode enforcer
-                            function enforceDarkMode() {
-                                if (!document.documentElement.classList.contains("dark")) {
-                                    document.documentElement.classList.add("dark");
-                                    console.log("[VantaPress] Dark mode enforced");
-                                }
-                            }
-                            
-                            // Run immediately
-                            enforceDarkMode();
-                            
-                            // MutationObserver to catch any removal attempts
-                            const observer = new MutationObserver(function(mutations) {
-                                mutations.forEach(function(mutation) {
-                                    if (mutation.type === "attributes" && mutation.attributeName === "class") {
-                                        enforceDarkMode();
-                                    }
-                                });
-                            });
-                            
-                            observer.observe(document.documentElement, { 
-                                attributes: true, 
-                                attributeFilter: ["class"] 
-                            });
-                            
-                            // Multiple event listeners as backup
-                            if (document.readyState === "loading") {
-                                document.addEventListener("DOMContentLoaded", enforceDarkMode);
-                            } else {
-                                enforceDarkMode();
-                            }
-                            
-                            window.addEventListener("load", enforceDarkMode);
-                            
-                            // Interval as final safeguard (check every 100ms)
-                            setInterval(enforceDarkMode, 100);
-                            
-                            console.log("[VantaPress] Dark mode enforcer initialized");
-                        })();
-                    </script>
-                '
+                fn (): string => '<script src="' . asset('js/filament/filament/app.js') . '?v=3.3.45"></script>'
             )
             ->renderHook(
-                PanelsRenderHook::FOOTER,
+                PanelsRenderHook::BODY_END,
                 fn (): string => view('filament.footer')->render()
             )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

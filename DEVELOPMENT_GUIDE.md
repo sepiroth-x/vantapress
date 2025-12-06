@@ -1,8 +1,30 @@
 # VantaPress Development Guide
 
-**Version:** 1.0.20  
-**Last Updated:** December 5, 2025  
+**Version:** 1.0.21  
+**Last Updated:** December 6, 2025  
 **Author:** Sepiroth X Villainous (Richard Cebel Cupal, LPT)
+
+---
+
+## 🚨 VANTAPRESS REMINDERS EVERY SESSION
+
+### **CRITICAL RULES - READ BEFORE EVERY SESSION:**
+
+1. **NO /public/ Folder** - VantaPress follows root-level architecture
+   - All assets (css/, js/, images/, themes/) are at root level
+   - Never reference /public/ in code, configs, or documentation
+
+2. **NO OVERRIDING FILAMENT** - CSS styling should compliment Filament, not fight it
+   - Use Filament's APIs (darkMode(), colors(), etc.) instead of JavaScript hacks
+   - vantapress-admin.css is for layout adjustments ONLY (see Known Issue: Filament v3 Layout Quirk)
+   - All visual styling (colors, shadows, borders) comes from Active Theme CSS
+   - Never hijack Filament functions or use aggressive overrides
+   - Strategic !important is ONLY acceptable for overriding Tailwind utility classes
+
+3. **NO PUSHING TO REPOSITORY UNLESS TOLD EXPLICITLY**
+   - Only commit/push when user explicitly requests it
+   - Default behavior: make local changes only
+   - Always confirm before any git push operations
 
 ---
 
@@ -1327,6 +1349,147 @@ Common Filament CSS classes to target:
 For comprehensive theming architecture documentation, see:
 - `THEME_ARCHITECTURE.md` - Complete theme system guide
 - `themes/BasicTheme/README.md` - Default theme documentation
+
+---
+
+### ⚠️ Known Issue: Filament v3 Layout Quirk
+
+**Issue Identified**: December 6, 2025
+
+#### The Problem
+
+Filament v3 applies a Tailwind utility class `w-screen` (width: 100vw) to the main content container (`.fi-main-ctn`). This causes the main content area to span the **full viewport width**, ignoring the sidebar and causing overlap on desktop layouts.
+
+**Technical Details:**
+- **Affected Element**: `div.fi-main-ctn.w-screen`
+- **Problematic Style**: `width: 100vw` (full viewport width)
+- **Impact**: Main content overlaps sidebar on screens ≥1024px
+- **Root Cause**: Tailwind utility class specificity overrides flexbox behavior
+
+#### Why It's Hard to Fix
+
+1. **High CSS Specificity**: Tailwind utility classes (`.w-screen`) have high specificity
+2. **Framework Design**: Part of Filament v3's base structure
+3. **Browser Cache**: CSS changes require hard refresh + cache clearing
+4. **Flexbox Conflict**: `width: 100vw` overrides `flex: 1` behavior
+
+#### The Solution
+
+**File**: `css/vantapress-admin.css`
+
+Use **ultra-specific CSS selectors** with calculated max-width and strategic `!important` flags:
+
+```css
+/* Filament v3 Layout Fix - Main Content Width Constraint
+ * 
+ * PROBLEM: Filament v3 uses w-screen (width: 100vw) on main container,
+ * causing content to span full viewport and overlap sidebar.
+ * 
+ * SOLUTION: Ultra-specific selectors override utility class with calculated
+ * max-width accounting for sidebar (16rem = 256px).
+ */
+@media (min-width: 1024px) {
+    /* Prevent horizontal overflow on layout wrapper */
+    .fi-layout.flex {
+        overflow-x: visible !important;
+    }
+    
+    /* Main content container - with sidebar classes (sidebar expanded) */
+    div.fi-main-ctn.w-screen.flex-1.flex-col {
+        width: auto !important;
+        max-width: calc(100vw - 16rem) !important;
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+    }
+    
+    /* Main content container - base state (sidebar collapsed) */
+    div.fi-main-ctn.w-screen {
+        width: auto !important;
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+    }
+}
+```
+
+#### Why This Solution Works
+
+1. **Ultra-Specific Selector**: `div.fi-main-ctn.w-screen.flex-1.flex-col` has higher specificity than `.w-screen` alone
+2. **Calculated Constraint**: `calc(100vw - 16rem)` accounts for sidebar width (set in AdminPanelProvider)
+3. **Strategic !important**: Acceptable for overriding utility classes (not fighting Filament's structure)
+4. **Multiple Targeting**: Separate rules for expanded and collapsed sidebar states
+5. **Desktop Only**: `@media (min-width: 1024px)` prevents mobile layout interference
+
+#### Philosophy Alignment
+
+✅ **Filament-First Maintained**: We're fixing a layout quirk, not overriding Filament's design  
+✅ **Minimal Intervention**: Only 3 CSS rules targeting one specific problem  
+✅ **Works WITH Filament**: Respects flexbox layout, just corrects width calculation  
+✅ **Acceptable !important Usage**: Only for utility class overrides (documented pattern)  
+
+**This is NOT aggressive overriding** - we're correcting a framework quirk while preserving its architecture.
+
+#### When !important Is Acceptable
+
+**✅ ACCEPTABLE** (Utility Class Overrides):
+- Overriding Tailwind utility classes (`.w-screen`, `.h-full`, etc.)
+- Correcting layout quirks in vendor packages
+- Surgical fixes for specific framework issues
+- Using ultra-specific selectors to avoid collateral damage
+
+**❌ NOT ACCEPTABLE** (Structural Overrides):
+- Fighting Filament's component structure
+- Overriding JavaScript-controlled elements
+- Replacing Filament's design system
+- Using `!important` as first resort for all styling
+
+#### Debugging Layout Issues
+
+If you encounter similar layout problems:
+
+1. **Inspect the Element**: Use browser DevTools to identify problematic classes
+2. **Check Specificity**: Look for Tailwind utility classes overriding your CSS
+3. **Increase Specificity**: Use element + class selectors (e.g., `div.fi-main-ctn.w-screen`)
+4. **Calculate Constraints**: Use `calc()` for dynamic width calculations
+5. **Test Both States**: Verify with sidebar expanded and collapsed
+6. **Clear All Caches**: Run `php artisan view:clear && php artisan cache:clear`
+7. **Hard Refresh**: Use Ctrl+F5 (Windows) or Cmd+Shift+R (Mac) to bypass browser cache
+
+#### Related Configuration
+
+**AdminPanelProvider Sidebar Configuration:**
+
+```php
+// app/Providers/Filament/AdminPanelProvider.php
+->sidebarWidth('16rem')  // 256px - used in calc(100vw - 16rem)
+->sidebarCollapsibleOnDesktop(true)
+```
+
+**If you change sidebar width**, update the `calc()` value in `vantapress-admin.css`:
+
+```css
+/* Example: 20rem sidebar */
+max-width: calc(100vw - 20rem) !important;
+```
+
+#### Testing Checklist
+
+After applying layout fixes, verify:
+
+- [ ] Main content doesn't overlap sidebar (desktop ≥1024px)
+- [ ] Sidebar collapse/expand works smoothly
+- [ ] Dark mode toggle visible and functional
+- [ ] Navigation menu fully accessible
+- [ ] Forms and tables display properly
+- [ ] Responsive behavior maintained on mobile
+- [ ] No horizontal scrollbar on desktop
+
+#### Future Considerations
+
+- **Filament v4**: Monitor for changes to layout system (may fix `w-screen` issue)
+- **Tailwind Updates**: Watch for specificity changes in utility classes
+- **Custom Sidebars**: If adding custom sidebar widths, adjust `calc()` accordingly
+
+**Last Updated**: December 6, 2025 (v1.0.21-complete)
 
 ---
 
