@@ -491,107 +491,159 @@
                 <form id="customizer-form">
                     @csrf
                     
-                    <!-- Site Identity -->
-                    <div class="accordion active">
-                        <div class="accordion-header" onclick="toggleAccordion(this)">
-                            <span>🏠 Site Identity</span>
-                            <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="form-group">
-                                <label class="form-label">Site Title</label>
-                                <input type="text" name="site_title" class="form-input" value="{{ $settings['site_title'] }}" onchange="autoSave()">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Tagline</label>
-                                <input type="text" name="site_tagline" class="form-input" value="{{ $settings['site_tagline'] }}" onchange="autoSave()">
-                            </div>
-                        </div>
-                    </div>
+                    @php
+                        $sectionIcons = [
+                            'site' => '🏠',
+                            'header' => '📋',
+                            'hero' => '🖼️',
+                            'colors' => '🎨',
+                            'typography' => '📝',
+                            'layout' => '📐',
+                            'footer' => '📄',
+                            'components' => '🧩',
+                            'widgets' => '📦',
+                        ];
+                        $sectionLabels = [
+                            'site' => 'Site Identity',
+                            'header' => 'Header',
+                            'hero' => 'Hero Section',
+                            'colors' => 'Colors',
+                            'typography' => 'Typography',
+                            'layout' => 'Layout',
+                            'footer' => 'Footer',
+                            'components' => 'Components',
+                            'widgets' => 'Widget Areas',
+                        ];
+                    @endphp
                     
-                    <!-- Colors -->
-                    <div class="accordion active">
-                        <div class="accordion-header" onclick="toggleAccordion(this)">
-                            <span>🎨 Colors</span>
-                            <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="form-group">
-                                <label class="form-label">Primary Color</label>
-                                <input type="color" name="primary_color" class="form-color" value="{{ $settings['primary_color'] }}" onchange="autoSave()">
+                    @foreach($elements as $sectionId => $sectionElements)
+                        @if(count($sectionElements) > 0)
+                            @php
+                                // Get section info from theme.json if available
+                                $sectionInfo = $themeMetadata['customizer']['sections'][$sectionId] ?? null;
+                                $sectionLabel = $sectionInfo['label'] ?? ($sectionLabels[$sectionId] ?? ucfirst($sectionId));
+                                $sectionIcon = $sectionIcons[$sectionId] ?? '⚙️';
+                                $isActive = in_array($sectionId, ['site', 'colors', 'header', 'footer']);
+                            @endphp
+                            
+                            <div class="accordion {{ $isActive ? 'active' : '' }}">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <span>{{ $sectionIcon }} {{ $sectionLabel }}</span>
+                                    <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <div class="accordion-content">
+                                    @foreach($sectionElements as $element)
+                                        <div class="form-group">
+                                            <label class="form-label">{{ $element['label'] }}</label>
+                                            
+                                            @php
+                                                $elementId = $element['id'];
+                                                $elementValue = $settings[$elementId] ?? ($element['default'] ?? '');
+                                                $elementType = $element['type'] ?? 'text';
+                                            @endphp
+                                            
+                                            @if($elementType === 'text')
+                                                <input 
+                                                    type="text" 
+                                                    name="{{ $elementId }}" 
+                                                    class="form-input" 
+                                                    value="{{ $elementValue }}" 
+                                                    onchange="autoSave()"
+                                                    placeholder="{{ $element['default'] ?? '' }}"
+                                                >
+                                            
+                                            @elseif($elementType === 'textarea')
+                                                <textarea 
+                                                    name="{{ $elementId }}" 
+                                                    class="form-textarea" 
+                                                    rows="3" 
+                                                    onchange="autoSave()"
+                                                    placeholder="{{ $element['default'] ?? '' }}"
+                                                >{{ $elementValue }}</textarea>
+                                            
+                                            @elseif($elementType === 'color')
+                                                <input 
+                                                    type="color" 
+                                                    name="{{ $elementId }}" 
+                                                    class="form-color" 
+                                                    value="{{ $elementValue }}" 
+                                                    onchange="autoSave()"
+                                                >
+                                            
+                                            @elseif($elementType === 'image')
+                                                <input 
+                                                    type="text" 
+                                                    name="{{ $elementId }}" 
+                                                    class="form-input" 
+                                                    value="{{ $elementValue }}" 
+                                                    onchange="autoSave()"
+                                                    placeholder="Enter image URL..."
+                                                >
+                                                <small style="color: #64748b; font-size: 12px; display: block; margin-top: 4px;">
+                                                    Enter image URL or upload via Media Library
+                                                </small>
+                                            
+                                            @elseif($elementType === 'toggle')
+                                                <label style="display: flex; align-items: center; gap: 8px;">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="{{ $elementId }}" 
+                                                        value="1"
+                                                        {{ $elementValue ? 'checked' : '' }}
+                                                        onchange="autoSave()"
+                                                    >
+                                                    <span style="font-size: 13px; color: #64748b;">Enable</span>
+                                                </label>
+                                            
+                                            @elseif($elementType === 'select')
+                                                <select 
+                                                    name="{{ $elementId }}" 
+                                                    class="form-select" 
+                                                    onchange="autoSave()"
+                                                >
+                                                    @foreach(($element['options'] ?? []) as $optionValue => $optionLabel)
+                                                        <option 
+                                                            value="{{ is_numeric($optionValue) ? $optionLabel : $optionValue }}" 
+                                                            {{ $elementValue == (is_numeric($optionValue) ? $optionLabel : $optionValue) ? 'selected' : '' }}
+                                                        >
+                                                            {{ is_numeric($optionValue) ? $optionLabel : $optionLabel }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            
+                                            @elseif($elementType === 'range')
+                                                <input 
+                                                    type="range" 
+                                                    name="{{ $elementId }}" 
+                                                    class="form-input" 
+                                                    value="{{ $elementValue }}" 
+                                                    min="{{ $element['min'] ?? 0 }}"
+                                                    max="{{ $element['max'] ?? 100 }}"
+                                                    step="{{ $element['step'] ?? 1 }}"
+                                                    onchange="autoSave()"
+                                                    oninput="this.nextElementSibling.value = this.value"
+                                                >
+                                                <output style="font-size: 12px; color: #64748b;">{{ $elementValue }}</output>
+                                            
+                                            @else
+                                                <input 
+                                                    type="text" 
+                                                    name="{{ $elementId }}" 
+                                                    class="form-input" 
+                                                    value="{{ $elementValue }}" 
+                                                    onchange="autoSave()"
+                                                >
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Accent Color</label>
-                                <input type="color" name="accent_color" class="form-color" value="{{ $settings['accent_color'] }}" onchange="autoSave()">
-                            </div>
-                        </div>
-                    </div>
+                        @endif
+                    @endforeach
                     
-                    <!-- Hero Section -->
-                    <div class="accordion active">
-                        <div class="accordion-header" onclick="toggleAccordion(this)">
-                            <span>🖼️ Hero Section</span>
-                            <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="form-group">
-                                <label class="form-label">Hero Title</label>
-                                <input type="text" name="hero_title" class="form-input" value="{{ $settings['hero_title'] }}" onchange="autoSave()">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Hero Subtitle</label>
-                                <input type="text" name="hero_subtitle" class="form-input" value="{{ $settings['hero_subtitle'] }}" onchange="autoSave()">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Hero Description</label>
-                                <textarea name="hero_description" class="form-textarea" onchange="autoSave()">{{ $settings['hero_description'] }}</textarea>
-                            </div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">Primary Button Text</label>
-                                    <input type="text" name="hero_primary_button_text" class="form-input" value="{{ $settings['hero_primary_button_text'] }}" onchange="autoSave()">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Primary Button URL</label>
-                                    <input type="text" name="hero_primary_button_url" class="form-input" value="{{ $settings['hero_primary_button_url'] }}" onchange="autoSave()">
-                                </div>
-                            </div>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label class="form-label">Secondary Button Text</label>
-                                    <input type="text" name="hero_secondary_button_text" class="form-input" value="{{ $settings['hero_secondary_button_text'] }}" onchange="autoSave()">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Secondary Button URL</label>
-                                    <input type="text" name="hero_secondary_button_url" class="form-input" value="{{ $settings['hero_secondary_button_url'] }}" onchange="autoSave()">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Footer -->
-                    <div class="accordion">
-                        <div class="accordion-header" onclick="toggleAccordion(this)">
-                            <span>📄 Footer</span>
-                            <svg class="accordion-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </div>
-                        <div class="accordion-content">
-                            <div class="form-group">
-                                <label class="form-label">Footer Text</label>
-                                <textarea name="footer_text" class="form-textarea" rows="3" onchange="autoSave()">{{ $settings['footer_text'] }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Custom CSS -->
+                    <!-- Custom CSS (Always show this section) -->
                     <div class="accordion">
                         <div class="accordion-header" onclick="toggleAccordion(this)">
                             <span>💻 Custom CSS</span>
@@ -602,7 +654,7 @@
                         <div class="accordion-content">
                             <div class="form-group">
                                 <label class="form-label">Additional CSS</label>
-                                <textarea name="custom_css" class="form-textarea form-textarea-code" rows="8">{{ $settings['custom_css'] }}</textarea>
+                                <textarea name="custom_css" class="form-textarea form-textarea-code" rows="8">{{ $settings['custom_css'] ?? '' }}</textarea>
                             </div>
                         </div>
                     </div>
