@@ -1,37 +1,155 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.39-complete  
+**Current Version:** v1.0.40-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.39-complete
+## 📌 Latest Version: v1.0.40-complete
+
+### 🎯 CRITICAL FIX: Web-Based Migration Runner for Shared Hosting
+
+This release fixes a **critical oversight** in the automatic migration system. While auto-updater users had automatic migrations, **shared hosting users deploying via FTP/cPanel had no way to run migrations** without terminal access!
+
+#### 🚨 The Problem We Solved
+**Previous versions:**
+- ✅ Auto-updater users: Migrations ran automatically
+- ❌ FTP/Git pull users: **Completely blocked** - couldn't run `php artisan migrate`
+- ❌ Shared hosting users: **No access to new features** requiring database changes
+
+**Why this matters:**
+- Layout Templates feature needed migration → blocked on shared hosting
+- Any future feature requiring database changes → blocked on shared hosting  
+- Users lost trust: "Why make me upload SQL files manually?"
+
+#### ✅ The Solution: WordPress-Style Database Updates
+
+**New: Web-Based Migration Runner**
+- 🌐 **Run migrations from browser** - No terminal/SSH needed!
+- 🎯 **New admin page:** System → Database Updates
+- 📊 **Visual status:** See pending migrations before running
+- 🔒 **Safe & tracked:** Only runs new migrations, never duplicates
+- 📝 **Migration history:** View all executed migrations
+- ⚡ **One-click execution:** WordPress-style "Update Database Now" button
+
+#### 🎨 New Features
+
+**🔔 Automatic Migration Detection (NEW!)**
+- Notification banner appears when migrations are pending
+- Shows immediately after login to admin panel
+- "Update Database Now" button in notification
+- "Remind Me Later" option to dismiss
+- WordPress-style user experience
+
+**🔄 Smart Post-Update Redirect (NEW!)**
+- Auto-updater now detects if migrations failed to run
+- Automatically redirects to Database Updates page if needed
+- Shows warning notification: "Database Update Required"
+- 2-second countdown before redirect
+- Seamless UX - no manual navigation needed
+
+**New Admin Page: Database Updates (`/admin/database-updates`)**
+- Real-time status card showing pending migrations
+- Yellow warning badge when updates available
+- Green success badge when up to date
+- List of pending migrations with human-readable names
+- Migration history table showing execution order
+- Refresh button to check for new migrations
+- "Update Database Now" button for one-click execution
+
+**New Service: WebMigrationService**
+- `checkPendingMigrations()` - Compare migration files vs database
+- `runMigrations()` - Execute pending migrations via web
+- `getMigrationHistory()` - Retrieve execution history
+- `getStatus()` - Complete status summary
+- Comprehensive error handling and logging
+- Works without terminal/CLI access
+
+#### 🔧 How It Works
+
+**For Auto-Updater Users (Enhanced!):**
+1. Click "Install Update" in admin
+2. Migrations run automatically
+3. **If migrations pending:** Auto-redirect to Database Updates page
+4. **If all complete:** Success notification, page refreshes
+5. No manual steps needed
+
+**For FTP/Manual Deployment Users:**
+1. Upload new files via FTP/cPanel
+2. Login to admin panel
+3. **See notification banner:** "Database Update Required - X migration(s) pending"
+4. Click "Update Database Now" in notification OR
+5. Visit `/admin/database-updates` directly
+6. Click "Update Database Now" button
+7. Migrations execute in browser
+8. Success notification confirms execution
+
+**Technical Implementation:**
+- Uses `Artisan::call('migrate', ['--force' => true])` from web context
+- Compares `database/migrations/` files vs `migrations` table
+- Tracks execution with batch numbers
+- Logs all activity to `storage/logs/laravel.log`
+- Super admin access only (security)
+
+#### 📋 Testing Instructions
+After deploying v1.0.40:
+1. Visit `/admin/database-updates` in your admin panel
+2. **Expected:** Status shows "Up to date" (green badge)
+3. Click "Refresh Status" to verify detection works
+4. Check migration history table shows all executed migrations
+5. Try uploading a new migration file → should detect it immediately
+
+To test with the layout-templates migration:
+1. If you haven't run it yet, visit `/admin/database-updates`
+2. Should show "1 update available" (yellow badge)
+3. See pending migration: "Update Layout Templates Table Remove Theme Id"
+4. Click "Update Database Now"
+5. Success notification: "Database updated successfully! 1 migration(s) executed."
+6. `/admin/layout-templates` should now work without 500 error
+
+#### ✅ What This Fixes
+- ✅ **Shared hosting users can run migrations** - No terminal needed!
+- ✅ **FTP deployment fully supported** - Upload files, click button, done
+- ✅ **Eliminates manual SQL uploads** - WordPress-style automation
+- ✅ **Builds user trust** - Professional, user-friendly experience
+- ✅ **Layout templates work** - Can execute the pending migration
+- ✅ **Future-proof** - All future features with migrations will work
+
+#### 🎯 Benefits for Different User Types
+
+**Shared Hosting Users (iFastNet, HostGator, etc.):**
+- No SSH/terminal access needed
+- Upload files via FTP/cPanel
+- Run migrations with one click
+- Professional WordPress-like experience
+
+**VPS/Dedicated Server Users:**
+- Still have automatic migrations via auto-updater
+- Can use web interface if preferred
+- Backup option if CLI fails
+
+**Developers:**
+- Test migrations in browser
+- Visual feedback of execution
+- Migration history for debugging
+- Comprehensive logging
+
+---
+
+## 📌 Previous Version: v1.0.39-complete
 
 ### 🧪 Testing Automatic Version Sync System
 
 This is a test release to verify that the automatic version synchronization system from v1.0.38 works correctly in production.
 
-#### 🎯 Purpose
-Confirm the regex-based version extraction and .env sync works as expected:
-- Dashboard should show v1.0.39-complete immediately after git pull
-- No manual .env editing required
-- syncEnvVersion() extracts default from config/version.php automatically
-- Version display updates on page load
+#### 🔧 Enhanced Auto-Update Features (Auto-Updater Only)
+- **Automatic Database Migrations** - Migrations run automatically when using built-in updater
+- **Migration Tracking** - Lists which migrations were executed
+- **Error Handling** - Graceful handling of migration failures
+- **Detailed Logging** - All migration activity logged to storage/logs/laravel.log
 
-#### 📋 Testing Steps
-1. Deploy via `git pull origin release`
-2. Visit `/admin/updates`
-3. **Expected:** Current version shows **v1.0.39-complete** immediately
-4. **Expected:** "You're up to date!" notification
-5. Check logs: `storage/logs/laravel.log` for:
-   - `Auto-synced .env APP_VERSION: 1.0.38-complete → 1.0.39-complete`
-
-#### ✅ What This Validates
-- ✅ Regex extraction from config/version.php works
-- ✅ .env file automatically updates
-- ✅ No PHP env() caching issues
-- ✅ Complete deployment workflow verified
+**Note:** This only worked for built-in auto-updater users. FTP/manual deployment users were blocked. **Fixed in v1.0.40!**
 
 ---
 

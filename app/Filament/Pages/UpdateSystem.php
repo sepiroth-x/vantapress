@@ -250,15 +250,30 @@ class UpdateSystem extends Page
                 // Refresh current version to show the new version immediately
                 $this->refreshCurrentVersion();
                 
-                Notification::make()
-                    ->title('Update Successful!')
-                    ->body("VantaPress has been updated to v{$this->currentVersion}. Page will refresh in 3 seconds...")
-                    ->success()
-                    ->duration(5000)
-                    ->send();
+                // Check if migrations are pending after update
+                if (isset($result['has_pending_migrations']) && $result['has_pending_migrations']) {
+                    $count = $result['pending_migrations_count'] ?? 0;
+                    
+                    Notification::make()
+                        ->title('Update Successful! Database Update Required')
+                        ->body("VantaPress updated to v{$this->currentVersion}. {$count} database migration(s) need to run. Redirecting to Database Updates...")
+                        ->warning()
+                        ->duration(10000)
+                        ->send();
+                    
+                    // Redirect to Database Updates page after 2 seconds
+                    $this->dispatch('redirect-to', url: '/admin/database-updates', delay: 2000);
+                } else {
+                    Notification::make()
+                        ->title('Update Successful!')
+                        ->body("VantaPress has been updated to v{$this->currentVersion}. Page will refresh in 3 seconds...")
+                        ->success()
+                        ->duration(5000)
+                        ->send();
 
-                // Refresh page after 3 seconds to load new version
-                $this->dispatch('refresh-page', delay: 3000);
+                    // Refresh page after 3 seconds to load new version
+                    $this->dispatch('refresh-page', delay: 3000);
+                }
             } else {
                 throw new \Exception($result['message'] ?? 'Update failed');
             }

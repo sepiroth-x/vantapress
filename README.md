@@ -10,7 +10,7 @@
 
 VantaPress is a modern, open-source CMS that combines the familiar simplicity of WordPress with the robust architecture of Laravel. Built for developers who want WordPress-style ease-of-use with enterprise-grade code quality.
 
-**📦 Current Version:** v1.0.39-complete  
+**📦 Current Version:** v1.0.40-complete  
 **📥 Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---

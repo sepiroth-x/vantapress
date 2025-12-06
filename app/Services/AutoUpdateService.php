@@ -317,6 +317,7 @@ class AutoUpdateService
     {
         try {
             $tasks = [];
+            $migrations = [];
 
             // Clear caches
             Artisan::call('config:clear');
@@ -331,9 +332,44 @@ class AutoUpdateService
             Artisan::call('route:clear');
             $tasks[] = 'Cleared route cache';
 
-            // Run migrations
-            Artisan::call('migrate', ['--force' => true]);
-            $tasks[] = 'Ran database migrations';
+            // Run migrations with detailed tracking
+            try {
+                Log::info("Running database migrations for version {$newVersion}");
+                
+                // Get pending migrations before running
+                $pendingMigrations = \DB::table('migrations')
+                    ->pluck('migration')
+                    ->toArray();
+                
+                // Run migrations with force flag (no interaction needed)
+                $migrationResult = Artisan::call('migrate', ['--force' => true]);
+                
+                // Get newly run migrations
+                $allMigrations = \DB::table('migrations')
+                    ->pluck('migration')
+                    ->toArray();
+                
+                $newMigrations = array_diff($allMigrations, $pendingMigrations);
+                
+                if (count($newMigrations) > 0) {
+                    $migrations = $newMigrations;
+                    $migrationList = implode(', ', $newMigrations);
+                    $tasks[] = 'Ran ' . count($newMigrations) . ' database migration(s): ' . $migrationList;
+                    Log::info("Successfully ran " . count($newMigrations) . " migration(s): " . $migrationList);
+                } else {
+                    $tasks[] = 'No new database migrations to run';
+                    Log::info("No new migrations found for version {$newVersion}");
+                }
+                
+            } catch (Exception $e) {
+                // Migration failed - log but continue with other tasks
+                $error = 'Database migration failed: ' . $e->getMessage();
+                $tasks[] = $error;
+                Log::error($error);
+                Log::error($e->getTraceAsString());
+                
+                // Don't throw - allow other post-update tasks to continue
+            }
 
             // Update version in .env
             $this->updateVersionInEnv($newVersion);
@@ -342,6 +378,7 @@ class AutoUpdateService
             return [
                 'success' => true,
                 'tasks' => $tasks,
+                'migrations' => $migrations,
                 'message' => 'Post-update tasks completed successfully'
             ];
         } catch (Exception $e) {
@@ -497,6 +534,26 @@ class AutoUpdateService
 
             $results['success'] = true;
             $results['message'] = "Successfully updated to version {$version}";
+            
+            // Check if there are pending migrations after update
+            // If migrations were run automatically but some failed, redirect to Database Updates
+            $results['has_pending_migrations'] = false;
+            try {
+                $migrationService = new \App\Services\WebMigrationService();
+                $migrationStatus = $migrationService->checkPendingMigrations();
+                if ($migrationStatus['pending'] && $migrationStatus['count'] > 0) {
+                    $results['has_pending_migrations'] = true;
+                    $results['pending_migrations_count'] = $migrationStatus['count'];
+                    Log::info('Update complete but migrations pending', [
+                        'version' => $version,
+                        'pending_count' => $migrationStatus['count']
+                    ]);
+                }
+            } catch (Exception $e) {
+                Log::warning('Could not check pending migrations after update', [
+                    'error' => $e->getMessage()
+                ]);
+            }
 
         } catch (Exception $e) {
             $results['success'] = false;
