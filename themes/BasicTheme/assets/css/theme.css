@@ -1,10 +1,20 @@
 /* BasicTheme CSS */
 
 :root {
-    --primary-color: #3b82f6;
-    --secondary-color: #6366f1;
-    --text-color: #1f2937;
-    --bg-color: #ffffff;
+    /* Theme Customizer Variables */
+    --color-primary: #3b82f6;
+    --color-secondary: #8b5cf6;
+    --color-accent: #10b981;
+    --header-bg-color: #ffffff;
+    --header-text-color: #1e293b;
+    --footer-bg-color: #1e293b;
+    --footer-text-color: #ffffff;
+    
+    /* Legacy variables */
+    --primary-color: var(--color-primary);
+    --secondary-color: var(--color-secondary);
+    --text-color: var(--header-text-color);
+    --bg-color: var(--header-bg-color);
     --border-color: #e5e7eb;
 }
 
@@ -28,7 +38,8 @@ body {
 
 /* Header */
 .site-header {
-    background: var(--bg-color);
+    background: var(--header-bg-color, #ffffff);
+    color: var(--header-text-color, #1e293b);
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
 }
@@ -42,7 +53,7 @@ body {
 .logo a {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--color-primary, #3b82f6);
     text-decoration: none;
 }
 
@@ -53,17 +64,17 @@ body {
 }
 
 .main-nav a {
-    color: var(--text-color);
+    color: var(--header-text-color, #1e293b);
     text-decoration: none;
     font-weight: 500;
 }
 
 .main-nav a:hover {
-    color: var(--primary-color);
+    color: var(--color-primary, #3b82f6);
 }
 
 .btn-admin {
-    background: var(--primary-color);
+    background: var(--color-primary, #3b82f6);
     color: white;
     padding: 0.5rem 1.5rem;
     border-radius: 0.5rem;
@@ -151,8 +162,8 @@ body {
 
 /* Footer */
 .site-footer {
-    background: #1f2937;
-    color: white;
+    background: var(--footer-bg-color, #1e293b);
+    color: var(--footer-text-color, #ffffff);
     padding: 3rem 0 1rem;
     margin-top: 4rem;
 }

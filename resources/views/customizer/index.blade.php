@@ -901,10 +901,10 @@
                     // Inject live edit script
                     const script = iframeDoc.createElement('script');
                     script.setAttribute('data-vp-live-edit', 'true');
-                    script.src = '/js/theme-customizer-live-edit.js';
+                    script.src = '/js/theme-customizer-inline-edit.js';
                     iframeDoc.body.appendChild(script);
                     
-                    console.log('✓ Live edit script injected into preview iframe');
+                    console.log('✓ Inline edit script injected into preview iframe');
                 } catch (error) {
                     console.warn('Could not inject live edit script:', error);
                 }
@@ -922,6 +922,12 @@
             } else if (event.data.type === 'vp-customizer-error') {
                 // Handle errors from iframe
                 handleCustomizerError(event.data.error);
+            } else if (event.data.type === 'vp-customizer-content-changed') {
+                // Handle inline content changes
+                handleContentChanged(event.data.elementId, event.data.content);
+            } else if (event.data.type === 'vp-customizer-update-input') {
+                // Update input value in customizer
+                updateInputValue(event.data.elementId, event.data.value);
             }
         });
         
@@ -1088,6 +1094,7 @@
                 input.name = element.id;
                 input.className = 'form-input';
                 input.placeholder = 'Enter image URL...';
+                input.oninput = function() { sendUpdateToPreview(element.id, this.value); };
                 input.onchange = autoSave;
                 
                 const hint = document.createElement('small');
@@ -1101,6 +1108,7 @@
                 input.type = 'color';
                 input.name = element.id;
                 input.className = 'form-color';
+                input.oninput = function() { sendUpdateToPreview(element.id, this.value); };
                 input.onchange = autoSave;
                 formGroup.appendChild(label);
                 formGroup.appendChild(input);
@@ -1109,18 +1117,30 @@
                 input.type = 'text';
                 input.name = element.id;
                 input.className = 'form-input';
+                input.oninput = function() { sendUpdateToPreview(element.id, this.value); };
                 input.onchange = autoSave;
+                
+                const hint = document.createElement('small');
+                hint.style.cssText = 'color: #64748b; font-size: 11px; display: block; margin-top: 4px; opacity: 0.8;';
+                hint.textContent = '💡 Or click directly on the text in the preview to edit';
                 formGroup.appendChild(label);
                 formGroup.appendChild(input);
+                formGroup.appendChild(hint);
             } else {
                 // Default: textarea for text content
                 input = document.createElement('textarea');
                 input.name = element.id;
                 input.className = 'form-textarea';
                 input.rows = 2;
+                input.oninput = function() { sendUpdateToPreview(element.id, this.value); };
                 input.onchange = autoSave;
+                
+                const hint = document.createElement('small');
+                hint.style.cssText = 'color: #64748b; font-size: 11px; display: block; margin-top: 4px; opacity: 0.8;';
+                hint.textContent = '💡 Or click directly on the text in the preview to edit';
                 formGroup.appendChild(label);
                 formGroup.appendChild(input);
+                formGroup.appendChild(hint);
             }
             
             return formGroup;
@@ -1188,6 +1208,55 @@
                 clearTimeout(iframeLoadTimeout);
             });
         });
+
+        // Handle content changes from inline editing
+        function handleContentChanged(elementId, content) {
+            console.log(`Content changed: ${elementId}`, content);
+            
+            // Update the form data
+            const form = document.getElementById('customizer-form');
+            const input = form.querySelector(`[name="${elementId}"]`);
+            
+            if (input) {
+                input.value = content;
+                // Trigger auto-save
+                autoSave(true);
+            }
+        }
+
+        // Update input value
+        function updateInputValue(elementId, value) {
+            const input = document.querySelector(`[name="${elementId}"]`);
+            if (input) {
+                input.value = value;
+            }
+        }
+
+        // Send updates to iframe when customizer inputs change
+        function sendUpdateToPreview(elementId, value) {
+            const iframe = document.getElementById('preview-frame');
+            if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                    type: 'vp-customizer-update-element',
+                    elementId: elementId,
+                    value: value
+                }, '*');
+            }
+        }
+
+        // Modify autoSave to also send updates to preview
+        const originalAutoSave = window.autoSave;
+        window.autoSave = function(silent) {
+            originalAutoSave(silent);
+            
+            // Also update preview in real-time
+            const form = document.getElementById('customizer-form');
+            const formData = new FormData(form);
+            
+            for (let [key, value] of formData.entries()) {
+                sendUpdateToPreview(key, value);
+            }
+        };
     </script>
 </body>
 </html>
