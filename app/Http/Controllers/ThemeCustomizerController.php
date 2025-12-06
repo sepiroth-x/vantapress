@@ -162,9 +162,11 @@ class ThemeCustomizerController extends Controller
             vp_set_theme_setting($key, $value, $type, 'theme');
         }
         
-        // Clear cache to ensure changes are reflected
+        // Clear ALL caches to ensure changes are reflected immediately
         Cache::flush();
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
         \Illuminate\Support\Facades\Artisan::call('view:clear');
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
         
         return response()->json([
             'success' => true,

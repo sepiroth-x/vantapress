@@ -161,6 +161,48 @@ class ThemeCustomizerInlineEdit {
             
             count++;
         });
+        
+        // Also detect color elements (elements with color/background-color styles)
+        this.detectColorElements();
+    }
+
+    detectColorElements() {
+        // Find elements with inline colors or CSS color properties
+        const allElements = document.querySelectorAll('*');
+        
+        allElements.forEach((element, index) => {
+            if (this.isHidden(element)) return;
+            if (element.closest('script, style, svg, noscript')) return;
+            if (element.hasAttribute(this.editableAttr)) return; // Skip already marked
+            
+            const style = window.getComputedStyle(element);
+            const bgColor = style.backgroundColor;
+            const textColor = style.color;
+            
+            // Check if element has a significant background color (not transparent/default)
+            const hasSignificantBg = bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent';
+            
+            // Only detect elements that are likely to be styled containers
+            const isStyledContainer = hasSignificantBg && (
+                element.classList.length > 0 ||
+                ['header', 'footer', 'nav', 'section', 'aside', 'div'].includes(element.tagName.toLowerCase())
+            );
+            
+            if (isStyledContainer) {
+                const elementId = this.generateElementId(element, index + 10000);
+                element.setAttribute(this.editableAttr, elementId);
+                element.setAttribute('data-vp-color-element', 'true');
+                
+                this.activeElements.push({
+                    id: elementId,
+                    element: element,
+                    type: 'color',
+                    label: `Color: ${this.generateLabel(element)}`,
+                    tagName: element.tagName.toLowerCase(),
+                    colorValue: bgColor
+                });
+            }
+        });
     }
 
     isHidden(element) {
@@ -231,6 +273,42 @@ class ThemeCustomizerInlineEdit {
                     e.stopPropagation();
                 }
             });
+            
+            // If element has children, make them editable too
+            this.makeChildrenEditable(element, id);
+        });
+    }
+
+    makeChildrenEditable(parentElement, parentId) {
+        // Get direct text-containing children
+        const children = parentElement.querySelectorAll('span, a, strong, em, b, i, small');
+        
+        children.forEach((child, index) => {
+            const text = child.textContent.trim();
+            if (text && text.length > 0 && !child.hasAttribute(this.editableAttr)) {
+                const childId = `${parentId}_child_${index}`;
+                child.setAttribute(this.editableAttr, childId);
+                
+                // Add to active elements
+                this.activeElements.push({
+                    id: childId,
+                    element: child,
+                    type: 'text',
+                    label: `${this.generateLabel(parentElement)} > ${child.tagName.toLowerCase()}`,
+                    tagName: child.tagName.toLowerCase(),
+                    originalContent: child.textContent,
+                    parent: parentElement
+                });
+                
+                // Make it clickable
+                child.addEventListener('click', (e) => {
+                    if (!child.classList.contains('vp-editing')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.startEditing(child, childId);
+                    }
+                });
+            }
         });
     }
 
@@ -380,13 +458,16 @@ class ThemeCustomizerInlineEdit {
             let sectionId = 'content';
             let sectionLabel = 'Page Content';
 
-            // Determine section based on parent container
+            // Determine section based on parent container or type
             const header = element.closest('header');
             const footer = element.closest('footer');
             const nav = element.closest('nav');
             const hero = element.closest('.hero, [class*="hero"]');
             
-            if (header) {
+            if (type === 'color') {
+                sectionId = 'colors';
+                sectionLabel = 'Colors & Backgrounds';
+            } else if (header) {
                 sectionId = 'header';
                 sectionLabel = 'Header';
             } else if (footer) {

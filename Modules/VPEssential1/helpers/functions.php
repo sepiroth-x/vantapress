@@ -25,6 +25,7 @@ if (!function_exists('vp_get_theme_setting')) {
      */
     function vp_get_theme_setting(string $key, $default = null)
     {
+        // Don't cache in customizer preview to see changes immediately
         $setting = ThemeSetting::where('key', $key)->first();
         return $setting ? $setting->value : $default;
     }
