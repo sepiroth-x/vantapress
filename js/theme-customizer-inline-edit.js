@@ -54,25 +54,27 @@ class ThemeCustomizerInlineEdit {
             /* Inline Editable Styles */
             [data-vp-editable] {
                 position: relative;
-                transition: all 0.2s ease;
+                transition: outline 0.15s ease, background 0.15s ease;
             }
 
-            [data-vp-editable]:hover {
+            /* Hover state - only when NOT editing */
+            [data-vp-editable]:not(.vp-editing):hover {
                 outline: 2px dashed #3b82f6;
                 outline-offset: 2px;
                 cursor: text;
                 background: rgba(59, 130, 246, 0.05);
             }
 
+            /* Editing state - no hover effects */
             [data-vp-editable].vp-editing {
-                outline: 2px solid #10b981;
+                outline: 2px solid #10b981 !important;
                 outline-offset: 2px;
-                background: rgba(16, 185, 129, 0.05);
+                background: rgba(16, 185, 129, 0.05) !important;
                 cursor: text;
             }
 
-            /* Edit Label */
-            [data-vp-editable]:hover::before {
+            /* Edit Label - only when NOT editing */
+            [data-vp-editable]:not(.vp-editing):hover::before {
                 content: '✏️ Click to edit';
                 position: absolute;
                 top: -24px;
@@ -88,9 +90,26 @@ class ThemeCustomizerInlineEdit {
                 pointer-events: none;
             }
 
+            /* Editing label - stays visible */
             [data-vp-editable].vp-editing::before {
                 content: '💾 Editing... (Click outside to save)';
+                position: absolute;
+                top: -24px;
+                left: 0;
                 background: #10b981;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 600;
+                white-space: nowrap;
+                z-index: 9999;
+                pointer-events: none;
+            }
+
+            /* Disable hover on child elements when parent is being edited */
+            [data-vp-editable].vp-editing * {
+                outline: none !important;
             }
 
             /* Container hover styles */
@@ -198,9 +217,19 @@ class ThemeCustomizerInlineEdit {
         this.activeElements.forEach(({ element, id }) => {
             // Make contenteditable on click
             element.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.startEditing(element, id);
+                // Only start editing if not already editing
+                if (!element.classList.contains('vp-editing')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.startEditing(element, id);
+                }
+            });
+            
+            // Prevent hover effects from propagating when editing
+            element.addEventListener('mouseenter', (e) => {
+                if (this.currentlyEditing && this.currentlyEditing !== element) {
+                    e.stopPropagation();
+                }
             });
         });
     }
@@ -211,6 +240,11 @@ class ThemeCustomizerInlineEdit {
             this.stopEditing(this.currentlyEditing);
         }
 
+        // Don't restart if already editing this element
+        if (element.classList.contains('vp-editing')) {
+            return;
+        }
+
         // Store original content
         if (!element.dataset.originalContent) {
             element.dataset.originalContent = element.textContent;
@@ -219,16 +253,20 @@ class ThemeCustomizerInlineEdit {
         // Make editable
         element.contentEditable = true;
         element.classList.add('vp-editing');
-        element.focus();
+        
+        // Small delay to ensure class is applied before focus
+        setTimeout(() => {
+            element.focus();
+            
+            // Select all text
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }, 10);
         
         this.currentlyEditing = element;
-
-        // Select all text
-        const range = document.createRange();
-        range.selectNodeContents(element);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
 
         // Listen for blur (click outside)
         const blurHandler = () => {
@@ -240,7 +278,7 @@ class ThemeCustomizerInlineEdit {
         element.addEventListener('blur', blurHandler);
 
         // Listen for Enter key
-        element.addEventListener('keydown', (e) => {
+        const keydownHandler = (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 element.blur();
@@ -250,12 +288,24 @@ class ThemeCustomizerInlineEdit {
                 element.textContent = element.dataset.originalContent;
                 element.blur();
             }
-        });
+        };
+        
+        element.addEventListener('keydown', keydownHandler);
+        
+        // Store handler for cleanup
+        element._keydownHandler = keydownHandler;
     }
 
     stopEditing(element) {
         element.contentEditable = false;
         element.classList.remove('vp-editing');
+        
+        // Clean up event listener
+        if (element._keydownHandler) {
+            element.removeEventListener('keydown', element._keydownHandler);
+            delete element._keydownHandler;
+        }
+        
         this.currentlyEditing = null;
     }
 
