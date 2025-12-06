@@ -27,6 +27,9 @@ class UpdateSystem extends Page
 
     public function mount(): void
     {
+        // Auto-sync .env version with config/version.php if they differ
+        $this->syncEnvVersion();
+        
         // Clear config cache to ensure fresh version is loaded
         try {
             \Artisan::call('config:clear');
@@ -40,6 +43,48 @@ class UpdateSystem extends Page
         $this->currentVersion = $versionConfig['version'] ?? config('version.version', '1.0.0');
         
         $this->checkForUpdates();
+    }
+    
+    /**
+     * Sync .env APP_VERSION with config/version.php default version
+     * This ensures version stays in sync after git pull deployments
+     */
+    protected function syncEnvVersion(): void
+    {
+        try {
+            $envPath = base_path('.env');
+            
+            if (!\File::exists($envPath)) {
+                return;
+            }
+            
+            // Get version from config file (the source of truth)
+            $versionConfig = include(base_path('config/version.php'));
+            $configVersion = $versionConfig['version'] ?? null;
+            
+            // Get current version from .env
+            $envContent = \File::get($envPath);
+            preg_match('/^APP_VERSION=(.*)$/m', $envContent, $matches);
+            $envVersion = $matches[1] ?? null;
+            
+            // If versions differ, update .env to match config
+            if ($configVersion && $envVersion !== $configVersion) {
+                if (preg_match('/^APP_VERSION=.*$/m', $envContent)) {
+                    $envContent = preg_replace(
+                        '/^APP_VERSION=.*$/m',
+                        'APP_VERSION=' . $configVersion,
+                        $envContent
+                    );
+                } else {
+                    $envContent .= "\nAPP_VERSION=" . $configVersion . "\n";
+                }
+                
+                \File::put($envPath, $envContent);
+                \Log::info("Auto-synced .env APP_VERSION: {$envVersion} → {$configVersion}");
+            }
+        } catch (\Exception $e) {
+            \Log::error('Failed to sync .env version: ' . $e->getMessage());
+        }
     }
 
     public function checkForUpdates(): void

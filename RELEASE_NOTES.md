@@ -1,12 +1,45 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.31-complete  
+**Current Version:** v1.0.32-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.31-complete
+## 📌 Latest Version: v1.0.32-complete
+
+### 🔄 Automatic .env Sync for Git Pull Deployments
+
+This release fixes the automatic `.env` version synchronization to work with `git pull` deployments, not just the built-in auto-updater.
+
+#### 🐛 Problem Identified
+- v1.0.30 automatic sync only worked when using the "Install Update" button
+- When deploying via `git pull`, `.env` version wasn't updated
+- Users manually deploying updates still saw old version on Update Dashboard
+
+#### ✅ Solution Implemented
+- Added `syncEnvVersion()` method to UpdateSystem page
+- Automatically syncs `.env` APP_VERSION with `config/version.php` on page load
+- Works for **both** git pull deployments and auto-updater installations
+- No manual `.env` editing required for any deployment method
+
+#### 🔧 How It Works
+1. When Update Dashboard loads, it checks if `.env` APP_VERSION matches `config/version.php`
+2. If versions differ, automatically updates `.env` to match config file
+3. Logs the sync: `Auto-synced .env APP_VERSION: 1.0.31-complete → 1.0.32-complete`
+4. Clears caches and displays correct version
+
+#### 📋 Testing Instructions
+After deploying v1.0.32:
+1. `git pull origin release`
+2. Visit `/admin/updates` (no artisan command needed!)
+3. **Expected:** Dashboard automatically shows v1.0.32-complete
+4. Check logs: `storage/logs/laravel.log` should show auto-sync entry
+5. Verify `.env` now has `APP_VERSION=1.0.32-complete`
+
+---
+
+## 📌 Previous Version: v1.0.31-complete
 
 ### ✅ Testing Automatic .env Version Sync
 
