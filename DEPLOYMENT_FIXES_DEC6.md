@@ -44,15 +44,47 @@ The migration will:
 2. ✅ Remove the `theme_id` column
 3. ✅ Add `theme_slug` varchar column
 
-### Step 3: Clear Caches
+### Step 3: Update Production .env File ⚠️ CRITICAL
+**IMPORTANT:** The `.env` file may have an outdated `APP_VERSION` that needs manual update.
+
+Edit your production `.env` file:
+```bash
+nano .env
+# or via cPanel File Manager
+```
+
+Find the line:
+```env
+APP_VERSION=1.0.25-complete  # ❌ OLD VERSION
+```
+
+Change it to:
+```env
+APP_VERSION=1.0.28-complete  # ✅ CURRENT VERSION
+```
+
+**Why this is needed:** 
+- The `config/version.php` file uses `env('APP_VERSION', '1.0.28-complete')`
+- Environment variables in `.env` override the default value
+- Your production `.env` likely has an old hardcoded version
+- This is why the Update Dashboard shows v1.0.25 despite files being updated
+
+### Step 4: Clear Caches
 ```bash
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
 php artisan cache:clear
+php artisan optimize:clear
 ```
 
-### Step 4: Verify Fixes
+**Verify version after cache clear:**
+```bash
+php artisan tinker --execute="echo config('version.version');"
+# Should output: 1.0.28-complete
+```
+
+### Step 5: Verify Fixes
 
 #### Test Layout Templates:
 1. Visit: `https://yourdomain.com/admin/layout-templates`
