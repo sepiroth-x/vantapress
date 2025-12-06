@@ -2,7 +2,7 @@
 
 return array (
   'name' => 'VantaPress',
-  'version' => '1.0.0',
+  'version' => '1.0.22-complete',
   'description' => 'Talisay City College School Management System',
   'modules' => 
   array (

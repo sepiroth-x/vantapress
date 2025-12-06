@@ -1,7 +1,7 @@
 # VantaPress - Create Release Package with Vendor Directory
 # This creates a complete deployment-ready package
 
-$version = "v1.0.0"
+$version = "v1.0.22"
 $packageName = "vantapress-$version-complete"
 $outputDir = ".\release"
 $zipFile = "$outputDir\$packageName.zip"
@@ -71,7 +71,7 @@ $includeItems = @(
     "package.json",
     "postcss.config.js",
     "README.md",
-    "RELEASE_NOTES_v1.0.0.md",
+    "RELEASE_NOTES_v1.0.22.md",
     "tailwind.config.js",
     "vite.config.js"
 )

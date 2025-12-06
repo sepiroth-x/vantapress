@@ -1,14 +1,14 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.21-complete  
-**Release Date:** December 5, 2025  
+**Current Version:** v1.0.22-complete  
+**Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.21-complete
+## 📌 Latest Version: v1.0.22-complete
 
-### 🎯 What's New in v1.0.21-complete
+### 🎯 What's New in v1.0.22-complete
 - **🎨 Dynamic Theme Customization System** - VantaPress-driven theme customization (reads from theme.json)
 - **🛡️ Enhanced Danger Zone UX** - Hide Danger Zone when Debug Mode is OFF for better security UX
 - **🔧 Fixed Debug Mode Logic** - Corrected inverted button states (buttons now properly disabled when debug OFF)
