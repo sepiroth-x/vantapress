@@ -4,7 +4,7 @@
 [![Laravel](https://img.shields.io/badge/Laravel-11.47-FF2D20?logo=laravel)](https://laravel.com)
 [![FilamentPHP](https://img.shields.io/badge/FilamentPHP-3.3-FFB800?logo=php)](https://filamentphp.com)
 [![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?logo=php)](https://www.php.net)
-[![Release](https://img.shields.io/badge/Release-v1.0.29--complete-success)](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.29)
+[![Release](https://img.shields.io/badge/Release-v1.0.30--complete-success)](https://github.com/sepiroth-x/vantapress/releases/tag/v1.0.30)
 
 **A WordPress-Inspired Content Management System Built with Laravel**
 

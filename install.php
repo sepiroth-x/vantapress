@@ -442,7 +442,7 @@ ini_set('display_errors', 1);
                         
                         // Also set APP_VERSION if not present
                         if (!preg_match('/^APP_VERSION=.*$/m', $newEnvContent)) {
-                            $newEnvContent = preg_replace('/^(APP_KEY=.*)$/m', "$1\nAPP_VERSION=1.0.29-complete", $newEnvContent);
+                            $newEnvContent = preg_replace('/^(APP_KEY=.*)$/m', "$1\nAPP_VERSION=1.0.30-complete", $newEnvContent);
                         }
                         
                         $writeSuccess = file_put_contents($envPath, $newEnvContent);
