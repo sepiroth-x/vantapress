@@ -1,12 +1,37 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.30-complete  
+**Current Version:** v1.0.31-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.30-complete
+## 📌 Latest Version: v1.0.31-complete
+
+### ✅ Testing Automatic .env Version Sync
+
+This release tests the automatic `.env` version synchronization feature implemented in v1.0.30.
+
+#### 🧪 Purpose
+Verify that production deployments automatically update `APP_VERSION` in `.env` file without manual editing.
+
+#### 📋 Test Instructions
+After deploying v1.0.31:
+1. Pull latest code: `git pull origin release`
+2. Run: `php artisan optimize:clear`
+3. **Expected Result:** Update Dashboard should automatically show v1.0.31-complete
+4. Check `/storage/logs/laravel.log` for version update entry: `Updated .env APP_VERSION: 1.0.30-complete → 1.0.31-complete`
+5. Verify production `.env` now has `APP_VERSION=1.0.31-complete` (without manual editing)
+
+#### ✨ What This Tests
+- Automatic .env version sync during git pull
+- Version prefix stripping (v1.0.31-complete → 1.0.31-complete)
+- Cache clearing and version detection
+- No manual `.env` editing required
+
+---
+
+## 📌 Previous Version: v1.0.30-complete
 
 ### 🔄 Automatic .env Version Sync - Production Ready
 
