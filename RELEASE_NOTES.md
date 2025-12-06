@@ -1,12 +1,43 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.35-complete  
+**Current Version:** v1.0.36-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.35-complete
+## 📌 Latest Version: v1.0.36-complete
+
+### 🧪 Testing Version Display Fix
+
+This release tests the critical fix from v1.0.35 to verify the Update Dashboard now correctly displays the current version after updates.
+
+#### 🎯 Purpose
+Confirm that the version display fix works correctly:
+- Dashboard should show v1.0.36-complete immediately after update
+- No more showing old version (e.g., 1.0.28-complete)
+- Direct .env file reading bypasses PHP environment caching
+- Auto-sync + version display both work together
+
+#### 📋 Testing Instructions
+After deploying v1.0.36:
+1. `git pull origin release` (or use auto-updater)
+2. Visit `/admin/updates`
+3. **Expected Result:** Current version shows **v1.0.36-complete** immediately
+4. **Expected Result:** "You're up to date! VantaPress v1.0.36-complete is the latest version."
+5. Verify no false "Update Available" notification
+6. Check logs: `storage/logs/laravel.log` for sync confirmation
+
+#### ✅ What This Tests
+- ✅ Version display reads directly from .env file
+- ✅ Shows current version immediately (no caching issues)
+- ✅ Auto-sync updates .env correctly
+- ✅ Version comparison works with -complete suffix
+- ✅ Complete workflow: git pull → visit dashboard → see correct version
+
+---
+
+## 📌 Previous Version: v1.0.35-complete
 
 ### 🐛 Critical Fix: Version Display After Auto-Sync
 
