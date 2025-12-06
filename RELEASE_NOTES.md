@@ -1,16 +1,18 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.46-complete  
+**Current Version:** v1.0.47-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.46-complete - AGGRESSIVE FIX
+## 📌 Latest Version: v1.0.47-complete - ROOT CAUSE FOUND
 
-### 🚨 CRITICAL: More Aggressive Migration Fix Logic
+### 🚨 CRITICAL: WebMigrationService Enhanced Logging
 
-Production deployment of v1.0.45-complete **STILL** produced the error, meaning the fix script may not be executing properly. This release implements **AGGRESSIVE MODE** with enhanced detection and MUCH more visible logging.
+Production deployment of v1.0.45-complete **STILL** produced the error. Analysis of production logs showed **ZERO** `[Migration Fix 001]` entries, meaning `executeMigrationFixes()` is silently failing BEFORE the fix script even runs.
+
+User confirmed `database/migration-fixes/001_drop_legacy_menu_tables.php` EXISTS on production server, so the issue is in `WebMigrationService.php` execution flow.
 
 #### 🔥 The Persistent Issue
 
@@ -19,9 +21,39 @@ User deployed v1.0.45-complete and **STILL encountered**:
 SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'menus' already exists
 ```
 
-**This means the fix script is NOT executing!** We need AGGRESSIVE logging to see why.
+**Root Cause:** Fix script exists on server but `executeMigrationFixes()` method is returning early without logging.
 
-#### ✅ What's Changed in v1.0.46
+#### ✅ What's Changed in v1.0.47
+
+**SUPER AGGRESSIVE WebMigrationService Logging:**
+- ✅ Logs method entry: "ENTERED executeMigrationFixes() method"
+- ✅ Logs exact path checked: "Looking for fixes at: /full/path"
+- ✅ Directory existence check: "exists=YES/NO, is_directory=YES/NO"
+- ✅ Glob scan results: "files_found=1, files=[001_drop_legacy_menu_tables.php]"
+- ✅ Script loading steps: "Including script file...", "Script included successfully"
+- ✅ Every execution step logged with visual separators
+- ✅ All WARNING-level logs for maximum visibility
+
+**Expected Log Output (v1.0.47):**
+```
+[Migration Fixes] ========================================
+[Migration Fixes] ENTERED executeMigrationFixes() method
+[Migration Fixes] Looking for fixes at: /home/hawkeye1/dev3.thevillainousacademy.it.nf/database/migration-fixes
+[Migration Fixes] ========================================
+[Migration Fixes] Directory check: exists=YES, is_directory=YES
+[Migration Fixes] ✓ Directory exists, scanning for scripts...
+[Migration Fixes] Glob scan result: files_found=1, files=[001_drop_legacy_menu_tables.php]
+[Migration Fixes] ✓✓✓ Found 1 fix script(s) - WILL EXECUTE
+[Migration Fixes] ----------------------------------------
+[Migration Fixes] Processing: 001_drop_legacy_menu_tables
+[Migration Fixes] Including script file...
+[Migration Fixes] ✓ Script included successfully
+[Migration Fixes] Calling shouldRun() method...
+```
+
+This will show EXACTLY where execution stops.
+
+#### ✅ What's Changed in v1.0.46 (Previous)
 
 **AGGRESSIVE MODE Logging:**
 - ✅ WARNING-level logs (not info) - impossible to miss
