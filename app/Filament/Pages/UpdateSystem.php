@@ -112,10 +112,14 @@ class UpdateSystem extends Page
                     'zipball_url' => $release['zipball_url'] ?? null,
                 ];
                 
+                // Normalize versions for comparison (strip suffixes like -complete, -beta, etc.)
+                $normalizedLatest = preg_replace('/-.*$/', '', $this->latestRelease['version']);
+                $normalizedCurrent = preg_replace('/-.*$/', '', $this->currentVersion);
+                
                 // Compare versions
                 $this->updateAvailable = version_compare(
-                    $this->latestRelease['version'], 
-                    $this->currentVersion, 
+                    $normalizedLatest, 
+                    $normalizedCurrent, 
                     '>'
                 );
                 

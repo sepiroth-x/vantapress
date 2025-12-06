@@ -1,12 +1,46 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.32-complete  
+**Current Version:** v1.0.33-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.32-complete
+## 📌 Latest Version: v1.0.33-complete
+
+### 🐛 Version Comparison Fix
+
+This release fixes the version comparison logic that was causing the Update Dashboard to incorrectly detect available updates.
+
+#### 🐛 Problem Identified
+- PHP's `version_compare()` function doesn't properly handle version suffixes like `-complete`
+- Comparing `1.0.32-complete` with `1.0.32-complete` was failing
+- Update Dashboard showed "Update Available" even when already on latest version
+- Version format mismatch between GitHub tags and local version
+
+#### ✅ Solution Implemented
+- Added version normalization before comparison
+- Strip suffixes (`-complete`, `-beta`, etc.) before using `version_compare()`
+- Now correctly detects when versions match: `1.0.33-complete` vs `1.0.33-complete` → `1.0.33` vs `1.0.33`
+- Update Dashboard now accurately shows "You're up to date!" when on latest version
+
+#### 🔧 How It Works
+1. Fetch latest release from GitHub (e.g., `v1.0.33-complete`)
+2. Strip "v" prefix → `1.0.33-complete`
+3. Normalize by removing suffix → `1.0.33`
+4. Compare normalized versions using `version_compare()`
+5. Display correct update status
+
+#### 📋 Testing Instructions
+After deploying v1.0.33:
+1. `git pull origin release`
+2. Visit `/admin/updates`
+3. **Expected:** Dashboard shows "You're up to date! VantaPress v1.0.33-complete is the latest version."
+4. No false "Update Available" notifications
+
+---
+
+## 📌 Previous Version: v1.0.32-complete
 
 ### 🔄 Automatic .env Sync for Git Pull Deployments
 
