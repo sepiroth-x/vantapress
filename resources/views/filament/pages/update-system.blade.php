@@ -277,13 +277,23 @@
         </x-filament::section>
     </div>
     
-    {{-- Auto-refresh script --}}
+    {{-- Auto-refresh and redirect scripts --}}
     <script>
         document.addEventListener('livewire:init', () => {
+            // Handle page refresh after successful update
             Livewire.on('refresh-page', (event) => {
                 const delay = event.delay || 3000;
                 setTimeout(() => {
                     window.location.reload();
+                }, delay);
+            });
+            
+            // Handle redirect to Database Updates page
+            Livewire.on('redirect-to', (event) => {
+                const url = event.url || '/admin/database-updates';
+                const delay = event.delay || 2000;
+                setTimeout(() => {
+                    window.location.href = url;
                 }, delay);
             });
         });

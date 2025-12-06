@@ -1,6 +1,6 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.39-complete  
+**Current Version:** v1.0.40-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
@@ -35,6 +35,20 @@ This release fixes a **critical oversight** in the automatic migration system. W
 
 #### 🎨 New Features
 
+**🔔 Automatic Migration Detection (NEW!)**
+- Notification banner appears when migrations are pending
+- Shows immediately after login to admin panel
+- "Update Database Now" button in notification
+- "Remind Me Later" option to dismiss
+- WordPress-style user experience
+
+**🔄 Smart Post-Update Redirect (NEW!)**
+- Auto-updater now detects if migrations failed to run
+- Automatically redirects to Database Updates page if needed
+- Shows warning notification: "Database Update Required"
+- 2-second countdown before redirect
+- Seamless UX - no manual navigation needed
+
 **New Admin Page: Database Updates (`/admin/database-updates`)**
 - Real-time status card showing pending migrations
 - Yellow warning badge when updates available
@@ -54,18 +68,22 @@ This release fixes a **critical oversight** in the automatic migration system. W
 
 #### 🔧 How It Works
 
-**For Auto-Updater Users (Unchanged):**
+**For Auto-Updater Users (Enhanced!):**
 1. Click "Install Update" in admin
 2. Migrations run automatically
-3. Success notification shows which migrations ran
+3. **If migrations pending:** Auto-redirect to Database Updates page
+4. **If all complete:** Success notification, page refreshes
+5. No manual steps needed
 
-**For FTP/Manual Deployment Users (NEW!):**
+**For FTP/Manual Deployment Users:**
 1. Upload new files via FTP/cPanel
-2. Visit `/admin/database-updates`
-3. See yellow warning: "X update(s) available"
-4. Click "Update Database Now"
-5. Migrations execute in browser
-6. Success notification confirms execution
+2. Login to admin panel
+3. **See notification banner:** "Database Update Required - X migration(s) pending"
+4. Click "Update Database Now" in notification OR
+5. Visit `/admin/database-updates` directly
+6. Click "Update Database Now" button
+7. Migrations execute in browser
+8. Success notification confirms execution
 
 **Technical Implementation:**
 - Uses `Artisan::call('migrate', ['--force' => true])` from web context

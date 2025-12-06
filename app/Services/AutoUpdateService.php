@@ -534,6 +534,26 @@ class AutoUpdateService
 
             $results['success'] = true;
             $results['message'] = "Successfully updated to version {$version}";
+            
+            // Check if there are pending migrations after update
+            // If migrations were run automatically but some failed, redirect to Database Updates
+            $results['has_pending_migrations'] = false;
+            try {
+                $migrationService = new \App\Services\WebMigrationService();
+                $migrationStatus = $migrationService->checkPendingMigrations();
+                if ($migrationStatus['pending'] && $migrationStatus['count'] > 0) {
+                    $results['has_pending_migrations'] = true;
+                    $results['pending_migrations_count'] = $migrationStatus['count'];
+                    Log::info('Update complete but migrations pending', [
+                        'version' => $version,
+                        'pending_count' => $migrationStatus['count']
+                    ]);
+                }
+            } catch (Exception $e) {
+                Log::warning('Could not check pending migrations after update', [
+                    'error' => $e->getMessage()
+                ]);
+            }
 
         } catch (Exception $e) {
             $results['success'] = false;
