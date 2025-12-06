@@ -70,11 +70,13 @@ class LayoutTemplateResource extends Resource
                 
                 Forms\Components\Section::make('Layout Data')
                     ->schema([
-                        Forms\Components\KeyValue::make('layout_data')
-                            ->label('Elements')
-                            ->keyLabel('Property')
-                            ->valueLabel('Value')
-                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('layout_data')
+                            ->label('Layout Structure (JSON)')
+                            ->rows(10)
+                            ->columnSpanFull()
+                            ->formatStateUsing(fn ($state) => is_array($state) ? json_encode($state, JSON_PRETTY_PRINT) : $state)
+                            ->dehydrateStateUsing(fn ($state) => json_decode($state, true))
+                            ->helperText('Raw JSON representation of the captured layout'),
                     ]),
             ]);
     }
