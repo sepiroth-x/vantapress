@@ -7,7 +7,19 @@ use App\Services\CMS\ThemeManager;
 Route::get('/', function (ThemeManager $themeManager) {
     try {
         // Check if database is configured and accessible
-        \DB::connection()->getPdo();
+        $pdo = \DB::connection()->getPdo();
+        
+        // Check if themes table exists (installation complete)
+        $tablesExist = \DB::select("SHOW TABLES LIKE 'themes'");
+        
+        if (empty($tablesExist)) {
+            // Installation not complete, redirect to installer
+            if (file_exists(base_path('install.php'))) {
+                return redirect('/install.php');
+            }
+            // Fallback to welcome page if installer deleted
+            return view('welcome');
+        }
         
         // Check if there's an active theme
         $activeTheme = Theme::where('is_active', true)->first();
@@ -29,7 +41,11 @@ Route::get('/', function (ThemeManager $themeManager) {
         // Fallback to default welcome page
         return view('welcome');
     } catch (\Exception $e) {
-        // Database not configured yet, show welcome page
+        // Database not configured yet, redirect to installer
+        if (file_exists(base_path('install.php'))) {
+            return redirect('/install.php');
+        }
+        // Fallback to welcome page if installer deleted
         return view('welcome');
     }
 })->name('home');
