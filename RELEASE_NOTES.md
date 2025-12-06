@@ -1,12 +1,58 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.34-complete  
+**Current Version:** v1.0.35-complete  
 **Release Date:** December 6, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.34-complete
+## 📌 Latest Version: v1.0.35-complete
+
+### 🐛 Critical Fix: Version Display After Auto-Sync
+
+This release fixes a critical bug where the Update Dashboard showed the OLD version even after automatic .env sync completed successfully.
+
+#### 🐛 Problem Identified
+- Auto-sync was working (updating .env correctly)
+- BUT displayed version still showed old version (e.g., 1.0.28-complete instead of 1.0.34-complete)
+- Root cause: PHP's `env()` function caches environment variables from process start
+- Even after updating .env and clearing cache, `env('APP_VERSION')` returned old value
+- Result: "Update Available" notification even after successful update
+
+#### ✅ Solution Implemented
+- **Read version DIRECTLY from .env file** instead of using `env()` function
+- Clear cache twice: before sync AND after sync
+- Parse .env file content with regex to get current APP_VERSION value
+- Bypasses PHP's environment variable caching completely
+- Ensures displayed version always matches actual .env content
+
+#### 🔧 How It Works
+1. Clear config/cache before checking version
+2. Run auto-sync (updates .env if needed)
+3. Clear config/cache again after sync
+4. **NEW:** Read APP_VERSION directly from .env file using File::get()
+5. Display the actual current version from .env
+6. Compare with GitHub latest release
+
+#### 📋 Testing Instructions
+After deploying v1.0.35:
+1. `git pull origin release` (or use auto-updater)
+2. Visit `/admin/updates`
+3. **Expected:** Current version shows v1.0.35-complete immediately
+4. **Expected:** "You're up to date!" message (not "Update Available")
+5. Verify .env has `APP_VERSION=1.0.35-complete`
+6. Check logs: `storage/logs/laravel.log` for sync confirmation
+
+#### ✅ What This Fixes
+- ✅ Version display now updates immediately after .env sync
+- ✅ No more showing old version after successful update
+- ✅ Bypasses PHP environment variable caching
+- ✅ Reads directly from .env file for 100% accuracy
+- ✅ Works for both git pull and auto-updater deployments
+
+---
+
+## 📌 Previous Version: v1.0.34-complete
 
 ### 🧪 Version Comparison Testing
 

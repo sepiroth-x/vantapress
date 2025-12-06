@@ -27,10 +27,7 @@ class UpdateSystem extends Page
 
     public function mount(): void
     {
-        // Auto-sync .env version with config/version.php if they differ
-        $this->syncEnvVersion();
-        
-        // Clear config cache to ensure fresh version is loaded
+        // Clear config cache FIRST before syncing
         try {
             \Artisan::call('config:clear');
             \Artisan::call('cache:clear');
@@ -38,9 +35,32 @@ class UpdateSystem extends Page
             // Silently fail if artisan commands don't work
         }
         
-        // Load version directly from config file to bypass caching
-        $versionConfig = include(base_path('config/version.php'));
-        $this->currentVersion = $versionConfig['version'] ?? config('version.version', '1.0.0');
+        // Auto-sync .env version with config/version.php if they differ
+        $this->syncEnvVersion();
+        
+        // Clear cache AGAIN after .env sync to reload new version
+        try {
+            \Artisan::call('config:clear');
+            \Artisan::call('cache:clear');
+        } catch (\Exception $e) {
+            // Silently fail if artisan commands don't work
+        }
+        
+        // Read version DIRECTLY from .env file (most reliable after sync)
+        // This bypasses Laravel's env() caching which may hold old values
+        $envPath = base_path('.env');
+        if (\File::exists($envPath)) {
+            $envContent = \File::get($envPath);
+            if (preg_match('/^APP_VERSION=(.*)$/m', $envContent, $matches)) {
+                $this->currentVersion = trim($matches[1]);
+            }
+        }
+        
+        // Fallback to config file if .env read failed
+        if (!$this->currentVersion) {
+            $versionConfig = include(base_path('config/version.php'));
+            $this->currentVersion = $versionConfig['version'] ?? '1.0.0';
+        }
         
         $this->checkForUpdates();
     }
