@@ -822,6 +822,53 @@ ini_set('display_errors', 1);
                     ");
                     echo "✓ Migrations table ready<br><br>";
                     
+                    // Run migration fixes first (before running migrations)
+                    echo "🔧 Checking migration fixes...<br>";
+                    $fixFiles = glob(__DIR__ . '/database/migration-fixes/*.php');
+                    sort($fixFiles);
+                    
+                    if (count($fixFiles) > 0) {
+                        echo "📂 Found " . count($fixFiles) . " migration fix files<br>";
+                        
+                        foreach ($fixFiles as $fixFile) {
+                            $fixName = basename($fixFile);
+                            
+                            // Skip README
+                            if ($fixName === 'README.md') {
+                                continue;
+                            }
+                            
+                            echo "→ Checking: $fixName<br>";
+                            
+                            try {
+                                $fix = require $fixFile;
+                                
+                                // Check if fix should run
+                                if (method_exists($fix, 'shouldRun') && $fix->shouldRun()) {
+                                    echo "  ⚠️ Fix needs to run<br>";
+                                    
+                                    // Execute the fix
+                                    $result = $fix->execute();
+                                    
+                                    if ($result['executed']) {
+                                        echo "  ✓ " . htmlspecialchars($result['message']) . "<br>";
+                                    } else {
+                                        echo "  ⊘ " . htmlspecialchars($result['message']) . "<br>";
+                                    }
+                                } else {
+                                    echo "  ⊘ No action needed<br>";
+                                }
+                            } catch (Exception $e) {
+                                echo "  ⚠️ Warning: " . htmlspecialchars($e->getMessage()) . "<br>";
+                                // Continue with migrations even if a fix fails
+                            }
+                        }
+                        
+                        echo "<br>";
+                    } else {
+                        echo "⊘ No migration fixes found<br><br>";
+                    }
+                    
                     // Get migration files
                     $migrationFiles = glob(__DIR__ . '/database/migrations/*.php');
                     sort($migrationFiles);
