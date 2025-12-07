@@ -4,16 +4,61 @@
     history: [],
     username: '{{ $username ?? (auth()->user()->name ?? 'admin') }}',
     prompt: '{{ $prompt ?? ((auth()->user()->name ?? 'admin') . '@vantapress:~$ ') }}',
+    buttonX: null,
+    buttonY: null,
+    isDragging: false,
+    dragStartX: 0,
+    dragStartY: 0,
     
     init() {
         this.history.push({
             type: 'output',
             content: 'VantaPress Terminal v1.0.0\\nType \\'vanta-help\\' for available commands.\\n'
         });
+        
+        // Initialize button position (bottom-right corner)
+        this.$nextTick(() => {
+            if (this.buttonX === null) {
+                this.buttonX = window.innerWidth - 200;
+                this.buttonY = window.innerHeight - 100;
+            }
+        });
     },
     
     toggle() {
         this.isOpen = !this.isOpen;
+    },
+    
+    startDrag(e) {
+        // Only start drag on left mouse button
+        if (e.button !== 0) return;
+        this.isDragging = true;
+        this.dragStartX = e.clientX - this.buttonX;
+        this.dragStartY = e.clientY - this.buttonY;
+        e.preventDefault();
+        e.stopPropagation();
+    },
+    
+    drag(e) {
+        if (!this.isDragging) return;
+        e.preventDefault();
+        this.buttonX = e.clientX - this.dragStartX;
+        this.buttonY = e.clientY - this.dragStartY;
+    },
+    
+    stopDrag() {
+        this.isDragging = false;
+    },
+    
+    getButtonStyle() {
+        return `left: ${this.buttonX}px; top: ${this.buttonY}px;`;
+    },
+    
+    getWindowStyle() {
+        // Position terminal window above the button
+        const windowX = Math.max(0, this.buttonX - 512 + 75);
+        const windowY = Math.max(0, this.buttonY - 1024 - 10);
+        return `left: ${windowX}px; top: ${windowY}px;`;
     },
     
     async executeCommand() {
@@ -58,11 +103,23 @@
             this.$refs.terminalOutput.scrollTop = this.$refs.terminalOutput.scrollHeight;
         });
     }
-}" style="pointer-events: none;">
-    <!-- Floating Terminal Button -->
-    <div style="position: fixed !important; bottom: 2rem !important; right: 2rem !important; z-index: 99999 !important; pointer-events: auto;">
+}" 
+@mousemove.window="drag($event)"
+@mouseup.window="stopDrag()"
+style="pointer-events: none;">
+    <!-- Floating Terminal Button (Draggable) -->
+    <div 
+        x-show="buttonX !== null && buttonY !== null"
+        :style="getButtonStyle()"
+        style="
+            position: fixed !important;
+            z-index: 99999 !important; 
+            pointer-events: auto !important;
+        "
+    >
         <button 
-            @click="toggle"
+            @mousedown="startDrag($event)"
+            @click.prevent="if(!isDragging) toggle()"
             :class="{
                 'ring-2 ring-gray-600 dark:ring-gray-500': isOpen
             }"
@@ -77,9 +134,11 @@
                 box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
                 align-items: center !important;
                 gap: 0.5rem !important;
+                cursor: move !important;
+                user-select: none;
             "
             class="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 bg-gray-900 dark:bg-gray-800 text-white hover:bg-gray-800 dark:hover:bg-gray-700 border border-gray-700 dark:border-gray-600 shadow-lg hover:shadow-xl"
-            title="Toggle Terminal"
+            title="Toggle Terminal (Drag to move)"
         >
             <svg style="width: 1.25rem; height: 1.25rem; color: white;" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -94,24 +153,23 @@
         </button>
     </div>
 
-    <!-- Floating Terminal Window (Chatbox Style) -->
+    <!-- Floating Terminal Window (1024x1024) -->
     <div 
         x-show="isOpen"
         x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 transform translate-y-4"
-        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:enter-start="opacity-0 transform scale-95"
+        x-transition:enter-end="opacity-100 transform scale-100"
         x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 transform translate-y-0"
-        x-transition:leave-end="opacity-0 transform translate-y-4"
-        class="fixed bottom-24 right-4 z-40 w-[600px] h-[500px] bg-gray-900 dark:bg-gray-950 rounded-lg shadow-2xl border border-gray-700 dark:border-gray-600 flex flex-col"
+        x-transition:leave-start="opacity-100 transform scale-100"
+        x-transition:leave-end="opacity-0 transform scale-95"
+        :style="getWindowStyle()"
+        class="fixed z-40 bg-gray-900 dark:bg-gray-950 rounded-lg shadow-2xl border border-gray-700 dark:border-gray-600 flex flex-col"
         style="
             display: none; 
             pointer-events: auto;
             position: fixed !important;
-            bottom: 6rem !important;
-            right: 1rem !important;
-            width: 600px !important;
-            height: 500px !important;
+            width: 1024px !important;
+            height: 1024px !important;
             background-color: #111827 !important;
             z-index: 99998 !important;
         "
@@ -128,15 +186,6 @@
             </div>
             <div class="flex items-center gap-2">
                 <span class="text-xs text-gray-400" x-text="username + '@vantapress'"></span>
-                <button 
-                    @click="toggle"
-                    class="text-gray-400 hover:text-white transition-colors"
-                    title="Close Terminal"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
             </div>
         </div>
 
