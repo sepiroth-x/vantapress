@@ -1,6 +1,42 @@
 # VantaPress Session Memory
 
-**Last Updated:** December 6, 2025 - CRITICAL PRODUCTION HOTFIX DEPLOYED
+**Last Updated:** December 7, 2025 - Module Migration Support Added
+
+## 🎯 VERSION 1.0.51: Module Migration Support (Dec 7, 2025)
+
+**Status**: IN DEVELOPMENT - Enhanced WebMigrationService for module migrations
+
+### Critical Enhancement - Module Migration Detection
+
+**Issue Discovered:**
+- User deployed fresh VantaPress installation to production
+- VPToDoList module gave error: "Table 'vp_projects' doesn't exist"
+- Database Updates page showed "No pending migrations"
+- **Root Cause:** WebMigrationService only scanned `database/migrations/`, ignored module migrations
+
+**Solution Implemented (v1.0.51-dev):**
+```php
+// Enhanced checkPendingMigrations() to scan module directories
+$modulesPath = base_path('Modules');
+$moduleDirectories = glob($modulesPath . '/*', GLOB_ONLYDIR);
+
+foreach ($moduleDirectories as $moduleDir) {
+    $moduleMigrationPath = $moduleDir . '/migrations';
+    if (is_dir($moduleMigrationPath)) {
+        // Scan and add module migrations to pending list
+    }
+}
+```
+
+**Benefits:**
+- ✅ Database Updates page now detects ALL migrations (core + modules)
+- ✅ Fresh installations can run all migrations via web interface
+- ✅ Critical for shared hosting without terminal access
+- ✅ Modules like VPToDoList, VPEssential1, etc. now fully supported
+
+**Commit:** a2c6181 - "Enhanced WebMigrationService to detect and run module migrations"
+
+---
 
 ## 🔥 VERSION 1.0.50: Critical Production Hotfix (Dec 6, 2025)
 
