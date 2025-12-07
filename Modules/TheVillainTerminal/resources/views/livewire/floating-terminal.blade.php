@@ -1,14 +1,17 @@
-<div x-data="{
+<div 
+x-data="{
     isOpen: false,
     command: '',
     history: [],
     username: '{{ $username ?? (auth()->user()->name ?? 'admin') }}',
     prompt: '{{ $prompt ?? ((auth()->user()->name ?? 'admin') . '@vantapress:~$ ') }}',
-    buttonX: null,
+    buttonX: 290,
     buttonY: null,
     isDragging: false,
     dragStartX: 0,
     dragStartY: 0,
+    clickX: 0,
+    clickY: 0,
     
     init() {
         this.history.push({
@@ -16,37 +19,61 @@
             content: 'VantaPress Terminal v1.0.0\\nType \\'vanta-help\\' for available commands.\\n'
         });
         
-        // Initialize button position (bottom-right corner)
-        this.$nextTick(() => {
-            if (this.buttonX === null) {
-                this.buttonX = window.innerWidth - 200;
-                this.buttonY = window.innerHeight - 100;
-            }
-        });
+        // Set initial Y position
+        this.buttonY = window.innerHeight - 100;
+        console.log('Terminal button initialized at:', this.buttonX, this.buttonY);
     },
     
     toggle() {
+        console.log('Toggle called, isOpen:', this.isOpen);
         this.isOpen = !this.isOpen;
     },
     
     startDrag(e) {
-        // Only start drag on left mouse button
         if (e.button !== 0) return;
-        this.isDragging = true;
+        
+        this.clickX = e.clientX;
+        this.clickY = e.clientY;
         this.dragStartX = e.clientX - this.buttonX;
         this.dragStartY = e.clientY - this.buttonY;
+        
+        console.log('Drag started at:', e.clientX, e.clientY);
+        console.log('Button position:', this.buttonX, this.buttonY);
+        
+        // Delay setting isDragging to allow click detection
+        setTimeout(() => {
+            if (Math.abs(e.clientX - this.clickX) > 5 || Math.abs(e.clientY - this.clickY) > 5) {
+                this.isDragging = true;
+            }
+        }, 50);
+        
         e.preventDefault();
-        e.stopPropagation();
     },
     
     drag(e) {
         if (!this.isDragging) return;
-        e.preventDefault();
+        
         this.buttonX = e.clientX - this.dragStartX;
         this.buttonY = e.clientY - this.dragStartY;
+        
+        console.log('Dragging to:', this.buttonX, this.buttonY);
     },
     
-    stopDrag() {
+    stopDrag(e) {
+        console.log('Mouse up - isDragging:', this.isDragging);
+        
+        // If we didn't drag, it's a click
+        if (!this.isDragging) {
+            const distX = Math.abs(e.clientX - this.clickX);
+            const distY = Math.abs(e.clientY - this.clickY);
+            console.log('Distance moved:', distX, distY);
+            
+            if (distX < 5 && distY < 5) {
+                console.log('Detected as click, toggling...');
+                this.toggle();
+            }
+        }
+        
         this.isDragging = false;
     },
     
@@ -105,21 +132,14 @@
     }
 }" 
 @mousemove.window="drag($event)"
-@mouseup.window="stopDrag()"
-style="pointer-events: none;">
+@mouseup.window="stopDrag($event)">
+    
     <!-- Floating Terminal Button (Draggable) -->
     <div 
-        x-show="buttonX !== null && buttonY !== null"
-        :style="getButtonStyle()"
-        style="
-            position: fixed !important;
-            z-index: 99999 !important; 
-            pointer-events: auto !important;
-        "
+        @mousedown="startDrag($event)"
+        :style="'position: fixed; left: ' + buttonX + 'px; top: ' + buttonY + 'px; z-index: 99999; pointer-events: auto; cursor: move;'"
     >
         <button 
-            @mousedown="startDrag($event)"
-            @click.prevent="if(!isDragging) toggle()"
             :class="{
                 'ring-2 ring-gray-600 dark:ring-gray-500': isOpen
             }"

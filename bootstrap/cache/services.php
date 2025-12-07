@@ -50,6 +50,7 @@
     46 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
     47 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
     48 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
+    49 => 'Modules\\TheVillainTerminal\\TheVillainTerminalServiceProvider',
   ),
   'eager' => 
   array (
@@ -88,6 +89,7 @@
     32 => 'Modules\\VPEssential1\\VPEssential1ServiceProvider',
     33 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
     34 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
+    35 => 'Modules\\TheVillainTerminal\\TheVillainTerminalServiceProvider',
   ),
   'deferred' => 
   array (
