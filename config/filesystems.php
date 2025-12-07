@@ -46,6 +46,13 @@ return [
             'report' => false,
         ],
 
+        'livewire-tmp' => [
+            'driver' => 'local-no-finfo',
+            'root' => storage_path('app/livewire-tmp'),
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

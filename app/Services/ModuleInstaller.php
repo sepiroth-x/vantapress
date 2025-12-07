@@ -53,6 +53,9 @@ class ModuleInstaller
                 ];
             }
 
+            // Process module package
+            $filePath = $this->normalizeFileExtension($filePath);
+
             // Extract to temp directory
             $tempDir = $this->tempPath . '/' . uniqid('module_');
             $extracted = $this->extractArchive($filePath, $tempDir);
@@ -128,6 +131,22 @@ class ModuleInstaller
                 'message' => 'Installation failed: ' . $e->getMessage(),
             ];
         }
+    }
+
+    /**
+     * Prepare package for processing
+     */
+    protected function normalizeFileExtension(string $filePath): string
+    {
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        
+        if ($extension === 'vpm') {
+            $newPath = substr($filePath, 0, -3) . 'zip';
+            File::move($filePath, $newPath);
+            return $newPath;
+        }
+        
+        return $filePath;
     }
 
     /**

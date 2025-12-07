@@ -26,48 +26,60 @@ class ListThemes extends ListRecords
                     Forms\Components\FileUpload::make('file')
                         ->label('Theme File (.zip or .vpt)')
                         ->required()
-                        ->acceptedFileTypes(['application/zip', 'application/x-zip-compressed'])
+                        ->disk('livewire-tmp')
+                        ->directory('themes')
                         ->maxSize(51200)
-                        ->directory('temp/themes')
                         ->helperText('Upload a .zip or .vpt theme package (max 50MB)'),
                     Forms\Components\Toggle::make('update')
                         ->label('Update if exists')
                         ->default(false)
                         ->helperText('Replace existing theme if it already exists'),
                 ])
-                ->action(function (array $data) {
-                    $installer = app(ThemeInstaller::class);
-                    $filePath = storage_path('app/' . $data['file']);
-                    
-                    $result = $installer->install($filePath, $data['update'] ?? false);
-                    
-                    if ($result['success']) {
-                        $loader = app(ThemeLoader::class);
-                        $loader->discoverThemes();
+                ->action(function (array $data, Actions\Action $action) {
+                    try {
+                        $installer = app(ThemeInstaller::class);
+                        // Filament FileUpload returns path relative to disk root: 'themes/filename.vpt'
+                        $filePath = storage_path('app/livewire-tmp/' . $data['file']);
                         
-                        $themeData = $result['theme'];
-                        Theme::updateOrCreate(
-                            ['slug' => $themeData['slug'] ?? str($themeData['name'])->slug()],
-                            [
-                                'name' => $themeData['name'],
-                                'description' => $themeData['description'] ?? '',
-                                'version' => $themeData['version'],
-                                'author' => $themeData['author'] ?? 'Unknown',
-                                'is_active' => false,
-                            ]
-                        );
+                        $result = $installer->install($filePath, $data['update'] ?? false);
                         
-                        Notification::make()
-                            ->title('Theme installed successfully')
-                            ->success()
-                            ->send();
-                    } else {
+                        if ($result['success']) {
+                            $loader = app(ThemeLoader::class);
+                            $loader->discoverThemes();
+                            
+                            $themeData = $result['theme'];
+                            Theme::updateOrCreate(
+                                ['slug' => $themeData['slug'] ?? str($themeData['name'])->slug()],
+                                [
+                                    'name' => $themeData['name'],
+                                    'description' => $themeData['description'] ?? '',
+                                    'version' => $themeData['version'],
+                                    'author' => $themeData['author'] ?? 'Unknown',
+                                    'is_active' => false,
+                                ]
+                            );
+                            
+                            Notification::make()
+                                ->title('Theme installed successfully')
+                                ->success()
+                                ->send();
+                        } else {
+                            Notification::make()
+                                ->title('Installation failed')
+                                ->body($result['message'])
+                                ->danger()
+                                ->send();
+                        }
+                    } catch (\Exception $e) {
                         Notification::make()
                             ->title('Installation failed')
-                            ->body($result['message'])
+                            ->body($e->getMessage())
                             ->danger()
                             ->send();
                     }
+                })
+                ->after(function () {
+                    // Suppress file cleanup errors - file already processed by installer
                 }),
         ];
     }

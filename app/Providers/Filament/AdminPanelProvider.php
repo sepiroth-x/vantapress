@@ -24,7 +24,31 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         // Discover module Filament pages
-        $modulePages = $this->discoverModulePages();
+        // $modulePages = $this->discoverModulePages();
+        $modulePages = []; // Temporarily disabled to fix Page error
+        
+        \Log::info('[AdminPanelProvider] Module pages to register', [
+            'count' => count($modulePages),
+            'pages' => $modulePages
+        ]);
+        
+        // Log each page class details
+        foreach ($modulePages as $pageClass) {
+            try {
+                \Log::info('[AdminPanelProvider] Page class details', [
+                    'class' => $pageClass,
+                    'exists' => class_exists($pageClass),
+                    'slug' => class_exists($pageClass) ? $pageClass::getSlug() : 'N/A',
+                    'label' => class_exists($pageClass) ? $pageClass::getNavigationLabel() : 'N/A',
+                    'group' => class_exists($pageClass) ? $pageClass::getNavigationGroup() : 'N/A',
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('[AdminPanelProvider] Error getting page details', [
+                    'class' => $pageClass,
+                    'error' => $e->getMessage()
+                ]);
+            }
+        }
 
         return $panel
             ->default()
@@ -66,24 +90,29 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::FOOTER,
                 fn (): string => view('filament.footer')->render()
             )
+            // Terminal widget temporarily disabled for debugging
+            // ->renderHook(
+            //     PanelsRenderHook::BODY_END,
+            //     function (): string {
+            //         return '<!-- Terminal: Disabled -->';
+            //     }
+            // )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->resources([
-                \Modules\VPToDoList\Filament\Resources\ProjectResource::class,
-                \Modules\VPToDoList\Filament\Resources\TaskResource::class,
-            ])
+            // ->resources([
+            //     \Modules\VPToDoList\Filament\Resources\ProjectResource::class,
+            //     \Modules\VPToDoList\Filament\Resources\TaskResource::class,
+            // ])
             ->navigationGroups([
                 'To Do List',
                 'Content',
                 'Appearance',
                 'Modules',
                 'Administration',
+                'System',
                 'Updates',
             ])
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages(array_merge(
-                [Pages\Dashboard::class],
-                $modulePages
-            ))
+            ->pages($this->safelyMergePages($modulePages))
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 \App\Filament\Widgets\AttributionWidget::class,
@@ -114,25 +143,110 @@ class AdminPanelProvider extends PanelProvider
     protected function discoverModulePages(): array
     {
         $pages = [];
-        $moduleLoader = app(\App\Services\ModuleLoader::class);
-        $modules = $moduleLoader->getModules();
-
-        foreach ($modules as $moduleName => $metadata) {
-            // Only load pages from active modules
-            if (!($metadata['active'] ?? false)) {
-                continue;
+        
+        try {
+            // Check if database is available
+            if (!\Schema::hasTable('modules')) {
+                \Log::warning('[AdminPanelProvider] Modules table not found, skipping page discovery');
+                return [];
             }
-
-            // Check if module provides Filament pages
-            if (isset($metadata['provides']['filament_pages'])) {
-                foreach ($metadata['provides']['filament_pages'] as $pageClass) {
-                    if (class_exists($pageClass)) {
+            
+            // Get enabled modules from database
+            $enabledModules = \App\Models\Module::where('is_enabled', true)->get();
+            
+            \Log::info('[AdminPanelProvider] Discovering module pages', [
+                'enabled_modules_count' => $enabledModules->count()
+            ]);
+            
+            foreach ($enabledModules as $module) {
+                $modulePath = base_path('Modules/' . $module->slug);
+                $metadataPath = $modulePath . '/module.json';
+                
+                if (!file_exists($metadataPath)) {
+                    \Log::warning('[AdminPanelProvider] Module metadata not found', [
+                        'module' => $module->slug,
+                        'path' => $metadataPath
+                    ]);
+                    continue;
+                }
+                
+                $metadata = json_decode(file_get_contents($metadataPath), true);
+                
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    \Log::error('[AdminPanelProvider] Invalid JSON in module metadata', [
+                        'module' => $module->slug,
+                        'error' => json_last_error_msg()
+                    ]);
+                    continue;
+                }
+                
+                // Check if module provides Filament pages
+                if (isset($metadata['provides']['filament_pages'])) {
+                    foreach ($metadata['provides']['filament_pages'] as $pageClass) {
+                        if (!class_exists($pageClass)) {
+                            \Log::warning('[AdminPanelProvider] Page class not found', [
+                                'module' => $module->slug,
+                                'class' => $pageClass
+                            ]);
+                            continue;
+                        }
+                        
                         $pages[] = $pageClass;
+                        \Log::info('[AdminPanelProvider] Registered module page', [
+                            'module' => $module->slug,
+                            'page' => $pageClass
+                        ]);
                     }
                 }
             }
+            
+            \Log::info('[AdminPanelProvider] Total pages registered', [
+                'count' => count($pages)
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('[AdminPanelProvider] Failed to discover module pages', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
 
+        return $pages;
+    }
+    
+    /**
+     * Safely merge pages and log any issues
+     */
+    protected function safelyMergePages(array $modulePages): array
+    {
+        $pages = [Pages\Dashboard::class];
+        
+        foreach ($modulePages as $pageClass) {
+            try {
+                // Test if class can be instantiated
+                if (class_exists($pageClass)) {
+                    $pages[] = $pageClass;
+                    \Log::info('[AdminPanelProvider] Added page to final array', [
+                        'class' => $pageClass
+                    ]);
+                } else {
+                    \Log::warning('[AdminPanelProvider] Page class does not exist', [
+                        'class' => $pageClass
+                    ]);
+                }
+            } catch (\Exception $e) {
+                \Log::error('[AdminPanelProvider] Error adding page', [
+                    'class' => $pageClass,
+                    'error' => $e->getMessage()
+                ]);
+            }
+        }
+        
+        \Log::info('[AdminPanelProvider] Final pages array', [
+            'count' => count($pages),
+            'pages' => $pages
+        ]);
+        
         return $pages;
     }
 }
