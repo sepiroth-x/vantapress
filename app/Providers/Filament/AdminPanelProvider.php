@@ -90,13 +90,27 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::FOOTER,
                 fn (): string => view('filament.footer')->render()
             )
-            // Terminal widget temporarily disabled for debugging
-            // ->renderHook(
-            //     PanelsRenderHook::BODY_END,
-            //     function (): string {
-            //         return '<!-- Terminal: Disabled -->';
-            //     }
-            // )
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                function (): string {
+                    try {
+                        // Check if TheVillainTerminal module is enabled
+                        if (\Schema::hasTable('modules')) {
+                            $module = \App\Models\Module::where('slug', 'TheVillainTerminal')->first();
+                            if ($module && $module->is_enabled) {
+                                // Use inline view to avoid Livewire dependencies
+                                $username = auth()->user()->name ?? 'admin';
+                                $prompt = $username . '@vantapress:~$ ';
+                                
+                                return view('thevillainterrminal::livewire.floating-terminal', compact('username', 'prompt'))->render();
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        \Log::error('[AdminPanelProvider] Error loading terminal widget: ' . $e->getMessage());
+                    }
+                    return '';
+                }
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->resources([
                 \Modules\VPToDoList\Filament\Resources\ProjectResource::class,
