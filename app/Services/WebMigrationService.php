@@ -20,6 +20,7 @@ class WebMigrationService
 {
     /**
      * Check if there are pending migrations that need to run
+     * Scans both core database/migrations and all module migrations
      * 
      * @return array
      */
@@ -37,13 +38,45 @@ class WebMigrationService
                 ];
             }
 
-            // Get all migration files
-            $migrationPath = database_path('migrations');
-            $migrationFiles = glob($migrationPath . '/*.php');
-            
             $allMigrations = [];
-            foreach ($migrationFiles as $file) {
+
+            // Get core migration files from database/migrations
+            $coreMigrationPath = database_path('migrations');
+            $coreMigrationFiles = glob($coreMigrationPath . '/*.php');
+            
+            foreach ($coreMigrationFiles as $file) {
                 $allMigrations[] = basename($file, '.php');
+            }
+
+            Log::info('[WebMigrationService] Core migrations found', [
+                'count' => count($coreMigrationFiles),
+                'path' => $coreMigrationPath
+            ]);
+
+            // Scan all module directories for migrations
+            $modulesPath = base_path('Modules');
+            if (is_dir($modulesPath)) {
+                $moduleDirectories = glob($modulesPath . '/*', GLOB_ONLYDIR);
+                
+                foreach ($moduleDirectories as $moduleDir) {
+                    $moduleMigrationPath = $moduleDir . '/migrations';
+                    
+                    if (is_dir($moduleMigrationPath)) {
+                        $moduleMigrationFiles = glob($moduleMigrationPath . '/*.php');
+                        
+                        foreach ($moduleMigrationFiles as $file) {
+                            $allMigrations[] = basename($file, '.php');
+                        }
+
+                        if (count($moduleMigrationFiles) > 0) {
+                            Log::info('[WebMigrationService] Module migrations found', [
+                                'module' => basename($moduleDir),
+                                'count' => count($moduleMigrationFiles),
+                                'path' => $moduleMigrationPath
+                            ]);
+                        }
+                    }
+                }
             }
 
             // Get executed migrations
@@ -55,15 +88,17 @@ class WebMigrationService
             $pendingMigrations = array_diff($allMigrations, $executedMigrations);
 
             if (count($pendingMigrations) > 0) {
-                Log::info('Pending migrations detected', [
-                    'count' => count($pendingMigrations),
+                Log::info('[WebMigrationService] Pending migrations detected', [
+                    'total_found' => count($allMigrations),
+                    'executed' => count($executedMigrations),
+                    'pending' => count($pendingMigrations),
                     'migrations' => $pendingMigrations
                 ]);
 
                 return [
                     'pending' => true,
                     'count' => count($pendingMigrations),
-                    'message' => count($pendingMigrations) . ' database update(s) available',
+                    'message' => count($pendingMigrations) . ' database update(s) available (includes modules)',
                     'migrations' => array_values($pendingMigrations),
                     'status' => 'pending'
                 ];
