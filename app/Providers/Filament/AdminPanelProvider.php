@@ -98,10 +98,10 @@ class AdminPanelProvider extends PanelProvider
             //     }
             // )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            // ->resources([
-            //     \Modules\VPToDoList\Filament\Resources\ProjectResource::class,
-            //     \Modules\VPToDoList\Filament\Resources\TaskResource::class,
-            // ])
+            ->resources([
+                \Modules\VPToDoList\Filament\Resources\ProjectResource::class,
+                \Modules\VPToDoList\Filament\Resources\TaskResource::class,
+            ])
             ->navigationGroups([
                 'To Do List',
                 'Content',
