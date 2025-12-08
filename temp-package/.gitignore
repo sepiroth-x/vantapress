@@ -1,0 +1,60 @@
+/.phpunit.cache
+/node_modules
+/storage/*.key
+# /vendor - INCLUDED in release branch for deployment
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
+
+# Debug and testing scripts - keep locally but don't commit
+/debug-scripts/
+/scripts/check-*.php
+/scripts/test-*.php
+/scripts/debug-*.php
+/scripts/fix-*.php
+/scripts/create-admin-quick.php
+
+# Local development server scripts - not needed in production
+serve.php
+server.php
+
+# Sync scripts - local development only
+sync-*.php
+
+# Log files
+*.log
+access-log.txt
+response-log.txt
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Developer Manual (Private eBook)
+VantaPress Developer Manual.md
+
+# Modules - Ignore all except core modules
+/Modules/*
+!/Modules/HelloWorld/
+!/Modules/VPEssential1/
+!/Modules/VPToDoList/
+
+# Production Diagnostic Files
+production-diagnostic.php

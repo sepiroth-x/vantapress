@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\File;
 
 class ModuleResource extends Resource
 {
@@ -98,6 +99,18 @@ class ModuleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function ($query) {
+                // Sync with filesystem before displaying
+                try {
+                    static::syncWithFilesystem();
+                } catch (\Exception $e) {
+                    \Log::error('[ModuleResource] Failed to sync with filesystem', [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
+                }
+                return $query;
+            })
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\Layout\Stack::make([
@@ -106,8 +119,16 @@ class ModuleResource extends Resource
                             ->sortable()
                             ->weight('bold')
                             ->size('lg')
-                            ->icon('heroicon-o-puzzle-piece')
-                            ->grow(false),
+                            ->icon(fn ($record) => static::moduleExists($record) 
+                                ? 'heroicon-o-puzzle-piece' 
+                                : 'heroicon-o-exclamation-triangle')
+                            ->color(fn ($record) => static::moduleExists($record) 
+                                ? 'primary' 
+                                : 'danger')
+                            ->grow(false)
+                            ->description(fn ($record) => static::moduleExists($record) 
+                                ? null 
+                                : '⚠️ Module folder not found'),
                         
                         Tables\Columns\TextColumn::make('description')
                             ->color('gray')
@@ -123,7 +144,7 @@ class ModuleResource extends Resource
                         
                         Tables\Columns\TextColumn::make('version')
                             ->badge()
-                            ->color('gray')
+                            ->color(fn ($record) => static::moduleExists($record) ? 'gray' : 'warning')
                             ->icon('heroicon-o-tag'),
                     ])->space(1)->alignment('end'),
                     
@@ -151,6 +172,7 @@ class ModuleResource extends Resource
                     ->icon(fn ($record) => $record->is_enabled ? 'heroicon-o-x-circle' : 'heroicon-o-check-circle')
                     ->color(fn ($record) => $record->is_enabled ? 'warning' : 'success')
                     ->requiresConfirmation()
+                    ->visible(fn ($record) => static::moduleExists($record))
                     ->action(function ($record) {
                         $loader = new ModuleLoader();
                         $newStatus = !$record->is_enabled;
@@ -165,20 +187,66 @@ class ModuleResource extends Resource
                         
                         Notification::make()
                             ->title('Module ' . ($newStatus ? 'enabled' : 'disabled'))
+                            ->body('Please refresh the page (F5) to update the navigation menu.')
                             ->success()
+                            ->persistent()
                             ->send();
                     })
                     ->successNotificationTitle('Module status updated')
                     ->after(fn () => redirect()->to(request()->header('Referer') ?? '/admin/modules')),
                 
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('remove_orphan')
+                    ->label('Remove from Database')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalHeading('Remove Missing Module')
+                    ->modalDescription('This module folder is missing from the filesystem. Remove the database entry?')
+                    ->modalSubmitActionLabel('Yes, Remove')
+                    ->visible(fn ($record) => !static::moduleExists($record))
+                    ->action(function ($record) {
+                        $record->delete();
+                        
+                        Notification::make()
+                            ->title('Orphaned module removed')
+                            ->body('Database entry for missing module has been removed.')
+                            ->success()
+                            ->send();
+                    }),
+                
+                Tables\Actions\EditAction::make()
+                    ->visible(fn ($record) => static::moduleExists($record)),
+                    
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation()
+                    ->modalHeading('Delete Module')
+                    ->modalDescription('This will permanently delete the module files, database tables, and all related data. This action cannot be undone.')
+                    ->visible(fn ($record) => static::moduleExists($record))
                     ->before(function ($record) {
                         $loader = new ModuleLoader();
+                        
+                        // Deactivate if enabled
                         if ($record->is_enabled) {
                             $loader->deactivateModule($record->slug);
                         }
+                        
+                        // Run module's uninstall migrations if they exist
+                        $modulePath = base_path('Modules/' . $record->slug);
+                        $migrationsPath = $modulePath . '/migrations';
+                        
+                        if (File::exists($migrationsPath)) {
+                            try {
+                                \Artisan::call('migrate:rollback', [
+                                    '--path' => 'Modules/' . $record->slug . '/migrations',
+                                    '--force' => true
+                                ]);
+                                \Log::info("Rolled back migrations for module: {$record->slug}");
+                            } catch (\Exception $e) {
+                                \Log::warning("Failed to rollback migrations for module {$record->slug}: " . $e->getMessage());
+                            }
+                        }
+                        
+                        // Delete module files
                         $loader->deleteModule($record->slug);
                     }),
             ])
@@ -190,13 +258,31 @@ class ModuleResource extends Resource
                         ->color('success')
                         ->action(function ($records) {
                             $loader = new ModuleLoader();
+                            $enabled = 0;
+                            $skipped = 0;
+                            
                             foreach ($records as $record) {
-                                $loader->activateModule($record->slug);
-                                $record->update(['is_enabled' => true]);
+                                // Only enable if module folder exists
+                                if (static::moduleExists($record)) {
+                                    $loader->activateModule($record->slug);
+                                    $record->update(['is_enabled' => true]);
+                                    $enabled++;
+                                } else {
+                                    $skipped++;
+                                }
+                            }
+                            
+                            $message = [];
+                            if ($enabled > 0) {
+                                $message[] = "{$enabled} module(s) enabled";
+                            }
+                            if ($skipped > 0) {
+                                $message[] = "{$skipped} skipped (missing folders)";
                             }
                             
                             Notification::make()
-                                ->title('Modules enabled')
+                                ->title('Bulk Enable Complete')
+                                ->body(implode(', ', $message))
                                 ->success()
                                 ->send();
                         })
@@ -209,13 +295,31 @@ class ModuleResource extends Resource
                         ->color('warning')
                         ->action(function ($records) {
                             $loader = new ModuleLoader();
+                            $disabled = 0;
+                            $skipped = 0;
+                            
                             foreach ($records as $record) {
-                                $loader->deactivateModule($record->slug);
-                                $record->update(['is_enabled' => false]);
+                                // Only disable if module folder exists
+                                if (static::moduleExists($record)) {
+                                    $loader->deactivateModule($record->slug);
+                                    $record->update(['is_enabled' => false]);
+                                    $disabled++;
+                                } else {
+                                    $skipped++;
+                                }
+                            }
+                            
+                            $message = [];
+                            if ($disabled > 0) {
+                                $message[] = "{$disabled} module(s) disabled";
+                            }
+                            if ($skipped > 0) {
+                                $message[] = "{$skipped} skipped (missing folders)";
                             }
                             
                             Notification::make()
-                                ->title('Modules disabled')
+                                ->title('Bulk Disable Complete')
+                                ->body(implode(', ', $message))
                                 ->success()
                                 ->send();
                         })
@@ -242,5 +346,86 @@ class ModuleResource extends Resource
             'create' => Pages\CreateModule::route('/create'),
             'edit' => Pages\EditModule::route('/{record}/edit'),
         ];
+    }
+    
+    /**
+     * Check if module folder exists on filesystem
+     */
+    protected static function moduleExists($record): bool
+    {
+        if (!$record) return false;
+        
+        $modulePath = base_path('Modules/' . $record->slug);
+        return file_exists($modulePath) && is_dir($modulePath);
+    }
+    
+    /**
+     * Sync database with filesystem
+     * WordPress-style: discover new modules and mark missing ones
+     */
+    protected static function syncWithFilesystem(): void
+    {
+        // Prevent multiple syncs in the same request
+        static $synced = false;
+        if ($synced) {
+            return;
+        }
+        $synced = true;
+        
+        try {
+            $modulesPath = base_path('Modules');
+            
+            if (!file_exists($modulesPath)) {
+                return;
+            }
+            
+            $loader = app(ModuleLoader::class);
+            $filesystemModules = $loader->discoverModules();
+            
+            if (!is_array($filesystemModules)) {
+                \Log::warning('[ModuleResource] discoverModules() did not return array', [
+                    'type' => gettype($filesystemModules)
+                ]);
+                return;
+            }
+            
+            // Get all module slugs from filesystem
+            $filesystemSlugs = array_keys($filesystemModules);
+            
+            // Get all module slugs from database
+            $databaseSlugs = Module::pluck('slug')->toArray();
+            
+            // Add new modules found on filesystem but not in database
+            foreach ($filesystemSlugs as $slug) {
+                if (!in_array($slug, $databaseSlugs)) {
+                    $metadata = $filesystemModules[$slug];
+                    
+                    if (!is_array($metadata)) {
+                        \Log::warning('[ModuleResource] Invalid metadata for module', [
+                            'slug' => $slug,
+                            'metadata_type' => gettype($metadata)
+                        ]);
+                        continue;
+                    }
+                    
+                    Module::updateOrCreate(
+                        ['slug' => $slug],
+                        [
+                            'name' => $metadata['name'] ?? $slug,
+                            'description' => $metadata['description'] ?? '',
+                            'version' => $metadata['version'] ?? '1.0.0',
+                            'author' => $metadata['author'] ?? 'Unknown',
+                            'is_enabled' => $metadata['active'] ?? false,
+                        ]
+                    );
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('[ModuleResource] syncWithFilesystem() failed', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+        }
     }
 }

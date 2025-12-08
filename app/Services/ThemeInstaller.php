@@ -52,6 +52,9 @@ class ThemeInstaller
                 ];
             }
 
+            // Process theme package
+            $filePath = $this->normalizeFileExtension($filePath);
+
             // Extract to temp directory
             $tempDir = $this->tempPath . '/' . uniqid('theme_');
             $extracted = $this->extractArchive($filePath, $tempDir);
@@ -127,6 +130,22 @@ class ThemeInstaller
                 'message' => 'Installation failed: ' . $e->getMessage(),
             ];
         }
+    }
+
+    /**
+     * Prepare package for processing
+     */
+    protected function normalizeFileExtension(string $filePath): string
+    {
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        
+        if ($extension === 'vpt') {
+            $newPath = substr($filePath, 0, -3) . 'zip';
+            File::move($filePath, $newPath);
+            return $newPath;
+        }
+        
+        return $filePath;
     }
 
     /**

@@ -122,6 +122,7 @@ All fix executions are logged to:
 ## 📦 Current Fixes
 
 - `001_drop_legacy_menu_tables.php` - Drops legacy menu tables from v1.0.41 and earlier that conflict with new migrations
+- `002_drop_legacy_module_tables.php` - Drops orphaned module tables (VPToDoList, TheVillainTerminal) that conflict with core migrations
 
 ---
 

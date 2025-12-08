@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\File;
 
 class ThemeResource extends Resource
 {
@@ -231,10 +232,28 @@ class ThemeResource extends Resource
                         if ($record->is_active) {
                             return 'Cannot delete an active theme. Please activate another theme first.';
                         }
-                        return 'Are you sure you want to delete this theme? This action cannot be undone.';
+                        return 'This will permanently delete the theme files, database tables, and all related data. This action cannot be undone.';
                     })
                     ->before(function ($record) {
                         $loader = new ThemeLoader();
+                        
+                        // Run theme's uninstall migrations if they exist
+                        $themePath = base_path('themes/' . $record->slug);
+                        $migrationsPath = $themePath . '/migrations';
+                        
+                        if (File::exists($migrationsPath)) {
+                            try {
+                                \Artisan::call('migrate:rollback', [
+                                    '--path' => 'themes/' . $record->slug . '/migrations',
+                                    '--force' => true
+                                ]);
+                                \Log::info("Rolled back migrations for theme: {$record->slug}");
+                            } catch (\Exception $e) {
+                                \Log::warning("Failed to rollback migrations for theme {$record->slug}: " . $e->getMessage());
+                            }
+                        }
+                        
+                        // Delete theme files
                         $loader->deleteTheme($record->slug);
                     }),
             ])

@@ -25,20 +25,19 @@
 
 ### 2. Version Numbering Format
 
-**Format:** `v.X.Y.Z-complete`
+**Format:** `X.Y.Z-complete`
 
 **Structure:**
-- `v.` - Version prefix
 - `X` - Major version (breaking changes)
 - `Y` - Minor version (new features, backwards compatible)
 - `Z` - Patch version (bug fixes, minor improvements)
 - `-complete` - Release suffix (indicates deployment-ready)
 
 **Examples:**
-- `v.1.0.0-complete` - Initial release
-- `v.1.0.1-complete` - Bug fix release
-- `v.1.1.0-complete` - New feature release
-- `v.2.0.0-complete` - Major version with breaking changes
+- `1.0.0-complete` - Initial release
+- `1.0.1-complete` - Bug fix release
+- `1.1.0-complete` - New feature release
+- `2.0.0-complete` - Major version with breaking changes
 
 **The `-complete` Suffix:**
 - Indicates the release is **production-ready**
@@ -106,13 +105,13 @@ Before pushing to release branch, update version in:
 
 4. **`README.md`**
    ```markdown
-   ![Version](https://img.shields.io/badge/version-v1.0.0--complete-blue)
+   ![Version](https://img.shields.io/badge/version-1.0.0--complete-blue)
    ```
 
 5. **Git Tag**
    ```bash
-   git tag -a v1.0.0-complete -m "Release v1.0.0-complete"
-   git push origin v1.0.0-complete
+   git tag -a 1.0.0-complete -m "Release 1.0.0-complete"
+   git push origin 1.0.0-complete
    ```
 
 ---
@@ -139,12 +138,12 @@ Before incrementing version and pushing to release:
 
 # 2. Commit version changes
 git add .
-git commit -m "Bump version to v1.0.0-complete"
+git commit -m "Bump version to 1.0.0-complete"
 
 # 3. Create and push tag
-git tag -a v1.0.0-complete -m "Release v1.0.0-complete"
+git tag -a 1.0.0-complete -m "Release 1.0.0-complete"
 git push origin main
-git push origin v1.0.0-complete
+git push origin 1.0.0-complete
 
 # 4. Update SESSION_DEV_HANDLING.md (if approved by developer)
 ```
@@ -153,33 +152,34 @@ git push origin v1.0.0-complete
 
 ## Version History Reference
 
-**Current Version:** v1.0.18-complete
+**Current Version:** 1.0.50-complete
 
 **Version Timeline:**
-- v1.0.18 - Page creation and media upload bug fixes
-- v1.0.17 - Admin footer with developer attribution
-- v1.0.14 - Villain-themed installer UI & developer standards
-- v1.0.13 - WordPress-style auto-updates system
-- v1.0.12 - Theme-based admin styling architecture
-- v1.0.11 - Filament admin panel styling fixes
-- v1.0.10 - Simple HTML welcome page solution
-- v1.0.9 - Enhanced APP_KEY detection
-- v1.0.8 - Pre-boot APP_KEY check
-- v1.0.7 - Pre-installation UX improvement
-- v1.0.6 - APP_KEY auto-generation fix
-- v1.0.5 - Theme screenshot display
-- v1.0.0 - Initial public release
+- 1.0.50 - Critical production hotfix for migration scripts
+- 1.0.18 - Page creation and media upload bug fixes
+- 1.0.17 - Admin footer with developer attribution
+- 1.0.14 - Villain-themed installer UI & developer standards
+- 1.0.13 - WordPress-style auto-updates system
+- 1.0.12 - Theme-based admin styling architecture
+- 1.0.11 - Filament admin panel styling fixes
+- 1.0.10 - Simple HTML welcome page solution
+- 1.0.9 - Enhanced APP_KEY detection
+- 1.0.8 - Pre-boot APP_KEY check
+- 1.0.7 - Pre-installation UX improvement
+- 1.0.6 - APP_KEY auto-generation fix
+- 1.0.5 - Theme screenshot display
+- 1.0.0 - Initial public release
 
 ---
 
 ## Summary
-
 **Three Golden Rules:**
 
 1. ⛔ **No pushing without explicit command** - Always wait for approval
-2. 📦 **Format: v.X.Y.Z-complete** - Use standard versioning format
+2. 📦 **Format: X.Y.Z-complete** - Use standard versioning format
 3. ⬆️ **Increment on every release push** - Never push with same version number
 
+**Current Project Version:** 1.0.50-complete
 **Current Project Version:** v1.0.14-complete
 
 **Remember:** Version control is critical for tracking changes, deployment history, and user support. Always follow these standards to maintain project integrity.

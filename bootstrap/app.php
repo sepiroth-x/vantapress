@@ -7,10 +7,12 @@ use Illuminate\Foundation\Configuration\Middleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
         \App\Providers\AppServiceProvider::class,
+        \App\Providers\FilesystemServiceProvider::class,
         \App\Providers\Filament\AdminPanelProvider::class,
         \Modules\VPEssential1\VPEssential1ServiceProvider::class,
         \Modules\VPToDoList\VPToDoListServiceProvider::class,
         \Modules\HelloWorld\HelloWorldServiceProvider::class,
+        \Modules\TheVillainTerminal\TheVillainTerminalServiceProvider::class,
     ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',

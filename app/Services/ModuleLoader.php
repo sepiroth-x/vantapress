@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use ZipArchive;
 use Exception;
 
@@ -256,10 +258,85 @@ class ModuleLoader
             
             File::put($metadataPath, json_encode($metadata, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
             
+            // Auto-run module migrations on activation
+            $this->runModuleMigrations($moduleName);
+            
             return $this->loadModule($moduleName);
         } catch (Exception $e) {
             logger()->error("Failed to activate module {$moduleName}: " . $e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     * Run migrations for a specific module
+     */
+    protected function runModuleMigrations(string $moduleName): void
+    {
+        $modulePath = $this->modulesPath . '/' . $moduleName;
+        $migrationsPath = $modulePath . '/migrations';
+        
+        if (!File::exists($migrationsPath)) {
+            return;
+        }
+
+        try {
+            logger()->info("Running migrations for module: {$moduleName}");
+            
+            // Get all migration files
+            $migrationFiles = glob($migrationsPath . '/*.php');
+            
+            if (empty($migrationFiles)) {
+                return;
+            }
+
+            // Check which migrations are already executed
+            $executedMigrations = \DB::table('migrations')
+                ->pluck('migration')
+                ->toArray();
+
+            // Get current batch number
+            $batch = \DB::table('migrations')->max('batch') + 1;
+
+            $executed = 0;
+            
+            foreach ($migrationFiles as $file) {
+                $migrationName = basename($file, '.php');
+                
+                // Skip if already executed
+                if (in_array($migrationName, $executedMigrations)) {
+                    continue;
+                }
+                
+                try {
+                    // Include and run the migration
+                    $migration = include $file;
+                    
+                    if (method_exists($migration, 'up')) {
+                        $migration->up();
+                        
+                        // Record in migrations table
+                        \DB::table('migrations')->insert([
+                            'migration' => $migrationName,
+                            'batch' => $batch
+                        ]);
+                        
+                        logger()->info("Migrated: {$migrationName}");
+                        $executed++;
+                    }
+                } catch (\Exception $e) {
+                    logger()->error("Migration failed for {$moduleName}: {$migrationName}", [
+                        'error' => $e->getMessage()
+                    ]);
+                    // Continue with other migrations even if one fails
+                }
+            }
+            
+            if ($executed > 0) {
+                logger()->info("Module {$moduleName}: Executed {$executed} migration(s)");
+            }
+        } catch (\Exception $e) {
+            logger()->error("Failed to run migrations for module {$moduleName}: " . $e->getMessage());
         }
     }
 
