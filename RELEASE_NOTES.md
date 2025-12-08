@@ -1,12 +1,99 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.50-complete  
-**Release Date:** December 6, 2025  
+**Current Version:** v1.1.1-complete  
+**Release Date:** December 8, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.50-complete - CRITICAL PRODUCTION HOTFIX
+## 📌 Latest Version: v1.1.1-complete - TheVillainTerminal Module & Security Enhancements
+
+### ⚡ NEW FEATURE: TheVillainTerminal - Floating Terminal Widget
+
+VantaPress now includes a powerful floating terminal widget accessible only to super-admin users!
+
+#### 🎯 Key Features
+
+**Terminal Widget:**
+- **Draggable Button:** Click and hold to drag the terminal button anywhere on screen (smart click detection: <5px = click, ≥5px = drag)
+- **Draggable Window:** Drag terminal window by title bar with automatic screen boundary detection
+- **Matrix-Style UI:** Green text (#00ff41) on pure black background (#000000) for that authentic hacker aesthetic
+- **Toggle Visibility:** Button hides when terminal opens, reappears on close
+- **Smart Positioning:** Terminal window appears relative to button position with boundary detection
+
+**Security & Access Control:**
+- **Role-Based Access:** Only users with `super-admin` role can see and use the terminal
+- **Authentication Guard:** Widget doesn't render on login page or for unauthenticated users
+- **Spatie Laravel Permission:** Integrated with VantaPress role/permission system
+
+**Available Commands:**
+- `vanta-help` - Display all available commands with descriptions
+- `vanta-system-info` - Show PHP version, Laravel version, server info, database stats
+- `vanta-theme-layout` - Display current theme's layout structure and template hierarchy
+- `vanta-migrate` - Run pending database migrations directly from terminal
+- `clear` - Clear terminal output and return to welcome message
+
+**Technical Implementation:**
+- Uses Alpine.js for state management (no build tools required)
+- Integrated via Filament render hook (PanelsRenderHook::BODY_END)
+- HTML rendering support for colored output with `x-html` directive
+- Module-based architecture in `Modules/TheVillainTerminal/`
+
+#### 🔧 Security Improvements
+
+**Role Management:**
+- Seeded all VantaPress roles: `super-admin`, `admin`, `teacher`, `student`, `registrar`, `department-head`
+- Added utility scripts:
+  - `check-users-roles.php` - Inspect users and their assigned roles
+  - `assign-super-admin.php` - Assign super-admin role to existing users
+
+**Authentication Checks:**
+- Added `auth()->check()` verification before terminal widget rendering
+- Role verification with `hasRole('super-admin')` check
+- Early returns for unauthorized users prevent security leaks
+
+#### 📦 Module Structure
+
+```
+Modules/TheVillainTerminal/
+├── Commands/
+│   ├── HelpCommand.php          ✅ Included
+│   ├── MigrateCommand.php       ✅ Included
+│   ├── SystemInfoCommand.php    ✅ Included
+│   └── ThemeLayoutCommand.php   ✅ Included
+├── Services/
+│   ├── CommandRegistry.php
+│   └── TerminalExecutor.php
+├── resources/views/
+│   └── livewire/
+│       └── floating-terminal.blade.php (303 lines)
+├── TheVillainTerminalServiceProvider.php
+└── module.json
+```
+
+#### 🎨 UI Design
+
+**Title Bar:**
+- Centered text: "THE VILLAIN TERMINAL V.1.0.0"
+- Close button (X) on the right
+- Dark gradient background
+- Matrix green text
+
+**Input Area:**
+- Real-time command input with Matrix green text
+- Custom prompt: `username@vantapress:~$`
+- Command history navigation (up/down arrows)
+- Enter to execute commands
+
+**Output Display:**
+- HTML-formatted output with color support
+- Line-by-line rendering with proper spacing
+- Styled ASCII boxes for help command
+- Error messages in red
+
+---
+
+## 📌 Previous Version: v1.0.50-complete - CRITICAL PRODUCTION HOTFIX
 
 ### 🚨 EMERGENCY FIX: Migration Fix Scripts Now Execute Properly
 
