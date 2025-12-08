@@ -93,10 +93,10 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            Release Notes:
+                            Release Notes Preview:
                         </h4>
                         <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800">
-                            <div class="prose prose-sm dark:prose-invert max-w-none
+                            <div class="prose prose-sm dark:prose-invert max-w-none line-clamp-6 overflow-hidden
                                 prose-headings:text-gray-900 dark:prose-headings:text-white
                                 prose-h1:text-2xl prose-h1:font-bold prose-h1:mb-4 prose-h1:border-b prose-h1:border-gray-200 dark:prose-h1:border-gray-700 prose-h1:pb-2
                                 prose-h2:text-xl prose-h2:font-semibold prose-h2:mt-6 prose-h2:mb-3
@@ -117,6 +117,16 @@
                                 prose-td:p-2 prose-td:border prose-td:border-gray-300 dark:prose-td:border-gray-700
                                 prose-img:rounded-lg prose-img:shadow-md">
                                 {!! \Illuminate\Mail\Markdown::parse($latestRelease['body']) !!}
+                            </div>
+                            <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                <a href="{{ $latestRelease['html_url'] }}" 
+                                   target="_blank" 
+                                   class="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                    Read Full Release Notes on GitHub
+                                </a>
                             </div>
                         </div>
                     </div>

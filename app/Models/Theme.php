@@ -64,9 +64,10 @@ class Theme extends Model
         $activated = $this->update(['is_active' => true]);
         
         if ($activated) {
-            // Clear theme cache so changes take effect immediately
-            \Illuminate\Support\Facades\Cache::forget('cms_themes');
-            \Illuminate\Support\Facades\Cache::forget('active_theme');
+            // Update config file only - no cache clearing to keep it fast
+            $this->updateConfigFile();
+            
+            \Log::info('Theme activated', ['theme' => $this->slug]);
         }
         
         return $activated;
@@ -191,5 +192,34 @@ class Theme extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+    
+    /**
+     * Update config/cms.php file with active theme
+     */
+    protected function updateConfigFile(): void
+    {
+        try {
+            $configPath = config_path('cms.php');
+            
+            if (!file_exists($configPath)) {
+                \Log::warning('Config file not found: ' . $configPath);
+                return;
+            }
+            
+            $config = require $configPath;
+            $config['themes']['active'] = $this->slug;
+            $config['themes']['active_theme'] = $this->slug;
+            
+            $content = '<?php' . PHP_EOL . PHP_EOL . 'return ' . var_export($config, true) . ';' . PHP_EOL;
+            file_put_contents($configPath, $content);
+            
+            \Log::info('Updated config file with active theme', ['theme' => $this->slug]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to update config file', [
+                'theme' => $this->slug,
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

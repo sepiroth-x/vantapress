@@ -214,9 +214,6 @@ class ModuleResource extends Resource
                             ->send();
                     }),
                 
-                Tables\Actions\EditAction::make()
-                    ->visible(fn ($record) => static::moduleExists($record)),
-                    
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation()
                     ->modalHeading('Delete Module')

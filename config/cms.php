@@ -18,8 +18,8 @@ return array (
   'themes' => 
   array (
     'path' => 'themes',
-    'active' => 'BasicTheme',
-    'active_theme' => 'BasicTheme',
+    'active' => 'TheVillainArise',
+    'active_theme' => 'TheVillainArise',
     'cache_enabled' => true,
     'cache_key' => 'cms_themes',
     'cache_lifetime' => 3600,
@@ -80,9 +80,9 @@ return array (
   ),
   'project' => 
   array (
-    'name' => env('PROJECT_NAME', 'VantaPress'),
-    'code' => env('PROJECT_CODE', 'VP'),
-    'year_start' => env('SYSTEM_YEAR_START', '2024'),
+    'name' => 'VantaPress',
+    'code' => 'VP',
+    'year_start' => '2024',
     'grading_scale' => 
     array (
       'min' => 1.0,

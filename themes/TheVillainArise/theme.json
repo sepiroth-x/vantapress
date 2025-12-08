@@ -16,6 +16,14 @@
     },
     "preview": "screenshot.png",
     "active": false,
+    "admin_colors": {
+        "primary": "purple",
+        "danger": "rose",
+        "gray": "zinc",
+        "info": "violet",
+        "success": "emerald",
+        "warning": "orange"
+    },
     "features": [
         "Theme Customization Framework",
         "Dynamic Menu System",

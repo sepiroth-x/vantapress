@@ -189,16 +189,21 @@ class ThemeResource extends Resource
                     ->visible(fn ($record) => !$record->is_active)
                     ->requiresConfirmation()
                     ->modalHeading('Activate Theme')
-                    ->modalDescription('This will deactivate the current theme and make this theme live on your homepage.')
+                    ->modalDescription('This will change BOTH your homepage AND admin panel colors. The page will reload to apply the new theme.')
                     ->action(function ($record) {
-                        // Use the model's activate method which handles cache clearing
+                        // Activate theme
                         $record->activate();
                         
+                        // Show notification
                         Notification::make()
-                            ->title('Theme activated')
-                            ->body('Visit your homepage to see the new theme in action!')
+                            ->title('Theme activated!')
+                            ->body('Refreshing page...')
                             ->success()
+                            ->duration(1500)
                             ->send();
+                        
+                        // Immediate redirect with cache buster
+                        return redirect()->to('/admin/themes?v=' . time());
                     }),
                 
                 Tables\Actions\Action::make('deactivate')

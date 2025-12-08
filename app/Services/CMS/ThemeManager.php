@@ -40,7 +40,18 @@ class ThemeManager
     {
         $this->themesPath = base_path(config('cms.themes.path', 'themes'));
         $this->cacheKey = config('cms.themes.cache_key', 'cms_themes');
-        $this->activeTheme = config('cms.themes.active', 'default');
+        
+        // Check database for active theme first (source of truth)
+        try {
+            if (\Schema::hasTable('themes')) {
+                $activeTheme = \App\Models\Theme::where('is_active', true)->first();
+                $this->activeTheme = $activeTheme ? $activeTheme->slug : config('cms.themes.active', 'BasicTheme');
+            } else {
+                $this->activeTheme = config('cms.themes.active', 'BasicTheme');
+            }
+        } catch (\Exception $e) {
+            $this->activeTheme = config('cms.themes.active', 'BasicTheme');
+        }
     }
 
     /**

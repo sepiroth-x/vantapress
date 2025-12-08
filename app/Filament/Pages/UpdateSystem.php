@@ -175,11 +175,18 @@ class UpdateSystem extends Page
             if ($response->successful()) {
                 $release = $response->json();
                 
+                // Limit body to first 500 characters to encourage reading full notes
+                $fullBody = $release['body'] ?? 'No release notes available.';
+                $limitedBody = mb_strlen($fullBody) > 500 
+                    ? mb_substr($fullBody, 0, 500) . '...' 
+                    : $fullBody;
+                
                 $this->latestRelease = [
                     'version' => ltrim($release['tag_name'] ?? 'v1.0.0', 'v'),
                     'name' => $release['name'] ?? 'VantaPress Update',
                     'published_at' => $release['published_at'] ?? now()->toIso8601String(),
-                    'body' => $release['body'] ?? 'No release notes available.',
+                    'body' => $limitedBody,
+                    'full_body' => $fullBody,
                     'html_url' => $release['html_url'] ?? 'https://github.com/sepiroth-x/vantapress/releases',
                     'zipball_url' => $release['zipball_url'] ?? null,
                 ];

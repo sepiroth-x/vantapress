@@ -16,6 +16,15 @@
     },
     "preview": "screenshot.png",
     
+    "admin_colors": {
+        "primary": "blue",
+        "danger": "red",
+        "gray": "slate",
+        "info": "sky",
+        "success": "emerald",
+        "warning": "amber"
+    },
+    
     "customizer": {
         "sections": {
             "site": {
