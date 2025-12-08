@@ -485,6 +485,70 @@ class WebMigrationService
     }
 
     /**
+     * Check for available migration fix scripts
+     * Returns count and list of fix scripts that exist (regardless if they need to run)
+     * 
+     * @return array
+     */
+    public function checkAvailableFixScripts(): array
+    {
+        $fixesPath = database_path('migration-fixes');
+        
+        try {
+            // Check if migration-fixes directory exists
+            if (!file_exists($fixesPath) || !is_dir($fixesPath)) {
+                return [
+                    'available' => false,
+                    'count' => 0,
+                    'scripts' => [],
+                    'message' => 'No fix scripts directory found'
+                ];
+            }
+
+            // Get all PHP files in migration-fixes directory
+            $fixFiles = glob($fixesPath . '/*.php');
+            
+            if (empty($fixFiles)) {
+                return [
+                    'available' => false,
+                    'count' => 0,
+                    'scripts' => [],
+                    'message' => 'No fix scripts available'
+                ];
+            }
+
+            sort($fixFiles); // Alphabetical order
+            
+            $scripts = array_map(function($file) {
+                return [
+                    'name' => basename($file, '.php'),
+                    'path' => $file
+                ];
+            }, $fixFiles);
+
+            return [
+                'available' => true,
+                'count' => count($scripts),
+                'scripts' => $scripts,
+                'message' => count($scripts) . ' fix script(s) available'
+            ];
+
+        } catch (Exception $e) {
+            Log::error('[WebMigrationService] Error checking fix scripts', [
+                'error' => $e->getMessage()
+            ]);
+
+            return [
+                'available' => false,
+                'count' => 0,
+                'scripts' => [],
+                'message' => 'Error checking fix scripts: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
      * Get database migration status summary
      * 
      * @return array
@@ -493,10 +557,12 @@ class WebMigrationService
     {
         $pendingCheck = $this->checkPendingMigrations();
         $historyCheck = $this->getMigrationHistory();
+        $fixScriptsCheck = $this->checkAvailableFixScripts();
 
         return [
             'migrations_table_exists' => $this->migrationsTableExists(),
             'pending_migrations' => $pendingCheck,
+            'fix_scripts' => $fixScriptsCheck,
             'total_executed' => count($historyCheck['history'] ?? []),
             'status' => $pendingCheck['status'],
             'message' => $pendingCheck['message']
