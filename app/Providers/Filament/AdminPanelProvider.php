@@ -94,12 +94,24 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::BODY_END,
                 function (): string {
                     try {
+                        // Only show terminal for authenticated super admin users
+                        if (!auth()->check()) {
+                            return '';
+                        }
+                        
+                        $user = auth()->user();
+                        
+                        // Check if user has super-admin role (highest level access)
+                        if (!$user->hasRole('super-admin')) {
+                            return '';
+                        }
+                        
                         // Check if TheVillainTerminal module is enabled
                         if (\Schema::hasTable('modules')) {
                             $module = \App\Models\Module::where('slug', 'TheVillainTerminal')->first();
                             if ($module && $module->is_enabled) {
                                 // Use inline view to avoid Livewire dependencies
-                                $username = auth()->user()->name ?? 'admin';
+                                $username = $user->name ?? 'admin';
                                 $prompt = $username . '@vantapress:~$ ';
                                 
                                 return view('thevillainterrminal::livewire.floating-terminal', compact('username', 'prompt'))->render();
