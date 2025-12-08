@@ -66,24 +66,38 @@ return new class {
             // Clean ALL menu-related migration entries regardless of table existence
             Log::warning("[EMERGENCY FIX 000] Cleaning ALL menu migration entries from tracking...");
             
-            $menuMigrationPatterns = [
-                '%create_menus_table%',
-                '%create_menu_items_table%',
-                '%create_vp_menus_tables%',
-                '%add_page_id_to_menu_items_table%'
+            // Specific migration names to remove
+            $migrationPatterns = [
+                '2024_01_01_000001_create_menus_table',
+                '2024_01_01_000002_create_menu_items_table',
+                '2025_12_04_135758_add_page_id_to_menu_items_table',
+                'create_vp_menus_tables'
             ];
+            
+            // Get ALL menu-related migration entries
+            $menuMigrations = DB::table('migrations')
+                ->where(function($query) use ($migrationPatterns) {
+                    foreach ($migrationPatterns as $pattern) {
+                        $query->orWhere('migration', 'like', "%{$pattern}%");
+                    }
+                })
+                ->get();
 
-            $entriesRemoved = 0;
-            foreach ($menuMigrationPatterns as $pattern) {
-                $deleted = DB::table('migrations')
-                    ->where('migration', 'like', $pattern)
-                    ->delete();
-                
-                if ($deleted > 0) {
-                    $entriesRemoved += $deleted;
-                    Log::warning("[EMERGENCY FIX 000] ✓ Removed {$deleted} migration entry(ies) matching: {$pattern}");
-                }
+            Log::warning("[EMERGENCY FIX 000] Found " . $menuMigrations->count() . " menu-related migration entries");
+            
+            foreach ($menuMigrations as $migration) {
+                Log::warning("[EMERGENCY FIX 000] Will remove: " . $migration->migration);
             }
+
+            $entriesRemoved = DB::table('migrations')
+                ->where(function($query) use ($migrationPatterns) {
+                    foreach ($migrationPatterns as $pattern) {
+                        $query->orWhere('migration', 'like', "%{$pattern}%");
+                    }
+                })
+                ->delete();
+                
+            Log::warning("[EMERGENCY FIX 000] ✓ Removed {$entriesRemoved} total migration entry(ies)")
 
             if (count($result['tables_dropped']) > 0 || $entriesRemoved > 0) {
                 $result['executed'] = true;
@@ -160,21 +174,26 @@ return new class {
 
         // Also check if there are orphaned migration entries
         $menuMigrationPatterns = [
-            '%create_menus_table%',
-            '%create_menu_items_table%',
-            '%create_vp_menus_tables%'
+            '2024_01_01_000001_create_menus_table',
+            '2024_01_01_000002_create_menu_items_table',
+            '2025_12_04_135758_add_page_id_to_menu_items_table',
+            'create_vp_menus_tables'
         ];
 
         $hasOrphanedEntries = false;
         foreach ($menuMigrationPatterns as $pattern) {
-            if (DB::table('migrations')->where('migration', 'like', $pattern)->exists()) {
+            $exists = DB::table('migrations')
+                ->where('migration', 'like', "%{$pattern}%")
+                ->exists();
+                
+            if ($exists) {
                 $hasOrphanedEntries = true;
-                Log::warning('[EMERGENCY FIX 000] Found orphaned migration entry matching: ' . $pattern);
+                Log::warning('[EMERGENCY FIX 000] Found migration entry: ' . $pattern);
             }
         }
 
         if ($hasOrphanedEntries) {
-            Log::warning('[EMERGENCY FIX 000] ⚠️ ORPHANED MIGRATION ENTRIES FOUND');
+            Log::warning('[EMERGENCY FIX 000] ⚠️ MIGRATION ENTRIES FOUND - WILL CLEAN');
             Log::warning('[EMERGENCY FIX 000] DECISION: WILL RUN - Cleanup needed!');
             return true;
         }
