@@ -25,6 +25,22 @@ This release ensures that all VantaPress roles are automatically created during 
 - Automatically seeds all default roles during database updates
 - Runs as part of the migration-fixes system (zero manual intervention)
 - Skips roles that already exist (safe to run multiple times)
+- **NEW: Fix scripts now visible in UI** - Users see notifications when fix scripts are available
+
+#### 🎨 Enhanced User Experience
+
+**Fix Script Visibility:**
+- Database Updates page now shows available fix scripts in a purple notification card
+- Status badge displays both migrations and fix scripts count (e.g., "2 migrations + 1 fix script available")
+- Fix scripts are listed with clear descriptions
+- Users understand what will happen before clicking "Update Database Now"
+- Success notifications include details about which fix scripts executed
+
+**Why This Matters:**
+- Users are no longer confused about "silent" fix scripts
+- Clear visibility into what the system is doing
+- Professional, transparent update experience
+- Builds trust in the automatic fix system
 
 #### 🔧 How It Works
 
