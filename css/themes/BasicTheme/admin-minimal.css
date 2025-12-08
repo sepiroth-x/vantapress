@@ -1,0 +1,69 @@
+/* ============================================
+   THE BASIC THEME - FILAMENT-FIRST APPROACH
+   "The Beginning" - Enhances, Never Overrides
+   ============================================ */
+
+/* IMPORTANT PHILOSOPHY:
+ * 1. Filament handles ALL base styling and responsiveness
+ * 2. This CSS ONLY adds subtle enhancements
+ * 3. NO !important declarations (let Filament's media queries work)
+ * 4. Work WITH Filament's classes, not against them
+ */
+
+/* ============================================
+   LOGIN PAGE - SUBTLE GLASS EFFECT
+   ============================================ */
+
+/* Only enhance login card with glass morphism - Filament handles everything else */
+.dark .fi-simple-page .fi-section {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* ============================================
+   SIDEBAR - SUBTLE ENHANCEMENTS
+   ============================================ */
+
+/* Smooth transitions - Filament handles colors and layout */
+.dark .fi-sidebar-item-button {
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.dark .fi-sidebar-item-button:hover {
+    transform: translateX(4px);
+}
+
+/* ============================================
+   CARDS - SUBTLE HOVER EFFECTS
+   ============================================ */
+
+/* Only add hover effect to stat cards - Filament handles rest */
+.dark .fi-stats-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dark .fi-stats-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   BUTTONS - SUBTLE LIFT EFFECT
+   ============================================ */
+
+/* Only add subtle lift on hover - Filament handles colors */
+.dark button[type="submit"],
+.dark .fi-btn-primary {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dark button[type="submit"]:hover,
+.dark .fi-btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+/* ============================================
+   RESPONSIVE - LET FILAMENT HANDLE IT
+   ============================================ */
+
+/* NO media queries needed - Filament handles all responsive behavior */
+/* Our enhancements automatically scale with Filament's breakpoints */

@@ -6,15 +6,15 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # CRITICAL: Serve static assets from public/ folder
-    # When request is for /css/*, /js/*, /images/*, etc., serve from public/
+    # Serve static assets directly from root (no /public folder)
+    # If the file exists in root, serve it directly
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^(build|css|js|images|fonts|vendor|favicon\.ico)/ - [L]
+    
+    # Serve build assets from /build directory (Vite compiled assets)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(css|js|images|fonts|vendor|favicon\.ico)(.*)$ public/$1$2 [L]
-
-    # If the asset actually exists in root (not in public/), serve it directly
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^(css|js|images|fonts|vendor)/ - [L]
+    RewriteRule ^build/(.*)$ build/$1 [L]
 
     # Redirect Trailing Slashes
     RewriteCond %{REQUEST_FILENAME} !-d

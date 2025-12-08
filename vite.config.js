@@ -10,11 +10,12 @@ export default defineConfig({
                 'resources/css/filament/admin/theme.css'
             ],
             refresh: true,
+            buildDirectory: 'build',
         }),
     ],
     build: {
-        manifest: true,
-        outDir: 'build', // Changed from 'public/build' to 'build' (root level)
+        manifest: 'manifest.json', // Output manifest at build root, not .vite/
+        outDir: 'build',
         rollupOptions: {
             output: {
                 manualChunks: undefined,

@@ -26,42 +26,27 @@ class AdminPanelProvider extends PanelProvider
         // Discover module Filament pages (disabled for performance)
         $modulePages = [];
 
-        // Load theme colors dynamically
-        $colors = $this->getThemeColors();
-
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
             ->login()
-            ->colors($colors)
-            ->darkMode(true) // Enable dark mode toggle (system, light, dark)
+            ->colors([
+                'primary' => Color::Rgb('rgb(212, 0, 38)'), // Crimson Villain
+                'gray' => Color::Rgb('rgb(42, 42, 46)'),    // Ghost Gray
+                'success' => Color::Rgb('rgb(50, 210, 124)'), // Success Green
+                'danger' => Color::Rgb('rgb(255, 74, 74)'),   // Error Red
+                'warning' => Color::Rgb('rgb(239, 179, 54)'), // Warning Gold
+                'info' => Color::Rgb('rgb(62, 132, 248)'),    // Info Blue
+            ])
+            ->darkMode(true)
             ->font('Inter')
             ->brandLogo(asset('images/vantapress-logo.svg'))
             ->favicon(asset('images/favicon.ico'))
-            ->sidebarCollapsibleOnDesktop() // Allow sidebar collapse on desktop
-            ->sidebarWidth('16rem') // Set sidebar width (256px)
-            ->maxContentWidth('full') // Full width content area
-            ->renderHook(
-                PanelsRenderHook::STYLES_AFTER,
-                function (): string {
-                    $themeManager = app(\App\Services\CMS\ThemeManager::class);
-                    $activeTheme = $themeManager->getActiveTheme();
-                    
-                    // Load theme CSS
-                    $version = config('version.version', '1.0.21');
-                    $rootAdminCss = asset('css/vantapress-admin.css') . '?v=' . $version;
-                    $themeAdminCss = asset("css/themes/{$activeTheme}/admin.css") . '?v=' . $version;
-                    
-                    // CRITICAL: Generate actual CSS from Filament's registered colors
-                    // This makes the colors VISIBLE without Vite/Tailwind compilation
-                    $colorCSS = $this->generateColorCSS();
-                    
-                    return '<link rel="stylesheet" href="' . $rootAdminCss . '">' .
-                           '<link rel="stylesheet" href="' . $themeAdminCss . '">' .
-                           '<style>' . $colorCSS . '</style>';
-                }
-            )
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('16rem')
+            ->maxContentWidth('full')
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->renderHook(
                 PanelsRenderHook::FOOTER,
                 fn (): string => view('filament.footer')->render()
@@ -245,145 +230,6 @@ class AdminPanelProvider extends PanelProvider
         }
         
         return $pages;
-    }
-    
-    /**
-     * Get theme colors for admin panel
-     * Reads from active theme's theme.json admin_colors section
-     */
-    protected function getThemeColors(): array
-    {
-        try {
-            $themeManager = app(\App\Services\CMS\ThemeManager::class);
-            $activeTheme = $themeManager->getActiveTheme();
-            $themePath = base_path("themes/{$activeTheme}/theme.json");
-            
-            if (file_exists($themePath)) {
-                $themeData = json_decode(file_get_contents($themePath), true);
-                
-                if (isset($themeData['admin_colors']) && is_array($themeData['admin_colors'])) {
-                    $adminColors = $themeData['admin_colors'];
-                    
-                    // Map theme color names to Filament Color classes
-                    $colorMap = [];
-                    foreach ($adminColors as $key => $colorName) {
-                        $colorMap[$key] = $this->getFilamentColor($colorName);
-                    }
-                    
-                    return $colorMap;
-                }
-            }
-        } catch (\Exception $e) {
-            \Log::warning('[AdminPanelProvider] Failed to load theme colors, using defaults', [
-                'error' => $e->getMessage()
-            ]);
-        }
-        
-        // Fallback to default colors
-        return [
-            'primary' => Color::Blue,
-            'danger' => Color::Red,
-            'gray' => Color::Slate,
-            'info' => Color::Sky,
-            'success' => Color::Emerald,
-            'warning' => Color::Amber,
-        ];
-    }
-    
-    /**
-     * Convert color name to Filament Color class
-     */
-    protected function getFilamentColor(string $colorName)
-    {
-        $colorName = strtolower($colorName);
-        
-        return match($colorName) {
-            'slate' => Color::Slate,
-            'gray' => Color::Gray,
-            'zinc' => Color::Zinc,
-            'neutral' => Color::Neutral,
-            'stone' => Color::Stone,
-            'red' => Color::Red,
-            'orange' => Color::Orange,
-            'amber' => Color::Amber,
-            'yellow' => Color::Yellow,
-            'lime' => Color::Lime,
-            'green' => Color::Green,
-            'emerald' => Color::Emerald,
-            'teal' => Color::Teal,
-            'cyan' => Color::Cyan,
-            'sky' => Color::Sky,
-            'blue' => Color::Blue,
-            'indigo' => Color::Indigo,
-            'violet' => Color::Violet,
-            'purple' => Color::Purple,
-            'fuchsia' => Color::Fuchsia,
-            'pink' => Color::Pink,
-            'rose' => Color::Rose,
-            default => Color::Blue,
-        };
-    }
-    
-    /**
-     * Generate actual CSS color definitions from Filament's registered colors
-     * This runs on EVERY request and makes colors VISIBLE without Vite
-     * 
-     * Uses AGGRESSIVE selectors to override Filament's Tailwind classes
-     */
-    protected function generateColorCSS(): string
-    {
-        try {
-            $panel = \Filament\Facades\Filament::getPanel('admin');
-            $colors = $panel->getColors();
-            
-            if (empty($colors)) {
-                return '';
-            }
-            
-            $css = "/* Dynamic Theme Colors - Generated from PHP */\n:root {\n";
-            
-            // Generate CSS custom properties
-            foreach ($colors as $name => $shades) {
-                if (!is_array($shades)) continue;
-                
-                foreach ($shades as $shade => $rgb) {
-                    $css .= "    --{$name}-{$shade}: {$rgb};\n";
-                    // Also generate color-only variables (needed for Tailwind classes)
-                    $css .= "    --color-{$name}-{$shade}: {$rgb};\n";
-                }
-            }
-            
-            $css .= "}\n\n";
-            
-            // AGGRESSIVE overrides for ALL Tailwind/Filament color classes
-            foreach ($colors as $name => $shades) {
-                if (!is_array($shades)) continue;
-                
-                // Override all bg-{color}-{shade} classes
-                foreach ($shades as $shade => $rgb) {
-                    $css .= ".bg-{$name}-{$shade} { background-color: rgb({$rgb}) !important; }\n";
-                    $css .= ".hover\\:bg-{$name}-{$shade}:hover { background-color: rgb({$rgb}) !important; }\n";
-                    $css .= ".text-{$name}-{$shade} { color: rgb({$rgb}) !important; }\n";
-                    $css .= ".border-{$name}-{$shade} { border-color: rgb({$rgb}) !important; }\n";
-                    $css .= ".ring-{$name}-{$shade} { --tw-ring-color: rgb({$rgb}) !important; }\n";
-                }
-                
-                // Dark mode variants
-                foreach ($shades as $shade => $rgb) {
-                    $css .= ".dark .dark\\:bg-{$name}-{$shade} { background-color: rgb({$rgb}) !important; }\n";
-                    $css .= ".dark .dark\\:text-{$name}-{$shade} { color: rgb({$rgb}) !important; }\n";
-                    $css .= ".dark .dark\\:border-{$name}-{$shade} { border-color: rgb({$rgb}) !important; }\n";
-                }
-            }
-            
-            return $css;
-            
-        } catch (\Exception $e) {
-            \Log::error('[AdminPanelProvider] Failed to generate color CSS', [
-                'error' => $e->getMessage()
-            ]);
-            return '';
-        }
     }
 }
 

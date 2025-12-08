@@ -1,89 +1,778 @@
 /* ============================================
-   THE VILLAIN ARISE - FILAMENT-FIRST APPROACH
-   Zero Color Overrides - Pure Visual Enhancement
+   THE VILLAIN ARISE - COMPLETE UI SKIN
+   Purple Dominance - The Villain's Signature
    ============================================
    
-   CRITICAL: This file does NOT override Filament colors!
-   - Filament's PHP Color system handles ALL colors
-   - admin_colors in theme.json: purple, rose, zinc, violet, emerald, orange
-   - This CSS provides ONLY visual effects and transitions
-   - NO background-color, NO color, NO border-color
+   ARCHITECTURE: Theme controls ALL visual aspects
+   - VantaPress provides structure only
+   - This CSS defines complete color scheme + aesthetics
+   - Dramatic, powerful, villain-themed experience
    ============================================ */
 
 /* ============================================
-   VILLAIN AESTHETIC - DARK MODE ENHANCEMENTS
+   COLOR PALETTE - PURPLE VILLAIN THEME
+   ============================================ */
+:root {
+    /* Primary - Purple (Override Filament's default blue) */
+    --primary-50: 250, 245, 255 !important;
+    --primary-100: 243, 232, 255 !important;
+    --primary-200: 233, 213, 255 !important;
+    --primary-300: 216, 180, 254 !important;
+    --primary-400: 192, 132, 252 !important;
+    --primary-500: 168, 85, 247 !important;
+    --primary-600: 147, 51, 234 !important;
+    --primary-700: 126, 34, 206 !important;
+    --primary-800: 107, 33, 168 !important;
+    --primary-900: 88, 28, 135 !important;
+    --primary-950: 59, 7, 100 !important;
+    
+    /* Theme-prefixed versions for custom components */
+    --theme-primary-50: 250, 245, 255;
+    --theme-primary-100: 243, 232, 255;
+    --theme-primary-200: 233, 213, 255;
+    --theme-primary-300: 216, 180, 254;
+    --theme-primary-400: 192, 132, 252;
+    --theme-primary-500: 168, 85, 247;
+    --theme-primary-600: 147, 51, 234;
+    --theme-primary-700: 126, 34, 206;
+    --theme-primary-800: 107, 33, 168;
+    --theme-primary-900: 88, 28, 135;
+    --theme-primary-950: 59, 7, 100;
+    
+    /* Success - Emerald */
+    --theme-success-400: 52, 211, 153;
+    --theme-success-500: 16, 185, 129;
+    --theme-success-600: 5, 150, 105;
+    
+    /* Danger - Rose */
+    --theme-danger-400: 251, 113, 133;
+    --theme-danger-500: 244, 63, 94;
+    --theme-danger-600: 225, 29, 72;
+    
+    /* Warning - Orange */
+    --theme-warning-400: 251, 146, 60;
+    --theme-warning-500: 249, 115, 22;
+    --theme-warning-600: 234, 88, 12;
+    
+    /* Info - Violet */
+    --theme-info-400: 167, 139, 250;
+    --theme-info-500: 139, 92, 246;
+    --theme-info-600: 124, 58, 237;
+    
+    /* Gray - Zinc */
+    --theme-gray-50: 250, 250, 250;
+    --theme-gray-100: 244, 244, 245;
+    --theme-gray-200: 228, 228, 231;
+    --theme-gray-300: 212, 212, 216;
+    --theme-gray-400: 161, 161, 170;
+    --theme-gray-500: 113, 113, 122;
+    --theme-gray-600: 82, 82, 91;
+    --theme-gray-700: 63, 63, 70;
+    --theme-gray-800: 39, 39, 42;
+    --theme-gray-900: 24, 24, 27;
+    --theme-gray-950: 9, 9, 11;
+}
+
+/* ============================================
+   LOGIN PAGE - VILLAIN ENTRANCE
    ============================================ */
 
-/* Login page - deep shadow effect */
+/* Light mode login - purple gradient background */
+html:not(.dark) body:has(.fi-simple-page) {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-50)) 0%, 
+        rgb(var(--theme-primary-100)) 50%, 
+        rgb(var(--theme-primary-200)) 100%) !important;
+    min-height: 100vh;
+}
+
+/* Dark mode login - deep purple darkness */
+.dark body:has(.fi-simple-page) {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-gray-950)) 0%, 
+        rgb(var(--theme-primary-950)) 50%, 
+        rgb(var(--theme-gray-900)) 100%) !important;
+    min-height: 100vh;
+}
+
+/* Login card - elevated with glow */
+.fi-simple-page {
+    backdrop-filter: blur(10px);
+}
+
+html:not(.dark) .fi-simple-page section {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgb(var(--theme-primary-200)) !important;
+    box-shadow: 
+        0 20px 60px -12px rgba(var(--theme-primary-600), 0.25),
+        0 0 0 1px rgba(var(--theme-primary-500), 0.1) !important;
+    border-radius: 16px !important;
+}
+
 .dark .fi-simple-page section {
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    box-shadow: 0 8px 32px 0 rgba(120, 40, 200, 0.2);
+    background: rgba(var(--theme-gray-900), 0.85) !important;
+    border: 1px solid rgba(var(--theme-primary-500), 0.2) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    box-shadow: 
+        0 8px 32px 0 rgba(var(--theme-primary-600), 0.3),
+        0 0 80px -20px rgba(var(--theme-primary-500), 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    border-radius: 16px !important;
 }
 
-/* Sidebar - aggressive slide animation */
-.dark .fi-sidebar-item-button {
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+/* Login heading - villain branding */
+.fi-simple-page .fi-simple-header-heading {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-600)), 
+        rgb(var(--theme-primary-400))) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
 }
 
-.dark .fi-sidebar-item-button:hover {
-    transform: translateX(6px);
+.dark .fi-simple-page .fi-simple-header-heading {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-400)), 
+        rgb(var(--theme-primary-300))) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
 }
 
-/* Cards - dramatic lift effect */
-.dark .fi-stats-card {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+/* Login subheading - subtle purple tint */
+.fi-simple-page .fi-simple-header-subheading {
+    color: rgb(var(--theme-primary-700)) !important;
 }
 
-.dark .fi-stats-card:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 24px -8px rgba(120, 40, 200, 0.3);
+.dark .fi-simple-page .fi-simple-header-subheading {
+    color: rgb(var(--theme-primary-300)) !important;
 }
 
-/* Buttons - powerful press effect */
+/* ============================================
+   PRIMARY BUTTONS - PURPLE POWER
+   ============================================ */
+button[type="submit"],
+.fi-btn-primary,
+.fi-btn[data-color="primary"],
+.fi-btn.fi-color-primary {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-600)), 
+        rgb(var(--theme-primary-700))) !important;
+    border-color: rgb(var(--theme-primary-600)) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px -2px rgba(var(--theme-primary-600), 0.4) !important;
+}
+
+button[type="submit"]:hover,
+.fi-btn-primary:hover,
+.fi-btn[data-color="primary"]:hover,
+.fi-btn.fi-color-primary:hover {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-700)), 
+        rgb(var(--theme-primary-800))) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px -4px rgba(var(--theme-primary-600), 0.5) !important;
+}
+
+button[type="submit"]:active,
+.fi-btn-primary:active,
+.fi-btn[data-color="primary"]:active,
+.fi-btn.fi-color-primary:active {
+    transform: translateY(0px) !important;
+    box-shadow: 0 2px 8px -2px rgba(var(--theme-primary-600), 0.4) !important;
+}
+
+/* Dark mode primary buttons */
 .dark button[type="submit"],
-.dark .fi-btn-primary {
-    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+.dark .fi-btn-primary,
+.dark .fi-btn[data-color="primary"],
+.dark .fi-btn.fi-color-primary {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-500)), 
+        rgb(var(--theme-primary-600))) !important;
+    box-shadow: 0 4px 16px -2px rgba(var(--theme-primary-500), 0.5) !important;
 }
 
 .dark button[type="submit"]:hover,
-.dark .fi-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px -4px rgba(147, 51, 234, 0.4);
-}
-
-.dark button[type="submit"]:active,
-.dark .fi-btn-primary:active {
-    transform: translateY(0px);
-}
-
-/* Tables - smooth hover */
-.dark .fi-ta-row:hover {
-    transition: background-color 0.2s ease;
+.dark .fi-btn-primary:hover,
+.dark .fi-btn[data-color="primary"]:hover,
+.dark .fi-btn.fi-color-primary:hover {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-400)), 
+        rgb(var(--theme-primary-500))) !important;
+    box-shadow: 0 8px 24px -4px rgba(var(--theme-primary-500), 0.6) !important;
 }
 
 /* ============================================
-   LIGHT MODE - VILLAIN TOUCH
+   LINKS - PURPLE ACCENT
    ============================================ */
-
-html:not(.dark) .fi-simple-page section {
-    box-shadow: 0 4px 16px 0 rgba(120, 40, 200, 0.1);
+a.fi-link,
+.fi-ta-text-item a,
+a[class*="text-primary"] {
+    color: rgb(var(--theme-primary-600)) !important;
+    text-decoration: none !important;
+    transition: color 0.15s ease !important;
 }
 
-html:not(.dark) .fi-sidebar-item-button {
-    transition: transform 0.15s ease;
+a.fi-link:hover,
+.fi-ta-text-item a:hover,
+a[class*="text-primary"]:hover {
+    color: rgb(var(--theme-primary-700)) !important;
+    text-decoration: underline !important;
+    text-decoration-color: rgb(var(--theme-primary-400)) !important;
+}
+
+.dark a.fi-link,
+.dark .fi-ta-text-item a,
+.dark a[class*="text-primary"] {
+    color: rgb(var(--theme-primary-400)) !important;
+}
+
+.dark a.fi-link:hover,
+.dark .fi-ta-text-item a:hover,
+.dark a[class*="text-primary"]:hover {
+    color: rgb(var(--theme-primary-300)) !important;
+}
+
+/* ============================================
+   MAIN BACKGROUNDS - SUBTLE PURPLE ACCENTS
+   ============================================ */
+
+/* Keep light mode clean with subtle purple tint */
+html:not(.dark) body {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%) !important;
+}
+
+/* Dark mode with subtle purple */
+.dark body {
+    background: linear-gradient(135deg, #111827 0%, #1a1332 100%) !important;
+}
+
+/* Main content area backgrounds */
+html:not(.dark) .fi-body {
+    background-color: #faf5ff !important;
+}
+
+.dark .fi-body {
+    background-color: #0f0a1f !important;
+}
+
+/* ============================================
+   SIDEBAR - VILLAIN NAVIGATION
+   ============================================ */
+
+/* Light mode sidebar - clean white with purple border */
+html:not(.dark) .fi-sidebar {
+    background: #ffffff !important;
+    border-right: 1px solid #e9d5ff !important;
+}
+
+/* Dark mode sidebar - dark with purple accent */
+.dark .fi-sidebar {
+    background: linear-gradient(180deg, #1a1332 0%, #111827 100%) !important;
+    border-right: 1px solid rgba(147, 51, 234, 0.3) !important;
+}
+
+/* Sidebar header */
+html:not(.dark) .fi-sidebar-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e9d5ff !important;
+}
+
+.dark .fi-sidebar-header {
+    background: #1a1332 !important;
+    border-bottom: 1px solid rgba(147, 51, 234, 0.3) !important;
+}
+
+/* Sidebar items - smooth glide */
+.fi-sidebar-item-button {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+}
+
+.fi-sidebar-item-button:hover {
+    transform: translateX(4px) !important;
+}
+
+.dark .fi-sidebar-item-button:hover {
+    background: rgba(var(--theme-primary-500), 0.08) !important;
+    transform: translateX(6px) !important;
 }
 
 html:not(.dark) .fi-sidebar-item-button:hover {
-    transform: translateX(3px);
+    background: rgba(var(--theme-primary-500), 0.05) !important;
 }
 
-html:not(.dark) .fi-btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px -2px rgba(147, 51, 234, 0.3);
+/* Active sidebar item - purple glow */
+.fi-sidebar-item-button[aria-current="page"],
+.fi-sidebar-item.fi-active .fi-sidebar-item-button {
+    background: linear-gradient(135deg, 
+        rgba(var(--theme-primary-500), 0.12), 
+        rgba(var(--theme-primary-600), 0.08)) !important;
+    color: rgb(var(--theme-primary-700)) !important;
+    font-weight: 600 !important;
+    border-left: 3px solid rgb(var(--theme-primary-600)) !important;
+    padding-left: 13px !important;
+}
+
+.dark .fi-sidebar-item-button[aria-current="page"],
+.dark .fi-sidebar-item.fi-active .fi-sidebar-item-button {
+    background: linear-gradient(135deg, 
+        rgba(var(--theme-primary-500), 0.2), 
+        rgba(var(--theme-primary-600), 0.15)) !important;
+    color: rgb(var(--theme-primary-300)) !important;
+    box-shadow: 0 0 20px rgba(var(--theme-primary-500), 0.3) !important;
+}
+
+/* Sidebar icons - color on active */
+.fi-sidebar-item-button[aria-current="page"] .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon {
+    color: rgb(var(--theme-primary-600)) !important;
+}
+
+.dark .fi-sidebar-item-button[aria-current="page"] .fi-sidebar-item-icon,
+.dark .fi-sidebar-item.fi-active .fi-sidebar-item-icon {
+    color: rgb(var(--theme-primary-400)) !important;
 }
 
 /* ============================================
-   THAT'S IT - FILAMENT HANDLES ALL COLORS
-   Purple primary, rose danger, zinc grays - all from PHP
+   TOPBAR - ELEGANT HEADER
+   ============================================ */
+
+/* Light mode topbar */
+html:not(.dark) .fi-topbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e9d5ff !important;
+}
+
+html:not(.dark) .fi-topbar nav {
+    background: #ffffff !important;
+}
+
+/* Dark mode topbar */
+.dark .fi-topbar {
+    background: #1a1332 !important;
+    backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(147, 51, 234, 0.3) !important;
+}
+
+.dark .fi-topbar nav {
+    background: #1a1332 !important;
+}
+
+/* Dropdown panels */
+html:not(.dark) .fi-dropdown-panel {
+    background: #ffffff !important;
+    border: 1px solid #e9d5ff !important;
+    box-shadow: 0 10px 30px rgba(147, 51, 234, 0.2) !important;
+}
+
+.dark .fi-dropdown-panel {
+    background: #1a1332 !important;
+    border: 1px solid rgba(147, 51, 234, 0.3) !important;
+    box-shadow: 0 20px 60px rgba(147, 51, 234, 0.3) !important;
+}
+
+/* ============================================
+   BADGES - PURPLE ACCENT
+   ============================================ */
+.fi-badge-primary,
+.fi-badge[data-color="primary"] {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-primary-100)), 
+        rgb(var(--theme-primary-50))) !important;
+    color: rgb(var(--theme-primary-700)) !important;
+    border: 1px solid rgb(var(--theme-primary-200)) !important;
+    font-weight: 600 !important;
+}
+
+.dark .fi-badge-primary,
+.dark .fi-badge[data-color="primary"] {
+    background: linear-gradient(135deg, 
+        rgba(var(--theme-primary-500), 0.25), 
+        rgba(var(--theme-primary-600), 0.15)) !important;
+    color: rgb(var(--theme-primary-300)) !important;
+    border: 1px solid rgba(var(--theme-primary-400), 0.3) !important;
+}
+
+/* ============================================
+   CARDS - ELEVATED DESIGN
+   ============================================ */
+.fi-section,
+.fi-card,
+.fi-ta-ctn,
+[class*="fi-ta-"] {
+    border-radius: 12px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Light mode cards - clean white */
+html:not(.dark) .fi-section,
+html:not(.dark) .fi-card,
+html:not(.dark) .fi-ta-ctn {
+    background: #ffffff !important;
+    border: 1px solid #e9d5ff !important;
+    box-shadow: 0 1px 3px rgba(147, 51, 234, 0.1) !important;
+}
+
+/* Dark mode cards - dark with purple glow */
+.dark .fi-section,
+.dark .fi-card,
+.dark .fi-ta-ctn {
+    background: #1a1332 !important;
+    border: 1px solid rgba(147, 51, 234, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.15) !important;
+}
+
+/* Table backgrounds */
+.fi-ta-content {
+    background: transparent !important;
+}
+
+/* Light mode table records */
+html:not(.dark) .fi-ta-record {
+    background: #ffffff !important;
+    border: 1px solid #e9d5ff !important;
+}
+
+/* Dark mode table records */
+.dark .fi-ta-record {
+    background: #1f1638 !important;
+    border: 1px solid rgba(147, 51, 234, 0.2) !important;
+}
+
+/* Hover states */
+html:not(.dark) .fi-ta-record:hover {
+    background: #faf5ff !important;
+    border-color: #d8b4fe !important;
+}
+
+.dark .fi-ta-record:hover {
+    background: rgba(147, 51, 234, 0.1) !important;
+    border-color: rgba(147, 51, 234, 0.4) !important;
+}
+
+/* Stats cards - dramatic hover */
+.fi-stats-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.fi-stats-card:hover {
+    transform: translateY(-4px) scale(1.02) !important;
+}
+
+html:not(.dark) .fi-stats-card:hover {
+    box-shadow: 0 8px 24px rgba(var(--theme-primary-600), 0.15) !important;
+}
+
+.dark .fi-stats-card:hover {
+    box-shadow: 0 12px 32px rgba(var(--theme-primary-600), 0.3) !important;
+    border-color: rgba(var(--theme-primary-500), 0.3) !important;
+}
+
+/* ============================================
+   FORM INPUTS - PURPLE FOCUS
+   ============================================ */
+.fi-input,
+.fi-textarea,
+.fi-select,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    transition: all 0.2s ease !important;
+    border-radius: 8px !important;
+}
+
+.fi-input:focus,
+.fi-textarea:focus,
+.fi-select:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+    border-color: rgb(var(--theme-primary-500)) !important;
+    box-shadow: 0 0 0 3px rgba(var(--theme-primary-500), 0.12) !important;
+    outline: none !important;
+}
+
+.dark .fi-input:focus,
+.dark .fi-textarea:focus,
+.dark .fi-select:focus,
+.dark input[type="text"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="password"]:focus,
+.dark textarea:focus,
+.dark select:focus {
+    box-shadow: 0 0 0 3px rgba(var(--theme-primary-500), 0.2) !important;
+}
+
+/* ============================================
+   TABS - PURPLE UNDERLINE
+   ============================================ */
+.fi-tabs-item {
+    transition: all 0.2s ease !important;
+    font-weight: 500 !important;
+}
+
+.fi-tabs-item[aria-selected="true"] {
+    color: rgb(var(--theme-primary-600)) !important;
+    border-bottom: 2px solid rgb(var(--theme-primary-600)) !important;
+    font-weight: 600 !important;
+}
+
+.dark .fi-tabs-item[aria-selected="true"] {
+    color: rgb(var(--theme-primary-400)) !important;
+    border-bottom: 2px solid rgb(var(--theme-primary-400)) !important;
+}
+
+/* ============================================
+   CHECKBOXES & RADIO - PURPLE
+   ============================================ */
+input[type="checkbox"],
+input[type="radio"] {
+    transition: all 0.2s ease !important;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background-color: rgb(var(--theme-primary-600)) !important;
+    border-color: rgb(var(--theme-primary-600)) !important;
+}
+
+.dark input[type="checkbox"]:checked,
+.dark input[type="radio"]:checked {
+    background-color: rgb(var(--theme-primary-500)) !important;
+    border-color: rgb(var(--theme-primary-500)) !important;
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+    box-shadow: 0 0 0 3px rgba(var(--theme-primary-500), 0.12) !important;
+}
+
+/* ============================================
+   TOGGLE SWITCHES - PURPLE
+   ============================================ */
+.fi-toggle input:checked + div {
+    background-color: rgb(var(--theme-primary-600)) !important;
+}
+
+.dark .fi-toggle input:checked + div {
+    background-color: rgb(var(--theme-primary-500)) !important;
+}
+
+/* ============================================
+   TABLES - ENHANCED ROWS
+   ============================================ */
+.fi-ta-row {
+    transition: all 0.15s ease !important;
+}
+
+.fi-ta-row:hover {
+    background: rgba(var(--theme-primary-500), 0.03) !important;
+}
+
+.dark .fi-ta-row:hover {
+    background: rgba(var(--theme-primary-500), 0.05) !important;
+}
+
+/* Table header */
+.fi-ta-header-cell {
+    font-weight: 600 !important;
+    color: rgb(var(--theme-gray-700)) !important;
+}
+
+.dark .fi-ta-header-cell {
+    color: rgb(var(--theme-gray-300)) !important;
+}
+
+/* ============================================
+   ACTION BUTTONS - CONTEXTUAL COLORS
+   ============================================ */
+.fi-btn[data-color="success"],
+.fi-btn.fi-color-success {
+    background-color: rgb(var(--theme-success-600)) !important;
+    border-color: rgb(var(--theme-success-600)) !important;
+    color: white !important;
+}
+
+.fi-btn[data-color="success"]:hover,
+.fi-btn.fi-color-success:hover {
+    background-color: rgb(var(--theme-success-700)) !important;
+}
+
+.fi-btn[data-color="danger"],
+.fi-btn.fi-color-danger {
+    background-color: rgb(var(--theme-danger-600)) !important;
+    border-color: rgb(var(--theme-danger-600)) !important;
+    color: white !important;
+}
+
+.fi-btn[data-color="danger"]:hover,
+.fi-btn.fi-color-danger:hover {
+    background-color: rgb(var(--theme-danger-700)) !important;
+}
+
+.fi-btn[data-color="warning"],
+.fi-btn.fi-color-warning {
+    background-color: rgb(var(--theme-warning-600)) !important;
+    border-color: rgb(var(--theme-warning-600)) !important;
+    color: white !important;
+}
+
+.fi-btn[data-color="warning"]:hover,
+.fi-btn.fi-color-warning:hover {
+    background-color: rgb(var(--theme-warning-700)) !important;
+}
+
+/* ============================================
+   MODALS - DRAMATIC ENTRANCE
+   ============================================ */
+.fi-modal {
+    animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.dark .fi-modal-content {
+    background: rgba(var(--theme-gray-900), 0.98) !important;
+    border: 1px solid rgba(var(--theme-primary-500), 0.2) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ============================================
+   NOTIFICATIONS - PURPLE TOAST
+   ============================================ */
+.fi-no-notification-success {
+    border-left: 4px solid rgb(var(--theme-success-500)) !important;
+}
+
+.fi-no-notification-danger {
+    border-left: 4px solid rgb(var(--theme-danger-500)) !important;
+}
+
+.fi-no-notification-warning {
+    border-left: 4px solid rgb(var(--theme-warning-500)) !important;
+}
+
+.fi-no-notification-info {
+    border-left: 4px solid rgb(var(--theme-primary-500)) !important;
+}
+
+/* ============================================
+   SCROLLBARS - PURPLE ACCENT
+   ============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(var(--theme-gray-200), 0.3);
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: rgba(var(--theme-gray-900), 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(var(--theme-primary-500), 0.3);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--theme-primary-500), 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: rgba(var(--theme-primary-500), 0.4);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--theme-primary-500), 0.6);
+}
+
+/* ============================================
+   LOADING INDICATORS - PURPLE SPINNER
+   ============================================ */
+.fi-spinner,
+[class*="animate-spin"] {
+    color: rgb(var(--theme-primary-500)) !important;
+}
+
+/* ============================================
+   FOOTER - SUBTLE BRANDING
+   ============================================ */
+.fi-footer {
+    border-top: 1px solid rgb(var(--theme-gray-200)) !important;
+    color: rgb(var(--theme-gray-500)) !important;
+}
+
+.dark .fi-footer {
+    border-top: 1px solid rgba(var(--theme-primary-500), 0.1) !important;
+    color: rgb(var(--theme-gray-400)) !important;
+}
+
+/* ============================================
+   VILLAIN SIGNATURE - FINAL TOUCHES
+   ============================================ */
+
+/* Gradient text for headings */
+.fi-page-heading,
+.fi-section-header-heading {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-gray-900)), 
+        rgb(var(--theme-primary-700))) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.dark .fi-page-heading,
+.dark .fi-section-header-heading {
+    background: linear-gradient(135deg, 
+        rgb(var(--theme-gray-50)), 
+        rgb(var(--theme-primary-300))) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+/* Pulsing effect on interactive elements */
+@keyframes villainPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(var(--theme-primary-500), 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(var(--theme-primary-500), 0);
+    }
+}
+
+.fi-btn-primary:focus,
+button[type="submit"]:focus {
+    animation: villainPulse 2s infinite;
+}
+
+/* ============================================
+   THE VILLAIN HAS RISEN
+   Purple dominance across login and admin panel
+   Dramatic shadows, smooth animations, powerful presence
    ============================================ */

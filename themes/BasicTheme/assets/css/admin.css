@@ -1,14 +1,188 @@
 /* ============================================
-   THE BASIC THEME - FILAMENT-FIRST APPROACH
-   "The Beginning" - Zero Color Overrides
+   THE BASIC THEME - THEME-BASED COLOR SYSTEM
+   "The Beginning" - Blue Professional Theme
+   ============================================
+   
+   ARCHITECTURE: Theme controls ALL visual aspects
+   - VantaPress provides structure only
+   - This CSS defines complete color scheme
+   - Overrides Filament defaults with theme colors
    ============================================ */
 
-/* CRITICAL RULE: NO COLOR DEFINITIONS
- * Filament's PHP Color system handles ALL colors
- * This CSS provides ONLY non-color enhancements
- * NO background-color, NO color, NO border-color
- * ONLY transitions, transforms, and effects
- */
+/* ============================================
+   COLOR PALETTE - BLUE PROFESSIONAL THEME
+   ============================================ */
+:root {
+    /* Primary - Blue */
+    --theme-primary-50: 239, 246, 255;
+    --theme-primary-100: 219, 234, 254;
+    --theme-primary-200: 191, 219, 254;
+    --theme-primary-300: 147, 197, 253;
+    --theme-primary-400: 96, 165, 250;
+    --theme-primary-500: 59, 130, 246;
+    --theme-primary-600: 37, 99, 235;
+    --theme-primary-700: 29, 78, 216;
+    --theme-primary-800: 30, 64, 175;
+    --theme-primary-900: 30, 58, 138;
+    
+    /* Success - Emerald */
+    --theme-success-500: 16, 185, 129;
+    --theme-success-600: 5, 150, 105;
+    
+    /* Danger - Red */
+    --theme-danger-500: 239, 68, 68;
+    --theme-danger-600: 220, 38, 38;
+    
+    /* Warning - Amber */
+    --theme-warning-500: 245, 158, 11;
+    --theme-warning-600: 217, 119, 6;
+}
+
+/* ============================================
+   PRIMARY BUTTONS - BLUE
+   ============================================ */
+button[type="submit"],
+.fi-btn-primary,
+.fi-btn[data-color="primary"] {
+    background-color: rgb(var(--theme-primary-600)) !important;
+    border-color: rgb(var(--theme-primary-600)) !important;
+}
+
+button[type="submit"]:hover,
+.fi-btn-primary:hover,
+.fi-btn[data-color="primary"]:hover {
+    background-color: rgb(var(--theme-primary-700)) !important;
+    border-color: rgb(var(--theme-primary-700)) !important;
+}
+
+/* Dark mode primary buttons */
+.dark button[type="submit"],
+.dark .fi-btn-primary,
+.dark .fi-btn[data-color="primary"] {
+    background-color: rgb(var(--theme-primary-500)) !important;
+}
+
+.dark button[type="submit"]:hover,
+.dark .fi-btn-primary:hover,
+.dark .fi-btn[data-color="primary"]:hover {
+    background-color: rgb(var(--theme-primary-400)) !important;
+}
+
+/* ============================================
+   LINKS - BLUE
+   ============================================ */
+a.fi-link,
+.fi-ta-text-item a {
+    color: rgb(var(--theme-primary-600)) !important;
+}
+
+a.fi-link:hover,
+.fi-ta-text-item a:hover {
+    color: rgb(var(--theme-primary-700)) !important;
+}
+
+.dark a.fi-link,
+.dark .fi-ta-text-item a {
+    color: rgb(var(--theme-primary-400)) !important;
+}
+
+.dark a.fi-link:hover,
+.dark .fi-ta-text-item a:hover {
+    color: rgb(var(--theme-primary-300)) !important;
+}
+
+/* ============================================
+   ACTIVE SIDEBAR - BLUE HIGHLIGHT
+   ============================================ */
+.fi-sidebar-item-button[aria-current="page"],
+.fi-sidebar-item.fi-active .fi-sidebar-item-button {
+    background-color: rgb(var(--theme-primary-50)) !important;
+    color: rgb(var(--theme-primary-700)) !important;
+}
+
+.dark .fi-sidebar-item-button[aria-current="page"],
+.dark .fi-sidebar-item.fi-active .fi-sidebar-item-button {
+    background-color: rgba(var(--theme-primary-500), 0.15) !important;
+    color: rgb(var(--theme-primary-300)) !important;
+}
+
+/* ============================================
+   BADGES - BLUE
+   ============================================ */
+.fi-badge-primary,
+.fi-badge[data-color="primary"] {
+    background-color: rgb(var(--theme-primary-100)) !important;
+    color: rgb(var(--theme-primary-700)) !important;
+}
+
+.dark .fi-badge-primary,
+.dark .fi-badge[data-color="primary"] {
+    background-color: rgba(var(--theme-primary-500), 0.2) !important;
+    color: rgb(var(--theme-primary-300)) !important;
+}
+
+/* ============================================
+   FORM INPUTS - BLUE FOCUS
+   ============================================ */
+.fi-input:focus,
+.fi-textarea:focus,
+.fi-select:focus {
+    border-color: rgb(var(--theme-primary-500)) !important;
+    ring-color: rgba(var(--theme-primary-500), 0.3) !important;
+}
+
+/* ============================================
+   TABS - BLUE ACTIVE STATE
+   ============================================ */
+.fi-tabs-item[aria-selected="true"] {
+    color: rgb(var(--theme-primary-600)) !important;
+    border-bottom-color: rgb(var(--theme-primary-600)) !important;
+}
+
+.dark .fi-tabs-item[aria-selected="true"] {
+    color: rgb(var(--theme-primary-400)) !important;
+    border-bottom-color: rgb(var(--theme-primary-400)) !important;
+}
+
+/* ============================================
+   CHECKBOXES & RADIO - BLUE
+   ============================================ */
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background-color: rgb(var(--theme-primary-600)) !important;
+    border-color: rgb(var(--theme-primary-600)) !important;
+}
+
+.dark input[type="checkbox"]:checked,
+.dark input[type="radio"]:checked {
+    background-color: rgb(var(--theme-primary-500)) !important;
+}
+
+/* ============================================
+   TOGGLE SWITCHES - BLUE
+   ============================================ */
+.fi-toggle input:checked + div {
+    background-color: rgb(var(--theme-primary-600)) !important;
+}
+
+.dark .fi-toggle input:checked + div {
+    background-color: rgb(var(--theme-primary-500)) !important;
+}
+
+/* ============================================
+   ACTION BUTTONS - SUCCESS/DANGER/WARNING
+   ============================================ */
+.fi-btn[data-color="success"] {
+    background-color: rgb(var(--theme-success-600)) !important;
+}
+
+.fi-btn[data-color="danger"] {
+    background-color: rgb(var(--theme-danger-600)) !important;
+}
+
+.fi-btn[data-color="warning"] {
+    background-color: rgb(var(--theme-warning-600)) !important;
+}
 
 /* ============================================
    DARK MODE - VISUAL EFFECTS ONLY

@@ -1,71 +1,708 @@
-@import '/vendor/filament/filament/dist/index.css';
+@import '/vendor/filament/filament/resources/css/theme.css';
 
-/* VantaPress Dark Theme */
-:root {
-    /* Primary - Crimson Villain */
-    --primary-50: #ffe5ea;
-    --primary-100: #ffc7d2;
-    --primary-200: #ff8fa5;
-    --primary-300: #ff5778;
-    --primary-400: #ff1f4b;
-    --primary-500: #D40026;
-    --primary-600: #b0001f;
-    --primary-700: #8c0018;
-    --primary-800: #680012;
-    --primary-900: #44000c;
-    --primary-950: #200006;
-    
-    /* Gray - Steel Gray to Vantablack */
-    --gray-50: #f5f5f6;
-    --gray-100: #e8e9ea;
-    --gray-200: #d1d2d4;
-    --gray-300: #babcbf;
-    --gray-400: #a3a5a9;
-    --gray-500: #888A8F;
-    --gray-600: #6d6f73;
-    --gray-700: #525457;
-    --gray-800: #36383a;
-    --gray-900: #1b1c1e;
-    --gray-950: #0A0A0A;
-    
-    /* VantaPress Custom Colors */
-    --vanta-black: #050505;
-    --deep-obsidian: #0A0A0A;
-    --crimson-villain: #D40026;
-    --dark-violet: #6A0F91;
-    --steel-gray: #888A8F;
-    --pure-white: #FFFFFF;
+@config '../../../../tailwind.config.js';
+
+/* ========================================
+   VANTAPRESS PROFESSIONAL ADMIN THEME
+   Clean, Modern, Enterprise-Ready Design
+   ======================================== */
+
+/* Target the ACTUAL body element and main containers */
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
 }
 
-/* Dark mode overrides */
-.dark {
-    --color-bg-base: var(--vanta-black);
-    --color-bg-surface: var(--deep-obsidian);
-    --color-text-base: var(--pure-white);
-    --color-text-subtle: var(--steel-gray);
+.dark body {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
 }
 
-/* Custom branding */
-.fi-sidebar-header {
-    background: linear-gradient(135deg, var(--deep-obsidian) 0%, var(--vanta-black) 100%);
-    border-bottom: 1px solid rgba(136, 138, 143, 0.1);
+/* Main content wrapper */
+.fi-main {
+    background: transparent !important;
 }
 
-.fi-sidebar {
-    background: var(--deep-obsidian);
+/* Sidebar Styling */
+.fi-sidebar-nav {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl !important;
+    @apply border-r border-gray-200 dark:border-gray-800 !important;
 }
 
+/* Sidebar Navigation Items */
+.fi-sidebar-item-button {
+    @apply hover:bg-primary-50 dark:hover:bg-primary-950/30 !important;
+    @apply transition-all duration-200 !important;
+}
+
+.fi-sidebar-item-button.fi-active {
+    @apply bg-primary-100 dark:bg-primary-900/40 !important;
+    @apply text-primary-700 dark:text-primary-400 !important;
+    @apply border-l-4 border-primary-600 dark:border-primary-500 !important;
+    @apply font-semibold !important;
+}
+
+/* Topbar */
 .fi-topbar {
-    background: var(--vanta-black);
-    border-bottom: 1px solid rgba(136, 138, 143, 0.1);
+    @apply bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl !important;
+    @apply border-b border-gray-200 dark:border-gray-800 !important;
+    @apply shadow-sm dark:shadow-lg !important;
 }
 
-/* Accent highlights with Dark Violet */
-.fi-btn-primary:hover {
-    box-shadow: 0 4px 16px rgba(212, 0, 38, 0.3);
+/* Cards & Sections */
+.fi-section,
+.fi-card {
+    @apply bg-white dark:bg-gray-900 !important;
+    @apply border border-gray-200 dark:border-gray-800 !important;
+    @apply shadow-sm hover:shadow-md dark:shadow-lg !important;
+    @apply transition-shadow duration-200 !important;
+    @apply rounded-xl !important;
+}
+
+/* Card Headers */
+.fi-section-header,
+.fi-card-header {
+    @apply bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 !important;
+    @apply border-b border-gray-200 dark:border-gray-700 !important;
+}
+
+/* Stats Widgets */
+.fi-wi-stats-overview-stat {
+    @apply bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-950 !important;
+    @apply border-2 border-gray-100 dark:border-gray-800 !important;
+    @apply hover:border-primary-300 dark:hover:border-primary-700 !important;
+    @apply transition-all duration-300 !important;
+    @apply rounded-2xl !important;
+    @apply shadow-sm hover:shadow-lg !important;
+}
+
+/* Buttons */
+.fi-btn-primary,
+.fi-btn.fi-color-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-700 !important;
+    @apply hover:from-primary-700 hover:to-primary-800 !important;
+    @apply shadow-lg shadow-primary-500/30 !important;
+    @apply hover:shadow-xl hover:shadow-primary-500/40 !important;
+    @apply transition-all duration-200 !important;
+}
+
+.fi-btn-secondary,
+.fi-btn.fi-color-gray {
+    @apply bg-gray-100 dark:bg-gray-800 !important;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-700 !important;
+    @apply text-gray-900 dark:text-gray-100 !important;
+}
+
+/* Form Inputs */
+.fi-input,
+.fi-textarea,
+.fi-select {
+    @apply bg-white dark:bg-gray-900 !important;
+    @apply border-2 border-gray-300 dark:border-gray-700 !important;
+    @apply focus:border-primary-500 dark:focus:border-primary-600 !important;
+    @apply focus:ring-4 focus:ring-primary-500/20 dark:focus:ring-primary-600/20 !important;
+    @apply transition-all duration-200 !important;
+    @apply rounded-lg !important;
+}
+
+/* Tables */
+.fi-ta-table {
+    @apply bg-white dark:bg-gray-900 !important;
+    @apply border border-gray-200 dark:border-gray-800 !important;
+    @apply rounded-xl !important;
+    @apply overflow-hidden !important;
+}
+
+.fi-ta-header-cell {
+    @apply bg-gradient-to-r from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 !important;
+    @apply text-gray-700 dark:text-gray-300 !important;
+    @apply font-bold !important;
+    @apply uppercase tracking-wider !important;
+}
+
+.fi-ta-row {
+    @apply hover:bg-primary-50/50 dark:hover:bg-primary-950/20 !important;
+    @apply transition-colors duration-150 !important;
+}
+
+/* Modals */
+.fi-modal-window {
+    @apply bg-white dark:bg-gray-900 !important;
+    @apply border-2 border-gray-300 dark:border-gray-700 !important;
+    @apply shadow-2xl !important;
+    @apply rounded-2xl !important;
+}
+
+.fi-modal-header {
+    @apply bg-gradient-to-r from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 !important;
+    @apply border-b-2 border-gray-200 dark:border-gray-700 !important;
+}
+
+/* Notifications */
+.fi-no-notification {
+    @apply bg-white dark:bg-gray-900 !important;
+    @apply border-l-4 !important;
+    @apply shadow-lg !important;
+    @apply rounded-lg !important;
+}
+
+.fi-no-notification.fi-color-success {
+    @apply border-success-600 !important;
+    @apply bg-success-50 dark:bg-success-950/30 !important;
+}
+
+.fi-no-notification.fi-color-danger {
+    @apply border-danger-600 !important;
+    @apply bg-danger-50 dark:bg-danger-950/30 !important;
+}
+
+.fi-no-notification.fi-color-warning {
+    @apply border-warning-600 !important;
+    @apply bg-warning-50 dark:bg-warning-950/30 !important;
+}
+
+.fi-no-notification.fi-color-info {
+    @apply border-info-600 !important;
+    @apply bg-info-50 dark:bg-info-950/30 !important;
+}
+
+/* Badges */
+.fi-badge {
+    @apply font-semibold !important;
+    @apply px-3 py-1 !important;
+    @apply rounded-full !important;
+    @apply text-xs !important;
+    @apply uppercase tracking-wide !important;
+}
+
+/* Tabs */
+.fi-tabs-tab {
+    @apply hover:text-primary-600 dark:hover:text-primary-400 !important;
+    @apply transition-all duration-200 !important;
+}
+
+.fi-tabs-tab[aria-selected="true"] {
+    @apply text-primary-700 dark:text-primary-400 !important;
+    @apply border-b-2 border-primary-600 dark:border-primary-500 !important;
+    @apply font-semibold !important;
+}
+
+/* Dropdown Menus */
+.fi-dropdown-list {
+    @apply bg-white dark:bg-gray-900 !important;
+    @apply border-2 border-gray-200 dark:border-gray-700 !important;
+    @apply shadow-xl !important;
+    @apply rounded-xl !important;
+}
+
+.fi-dropdown-list-item {
+    @apply hover:bg-primary-50 dark:hover:bg-primary-950/30 !important;
+    @apply transition-colors duration-150 !important;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    @apply w-2 h-2 !important;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-900 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 dark:bg-gray-600 !important;
+    @apply rounded-full !important;
+    @apply hover:bg-primary-500 dark:hover:bg-primary-600 !important;
+    @apply transition-colors duration-200 !important;
+}
+
+/* Focus visible states */
+*:focus-visible {
+    @apply outline-none !important;
+    @apply ring-4 ring-primary-500/30 dark:ring-primary-600/30 !important;
+}
+
+/* Smooth transitions for dark mode */
+* {
+    @apply transition-colors duration-200 !important;
+}
+
+.fi-sidebar-header {
+    @apply bg-gray-50 border-b border-gray-200;
+}
+
+.dark .fi-sidebar-header {
+    @apply bg-gray-800 border-b border-gray-700;
+}
+
+/* Sidebar Navigation Items */
+.fi-sidebar-item {
+    @apply text-gray-700 transition-all duration-300;
+}
+
+.dark .fi-sidebar-item {
+    @apply text-gray-200;
+}
+
+.fi-sidebar-item:hover {
+    @apply bg-gray-100 text-primary-600;
+}
+
+.dark .fi-sidebar-item:hover {
+    background: rgba(var(--ghost-gray), 0.5);
+    @apply text-primary-500;
+    box-shadow: inset 3px 0 0 rgb(var(--crimson-villain));
 }
 
 .fi-sidebar-item-active {
-    background: linear-gradient(90deg, var(--crimson-villain), var(--dark-violet));
+    @apply bg-primary-50 text-primary-600;
+    border-left: 3px solid theme('colors.primary.600');
+}
+
+.dark .fi-sidebar-item-active {
+    background: linear-gradient(90deg, rgba(var(--crimson-villain), 0.2), rgba(var(--dark-violet), 0.1));
+    @apply text-primary-500;
+    border-left: 3px solid rgb(var(--crimson-villain));
+    box-shadow: 0 2px 8px rgba(var(--shadow-violet), 0.3);
+}
+
+.fi-sidebar-group-label {
+    @apply text-gray-500 text-xs font-semibold uppercase tracking-wider;
+}
+
+.dark .fi-sidebar-group-label {
+    @apply text-gray-200;
+}
+
+/* ============================================
+   TOPBAR - Responsive Light/Dark
+   ============================================ */
+.fi-topbar {
+    @apply bg-white border-b border-gray-200;
+}
+
+.dark .fi-topbar {
+    @apply bg-gray-900 border-b border-gray-700;
+    box-shadow: 0 2px 12px rgba(var(--shadow-violet), 0.1);
+}
+
+.fi-topbar-item:hover {
+    @apply bg-gray-100 text-primary-600;
+}
+
+.dark .fi-topbar-item:hover {
+    background: rgba(var(--ghost-gray), 0.5);
+    @apply text-primary-500;
+}
+
+/* ============================================
+   CARDS & PANELS - Responsive Light/Dark
+   ============================================ */
+.fi-section,
+.fi-card,
+.fi-widget {
+    @apply bg-white border border-gray-200;
+}
+
+.dark .fi-section,
+.dark .fi-card,
+.dark .fi-widget {
+    @apply bg-gray-800 border border-gray-700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.fi-section-header,
+.fi-card-header {
+    @apply bg-gray-50 border-b border-gray-200 text-gray-900;
+}
+
+.dark .fi-section-header,
+.dark .fi-card-header {
+    @apply bg-gray-900 border-b border-gray-700 text-gray-200;
+}
+
+.fi-section-heading,
+.fi-card-heading {
+    @apply text-gray-900 font-semibold;
+}
+
+.dark .fi-section-heading,
+.dark .fi-card-heading {
+    @apply text-white;
+}
+
+/* ============================================
+   BUTTONS - Crimson Villain with Glow
+   ============================================ */
+.fi-btn-primary {
+    background: linear-gradient(135deg, rgb(var(--crimson-villain)), rgb(var(--dark-violet)));
+    @apply text-white border-0;
+    box-shadow: 0 4px 12px rgba(var(--crimson-villain), 0.3);
+    transition: all 0.3s ease;
+}
+
+.fi-btn-primary:hover {
+    background: linear-gradient(135deg, rgb(var(--villain-pulse-red)), rgb(var(--shadow-violet)));
+    box-shadow: 0 6px 20px rgba(var(--villain-pulse-red), 0.5), 0 0 30px rgba(var(--shadow-violet), 0.3);
+    transform: translateY(-2px);
+}
+
+.fi-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(var(--crimson-villain), 0.4);
+}
+
+.fi-btn-secondary {
+    @apply bg-gray-700 text-gray-200 border border-gray-700;
+}
+
+.fi-btn-secondary:hover {
+    @apply bg-gray-800 text-white border-gray-200;
+}
+
+.fi-btn-danger {
+    background: rgb(var(--error-red));
+    @apply text-white;
+    box-shadow: 0 4px 12px rgba(var(--error-red), 0.3);
+}
+
+.fi-btn-danger:hover {
+    background: rgb(var(--villain-pulse-red));
+    box-shadow: 0 6px 20px rgba(var(--error-red), 0.5);
+}
+
+/* ============================================
+   INPUTS & FORMS - Responsive Light/Dark
+   ============================================ */
+.fi-input,
+.fi-textarea,
+.fi-select {
+    @apply bg-white text-gray-900 border border-gray-300;
+    transition: all 0.3s ease;
+}
+
+.dark .fi-input,
+.dark .fi-textarea,
+.dark .fi-select {
+    background: rgb(var(--input-dark));
+    @apply text-white border border-gray-700;
+}
+
+.fi-input:focus,
+.fi-textarea:focus,
+.fi-select:focus {
+    @apply border-primary-600 ring-2 ring-primary-500/20 outline-none;
+}
+
+.dark .fi-input:focus,
+.dark .fi-textarea:focus,
+.dark .fi-select:focus {
+    border-color: rgb(var(--dark-violet));
+    box-shadow: 0 0 0 3px rgba(var(--dark-violet), 0.2), 0 0 20px rgba(var(--shadow-violet), 0.3);
+}
+
+.fi-input::placeholder,
+.fi-textarea::placeholder {
+    @apply text-gray-400;
+}
+
+.dark .fi-input::placeholder,
+.dark .fi-textarea::placeholder {
+    @apply text-gray-500;
+}
+
+.fi-label {
+    @apply text-gray-700 font-medium;
+}
+
+.dark .fi-label {
+    @apply text-gray-200;
+}
+
+.fi-error-message {
+    color: rgb(var(--error-red));
+}
+
+/* ============================================
+   TABLES - Dark Violet Headers with Glow
+   ============================================ */
+.fi-table {
+    @apply bg-gray-800 border border-gray-700;
+}
+
+.fi-table-header {
+    background: linear-gradient(135deg, rgb(var(--dark-violet)), rgb(var(--crimson-villain)));
+    @apply text-white font-semibold uppercase tracking-wider;
+}
+
+.fi-table-row {
+    @apply border-b border-gray-700;
+    transition: all 0.2s ease;
+}
+
+.fi-table-row:hover {
+    background: rgba(var(--ghost-gray), 0.3);
+    box-shadow: inset 0 0 20px rgba(var(--shadow-violet), 0.1);
+}
+
+.fi-table-cell {
+    @apply text-gray-200 py-3 px-4;
+}
+
+.fi-table-action {
+    @apply text-primary-500;
+    transition: all 0.2s ease;
+}
+
+.fi-table-action:hover {
+    color: rgb(var(--villain-pulse-red));
+    text-shadow: 0 0 10px rgba(var(--villain-pulse-red), 0.5);
+}
+
+/* ============================================
+   MODALS - Deep Obsidian with Glow Shadow
+   ============================================ */
+.fi-modal {
+    background: rgb(var(--deep-obsidian));
+    @apply border border-gray-700;
+    box-shadow: 0 20px 60px rgba(var(--crimson-villain), 0.2), 0 0 100px rgba(var(--shadow-violet), 0.3);
+}
+
+.fi-modal-header {
+    @apply bg-gray-800 border-b border-gray-700 text-white;
+}
+
+.fi-modal-heading {
+    @apply text-white font-semibold;
+}
+
+.fi-modal-footer {
+    @apply bg-gray-800 border-t border-gray-700;
+}
+
+.fi-modal-close-btn:hover {
+    color: rgb(var(--error-red));
+}
+
+/* ============================================
+   NOTIFICATIONS - Color-Coded with Glow
+   ============================================ */
+.fi-notification {
+    @apply bg-gray-800 border-l-4 border-primary-500;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.fi-notification-success {
+    border-left-color: rgb(var(--success-green));
+    box-shadow: 0 4px 16px rgba(var(--success-green), 0.3);
+}
+
+.fi-notification-danger {
+    border-left-color: rgb(var(--error-red));
+    box-shadow: 0 4px 16px rgba(var(--error-red), 0.3);
+}
+
+.fi-notification-warning {
+    border-left-color: rgb(var(--warning-gold));
+    box-shadow: 0 4px 16px rgba(var(--warning-gold), 0.3);
+}
+
+.fi-notification-info {
+    border-left-color: rgb(var(--info-blue));
+    box-shadow: 0 4px 16px rgba(var(--info-blue), 0.3);
+}
+
+/* ============================================
+   BADGES - High Contrast
+   ============================================ */
+.fi-badge {
+    @apply font-semibold uppercase text-xs tracking-wider;
+}
+
+.fi-badge-primary {
+    background: rgb(var(--crimson-villain));
+    @apply text-white;
+}
+
+.fi-badge-success {
+    background: rgb(var(--success-green));
+    color: rgb(var(--vanta-black));
+}
+
+.fi-badge-danger {
+    background: rgb(var(--error-red));
+    @apply text-white;
+}
+
+.fi-badge-warning {
+    background: rgb(var(--warning-gold));
+    color: rgb(var(--vanta-black));
+}
+
+.fi-badge-info {
+    background: rgb(var(--info-blue));
+    @apply text-white;
+}
+
+/* ============================================
+   TABS - Crimson Underline
+   ============================================ */
+.fi-tabs {
+    @apply border-b border-gray-700;
+}
+
+.fi-tab {
+    @apply text-gray-200;
+    transition: all 0.3s ease;
+}
+
+.fi-tab:hover {
+    @apply text-primary-500;
+}
+
+.fi-tab-active {
+    @apply text-primary-500;
+    border-bottom: 3px solid rgb(var(--crimson-villain));
+    box-shadow: 0 2px 8px rgba(var(--crimson-villain), 0.3);
+}
+
+/* ============================================
+   DROPDOWNS - Panel Dark with Hover Glow
+   ============================================ */
+.fi-dropdown {
+    @apply bg-gray-800 border border-gray-700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.fi-dropdown-item {
+    @apply text-gray-200;
+    transition: all 0.2s ease;
+}
+
+.fi-dropdown-item:hover {
+    background: rgba(var(--crimson-villain), 0.1);
+    @apply text-primary-500;
+}
+
+/* ============================================
+   LOADING STATES - Villain Pulse Animation
+   ============================================ */
+@keyframes villain-pulse {
+    0%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(var(--crimson-villain), 0.5);
+    }
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 40px rgba(var(--shadow-violet), 0.8);
+    }
+}
+
+.fi-loading-spinner {
+    @apply border-gray-700;
+    border-top-color: rgb(var(--crimson-villain));
+    animation: spin 1s linear infinite;
+}
+
+/* ============================================
+   SCROLLBARS - Crimson Villain Style
+   ============================================ */
+::-webkit-scrollbar {
+    @apply w-2.5 h-2.5;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--crimson-villain));
+    box-shadow: 0 0 10px rgba(var(--crimson-villain), 0.5);
+}
+
+/* ============================================
+   CHARTS & WIDGETS - Futuristic Glow
+   ============================================ */
+.fi-chart {
+    @apply bg-gray-800 border border-gray-700 p-6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.fi-stat-widget {
+    background: linear-gradient(135deg, rgb(var(--panel-dark-gray)), rgb(var(--deep-obsidian)));
+    @apply border border-gray-700;
+    box-shadow: 0 4px 12px rgba(var(--shadow-violet), 0.2);
+}
+
+.fi-stat-value {
+    @apply text-primary-500 text-4xl font-bold;
+    text-shadow: 0 0 20px rgba(var(--crimson-villain), 0.3);
+}
+
+/* ============================================
+   TOGGLE SWITCHES - Crimson Active State
+   ============================================ */
+.fi-toggle {
+    @apply bg-gray-700;
+}
+
+.fi-toggle-active {
+    background: rgb(var(--crimson-villain));
+    box-shadow: 0 0 15px rgba(var(--crimson-villain), 0.5);
+}
+
+/* ============================================
+   BREADCRUMBS - Crimson Separator
+   ============================================ */
+.fi-breadcrumb {
+    @apply text-gray-200;
+}
+
+.fi-breadcrumb-separator {
+    @apply text-primary-500;
+}
+
+.fi-breadcrumb-active {
+    @apply text-white;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-villain {
+    color: rgb(var(--crimson-villain));
+}
+
+.bg-villain {
+    background: rgb(var(--crimson-villain));
+}
+
+.border-villain {
+    border-color: rgb(var(--crimson-villain));
+}
+
+.shadow-villain-glow {
+    box-shadow: 0 0 20px rgba(var(--crimson-villain), 0.5), 0 0 40px rgba(var(--shadow-violet), 0.3);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
 }
 
