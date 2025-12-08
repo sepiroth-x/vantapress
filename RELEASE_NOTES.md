@@ -1,12 +1,111 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.1.2-complete  
+**Current Version:** v1.1.3-complete  
 **Release Date:** December 8, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.1.2-complete - Automatic Role Seeding
+## 📌 Latest Version: v1.1.3-complete - Enhanced Fix Script UI Visibility
+
+### 🎨 NEW: Purple Notification Cards for Fix Scripts
+
+This release enhances the user experience by making fix scripts highly visible in the Database Updates interface with beautiful purple notification cards.
+
+#### 🎯 What's New
+
+**Enhanced UI Visibility:**
+- **Purple notification card** displays available fix scripts before execution
+- **Enhanced status badge** shows combined count: "X migrations + Y fix scripts available"
+- **Fix script list** with human-readable descriptions in the UI
+- **Success notifications** now include details about which fix scripts executed
+- **Complete transparency** - users know exactly what will happen before clicking "Update Database Now"
+
+**Why This Update:**
+- Users were confused about "silent" fix scripts running in the background
+- Needed clear visibility into what the system does automatically
+- Professional, transparent update experience builds trust
+- WordPress-style clarity for all automatic operations
+
+#### 🎨 Visual Improvements
+
+**Purple Notification Card:**
+```
+┌─────────────────────────────────────────────┐
+│ 🔧 Fix Scripts Available (1)               │
+│                                             │
+│ The following fix scripts will be checked  │
+│ and applied automatically:                  │
+│                                             │
+│ • Seed VantaPress Roles                    │
+│                                             │
+│ Fix scripts run automatically and safely.  │
+└─────────────────────────────────────────────┘
+```
+
+**Enhanced Status Badge:**
+- Before: "2 updates available"
+- After: "2 migrations + 1 fix script available"
+
+**Enhanced Success Notification:**
+- Before: "Database updated! 2 migration(s) executed."
+- After: "Database updated! 2 migration(s) executed (1 fix script applied: Seed VantaPress Roles)"
+
+#### 🔧 Technical Implementation
+
+**New Detection Method:**
+- `WebMigrationService::checkAvailableFixScripts()` - Scans for ALL fix scripts regardless of shouldRun() status
+- Returns count and list of available scripts for UI display
+- Separate from execution logic - purely for visibility
+
+**UI Components Updated:**
+- `DatabaseUpdates.php` - Added fix script properties and detection
+- `database-updates.blade.php` - New purple notification card section
+- Status badge logic - Combined migrations + fix scripts count
+- Success notifications - Include fix script execution details
+
+#### ✅ What This Improves
+
+From v1.1.2:
+- ✅ **Fix scripts now visible** - Purple cards show what's available
+- ✅ **No more confusion** - Users see fix scripts before execution
+- ✅ **Professional UX** - Transparent, WordPress-style experience
+- ✅ **Better notifications** - Success messages include fix details
+- ✅ **Enhanced trust** - Users understand the automatic fix system
+
+#### 🚀 User Experience Flow
+
+**Before Update:**
+1. Visit `/admin/database-updates`
+2. See only: "2 updates available"
+3. Click "Update Database Now"
+4. Fix scripts run silently (users confused)
+5. Success: "Database updated!"
+
+**After Update:**
+1. Visit `/admin/database-updates`
+2. See: "2 migrations + 1 fix script available"
+3. **NEW:** Purple card shows: "• Seed VantaPress Roles"
+4. User knows what will happen
+5. Click "Update Database Now"
+6. Success: "2 migration(s) executed (1 fix script applied: Seed VantaPress Roles)"
+
+#### 🎖️ Benefits
+
+**For Users:**
+- Clear visibility into automatic operations
+- No surprises or confusion
+- Professional, trustworthy experience
+- Understand exactly what the system does
+
+**For Developers:**
+- Better debugging with visible fix script detection
+- Users provide better feedback when they know what ran
+- Reduced support requests about "silent" operations
+
+---
+
+## 📌 Previous Version: v1.1.2-complete - Automatic Role Seeding
 
 ### 🔒 NEW: Automatic Role Creation on Deployment
 
