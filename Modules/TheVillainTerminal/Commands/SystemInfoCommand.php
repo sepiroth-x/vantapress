@@ -20,9 +20,9 @@ class SystemInfoCommand
     public function systemInfo(array $args): array
     {
         $output = [];
-        $output[] = "<span style='color: #00ffff; font-weight: bold;'>╔══════════════════════════════════════════════════╗</span>";
-        $output[] = "<span style='color: #00ffff; font-weight: bold;'>║         VANTAPRESS SYSTEM INFORMATION            ║</span>";
-        $output[] = "<span style='color: #00ffff; font-weight: bold;'>╚══════════════════════════════════════════════════╝</span>";
+        $output[] = "<span style='color: #ffff00; font-weight: bold;'>══════════════════════════════════════════════════</span>";
+        $output[] = "<span style='color: #ffff00; font-weight: bold;'>         VANTAPRESS SYSTEM INFORMATION            </span>";
+        $output[] = "<span style='color: #ffff00; font-weight: bold;'>══════════════════════════════════════════════════</span>";
         $output[] = "";
 
         // VantaPress Version
@@ -128,9 +128,9 @@ class SystemInfoCommand
             }
         }
 
-        $output[] = "<span style='color: #00ffff; font-weight: bold;'>╔══════════════════════════════════════╗</span>";
-        $output[] = "<span style='color: #00ffff; font-weight: bold;'>║     FILAMENT INFORMATION             ║</span>";
-        $output[] = "<span style='color: #00ffff; font-weight: bold;'>╚══════════════════════════════════════╝</span>";
+        $output[] = "<span style='color: #ffff00; font-weight: bold;'>══════════════════════════════════════</span>";
+        $output[] = "<span style='color: #ffff00; font-weight: bold;'>     FILAMENT INFORMATION             </span>";
+        $output[] = "<span style='color: #ffff00; font-weight: bold;'>══════════════════════════════════════</span>";
         $output[] = "";
         $output[] = "<span style='color: #00ff00;'>Version: {$filamentVersion}</span>";
         $output[] = "";
@@ -156,11 +156,11 @@ class SystemInfoCommand
         $version = config('version.version', 'Unknown');
         $output = [];
         
-        $output[] = "<span style='color: #00ffff; font-size: 18px; font-weight: bold;'>";
-        $output[] = "╔════════════════════════════════════════╗";
-        $output[] = "║           VANTAPRESS                   ║";
-        $output[] = "║     Modern CMS for Laravel             ║";
-        $output[] = "╚════════════════════════════════════════╝";
+        $output[] = "<span style='color: #ffff00; font-size: 18px; font-weight: bold;'>";
+        $output[] = "════════════════════════════════════════";
+        $output[] = "           VANTAPRESS                   ";
+        $output[] = "     Modern CMS for Laravel             ";
+        $output[] = "════════════════════════════════════════";
         $output[] = "</span>";
         $output[] = "";
         $output[] = "<span style='color: #00ff00; font-weight: bold;'>Version: {$version}</span>";

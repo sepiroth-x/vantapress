@@ -1,65 +1,109 @@
 <div 
 x-data="{
     isOpen: false,
+    showButton: true,
     command: '',
     history: [],
-    username: '{{ $username ?? (auth()->user()->name ?? 'admin') }}',
-    prompt: '{{ $prompt ?? ((auth()->user()->name ?? 'admin') . '@vantapress:~$ ') }}',
+    username: @js($username ?? (auth()->user()->name ?? 'admin')),
+    prompt: @js($prompt ?? ((auth()->user()->name ?? 'admin') . '@vantapress:~$ ')),
     buttonX: 290,
     buttonY: null,
     isDragging: false,
+    isMouseDown: false,
     dragStartX: 0,
     dragStartY: 0,
     clickX: 0,
     clickY: 0,
     
+    // Terminal window position and size
+    terminalX: null,
+    terminalY: null,
+    terminalWidth: 800,
+    terminalHeight: 600,
+    isDraggingTerminal: false,
+    terminalDragStartX: 0,
+    terminalDragStartY: 0,
+    
     init() {
         this.history.push({
             type: 'output',
-            content: 'VantaPress Terminal v1.0.0\\nType \\'vanta-help\\' for available commands.\\n'
+            content: 'VantaPress Terminal v1.0.0\nType ' + String.fromCharCode(39) + 'vanta-help' + String.fromCharCode(39) + ' for available commands.\n'
         });
         
-        // Set initial Y position
+        // Set initial Y position for button
         this.buttonY = window.innerHeight - 100;
+        
+        // Set initial terminal position (centered)
+        this.terminalX = (window.innerWidth - this.terminalWidth) / 2;
+        this.terminalY = (window.innerHeight - this.terminalHeight) / 2;
+        
         console.log('Terminal button initialized at:', this.buttonX, this.buttonY);
     },
     
     toggle() {
         console.log('Toggle called, isOpen:', this.isOpen);
         this.isOpen = !this.isOpen;
+        
+        // Position terminal relative to button when opening
+        if (this.isOpen) {
+            // Hide the button when terminal opens
+            this.showButton = false;
+            
+            // Position terminal above and to the right of the button
+            this.terminalX = this.buttonX + 60;
+            this.terminalY = Math.max(20, this.buttonY - this.terminalHeight - 20);
+            
+            // Make sure terminal doesn't go off screen
+            if (this.terminalX + this.terminalWidth > window.innerWidth) {
+                this.terminalX = window.innerWidth - this.terminalWidth - 20;
+            }
+            if (this.terminalY < 20) {
+                this.terminalY = 20;
+            }
+        }
+    },
+    
+    closeTerminal() {
+        this.isOpen = false;
+        this.showButton = true;
     },
     
     startDrag(e) {
         if (e.button !== 0) return;
         
+        this.isMouseDown = true;
         this.clickX = e.clientX;
         this.clickY = e.clientY;
         this.dragStartX = e.clientX - this.buttonX;
         this.dragStartY = e.clientY - this.buttonY;
         
-        console.log('Drag started at:', e.clientX, e.clientY);
-        console.log('Button position:', this.buttonX, this.buttonY);
-        
-        // Delay setting isDragging to allow click detection
-        setTimeout(() => {
-            if (Math.abs(e.clientX - this.clickX) > 5 || Math.abs(e.clientY - this.clickY) > 5) {
-                this.isDragging = true;
-            }
-        }, 50);
+        console.log('Mouse down at:', e.clientX, e.clientY);
         
         e.preventDefault();
+        e.stopPropagation();
     },
     
     drag(e) {
-        if (!this.isDragging) return;
+        if (!this.isMouseDown) return;
         
-        this.buttonX = e.clientX - this.dragStartX;
-        this.buttonY = e.clientY - this.dragStartY;
+        // Check if mouse has moved enough to start dragging
+        const distX = Math.abs(e.clientX - this.clickX);
+        const distY = Math.abs(e.clientY - this.clickY);
         
-        console.log('Dragging to:', this.buttonX, this.buttonY);
+        if (!this.isDragging && (distX > 5 || distY > 5)) {
+            this.isDragging = true;
+            console.log('Started dragging');
+        }
+        
+        if (this.isDragging) {
+            this.buttonX = e.clientX - this.dragStartX;
+            this.buttonY = e.clientY - this.dragStartY;
+        }
     },
     
     stopDrag(e) {
+        if (!this.isMouseDown) return;
+        
         console.log('Mouse up - isDragging:', this.isDragging);
         
         // If we didn't drag, it's a click
@@ -74,18 +118,39 @@ x-data="{
             }
         }
         
+        this.isMouseDown = false;
         this.isDragging = false;
+    },
+    
+    startTerminalDrag(e) {
+        if (e.button !== 0) return;
+        
+        this.isDraggingTerminal = true;
+        this.terminalDragStartX = e.clientX - this.terminalX;
+        this.terminalDragStartY = e.clientY - this.terminalY;
+        
+        e.preventDefault();
+        e.stopPropagation();
+    },
+    
+    dragTerminal(e) {
+        if (!this.isDraggingTerminal) return;
+        
+        this.terminalX = e.clientX - this.terminalDragStartX;
+        this.terminalY = e.clientY - this.terminalDragStartY;
+    },
+    
+    stopTerminalDrag() {
+        this.isDraggingTerminal = false;
     },
     
     getButtonStyle() {
         return `left: ${this.buttonX}px; top: ${this.buttonY}px;`;
     },
     
-    getWindowStyle() {
-        // Position terminal window above the button
-        const windowX = Math.max(0, this.buttonX - 512 + 75);
-        const windowY = Math.max(0, this.buttonY - 1024 - 10);
-        return `left: ${windowX}px; top: ${windowY}px;`;
+    getTerminalStyle() {
+        const display = this.isOpen ? 'flex' : 'none';
+        return `display: ${display}; position: fixed; z-index: 99998; pointer-events: auto; left: ${this.terminalX}px; top: ${this.terminalY}px; width: ${this.terminalWidth}px; height: ${this.terminalHeight}px;`;
     },
     
     async executeCommand() {
@@ -98,6 +163,10 @@ x-data="{
         
         if (this.command === 'clear') {
             this.history = [];
+            this.history.push({
+                type: 'output',
+                content: 'VantaPress Terminal v1.0.0\nType ' + String.fromCharCode(39) + 'vanta-help' + String.fromCharCode(39) + ' for available commands.\n'
+            });
             this.command = '';
             return;
         }
@@ -131,13 +200,15 @@ x-data="{
         });
     }
 }" 
-@mousemove.window="drag($event)"
-@mouseup.window="stopDrag($event)">
+@mousemove.window="isMouseDown || isDraggingTerminal ? (isMouseDown ? drag($event) : dragTerminal($event)) : null"
+@mouseup.window="stopDrag($event); stopTerminalDrag()">
     
     <!-- Floating Terminal Button (Draggable) -->
     <div 
+        x-show="showButton"
         @mousedown="startDrag($event)"
-        :style="'position: fixed; left: ' + buttonX + 'px; top: ' + buttonY + 'px; z-index: 99999; pointer-events: auto; cursor: move;'"
+        style="position: fixed; z-index: 99999; pointer-events: auto;"
+        :style="{ left: buttonX + 'px', top: buttonY + 'px' }"
     >
         <button 
             :class="{
@@ -173,77 +244,58 @@ x-data="{
         </button>
     </div>
 
-    <!-- Floating Terminal Window (1024x1024) -->
+    <!-- Floating Terminal Window -->
     <div 
-        x-show="isOpen"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 transform scale-95"
-        x-transition:enter-end="opacity-100 transform scale-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 transform scale-100"
-        x-transition:leave-end="opacity-0 transform scale-95"
-        :style="getWindowStyle()"
-        class="fixed z-40 bg-gray-900 dark:bg-gray-950 rounded-lg shadow-2xl border border-gray-700 dark:border-gray-600 flex flex-col"
-        style="
-            display: none; 
-            pointer-events: auto;
-            position: fixed !important;
-            width: 1024px !important;
-            height: 1024px !important;
-            background-color: #111827 !important;
-            z-index: 99998 !important;
-        "
+        :style="getTerminalStyle()"
+        class="flex-col rounded-lg shadow-2xl overflow-hidden border border-gray-700"
+        style="background-color: #0a0a0a;"
+        @click.stop
     >
-        <!-- Terminal Header -->
-        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700 dark:border-gray-600 rounded-t-lg">
-            <div class="flex items-center gap-2">
-                <div class="flex gap-1.5">
-                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-                <h3 class="text-sm font-semibold text-white ml-2">The Villain Terminal</h3>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-400" x-text="username + '@vantapress'"></span>
-            </div>
+        <!-- Terminal Header (Draggable) -->
+        <div 
+            @mousedown="startTerminalDrag($event)"
+            class="flex items-center justify-between px-4 py-2 cursor-move select-none"
+            style="background: linear-gradient(to bottom, #1a1a1a, #0f0f0f); border-bottom: 1px solid #2a2a2a;"
+        >
+            <h3 class="font-semibold font-mono flex-1 text-center pointer-events-none" style="color: #00ff41; font-size: 11px; white-space: nowrap;">THE VILLAIN TERMINAL V.1.0.0</h3>
+            <button @click.stop="closeTerminal()" class="p-1 rounded transition-colors hover:bg-gray-800" style="color: #00ff41;">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
 
         <!-- Terminal Output -->
         <div 
             x-ref="terminalOutput"
-            class="flex-1 overflow-y-auto p-4 font-mono text-sm text-gray-100 bg-gray-900 dark:bg-gray-950 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900"
+            class="flex-1 overflow-y-auto p-4 font-mono text-sm"
+            style="background-color: #000000; min-height: 400px; max-height: 500px; color: #00ff41;"
         >
             <template x-for="(entry, index) in history" :key="index">
                 <div>
-                    <div x-show="entry.type === 'command'" class="text-green-400 mb-1" x-text="entry.content"></div>
-                    <div x-show="entry.type === 'error'" class="text-red-400 mb-2 whitespace-pre-wrap" x-text="entry.content"></div>
-                    <div x-show="entry.type === 'output'" class="text-gray-300 mb-2 whitespace-pre-wrap" x-text="entry.content"></div>
+                    <div x-show="entry.type === 'command'" class="mb-1 font-semibold" style="color: #00ff41;" x-text="entry.content"></div>
+                    <div x-show="entry.type === 'error'" class="mb-2" style="color: #ff4444; white-space: pre-line;" x-html="entry.content"></div>
+                    <div x-show="entry.type === 'output'" class="mb-2" style="color: #00ff41; white-space: pre-line;" x-html="entry.content"></div>
                 </div>
             </template>
         </div>
 
         <!-- Terminal Input -->
-        <div class="px-4 py-3 bg-gray-800 dark:bg-gray-900 border-t border-gray-700 dark:border-gray-600 rounded-b-lg">
+        <div 
+            class="px-4 py-3"
+            style="background: linear-gradient(to top, #0a0a0a, #000000); border-top: 1px solid #1a4d1a;"
+        >
             <form @submit.prevent="executeCommand" class="flex items-center gap-2">
-                <span class="text-green-400 font-mono text-sm whitespace-nowrap" x-text="prompt"></span>
+                <span class="font-mono text-sm font-semibold whitespace-nowrap" style="color: #00ff41;" x-text="prompt"></span>
                 <input 
                     type="text" 
                     x-model="command"
-                    class="flex-1 bg-transparent border-none focus:ring-0 text-gray-100 font-mono text-sm p-0"
+                    class="flex-1 bg-transparent border-none focus:ring-0 font-mono text-sm p-0 outline-none"
+                    style="background-color: transparent !important; color: #00ff41 !important; caret-color: #00ff41; placeholder-color: #004400;"
                     placeholder="Type a command..."
                     autofocus
                 />
-                <button 
-                    type="submit"
-                    class="px-3 py-1 bg-green-600 hover:bg-green-500 text-white rounded text-xs font-medium transition-colors"
-                >
-                    Run
-                </button>
             </form>
-            <div class="mt-2 text-xs text-gray-500">
-                Press Enter to execute • Type 'vanta-help' for commands • 'clear' to clear screen
-            </div>
         </div>
     </div>
 </div>
