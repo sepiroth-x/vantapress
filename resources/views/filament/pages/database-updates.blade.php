@@ -28,7 +28,7 @@
                     Refresh Status
                 </x-filament::button>
 
-                @if($hasPendingMigrations)
+                @if($hasPendingMigrations || $hasFixScripts)
                     <x-filament::button
                         wire:click="runMigrations"
                         color="primary"
@@ -39,6 +39,39 @@
                 @endif
             </div>
         </div>
+
+        {{-- Fix Scripts Available --}}
+        @if($hasFixScripts && count($availableFixScripts) > 0)
+            <div class="rounded-lg border border-purple-300 dark:border-purple-700 bg-purple-50 dark:bg-purple-900/20 p-6">
+                <div class="flex items-start gap-3">
+                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <div class="flex-1">
+                        <h3 class="text-base font-semibold text-purple-800 dark:text-purple-200 mb-2">
+                            Automatic Fix Scripts Available
+                        </h3>
+                        <p class="text-sm text-purple-700 dark:text-purple-300 mb-3">
+                            This update includes {{ $fixScriptCount }} automatic fix script(s) that will run when you click "Update Database Now". These scripts safely resolve database conflicts and perform maintenance tasks.
+                        </p>
+                        <ul class="space-y-2">
+                            @foreach($availableFixScripts as $script)
+                                <li class="flex items-start gap-2 text-sm text-purple-800 dark:text-purple-200">
+                                    <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>{{ $this->formatMigrationName($script['name']) }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <p class="text-xs text-purple-600 dark:text-purple-400 mt-3">
+                            ℹ️ Fix scripts check if they need to run and skip automatically if not applicable to your installation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         {{-- Pending Migrations --}}
         @if($hasPendingMigrations && count($pendingMigrations) > 0)

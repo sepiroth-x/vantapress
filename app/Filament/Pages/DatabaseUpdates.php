@@ -30,7 +30,10 @@ class DatabaseUpdates extends Page
     public array $migrationStatus = [];
     public array $pendingMigrations = [];
     public array $migrationHistory = [];
+    public array $availableFixScripts = [];
+    public int $fixScriptCount = 0;
     public bool $hasPendingMigrations = false;
+    public bool $hasFixScripts = false;
     public string $statusMessage = '';
     public bool $isRunning = false;
 
@@ -52,13 +55,21 @@ class DatabaseUpdates extends Page
         $this->statusMessage = $status['message'] ?? '';
         $this->pendingMigrations = $status['pending_migrations']['migrations'] ?? [];
 
+        // Get fix scripts information
+        $fixScripts = $status['fix_scripts'] ?? [];
+        $this->hasFixScripts = $fixScripts['available'] ?? false;
+        $this->fixScriptCount = $fixScripts['count'] ?? 0;
+        $this->availableFixScripts = $fixScripts['scripts'] ?? [];
+
         // Get migration history
         $historyResult = $service->getMigrationHistory();
         $this->migrationHistory = $historyResult['history'] ?? [];
 
         Log::info('Database update page loaded', [
             'pending_count' => count($this->pendingMigrations),
-            'has_pending' => $this->hasPendingMigrations
+            'has_pending' => $this->hasPendingMigrations,
+            'fix_scripts_count' => $this->fixScriptCount,
+            'has_fix_scripts' => $this->hasFixScripts
         ]);
     }
 
@@ -115,16 +126,32 @@ class DatabaseUpdates extends Page
             $result = $service->runMigrations();
 
             if ($result['success']) {
+                // Build detailed success message
+                $message = $result['message'];
+                $fixesApplied = $result['fixes_applied'] ?? [];
+                
+                // Add fix script details if any were executed
+                if (($fixesApplied['total'] ?? 0) > 0) {
+                    $fixDetails = [];
+                    foreach ($fixesApplied['executed'] as $fix) {
+                        $fixDetails[] = '• ' . ($fix['message'] ?? $fix['name']);
+                    }
+                    if (!empty($fixDetails)) {
+                        $message .= "\n\nFix Scripts Applied:\n" . implode("\n", $fixDetails);
+                    }
+                }
+
                 Notification::make()
                     ->title('Database Updated Successfully')
-                    ->body($result['message'])
+                    ->body($message)
                     ->success()
-                    ->duration(10000)
+                    ->duration(15000)
                     ->send();
 
                 Log::info('Web-based migrations completed', [
                     'migrations_run' => $result['migrations_run'],
-                    'count' => $result['count']
+                    'count' => $result['count'],
+                    'fixes_applied' => $fixesApplied['total'] ?? 0
                 ]);
             } else {
                 Notification::make()
@@ -178,7 +205,7 @@ class DatabaseUpdates extends Page
      */
     public function getStatusColor(): string
     {
-        if ($this->hasPendingMigrations) {
+        if ($this->hasPendingMigrations || $this->hasFixScripts) {
             return 'warning';
         }
 
@@ -190,11 +217,21 @@ class DatabaseUpdates extends Page
      */
     public function getStatusText(): string
     {
+        $parts = [];
+        
         if ($this->hasPendingMigrations) {
-            return count($this->pendingMigrations) . ' update(s) available';
+            $parts[] = count($this->pendingMigrations) . ' migration(s)';
         }
-
-        return 'Up to date';
+        
+        if ($this->hasFixScripts) {
+            $parts[] = $this->fixScriptCount . ' fix script(s)';
+        }
+        
+        if (empty($parts)) {
+            return 'Up to date';
+        }
+        
+        return implode(' + ', $parts) . ' available';
     }
 
     /**
