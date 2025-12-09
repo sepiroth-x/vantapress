@@ -1,40 +1,15 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Serve static assets directly from root (no /public folder)
-    # If the file exists in root, serve it directly
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^(build|css|js|images|fonts|vendor|favicon\.ico)/ - [L]
-    
-    # Serve build assets from /build directory (Vite compiled assets)
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^build/(.*)$ build/$1 [L]
-
-    # Redirect Trailing Slashes
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Explicitly route admin paths
-    RewriteRule ^tcc-admin(.*)$ index.php [L,QSA]
-    RewriteRule ^admin(.*)$ index.php [L,QSA]
-
-    # Route everything else to Laravel
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L,QSA]
+    # Redirect all requests to /public directory
+    # This makes domain.com/ serve from domain.com/public/ transparently
+    RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
 # Disable directory browsing
 Options -Indexes
 
-# Protect sensitive files
+# Protect sensitive files and directories
 <FilesMatch "^\.">
     Order allow,deny
     Deny from all
@@ -46,8 +21,8 @@ Options -Indexes
     Deny from all
 </FilesMatch>
 
-# Block access to sensitive directories
-RedirectMatch 403 ^/(app|bootstrap|config|database|resources|routes|storage|vendor|tests)/
+# Block access to Laravel directories (except public)
+RedirectMatch 403 ^/(app|bootstrap|config|database|resources|routes|storage|vendor|tests|Modules)/
 
 # Block access to composer files
 <FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|artisan)$">

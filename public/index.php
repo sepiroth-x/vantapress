@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 define('LARAVEL_START', microtime(true));
 
 // Manually load .env for shared hosting compatibility
-$envPath = __DIR__ . '/.env';
+$envPath = dirname(__DIR__) . '/.env';
 if (file_exists($envPath)) {
     $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
@@ -28,13 +28,13 @@ if (file_exists($envPath)) {
     }
 }
 
-if (file_exists($maintenance = __DIR__.'/storage/framework/maintenance.php')) {
+if (file_exists($maintenance = dirname(__DIR__).'/storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
-require __DIR__.'/vendor/autoload.php';
+require dirname(__DIR__).'/vendor/autoload.php';
 
-$app = require_once __DIR__.'/bootstrap/app.php';
+$app = require_once dirname(__DIR__).'/bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 

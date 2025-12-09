@@ -33,19 +33,30 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'primary' => Color::Rgb('rgb(212, 0, 38)'), // Crimson Villain
-                'gray' => Color::Rgb('rgb(42, 42, 46)'),    // Ghost Gray
-                'success' => Color::Rgb('rgb(50, 210, 124)'), // Success Green
-                'danger' => Color::Rgb('rgb(255, 74, 74)'),   // Error Red
-                'warning' => Color::Rgb('rgb(239, 179, 54)'), // Warning Gold
-                'info' => Color::Rgb('rgb(62, 132, 248)'),    // Info Blue
+                'gray' => Color::Zinc,                       // Modern Gray Scale
+                'success' => Color::Emerald,                 // Modern Success
+                'danger' => Color::Rose,                     // Modern Danger
+                'warning' => Color::Amber,                   // Modern Warning
+                'info' => Color::Sky,                        // Modern Info
             ])
             ->darkMode(true)
             ->font('Inter')
             ->brandLogo(asset('images/vantapress-logo.svg'))
+            ->brandLogoHeight('3rem')
             ->favicon(asset('images/favicon.ico'))
             ->sidebarCollapsibleOnDesktop()
-            ->sidebarWidth('16rem')
-            ->maxContentWidth('full')
+            ->sidebarWidth('17rem')
+            ->maxContentWidth('7xl')
+            ->navigationGroups([
+                'Dashboard',
+                'Content',
+                'To Do List',
+                'Appearance',
+                'Modules',
+                'Administration',
+                'System',
+                'Updates',
+            ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->renderHook(
                 PanelsRenderHook::FOOTER,
