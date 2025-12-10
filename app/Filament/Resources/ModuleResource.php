@@ -213,9 +213,6 @@ class ModuleResource extends Resource
                             ->success()
                             ->send();
                     }),
-                
-                Tables\Actions\EditAction::make()
-                    ->visible(fn ($record) => static::moduleExists($record)),
                     
                 Tables\Actions\DeleteAction::make()
                     ->requiresConfirmation()
@@ -344,7 +341,6 @@ class ModuleResource extends Resource
         return [
             'index' => Pages\ListModules::route('/'),
             'create' => Pages\CreateModule::route('/create'),
-            'edit' => Pages\EditModule::route('/{record}/edit'),
         ];
     }
     
