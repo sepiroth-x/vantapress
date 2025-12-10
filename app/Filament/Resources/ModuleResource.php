@@ -352,7 +352,29 @@ class ModuleResource extends Resource
         if (!$record) return false;
         
         $modulePath = base_path('Modules/' . $record->slug);
-        return file_exists($modulePath) && is_dir($modulePath);
+        
+        // Check exact match first
+        if (file_exists($modulePath) && is_dir($modulePath)) {
+            return true;
+        }
+        
+        // Check case-insensitive match (for cross-platform compatibility)
+        $modulesPath = base_path('Modules');
+        if (!file_exists($modulesPath)) {
+            return false;
+        }
+        
+        $folders = array_filter(scandir($modulesPath), function($item) use ($modulesPath) {
+            return $item !== '.' && $item !== '..' && is_dir($modulesPath . '/' . $item);
+        });
+        
+        foreach ($folders as $folder) {
+            if (strtolower($folder) === strtolower($record->slug)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
