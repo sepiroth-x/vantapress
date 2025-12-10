@@ -1,12 +1,66 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.0.7  
+**Current Version:** v1.1.8-complete  
 **Release Date:** December 10, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.0.7 - Anonymous Telemetry System & Terminal Enhancements
+## 📌 Latest Version: v1.1.8-complete - Module System Improvements
+
+### 🔧 Module Detection & UX Enhancements
+
+This release focuses on improving module management reliability and user experience.
+
+#### ✨ What's New in v1.1.8-complete
+
+**🎯 Module System Improvements:**
+- **Enhanced Module Detection** - Fixed "Module folder not found" errors
+  - Case-insensitive folder matching for cross-platform compatibility
+  - Improved detection works on both Windows and Linux servers
+  - Handles slug/folder name mismatches gracefully
+- **VPTelemetryServer Module Fix** - Added missing metadata fields
+  - Added `author` field to module.json
+  - Added `active` flag for proper module state tracking
+  - Added `requires` section with PHP/Laravel version constraints
+  - Module now properly detected and activatable on private servers
+
+**🎨 Module Management UX:**
+- **Removed Edit Action** - Modules no longer have "Edit" button in list view
+  - Prevents accidental module configuration corruption
+  - Modules managed through Enable/Disable and Delete actions only
+  - Cleaner, more focused module management interface
+
+**🔧 Technical Improvements:**
+- Enhanced `ModuleResource::moduleExists()` with fallback logic
+- Improved filesystem scanning with case-insensitive comparison
+- Better error handling for module metadata validation
+- Standardized module.json format across all modules
+
+**📋 Bug Fixes:**
+- ✅ Fixed VPTelemetryServer not appearing in module list
+- ✅ Fixed "Module folder not found" on case-sensitive filesystems
+- ✅ Fixed module detection when slug doesn't match folder name exactly
+- ✅ Removed confusing Edit action from module management
+
+---
+
+## 📌 Previous Version: v1.1.7-complete - Version Management
+
+### 📦 Version Synchronization Update
+
+Quick update to correct version numbering from 1.0.7 to proper 1.1.7-complete format.
+
+#### ✨ What's New in v1.1.7-complete
+
+**Version Updates:**
+- Corrected version format to `1.1.7-complete`
+- Updated all version references across core files
+- Synced README.md and config/version.php
+
+---
+
+## 📌 Previous Version: v1.0.7 - Anonymous Telemetry System & Terminal Enhancements
 
 ### 📊 Anonymous Usage Analytics
 
