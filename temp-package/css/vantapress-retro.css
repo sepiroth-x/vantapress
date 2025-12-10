@@ -1,0 +1,307 @@
+/* VantaPress Retro Game Theme - Flat Modern Design */
+/* Inspired by 16-bit era with modern flat aesthetics */
+
+:root {
+    /* Retro Game Color Palette */
+    --retro-red: #FF6B6B;
+    --retro-orange: #FFA06B;
+    --retro-yellow: #FFD93D;
+    --retro-green: #6BCF7F;
+    --retro-cyan: #4ECDC4;
+    --retro-blue: #5DADE2;
+    --retro-purple: #A393EB;
+    --retro-pink: #FF87B2;
+    
+    /* Primary - Adjusted for retro */
+    --primary-500: #FF0033;
+    
+    /* Neutral Grays - Flat */
+    --gray-400: #ADB5BD;
+    --gray-500: #6C757D;
+    
+    /* Retro Brand Colors */
+    --pixel-black: #1A1A2E;
+    --deep-navy: #16213E;
+    --electric-cyan: #0F4C75;
+    --neon-red: #FF0033;
+    --arcade-yellow: #FFD93D;
+    --power-green: #6BCF7F;
+    --pure-white: #FFFFFF;
+}
+
+/* === DARK MODE - RETRO ARCADE === */
+
+/* Sidebar - Flat retro design */
+.dark .fi-sidebar {
+    background: linear-gradient(180deg, #16213E 0%, #1A1A2E 100%) !important;
+    border-right: 3px solid var(--neon-red) !important;
+    box-shadow: none !important;
+}
+
+.dark .fi-sidebar-header {
+    background: var(--electric-cyan) !important;
+    border-bottom: 3px solid var(--neon-red) !important;
+    padding: 1.5rem !important;
+}
+
+.dark .fi-sidebar-nav-item {
+    color: var(--retro-cyan) !important;
+    transition: all 0.2s ease !important;
+    border-radius: 0px !important;
+    margin: 6px 12px !important;
+    padding: 10px 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 12px !important;
+    letter-spacing: 1px !important;
+}
+
+.dark .fi-sidebar-nav-item:hover {
+    background: var(--neon-red) !important;
+    color: var(--pure-white) !important;
+    transform: translateX(8px) !important;
+    box-shadow: -6px 0 0 0 var(--arcade-yellow) !important;
+}
+
+.dark .fi-sidebar-item-active,
+.dark .fi-active {
+    background: var(--neon-red) !important;
+    border-left: 8px solid var(--arcade-yellow) !important;
+    color: var(--pure-white) !important;
+    font-weight: 800 !important;
+}
+
+/* Topbar - Flat design with bright accent */
+.dark .fi-topbar {
+    background: linear-gradient(90deg, #0F4C75 0%, #16213E 100%) !important;
+    border-bottom: 4px solid var(--neon-red) !important;
+    box-shadow: 0 4px 0 var(--arcade-yellow) !important;
+}
+
+/* Main content - Pixel grid pattern */
+.dark .fi-main {
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 4px,
+            rgba(15, 76, 117, 0.03) 4px,
+            rgba(15, 76, 117, 0.03) 8px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 4px,
+            rgba(15, 76, 117, 0.03) 4px,
+            rgba(15, 76, 117, 0.03) 8px
+        ),
+        var(--pixel-black) !important;
+}
+
+/* Cards - Flat retro game style */
+.dark .fi-section,
+.dark .fi-card,
+.dark .fi-stats-card {
+    background: var(--deep-navy) !important;
+    border: 4px solid var(--electric-cyan) !important;
+    border-radius: 0px !important;
+    box-shadow: 8px 8px 0 var(--neon-red) !important;
+    transition: all 0.15s ease !important;
+    position: relative !important;
+}
+
+.dark .fi-stats-card::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    background: var(--arcade-yellow);
+    border: 4px solid var(--pixel-black);
+}
+
+.dark .fi-stats-card:hover {
+    transform: translate(-4px, -4px) !important;
+    box-shadow: 12px 12px 0 var(--neon-red) !important;
+    border-color: var(--arcade-yellow) !important;
+}
+
+/* Buttons - Arcade style */
+.fi-btn-primary {
+    background: var(--neon-red) !important;
+    color: var(--pure-white) !important;
+    border: 4px solid var(--arcade-yellow) !important;
+    border-radius: 0px !important;
+    box-shadow: 6px 6px 0 var(--deep-navy) !important;
+    transition: all 0.1s ease !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    padding: 14px 28px !important;
+}
+
+.fi-btn-primary:hover {
+    background: var(--arcade-yellow) !important;
+    color: var(--pixel-black) !important;
+    transform: translate(-3px, -3px) !important;
+    box-shadow: 9px 9px 0 var(--deep-navy) !important;
+}
+
+/* Inputs - Retro terminal style */
+.dark .fi-input,
+.dark .fi-select,
+.dark .fi-textarea {
+    background: var(--pixel-black) !important;
+    border: 3px solid var(--electric-cyan) !important;
+    border-radius: 0px !important;
+    color: var(--retro-cyan) !important;
+    font-family: 'Courier New', 'Consolas', monospace !important;
+    box-shadow: none !important;
+    padding: 12px !important;
+}
+
+.dark .fi-input:focus,
+.dark .fi-select:focus,
+.dark .fi-textarea:focus {
+    border-color: var(--arcade-yellow) !important;
+    background: var(--deep-navy) !important;
+    box-shadow: 6px 6px 0 var(--neon-red) !important;
+    outline: none !important;
+}
+
+/* Headings - Pixelated game style */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: var(--arcade-yellow) !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 3px !important;
+    text-shadow: 4px 4px 0 var(--neon-red) !important;
+}
+
+/* Tables - Retro data display */
+.dark .fi-table {
+    background: var(--deep-navy) !important;
+    border: 4px solid var(--electric-cyan) !important;
+    border-radius: 0px !important;
+}
+
+.dark .fi-table-header-cell {
+    background: var(--electric-cyan) !important;
+    color: var(--pure-white) !important;
+    border-bottom: 4px solid var(--neon-red) !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+}
+
+.dark .fi-table-cell {
+    border-bottom: 2px solid rgba(79, 205, 196, 0.2) !important;
+    color: var(--retro-cyan) !important;
+}
+
+.dark .fi-table-row:hover {
+    background: rgba(255, 0, 51, 0.15) !important;
+}
+
+/* Login page - Arcade cabinet style */
+.dark .fi-simple-page {
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 4px,
+            rgba(15, 76, 117, 0.1) 4px,
+            rgba(15, 76, 117, 0.1) 8px
+        ),
+        linear-gradient(180deg, #0F4C75 0%, #1A1A2E 100%) !important;
+}
+
+.dark .fi-simple-main {
+    background: var(--deep-navy) !important;
+    border: 6px solid var(--neon-red) !important;
+    border-radius: 0px !important;
+    box-shadow: 
+        12px 12px 0 var(--arcade-yellow),
+        12px 12px 0 4px var(--pixel-black) !important;
+}
+
+.dark .fi-simple-main .fi-btn {
+    background: var(--neon-red) !important;
+    border: 4px solid var(--arcade-yellow) !important;
+    border-radius: 0px !important;
+    padding: 14px 32px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    box-shadow: 6px 6px 0 var(--deep-navy) !important;
+}
+
+.dark .fi-simple-main .fi-btn:hover {
+    background: var(--arcade-yellow) !important;
+    color: var(--pixel-black) !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 8px 8px 0 var(--deep-navy) !important;
+}
+
+/* === LIGHT MODE - RETRO PASTEL === */
+
+html:not(.dark) .fi-sidebar {
+    background: linear-gradient(180deg, #F8F9FA 0%, #E9ECEF 100%) !important;
+    border-right: 3px solid var(--retro-red) !important;
+}
+
+html:not(.dark) .fi-sidebar-nav-item {
+    color: var(--electric-cyan) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 12px !important;
+    letter-spacing: 1px !important;
+}
+
+html:not(.dark) .fi-sidebar-nav-item:hover {
+    background: var(--retro-red) !important;
+    color: white !important;
+    box-shadow: -6px 0 0 0 var(--arcade-yellow) !important;
+}
+
+html:not(.dark) .fi-main {
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 4px,
+            rgba(255, 107, 107, 0.03) 4px,
+            rgba(255, 107, 107, 0.03) 8px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 4px,
+            rgba(255, 107, 107, 0.03) 4px,
+            rgba(255, 107, 107, 0.03) 8px
+        ),
+        #F8F9FA !important;
+}
+
+html:not(.dark) .fi-section,
+html:not(.dark) .fi-card,
+html:not(.dark) .fi-stats-card {
+    background: white !important;
+    border: 4px solid var(--retro-cyan) !important;
+    border-radius: 0px !important;
+    box-shadow: 8px 8px 0 var(--retro-red) !important;
+}
+
+html:not(.dark) .fi-stats-card:hover {
+    transform: translate(-4px, -4px) !important;
+    box-shadow: 12px 12px 0 var(--retro-red) !important;
+}
+
+html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3 {
+    color: var(--neon-red) !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    text-shadow: 3px 3px 0 var(--retro-cyan) !important;
+}

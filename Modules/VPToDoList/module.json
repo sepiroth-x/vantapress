@@ -1,0 +1,40 @@
+{
+    "name": "VP To Do List",
+    "slug": "VPToDoList",
+    "version": "1.0.0",
+    "description": "Project-based task management system with beautiful UI. Create projects, manage tasks, track progress, and collaborate with your team. Each user has their own personalized workspace.",
+    "author": "VantaPress",
+    "author_email": "chardy.tsadiq02@gmail.com",
+    "author_url": "https://github.com/sepiroth-x",
+    "license": "Open Source",
+    "social_links": {
+        "github": "https://github.com/sepiroth-x",
+        "facebook": "https://www.facebook.com/sepirothx/",
+        "twitter": "https://x.com/sepirothx000",
+        "email": "chardy.tsadiq02@gmail.com",
+        "mobile": "+63 915 0388 448"
+    },
+    "active": true,
+    "dependencies": [],
+    "service_provider": "Modules\\VPToDoList\\VPToDoListServiceProvider",
+    "features": [
+        "Project Management",
+        "Task Tracking with Status",
+        "User-specific Workspaces",
+        "Priority Levels",
+        "Due Date Tracking",
+        "Task Notes & Descriptions",
+        "Progress Visualization",
+        "Beautiful Modern UI"
+    ],
+    "provides": {
+        "filament_resources": [
+            "Modules\\VPToDoList\\Filament\\Resources\\ProjectResource",
+            "Modules\\VPToDoList\\Filament\\Resources\\TaskResource"
+        ],
+        "models": [
+            "Modules\\VPToDoList\\Models\\Project",
+            "Modules\\VPToDoList\\Models\\Task"
+        ]
+    }
+}

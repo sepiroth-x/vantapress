@@ -1,0 +1,66 @@
+{
+    "name": "The Villain Arise",
+    "slug": "TheVillainArise",
+    "version": "1.0.0",
+    "description": "Official VantaPress default theme with dark villain aesthetic, customizable hero sections, widget areas, and menu management. Serves as the reference template and coding standard for VantaPress theme development.",
+    "author": "VantaPress",
+    "author_email": "chardy.tsadiq02@gmail.com",
+    "author_url": "https://github.com/sepiroth-x",
+    "license": "Open Source",
+    "social_links": {
+        "github": "https://github.com/sepiroth-x",
+        "facebook": "https://www.facebook.com/sepirothx/",
+        "twitter": "https://x.com/sepirothx000",
+        "email": "chardy.tsadiq02@gmail.com",
+        "mobile": "+63 915 0388 448"
+    },
+    "preview": "screenshot.png",
+    "active": false,
+    "features": [
+        "Theme Customization Framework",
+        "Dynamic Menu System",
+        "Widget Areas (Header, Footer, Sidebar)",
+        "Hero Section Builder",
+        "Dark Villain Aesthetic",
+        "Tailwind CSS via CDN",
+        "Responsive Design",
+        "Profile Integration",
+        "Tweet Integration"
+    ],
+    "widget_areas": [
+        {
+            "id": "header",
+            "name": "Header Widget Area",
+            "description": "Widgets displayed in the header section"
+        },
+        {
+            "id": "footer",
+            "name": "Footer Widget Area",
+            "description": "Widgets displayed in the footer section"
+        },
+        {
+            "id": "sidebar",
+            "name": "Sidebar Widget Area",
+            "description": "Widgets displayed in the sidebar"
+        }
+    ],
+    "menu_locations": [
+        {
+            "id": "primary",
+            "name": "Primary Menu",
+            "description": "Main navigation menu in header"
+        },
+        {
+            "id": "footer",
+            "name": "Footer Menu",
+            "description": "Menu displayed in footer"
+        }
+    ],
+    "customization": {
+        "logo": true,
+        "colors": true,
+        "hero_section": true,
+        "typography": false,
+        "layout": false
+    }
+}

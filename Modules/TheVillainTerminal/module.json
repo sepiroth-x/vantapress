@@ -1,0 +1,24 @@
+{
+    "name": "The Villain Terminal",
+    "slug": "TheVillainTerminal",
+    "alias": "thevillainterrminal",
+    "description": "Web-based terminal interface for VantaPress - Execute commands without SSH access",
+    "keywords": [
+        "terminal",
+        "cli",
+        "artisan",
+        "web-terminal",
+        "migrations"
+    ],
+    "version": "1.0.0",
+    "author": "VantaPress",
+    "active": false,
+    "priority": 100,
+    "service_provider": "Modules\\TheVillainTerminal\\TheVillainTerminalServiceProvider",
+    "provides": {
+        "filament_pages": []
+    },
+    "aliases": [],
+    "files": [],
+    "requires": []
+}
