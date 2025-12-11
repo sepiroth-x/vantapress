@@ -34,7 +34,8 @@ class VPTelemetryServerServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         
         // Load views
-        $this->loadViewsFrom(__DIR__ . '/resources/views', $this->moduleNameLower);
+        $viewPath = __DIR__ . '/resources/views';
+        $this->loadViewsFrom($viewPath, $this->moduleNameLower);
         
         // Register API routes
         $this->registerApiRoutes();

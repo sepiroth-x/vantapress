@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'version' => env('APP_VERSION', '1.1.8-complete'),
+    'version' => env('APP_VERSION', '1.1.9-complete'),
     'github_repo' => 'sepiroth-x/vantapress',
     'check_updates' => env('CHECK_FOR_UPDATES', true),
 ];

@@ -722,10 +722,12 @@ Modules/YourModule/
 ├── Models/               # Module-specific models (optional)
 ├── views/                # Module views
 │   └── index.blade.php
-├── migrations/           # Database migrations (optional)
+├── migrations/           # Database migrations (optional) ⭐ NEW!
 ├── helpers/              # Helper functions (optional)
 │   └── functions.php
-├── routes.php            # Module routes (required if using routes)
+├── routes/               # Module routes folder (recommended)
+│   ├── web.php          # Web routes
+│   └── api.php          # API routes (optional)
 ├── module.json           # Module metadata (REQUIRED)
 ├── YourModuleServiceProvider.php  # Service provider (REQUIRED)
 └── README.md             # Module documentation (recommended)
@@ -737,6 +739,7 @@ Modules/YourModule/
 {
     "name": "Your Module Name",
     "slug": "YourModule",
+    "alias": "yourmodule",
     "version": "1.0.0",
     "description": "Brief description of what your module does",
     "author": "Your Name",
@@ -747,18 +750,30 @@ Modules/YourModule/
         "github": "https://github.com/yourusername",
         "email": "your.email@example.com"
     },
+    "priority": 100,
     "active": true,
-    "service_provider": "Modules\\YourModule\\YourModuleServiceProvider"
+    "providers": [
+        "Modules\\YourModule\\YourModuleServiceProvider"
+    ],
+    "requires": {
+        "php": "^8.2",
+        "laravel": "^11.0"
+    },
+    "files": []
 }
 ```
 
 **Required Fields**:
 - `name` - Display name
 - `slug` - Must match directory name (PascalCase)
+- `alias` - Lowercase slug for views/configs
 - `version` - Semantic version (e.g., "1.0.0")
 - `description` - Short description
+- `priority` - Loading order (100 = normal)
 - `active` - Boolean, should be `true` for new modules
-- `service_provider` - Full class name with namespace
+- `providers` - Array of service provider class names (supports multiple providers)
+
+**Note**: The system supports both `providers` array (recommended) and legacy `service_provider` string.
 
 ### Step 2: Create Service Provider
 
@@ -768,19 +783,33 @@ Modules/YourModule/
 namespace Modules\YourModule;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 class YourModuleServiceProvider extends ServiceProvider
 {
+    /**
+     * Module namespace
+     */
+    protected string $moduleName = 'YourModule';
+    protected string $moduleNameLower = 'yourmodule';
+
     /**
      * Register services
      */
     public function register(): void
     {
+        // Register configuration
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/yourmodule.php', 'yourmodule'
+        );
+        
         // Load helper functions if you have them
         $helpersPath = __DIR__ . '/helpers/functions.php';
         if (file_exists($helpersPath)) {
             require_once $helpersPath;
         }
+        
+        Log::info('[YourModule] Service registered');
     }
 
     /**
@@ -788,57 +817,130 @@ class YourModuleServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register module routes
-        $this->registerRoutes();
+        // Load module routes
+        $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
         
-        // Register module views
-        $this->registerViews();
+        // Load migrations (auto-run on module activation)
+        $this->loadMigrationsFrom(__DIR__ . '/migrations');
         
-        // Register migrations
-        $this->registerMigrations();
-    }
-
-    /**
-     * Register module routes
-     */
-    protected function registerRoutes(): void
-    {
-        $routesPath = __DIR__ . '/routes.php';
+        // Load views
+        $this->loadViewsFrom(__DIR__ . '/resources/views', $this->moduleNameLower);
         
-        if (file_exists($routesPath)) {
-            $this->loadRoutesFrom($routesPath);
-        }
-    }
-
-    /**
-     * Register module views
-     */
-    protected function registerViews(): void
-    {
-        $viewsPath = __DIR__ . '/views';
+        // Publish assets (optional)
+        $this->publishes([
+            __DIR__ . '/resources/assets' => public_path('modules/yourmodule'),
+        ], 'yourmodule-assets');
         
-        if (is_dir($viewsPath)) {
-            $this->loadViewsFrom($viewsPath, 'YourModule');
-        }
-    }
-
-    /**
-     * Register migrations
-     */
-    protected function registerMigrations(): void
-    {
-        $migrationsPath = __DIR__ . '/migrations';
-        
-        if (is_dir($migrationsPath)) {
-            $this->loadMigrationsFrom($migrationsPath);
-        }
+        Log::info('[YourModule] Module booted successfully');
     }
 }
 ```
 
-### Step 3: Create Routes (if needed)
+### Step 3: Create Migrations (NEW! Auto-Migration System)
 
-**File**: `routes.php`
+**🎉 VantaPress now supports automatic database migrations!**
+
+When you enable a module, migrations run automatically - no manual intervention needed!
+
+#### Migration Naming Convention
+
+Follow Laravel's timestamp-based naming:
+
+```
+migrations/
+├── 2025_12_11_000001_create_your_table.php
+├── 2025_12_11_000002_add_columns_to_table.php
+└── 2025_12_11_000003_create_relations.php
+```
+
+**Format**: `YYYY_MM_DD_HHMMSS_description.php`
+
+#### Example Migration File
+
+**File**: `migrations/2025_12_11_000001_create_your_module_items_table.php`
+
+```php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('your_module_items', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('your_module_items');
+    }
+};
+```
+
+#### How Auto-Migration Works
+
+1. **On Module Activation**: 
+   - User clicks "Enable" on your module in the Modules page
+   - `ModuleLoader::activateModule()` automatically runs `runModuleMigrations()`
+   - All pending migrations in `migrations/` folder execute automatically
+   - Migration names recorded in `migrations` table (no duplicates)
+
+2. **Via Database Updates Page**:
+   - Admin → System → Database Updates
+   - Shows pending module migrations grouped by module
+   - Click "Update Database Now" to run all pending migrations
+
+3. **Manual Execution** (if needed):
+   ```bash
+   php artisan migrate --path=Modules/YourModule/migrations
+   ```
+
+#### Migration Best Practices
+
+✅ **DO:**
+- Use timestamp-based file naming
+- Include `up()` and `down()` methods
+- Test rollback functionality
+- Add foreign key constraints properly
+- Use indexes for performance
+
+❌ **DON'T:**
+- Modify migrations after deployment
+- Delete migrations that have run
+- Use `DB::statement()` for simple schema changes
+- Forget to handle data migration in `up()`
+
+#### Checking Migration Status
+
+Users can see module migration status in two places:
+
+1. **Database Updates Page** (`/admin/database-updates`):
+   - Shows pending migrations per module
+   - Displays migration count
+   - One-click execution
+
+2. **Module Management** (`/admin/modules`):
+   - Auto-runs migrations on enable
+   - Logs migration execution
+
+### Step 4: Create Routes
+
+**File**: `routes/web.php`
 
 ```php
 <?php
@@ -860,7 +962,21 @@ Route::prefix('your-module')->name('yourmodule.')->group(function () {
 });
 ```
 
-### Step 4: Create Controller (if needed)
+**Optional API Routes**: `routes/api.php`
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Modules\YourModule\Controllers\Api\YourModuleApiController;
+
+Route::prefix('your-module')->name('yourmodule.api.')->group(function () {
+    Route::get('/items', [YourModuleApiController::class, 'index']);
+    Route::post('/items', [YourModuleApiController::class, 'store']);
+});
+```
+
+### Step 5: Create Controller (if needed)
 
 ```php
 <?php

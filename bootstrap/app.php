@@ -7,6 +7,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
         \App\Providers\AppServiceProvider::class,
+        \App\Providers\CMSServiceProvider::class, // Module & Theme loader
         \App\Providers\FilesystemServiceProvider::class,
         \App\Providers\Filament\AdminPanelProvider::class,
         \Modules\VPEssential1\VPEssential1ServiceProvider::class,

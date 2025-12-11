@@ -108,12 +108,20 @@ class ModuleLoader
             if (isset($metadata['providers']) && is_array($metadata['providers'])) {
                 foreach ($metadata['providers'] as $providerClass) {
                     if (class_exists($providerClass)) {
-                        app()->register($providerClass);
+                        $provider = app()->register($providerClass);
+                        // Force boot if provider has boot method
+                        if (method_exists($provider, 'boot')) {
+                            app()->call([$provider, 'boot']);
+                        }
                         $providersRegistered = true;
                     }
                 }
             } elseif (isset($metadata['service_provider']) && class_exists($metadata['service_provider'])) {
-                app()->register($metadata['service_provider']);
+                $provider = app()->register($metadata['service_provider']);
+                // Force boot if provider has boot method
+                if (method_exists($provider, 'boot')) {
+                    app()->call([$provider, 'boot']);
+                }
                 $providersRegistered = true;
             }
             

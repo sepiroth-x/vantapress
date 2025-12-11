@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('theme_name', 100);
             $table->timestamps();
 
-            // Prevent duplicate theme entries
-            $table->unique(['installation_id', 'theme_name']);
+            // Prevent duplicate theme entries (shorter index name)
+            $table->unique(['installation_id', 'theme_name'], 'telem_inst_theme_unique');
             
             // Index for statistics
-            $table->index('theme_name');
+            $table->index('theme_name', 'telem_theme_name_idx');
         });
     }
 

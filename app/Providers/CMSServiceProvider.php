@@ -26,6 +26,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 use App\Services\CMS\ModuleManager;
 use App\Services\CMS\ThemeManager;
 use App\Services\CMS\HookManager;
@@ -112,12 +113,39 @@ class CMSServiceProvider extends ServiceProvider
         // Register module service providers
         foreach ($modules as $moduleName => $metadata) {
             if ($metadata['active'] ?? false) {
-                // Check if module has a service provider
-                if (isset($metadata['service_provider'])) {
+                // Support both 'providers' array (new format) and 'service_provider' string (legacy)
+                if (isset($metadata['providers']) && is_array($metadata['providers'])) {
+                    foreach ($metadata['providers'] as $providerClass) {
+                        if (class_exists($providerClass)) {
+                            // Register provider - Laravel will call boot() automatically
+                            $this->app->register($providerClass);
+                        }
+                    }
+                } elseif (isset($metadata['service_provider'])) {
                     $providerClass = $metadata['service_provider'];
                     if (class_exists($providerClass)) {
+                        // Register provider - Laravel will call boot() automatically
                         $this->app->register($providerClass);
                     }
+                }
+                
+                // Ensure view namespace is registered using View facade (immediate registration)
+                $alias = $metadata['alias'] ?? strtolower($moduleName);
+                $viewsPath = base_path("Modules/{$moduleName}/resources/views");
+                if (is_dir($viewsPath)) {
+                    view()->getFinder()->addNamespace($alias, $viewsPath);
+                    Log::info('[CMSServiceProvider] View namespace registered', [
+                        'module' => $moduleName,
+                        'alias' => $alias,
+                        'path' => $viewsPath,
+                        'path_exists' => file_exists($viewsPath)
+                    ]);
+                } else {
+                    Log::warning('[CMSServiceProvider] View path not found', [
+                        'module' => $moduleName,
+                        'alias' => $alias,
+                        'path' => $viewsPath
+                    ]);
                 }
             }
         }

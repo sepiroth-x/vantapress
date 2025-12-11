@@ -107,12 +107,12 @@ class InstallationResource extends Resource
 
                 Tables\Columns\TextColumn::make('modules_count')
                     ->label('Modules')
-                    ->counts('modules')
+                    ->getStateUsing(fn ($record) => $record->modules()->count())
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('themes_count')
                     ->label('Themes')
-                    ->counts('themes')
+                    ->getStateUsing(fn ($record) => $record->themes()->count())
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('last_ping_at')

@@ -1,6 +1,180 @@
 # VantaPress Session Memory
 
-**Last Updated:** December 7, 2025 - Module Migration Support Added
+**Last Updated:** December 11, 2025 - Telemetry System & Module Loading Fixes
+
+## 🔧 VERSION 1.1.9: Telemetry System & Module View Registration (Dec 11, 2025)
+
+**Status**: COMPLETE - Critical fixes for module view namespaces and telemetry system
+
+### Critical Issues Resolved
+
+#### 1. Module View Namespace Registration Issue
+**Problem:**
+- VPTelemetryServer module gave error: "No hint path defined for [vptelemetryserver]"
+- View namespaces were NOT being registered for dynamically loaded modules
+- **Root Cause:** CMSServiceProvider was NOT registered in bootstrap/app.php
+- Service provider boot() method never ran, so view namespaces never registered
+
+**Solution Implemented:**
+```php
+// bootstrap/app.php - Added CMSServiceProvider
+->withProviders([
+    \App\Providers\AppServiceProvider::class,
+    \App\Providers\CMSServiceProvider::class, // MODULE & THEME LOADER
+    \App\Providers\FilesystemServiceProvider::class,
+    // ...
+])
+
+// CMSServiceProvider.php - Direct view namespace registration
+foreach ($modules as $moduleName => $metadata) {
+    if ($metadata['active'] ?? false) {
+        // Register service providers
+        $this->app->register($providerClass);
+        
+        // Direct view namespace registration (fallback)
+        $alias = $metadata['alias'] ?? strtolower($moduleName);
+        $viewsPath = base_path("Modules/{$moduleName}/resources/views");
+        if (is_dir($viewsPath)) {
+            view()->getFinder()->addNamespace($alias, $viewsPath);
+        }
+    }
+}
+```
+
+**Files Modified:**
+- `bootstrap/app.php` - Added CMSServiceProvider to providers array
+- `app/Providers/CMSServiceProvider.php` - Added Log facade import, direct view registration
+- `app/Services/ModuleLoader.php` - Enhanced to explicitly call boot() on providers
+
+#### 2. VPTelemetryServer Database Tables
+**Problem:**
+- MySQL index name length exceeded 64 character limit
+- Migrations failed: "Identifier name 'telemetry_installation_modules_installation_id_module_name_unique' is too long"
+
+**Solution:**
+```php
+// Shortened index names in migrations
+$table->unique(['installation_id', 'module_name'], 'telem_inst_mod_unique');
+$table->index('module_name', 'telem_mod_name_idx');
+```
+
+**Migrations Fixed:**
+- `2025_12_10_000002_create_telemetry_installation_modules_table.php`
+- `2025_12_10_000003_create_telemetry_installation_themes_table.php`
+
+#### 3. InstallationResource Filament v3 Compatibility
+**Problem:**
+- Used deprecated `->counts('modules')` method (Filament v2 API)
+
+**Solution:**
+```php
+// Changed from counts() to getStateUsing()
+Tables\Columns\TextColumn::make('modules_count')
+    ->label('Modules')
+    ->getStateUsing(fn ($record) => $record->modules()->count())
+    ->sortable(),
+```
+
+### Technical Achievements
+
+✅ **CMSServiceProvider Integration**
+- Properly registered in application bootstrap
+- Handles dynamic module and theme loading
+- Registers view namespaces for all active modules
+- Supports both 'providers' array and legacy 'service_provider' string
+
+✅ **Module View Registration**
+- Direct registration via `view()->getFinder()->addNamespace()`
+- Bypasses service provider timing issues
+- Works for dynamically loaded modules
+- Immediate registration in boot() context
+
+✅ **VPTelemetryServer Module**
+- All 4 database tables created successfully
+- Dashboard accessible and functional
+- Installations resource working
+- Ready to receive telemetry data
+
+✅ **Development Guide Updated**
+- Comprehensive module migration documentation added
+- Auto-migration system explained
+- Migration file naming conventions
+- Best practices for module database changes
+
+### Files Changed (21 files)
+
+**Core System:**
+- `bootstrap/app.php` - Added CMSServiceProvider
+- `app/Providers/CMSServiceProvider.php` - View registration + Log import
+- `app/Services/ModuleLoader.php` - Enhanced provider boot handling
+
+**VPTelemetryServer Module:**
+- `Modules/VPTelemetryServer/VPTelemetryServerServiceProvider.php` - Cleaned up
+- `Modules/VPTelemetryServer/database/migrations/2025_12_10_000002_*.php` - Fixed index names
+- `Modules/VPTelemetryServer/database/migrations/2025_12_10_000003_*.php` - Fixed index names
+- `Modules/VPTelemetryServer/Filament/Resources/InstallationResource.php` - Filament v3 compatibility
+
+**Documentation:**
+- `DEVELOPMENT_GUIDE.md` - Added comprehensive module migration section
+
+### Deployment Notes
+
+**For Fresh Installations:**
+1. All module migrations now auto-run on module activation
+2. Database Updates page shows all pending migrations (core + modules)
+3. WordPress-style automatic database management
+
+**For Existing Installations:**
+1. Run migrations via Database Updates page
+2. All telemetry tables will be created
+3. VPTelemetryServer ready to receive data
+
+### Testing Results
+
+✅ **Local Development (127.0.0.1:8001):**
+- Telemetry Dashboard loads successfully
+- Installations page functional
+- All view namespaces registered correctly
+- No "hint path" errors
+
+✅ **Database:**
+- 4 telemetry tables created:
+  - `telemetry_installations`
+  - `telemetry_installation_modules`
+  - `telemetry_installation_themes`
+  - `telemetry_logs`
+
+### Lessons Learned
+
+1. **Service Provider Registration is Critical**
+   - Must be in bootstrap/app.php for Laravel 11
+   - Boot order matters for view registration
+   - Dynamic module loading requires special handling
+
+2. **MySQL Index Name Limits**
+   - 64 character maximum for index names
+   - Always specify custom index names for long table/column combos
+   - Format: `table_col_type` (abbreviated)
+
+3. **Filament v3 API Changes**
+   - `->counts()` removed, use `->getStateUsing()`
+   - Livewire components auto-registered by Filament
+   - No manual Livewire registration needed for resources
+
+4. **View Namespace Registration**
+   - `$this->loadViewsFrom()` can have timing issues
+   - `view()->getFinder()->addNamespace()` is more reliable
+   - Fallback registration in CMSServiceProvider ensures coverage
+
+### Next Steps
+
+🔄 **For v1.2.0:**
+- Test telemetry data collection from multiple installations
+- Add telemetry opt-out mechanism
+- Create telemetry documentation for users
+- Add privacy policy regarding telemetry data
+
+---
 
 ## 🎯 VERSION 1.0.51: Module Migration Support (Dec 7, 2025)
 

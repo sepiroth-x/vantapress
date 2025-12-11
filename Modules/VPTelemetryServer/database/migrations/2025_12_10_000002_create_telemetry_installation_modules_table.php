@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('module_name', 100);
             $table->timestamps();
 
-            // Prevent duplicate module entries
-            $table->unique(['installation_id', 'module_name']);
+            // Prevent duplicate module entries (shorter index name)
+            $table->unique(['installation_id', 'module_name'], 'telem_inst_mod_unique');
             
             // Index for statistics
-            $table->index('module_name');
+            $table->index('module_name', 'telem_mod_name_idx');
         });
     }
 
