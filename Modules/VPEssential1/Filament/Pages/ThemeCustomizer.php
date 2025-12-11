@@ -18,6 +18,11 @@ class ThemeCustomizer extends Page implements HasForms
     protected static ?string $navigationGroup = 'VP Essential';
     protected static ?int $navigationSort = 1;
     protected static string $view = 'VPEssential1::filament.pages.theme-customizer';
+    
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public ?array $data = [];
 

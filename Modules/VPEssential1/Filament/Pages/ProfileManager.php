@@ -2,7 +2,7 @@
 
 namespace Modules\VPEssential1\Filament\Pages;
 
-use Filament\Resources\Pages\Page;
+use Filament\Pages\Page;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -20,6 +20,11 @@ class ProfileManager extends Page implements HasTable
     protected static ?string $navigationGroup = 'VP Essential';
     protected static ?int $navigationSort = 4;
     protected static string $view = 'VPEssential1::filament.pages.profile-manager';
+    
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public function table(Table $table): Table
     {

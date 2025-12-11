@@ -24,6 +24,11 @@ class MenuBuilder extends Page implements HasTable, HasForms
     protected static ?string $navigationGroup = 'VP Essential';
     protected static ?int $navigationSort = 2;
     protected static string $view = 'VPEssential1::filament.pages.menu-builder';
+    
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public ?int $selectedMenuId = null;
     public ?array $menuItems = [];

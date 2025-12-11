@@ -16,6 +16,11 @@ class SocialSettings extends Page
     protected static ?int $navigationSort = 1;
     protected static string $view = 'vpessential1::filament.pages.social-settings';
     
+    public static function shouldRegisterNavigation(): bool
+    {
+        return true;
+    }
+    
     public array $data = [];
     
     public function mount(): void

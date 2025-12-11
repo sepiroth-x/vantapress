@@ -18,6 +18,11 @@ class PostResource extends Resource
     protected static ?string $navigationGroup = 'VP Essential 1';
     protected static ?int $navigationSort = 10;
     
+    public static function shouldRegisterNavigation(): bool
+    {
+        return true;
+    }
+    
     public static function form(Form $form): Form
     {
         return $form

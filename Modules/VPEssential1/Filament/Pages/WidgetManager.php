@@ -24,6 +24,11 @@ class WidgetManager extends Page implements HasTable, HasForms
     protected static ?string $navigationGroup = 'VP Essential';
     protected static ?int $navigationSort = 3;
     protected static string $view = 'VPEssential1::filament.pages.widget-manager';
+    
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public ?int $selectedAreaId = null;
 
