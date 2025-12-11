@@ -1,8 +1,8 @@
 {
     "name": "VP Essential 1",
     "slug": "VPEssential1",
-    "version": "1.0.0",
-    "description": "Core VantaPress functionality: Theme Customizer, Menu Builder, Widget Manager, User Profiles, and Tweeting System. This module is essential for the VantaPress CMS ecosystem.",
+    "version": "2.0.0",
+    "description": "Comprehensive social networking platform: Profiles, Friends, Followers, Posts, Tweets, Comments, Reactions, Messaging, Hashtags, Notifications, Verification, Theme Customizer, Menu Builder, and Widget System. Complete Facebook/Twitter-style social features for VantaPress CMS.",
     "author": "VantaPress",
     "author_email": "chardy.tsadiq02@gmail.com",
     "author_url": "https://github.com/sepiroth-x",
@@ -18,15 +18,44 @@
     "dependencies": [],
     "service_provider": "Modules\\VPEssential1\\VPEssential1ServiceProvider",
     "features": [
+        "User Profile System (Facebook-style)",
+        "Friend Requests & Management",
+        "Follower/Following System",
+        "Poke Feature",
+        "Posts & Newsfeed (Facebook-style)",
+        "Micro-blogging / Tweets (Twitter-style)",
+        "Comments & Nested Replies",
+        "Reactions (Like, Love, Haha, Wow, Sad, Angry)",
+        "Post Sharing",
+        "Private Messaging System",
+        "Group Conversations",
+        "Hashtag System",
+        "Notifications Center",
+        "Verification Badges (Blue/Gold/Gray)",
+        "Registration Toggle",
         "Theme Customization Engine",
         "Dynamic Menu Builder",
         "Widget Area Management",
-        "User Profile System",
-        "Micro-blogging (Tweeting)",
         "Theme Settings API",
-        "Helper Functions"
+        "Feature Toggle System"
     ],
     "provides": {
+        "models": [
+            "UserProfile", "Friend", "Follower", "Poke",
+            "Post", "PostShare", "Tweet", "TweetLike",
+            "Comment", "CommentLike", "Reaction",
+            "Conversation", "ConversationParticipant", "Message",
+            "Hashtag", "Hashtaggable", "Notification",
+            "Verification", "SocialSetting",
+            "Menu", "MenuItem", "Widget", "WidgetArea", "ThemeSetting"
+        ],
+        "controllers": [
+            "ProfileController", "PostController", "FriendController",
+            "MessageController", "CommentController", "ReactionController"
+        ],
+        "services": [
+            "HashtagService", "NotificationService", "SocialService"
+        ],
         "helpers": [
             "vp_get_theme_setting",
             "vp_set_theme_setting",
@@ -45,7 +74,28 @@
             "Modules\\VPEssential1\\Filament\\Pages\\MenuBuilder",
             "Modules\\VPEssential1\\Filament\\Pages\\WidgetManager",
             "Modules\\VPEssential1\\Filament\\Pages\\ProfileManager",
-            "Modules\\VPEssential1\\Filament\\Pages\\TweetManager"
+            "Modules\\VPEssential1\\Filament\\Pages\\TweetManager",
+            "Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"
         ]
+    },
+    "database": {
+        "tables": 23,
+        "migrations": 14
+    },
+    "settings": {
+        "enable_registration": true,
+        "enable_profiles": true,
+        "enable_friends": true,
+        "enable_followers": true,
+        "enable_pokes": true,
+        "enable_posts": true,
+        "enable_tweets": true,
+        "enable_comments": true,
+        "enable_reactions": true,
+        "enable_sharing": true,
+        "enable_hashtags": true,
+        "enable_messaging": true,
+        "enable_notifications": true,
+        "enable_verification": true
     }
 }
