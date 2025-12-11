@@ -70,12 +70,14 @@
             "vp_render_recent_posts_widget"
         ],
         "filament_pages": [
+            "Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"
+        ],
+        "filament_pages_available": [
             "Modules\\VPEssential1\\Filament\\Pages\\ThemeCustomizer",
             "Modules\\VPEssential1\\Filament\\Pages\\MenuBuilder",
             "Modules\\VPEssential1\\Filament\\Pages\\WidgetManager",
             "Modules\\VPEssential1\\Filament\\Pages\\ProfileManager",
-            "Modules\\VPEssential1\\Filament\\Pages\\TweetManager",
-            "Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"
+            "Modules\\VPEssential1\\Filament\\Pages\\TweetManager"
         ]
     },
     "database": {

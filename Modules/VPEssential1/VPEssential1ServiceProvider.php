@@ -49,19 +49,8 @@ class VPEssential1ServiceProvider extends ServiceProvider
         // Load migrations
         $this->loadMigrationsFrom(__DIR__ . '/migrations');
         
-        // Register Filament resources
-        if (class_exists(\Filament\Facades\Filament::class)) {
-            \Filament\Facades\Filament::serving(function () {
-                // Register Filament pages
-                \Filament\Facades\Filament::registerPages([
-                    \Modules\VPEssential1\Filament\Pages\SocialSettings::class,
-                ]);
-                
-                // Register Filament resources
-                \Filament\Facades\Filament::registerResources([
-                    \Modules\VPEssential1\Filament\Resources\PostResource::class,
-                ]);
-            });
-        }
+        // Register Filament resources dynamically via Panel discovery
+        // Pages and Resources are auto-discovered by Filament from their directories
+        // Only register if they explicitly return true from shouldRegisterNavigation()
     }
 }

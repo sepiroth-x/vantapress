@@ -23,11 +23,10 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // Discover module Filament pages
-        // $modulePages = $this->discoverModulePages();
-        $modulePages = []; // Temporarily disabled to fix Page error
+        // Discover module Filament pages dynamically
+        $modulePages = $this->discoverModulePages();
         
-        \Log::info('[AdminPanelProvider] Module pages to register', [
+        \Log::info('[AdminPanelProvider] Module pages discovered', [
             'count' => count($modulePages),
             'pages' => $modulePages
         ]);
@@ -220,6 +219,25 @@ class AdminPanelProvider extends PanelProvider
                                 'class' => $pageClass
                             ]);
                             continue;
+                        }
+                        
+                        // Check if page should be registered (dynamic check)
+                        try {
+                            if (method_exists($pageClass, 'shouldRegisterNavigation')) {
+                                if (!$pageClass::shouldRegisterNavigation()) {
+                                    \Log::info('[AdminPanelProvider] Page navigation disabled', [
+                                        'module' => $module->slug,
+                                        'page' => $pageClass
+                                    ]);
+                                    continue; // Skip pages that explicitly disable navigation
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            \Log::warning('[AdminPanelProvider] Could not check shouldRegisterNavigation', [
+                                'module' => $module->slug,
+                                'page' => $pageClass,
+                                'error' => $e->getMessage()
+                            ]);
                         }
                         
                         $pages[] = $pageClass;
