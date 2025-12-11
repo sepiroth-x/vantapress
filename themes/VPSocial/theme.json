@@ -1,0 +1,202 @@
+{
+    "name": "VP Social Theme",
+    "slug": "VPSocial",
+    "version": "1.0.0",
+    "description": "Modern social networking theme for VantaPress - Facebook & Twitter inspired design with dark mode support",
+    "author": "VantaPress Team",
+    "author_email": "chardy.tsadiq02@gmail.com",
+    "author_url": "https://github.com/sepiroth-x",
+    "license": "Open Source",
+    "requires": {
+        "vantapress": ">=1.2.0",
+        "vpessential1": ">=1.0.0"
+    },
+    "social_links": {
+        "github": "https://github.com/sepiroth-x/vantapress",
+        "facebook": "https://www.facebook.com/sepirothx/",
+        "twitter": "https://x.com/sepirothx000",
+        "email": "chardy.tsadiq02@gmail.com"
+    },
+    "preview": "screenshot.png",
+    
+    "customizer": {
+        "sections": {
+            "site": {
+                "label": "Site Identity",
+                "priority": 10,
+                "elements": [
+                    {
+                        "id": "site_title",
+                        "label": "Site Title",
+                        "type": "text",
+                        "default": "VP Social",
+                        "selector": "[data-vp-element='site_title']",
+                        "live_update": true
+                    },
+                    {
+                        "id": "site_tagline",
+                        "label": "Tagline",
+                        "type": "text",
+                        "default": "Connect. Share. Engage.",
+                        "selector": "[data-vp-element='site_tagline']",
+                        "live_update": true
+                    },
+                    {
+                        "id": "site_logo",
+                        "label": "Logo",
+                        "type": "image",
+                        "default": "",
+                        "selector": "[data-vp-element='site_logo']"
+                    }
+                ]
+            },
+            "colors": {
+                "label": "Colors",
+                "priority": 20,
+                "elements": [
+                    {
+                        "id": "primary_color",
+                        "label": "Primary Color",
+                        "type": "color",
+                        "default": "#1877f2",
+                        "live_update": true
+                    },
+                    {
+                        "id": "secondary_color",
+                        "label": "Secondary Color",
+                        "type": "color",
+                        "default": "#42b72a",
+                        "live_update": true
+                    },
+                    {
+                        "id": "accent_color",
+                        "label": "Accent Color",
+                        "type": "color",
+                        "default": "#1da1f2",
+                        "live_update": true
+                    },
+                    {
+                        "id": "dark_mode",
+                        "label": "Enable Dark Mode",
+                        "type": "toggle",
+                        "default": true,
+                        "live_update": true
+                    }
+                ]
+            },
+            "header": {
+                "label": "Header",
+                "priority": 30,
+                "elements": [
+                    {
+                        "id": "header_bg_color",
+                        "label": "Background Color",
+                        "type": "color",
+                        "default": "#ffffff",
+                        "live_update": true
+                    },
+                    {
+                        "id": "header_text_color",
+                        "label": "Text Color",
+                        "type": "color",
+                        "default": "#1c1e21",
+                        "live_update": true
+                    },
+                    {
+                        "id": "show_search",
+                        "label": "Show Search Bar",
+                        "type": "toggle",
+                        "default": true,
+                        "live_update": true
+                    },
+                    {
+                        "id": "show_notifications",
+                        "label": "Show Notifications",
+                        "type": "toggle",
+                        "default": true,
+                        "live_update": true
+                    }
+                ]
+            },
+            "social": {
+                "label": "Social Features",
+                "priority": 40,
+                "elements": [
+                    {
+                        "id": "newsfeed_style",
+                        "label": "Newsfeed Style",
+                        "type": "select",
+                        "options": {
+                            "facebook": "Facebook Style",
+                            "twitter": "Twitter Style",
+                            "instagram": "Instagram Style"
+                        },
+                        "default": "facebook",
+                        "live_update": false
+                    },
+                    {
+                        "id": "show_sidebar",
+                        "label": "Show Sidebar",
+                        "type": "toggle",
+                        "default": true,
+                        "live_update": true
+                    },
+                    {
+                        "id": "posts_per_page",
+                        "label": "Posts Per Page",
+                        "type": "number",
+                        "default": 20,
+                        "min": 5,
+                        "max": 100,
+                        "live_update": false
+                    }
+                ]
+            },
+            "footer": {
+                "label": "Footer",
+                "priority": 50,
+                "elements": [
+                    {
+                        "id": "footer_bg_color",
+                        "label": "Background Color",
+                        "type": "color",
+                        "default": "#242526",
+                        "live_update": true
+                    },
+                    {
+                        "id": "footer_text_color",
+                        "label": "Text Color",
+                        "type": "color",
+                        "default": "#b0b3b8",
+                        "live_update": true
+                    },
+                    {
+                        "id": "copyright_text",
+                        "label": "Copyright Text",
+                        "type": "text",
+                        "default": "© 2025 VP Social. All rights reserved.",
+                        "selector": "[data-vp-element='copyright']",
+                        "live_update": true
+                    }
+                ]
+            }
+        }
+    },
+    
+    "features": {
+        "dark_mode": true,
+        "responsive": true,
+        "rtl": false,
+        "customizer": true,
+        "widgets": true,
+        "menus": true
+    },
+    
+    "support": {
+        "html5": true,
+        "css3": true,
+        "tailwindcss": true,
+        "javascript": true,
+        "ajax": true
+    }
+}

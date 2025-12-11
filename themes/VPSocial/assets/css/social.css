@@ -1,0 +1,349 @@
+/* VP Social Theme - Main Stylesheet */
+/* Built with Tailwind CSS */
+
+/* Custom Color Variables */
+:root {
+    --vp-primary: #1877f2;
+    --vp-secondary: #42b72a;
+    --vp-accent: #1da1f2;
+    --vp-danger: #ef4444;
+    --vp-success: #10b981;
+    --vp-warning: #f59e0b;
+}
+
+/* Dark Mode Colors */
+.dark {
+    --vp-bg-primary: #18191a;
+    --vp-bg-secondary: #242526;
+    --vp-bg-tertiary: #3a3b3c;
+    --vp-text-primary: #e4e6eb;
+    --vp-text-secondary: #b0b3b8;
+    --vp-border: #3e4042;
+}
+
+/* Light Mode Colors */
+:root {
+    --vp-bg-primary: #ffffff;
+    --vp-bg-secondary: #f0f2f5;
+    --vp-bg-tertiary: #e4e6eb;
+    --vp-text-primary: #050505;
+    --vp-text-secondary: #65676b;
+    --vp-border: #ced0d4;
+}
+
+/* Base Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Smooth Transitions */
+* {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b0b3b8;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #8e9196;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #4e4f50;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #5e5f60;
+}
+
+/* Post Card Styles */
+.post-card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow;
+}
+
+.post-content {
+    @apply text-gray-900 dark:text-gray-100;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+.post-content a {
+    @apply text-blue-600 dark:text-blue-400 hover:underline;
+}
+
+.post-content .hashtag {
+    @apply text-blue-600 dark:text-blue-400 font-medium hover:underline cursor-pointer;
+}
+
+/* Comment Section */
+.comment-item {
+    @apply bg-gray-100 dark:bg-gray-700 rounded-2xl p-3;
+}
+
+.comment-text {
+    @apply text-sm text-gray-900 dark:text-gray-100;
+    line-height: 1.4;
+}
+
+.comment-reply {
+    @apply pl-12 mt-2;
+}
+
+/* Reactions */
+.reaction-button {
+    @apply flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors;
+}
+
+.reaction-button:hover {
+    @apply bg-gray-100 dark:bg-gray-700;
+}
+
+.reaction-button.active {
+    @apply text-blue-600 dark:text-blue-400 font-semibold;
+}
+
+/* Avatar Styles */
+.avatar {
+    @apply rounded-full object-cover ring-2 ring-white dark:ring-gray-800;
+}
+
+.avatar-sm {
+    @apply h-8 w-8;
+}
+
+.avatar-md {
+    @apply h-10 w-10;
+}
+
+.avatar-lg {
+    @apply h-12 w-12;
+}
+
+.avatar-xl {
+    @apply h-32 w-32;
+}
+
+/* Verification Badge */
+.verified-badge {
+    @apply inline-flex items-center justify-center;
+}
+
+.verified-badge svg {
+    @apply w-5 h-5;
+}
+
+.verified-badge.blue {
+    @apply text-blue-500;
+}
+
+.verified-badge.gold {
+    @apply text-yellow-500;
+}
+
+.verified-badge.gray {
+    @apply text-gray-500;
+}
+
+/* Cover Photo */
+.cover-photo {
+    @apply w-full h-64 md:h-96 object-cover bg-gradient-to-r from-blue-500 to-purple-600;
+}
+
+/* Profile Header */
+.profile-header {
+    @apply relative bg-white dark:bg-gray-800 rounded-b-lg shadow-sm;
+}
+
+.profile-avatar-wrapper {
+    @apply absolute -top-16 left-1/2 transform -translate-x-1/2 md:left-8 md:translate-x-0;
+}
+
+/* Button Styles */
+.btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all inline-flex items-center justify-center;
+}
+
+.btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white;
+}
+
+.btn-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100;
+}
+
+.btn-success {
+    @apply bg-green-600 hover:bg-green-700 text-white;
+}
+
+.btn-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white;
+}
+
+.btn-sm {
+    @apply px-3 py-1.5 text-sm;
+}
+
+.btn-lg {
+    @apply px-6 py-3 text-lg;
+}
+
+/* Card Styles */
+.card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm;
+}
+
+.card-header {
+    @apply p-4 border-b border-gray-200 dark:border-gray-700;
+}
+
+.card-body {
+    @apply p-4;
+}
+
+.card-footer {
+    @apply p-4 border-t border-gray-200 dark:border-gray-700;
+}
+
+/* Input Styles */
+.input {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.textarea {
+    @apply input resize-none;
+}
+
+/* Badge Styles */
+.badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-primary {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+}
+
+.badge-success {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+}
+
+.badge-danger {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+}
+
+/* Loading Spinner */
+.spinner {
+    @apply inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600;
+}
+
+/* Media Grid */
+.media-grid {
+    @apply grid gap-1;
+}
+
+.media-grid-1 {
+    @apply grid-cols-1;
+}
+
+.media-grid-2 {
+    @apply grid-cols-2;
+}
+
+.media-grid-3 {
+    @apply grid-cols-2;
+}
+
+.media-grid-4 {
+    @apply grid-cols-2;
+}
+
+/* Notification Dot */
+.notification-dot {
+    @apply absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-600 ring-2 ring-white dark:ring-gray-800;
+}
+
+/* Hover Effects */
+.hover-card {
+    @apply transition-all hover:shadow-lg hover:-translate-y-1;
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Responsive Text */
+@media (max-width: 640px) {
+    .responsive-text {
+        font-size: 0.875rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Accessibility */
+.focus-visible:focus {
+    @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+}
+
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+    @apply relative inline-flex items-center h-6 rounded-full w-11 transition-colors;
+}
+
+.dark-mode-toggle.active {
+    @apply bg-blue-600;
+}
+
+.dark-mode-toggle:not(.active) {
+    @apply bg-gray-300;
+}
+
+/* Social Layout */
+.social-layout {
+    min-height: calc(100vh - 4rem);
+}
+
+/* Sticky Sidebar */
+@media (min-width: 1024px) {
+    .sticky-sidebar {
+        position: sticky;
+        top: 5rem;
+        max-height: calc(100vh - 6rem);
+        overflow-y: auto;
+    }
+}
+
+/* Mobile Menu */
+@media (max-width: 768px) {
+    .mobile-menu {
+        @apply fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50;
+    }
+}

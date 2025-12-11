@@ -59,8 +59,5 @@ VantaPress Developer Manual.md
 !/Modules/VPTelemetry/
 !/Modules/VPTelemetryServer/
 
-# Themes - Ignore VP Social Theme (optional custom theme)
-/themes/vp-social/
-
 # Production Diagnostic Files
 production-diagnostic.php
