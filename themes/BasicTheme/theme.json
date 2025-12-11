@@ -1,0 +1,145 @@
+{
+    "name": "Basic Theme (The Beginning)",
+    "slug": "BasicTheme",
+    "version": "1.0.0",
+    "description": "The default VantaPress theme - A clean and simple theme that controls both frontend and admin panel styling",
+    "author": "VantaPress",
+    "author_email": "chardy.tsadiq02@gmail.com",
+    "author_url": "https://github.com/sepiroth-x",
+    "license": "Open Source",
+    "social_links": {
+        "github": "https://github.com/sepiroth-x",
+        "facebook": "https://www.facebook.com/sepirothx/",
+        "twitter": "https://x.com/sepirothx000",
+        "email": "chardy.tsadiq02@gmail.com",
+        "mobile": "+63 915 0388 448"
+    },
+    "preview": "screenshot.png",
+    
+    "customizer": {
+        "sections": {
+            "site": {
+                "label": "Site Identity",
+                "priority": 10,
+                "elements": [
+                    {
+                        "id": "site_title",
+                        "label": "Site Title",
+                        "type": "text",
+                        "default": "VantaPress",
+                        "selector": "[data-vp-element='site_title']",
+                        "live_update": true
+                    },
+                    {
+                        "id": "site_tagline",
+                        "label": "Tagline",
+                        "type": "text",
+                        "default": "WordPress Philosophy, Laravel Power",
+                        "selector": "[data-vp-element='site_tagline']",
+                        "live_update": true
+                    },
+                    {
+                        "id": "site_logo",
+                        "label": "Logo",
+                        "type": "image",
+                        "default": "",
+                        "selector": "[data-vp-element='site_logo']"
+                    }
+                ]
+            },
+            "header": {
+                "label": "Header",
+                "priority": 20,
+                "elements": [
+                    {
+                        "id": "header_bg_color",
+                        "label": "Background Color",
+                        "type": "color",
+                        "default": "#ffffff",
+                        "css_var": "--header-bg-color"
+                    },
+                    {
+                        "id": "header_text_color",
+                        "label": "Text Color",
+                        "type": "color",
+                        "default": "#1e293b",
+                        "css_var": "--header-text-color"
+                    }
+                ]
+            },
+            "colors": {
+                "label": "Colors",
+                "priority": 30,
+                "elements": [
+                    {
+                        "id": "primary_color",
+                        "label": "Primary Color",
+                        "type": "color",
+                        "default": "#3b82f6",
+                        "css_var": "--color-primary"
+                    },
+                    {
+                        "id": "secondary_color",
+                        "label": "Secondary Color",
+                        "type": "color",
+                        "default": "#8b5cf6",
+                        "css_var": "--color-secondary"
+                    },
+                    {
+                        "id": "accent_color",
+                        "label": "Accent Color",
+                        "type": "color",
+                        "default": "#10b981",
+                        "css_var": "--color-accent"
+                    }
+                ]
+            },
+            "footer": {
+                "label": "Footer",
+                "priority": 40,
+                "elements": [
+                    {
+                        "id": "footer_text",
+                        "label": "Footer Text",
+                        "type": "textarea",
+                        "default": "© 2025 VantaPress. Built with ❤️",
+                        "selector": "[data-vp-element='footer_text']",
+                        "live_update": true
+                    },
+                    {
+                        "id": "footer_bg_color",
+                        "label": "Background Color",
+                        "type": "color",
+                        "default": "#1e293b",
+                        "css_var": "--footer-bg-color"
+                    },
+                    {
+                        "id": "footer_text_color",
+                        "label": "Text Color",
+                        "type": "color",
+                        "default": "#ffffff",
+                        "css_var": "--footer-text-color"
+                    }
+                ]
+            }
+        },
+        
+        "pages": [
+            {
+                "slug": "home",
+                "label": "Homepage",
+                "template": "views/welcome.blade.php",
+                "preview_url": "/"
+            }
+        ],
+        
+        "menus": [
+            {
+                "location": "primary",
+                "label": "Primary Menu",
+                "description": "Main navigation menu in header"
+            }
+        ]
+    }
+}
+

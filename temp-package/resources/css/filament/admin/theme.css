@@ -1,0 +1,71 @@
+@import '/vendor/filament/filament/dist/index.css';
+
+/* VantaPress Dark Theme */
+:root {
+    /* Primary - Crimson Villain */
+    --primary-50: #ffe5ea;
+    --primary-100: #ffc7d2;
+    --primary-200: #ff8fa5;
+    --primary-300: #ff5778;
+    --primary-400: #ff1f4b;
+    --primary-500: #D40026;
+    --primary-600: #b0001f;
+    --primary-700: #8c0018;
+    --primary-800: #680012;
+    --primary-900: #44000c;
+    --primary-950: #200006;
+    
+    /* Gray - Steel Gray to Vantablack */
+    --gray-50: #f5f5f6;
+    --gray-100: #e8e9ea;
+    --gray-200: #d1d2d4;
+    --gray-300: #babcbf;
+    --gray-400: #a3a5a9;
+    --gray-500: #888A8F;
+    --gray-600: #6d6f73;
+    --gray-700: #525457;
+    --gray-800: #36383a;
+    --gray-900: #1b1c1e;
+    --gray-950: #0A0A0A;
+    
+    /* VantaPress Custom Colors */
+    --vanta-black: #050505;
+    --deep-obsidian: #0A0A0A;
+    --crimson-villain: #D40026;
+    --dark-violet: #6A0F91;
+    --steel-gray: #888A8F;
+    --pure-white: #FFFFFF;
+}
+
+/* Dark mode overrides */
+.dark {
+    --color-bg-base: var(--vanta-black);
+    --color-bg-surface: var(--deep-obsidian);
+    --color-text-base: var(--pure-white);
+    --color-text-subtle: var(--steel-gray);
+}
+
+/* Custom branding */
+.fi-sidebar-header {
+    background: linear-gradient(135deg, var(--deep-obsidian) 0%, var(--vanta-black) 100%);
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1);
+}
+
+.fi-sidebar {
+    background: var(--deep-obsidian);
+}
+
+.fi-topbar {
+    background: var(--vanta-black);
+    border-bottom: 1px solid rgba(136, 138, 143, 0.1);
+}
+
+/* Accent highlights with Dark Violet */
+.fi-btn-primary:hover {
+    box-shadow: 0 4px 16px rgba(212, 0, 38, 0.3);
+}
+
+.fi-sidebar-item-active {
+    background: linear-gradient(90deg, var(--crimson-villain), var(--dark-violet));
+}
+

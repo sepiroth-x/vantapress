@@ -1,0 +1,51 @@
+{
+    "name": "VP Essential 1",
+    "slug": "VPEssential1",
+    "version": "1.0.0",
+    "description": "Core VantaPress functionality: Theme Customizer, Menu Builder, Widget Manager, User Profiles, and Tweeting System. This module is essential for the VantaPress CMS ecosystem.",
+    "author": "VantaPress",
+    "author_email": "chardy.tsadiq02@gmail.com",
+    "author_url": "https://github.com/sepiroth-x",
+    "license": "Open Source",
+    "social_links": {
+        "github": "https://github.com/sepiroth-x",
+        "facebook": "https://www.facebook.com/sepirothx/",
+        "twitter": "https://x.com/sepirothx000",
+        "email": "chardy.tsadiq02@gmail.com",
+        "mobile": "+63 915 0388 448"
+    },
+    "active": true,
+    "dependencies": [],
+    "service_provider": "Modules\\VPEssential1\\VPEssential1ServiceProvider",
+    "features": [
+        "Theme Customization Engine",
+        "Dynamic Menu Builder",
+        "Widget Area Management",
+        "User Profile System",
+        "Micro-blogging (Tweeting)",
+        "Theme Settings API",
+        "Helper Functions"
+    ],
+    "provides": {
+        "helpers": [
+            "vp_get_theme_setting",
+            "vp_set_theme_setting",
+            "vp_get_menu",
+            "vp_get_widget_area",
+            "vp_get_hero_config",
+            "vp_get_current_user_profile",
+            "vp_get_user_profile",
+            "vp_get_recent_tweets",
+            "vp_render_widget",
+            "vp_render_menu_widget",
+            "vp_render_recent_posts_widget"
+        ],
+        "filament_pages": [
+            "Modules\\VPEssential1\\Filament\\Pages\\ThemeCustomizer",
+            "Modules\\VPEssential1\\Filament\\Pages\\MenuBuilder",
+            "Modules\\VPEssential1\\Filament\\Pages\\WidgetManager",
+            "Modules\\VPEssential1\\Filament\\Pages\\ProfileManager",
+            "Modules\\VPEssential1\\Filament\\Pages\\TweetManager"
+        ]
+    }
+}
