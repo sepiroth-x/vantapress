@@ -1,12 +1,137 @@
 # 🚀 VantaPress - Release Notes
 
-**Current Version:** v1.1.8-complete  
-**Release Date:** December 10, 2025  
+**Current Version:** v1.2.1-social-advanced  
+**Release Date:** December 12, 2025  
 **Download:** [Latest Release](https://github.com/sepiroth-x/vantapress/releases/latest)
 
 ---
 
-## 📌 Latest Version: v1.1.8-complete - Module System Improvements
+## 📌 Latest Version: v1.2.1-social-advanced - Advanced Social Features
+
+### 🎉 VP Social Theme - Advanced Interactions & Media
+
+This release brings VP Social Theme to feature parity with modern social networks, including real-time chat, post management, video uploads, and beautiful UI redesigns.
+
+#### ✨ What's New in v1.2.1-social-advanced
+
+**💬 Facebook-Style Chat Box System:**
+- **Real-Time Messaging** - Click any conversation to open floating chat window
+  - Positioned at bottom-right corner like Facebook Messenger
+  - Minimize/maximize functionality (48px ↔ 450px)
+  - Close button to hide chat box
+  - AJAX message sending without page reload
+  - Auto-scroll to latest messages
+  - Multiple chat boxes can be opened simultaneously
+  - Event-driven architecture with Alpine.js
+
+**✏️ Post Management Features:**
+- **Edit Posts** - Modify your published content
+  - Edit content and visibility settings
+  - Re-extracts hashtags automatically
+  - Updates URL previews if links changed
+- **Pin Posts** - Highlight important content
+  - Pin posts to the top of your profile
+  - Only one post can be pinned at a time
+  - Toggle pin/unpin with single click
+- **Delete Posts** - Remove unwanted content
+  - Confirmation dialog before deletion
+  - Automatically removes media files from storage
+- **Dropdown Menu** - Three-dot menu on your own posts
+  - Clean, modern Alpine.js dropdown interface
+  - Quick access to all post actions
+
+**🎥 Video Upload System:**
+- **Full Video Support** - Share videos up to 100MB
+  - Supported formats: MP4, WebM, MOV, AVI, MPEG
+  - HTML5 video player with controls
+  - Responsive layout (1 column single, 2 columns multiple)
+  - File preview with size validation before upload
+  - Videos display with black background for consistency
+- **Enhanced Photo Uploads**:
+  - Multiple photo support maintained
+  - Better grid layout for mixed media
+  - 5MB limit per image
+
+**👥 Friends UI Redesign:**
+- **Beautiful Card Design**:
+  - Gradient cover at top of each card
+  - Larger 24x24px avatars with shadows
+  - Bio text display (2-line clamp)
+  - Gradient action buttons with emoji icons
+  - Better hover effects and transitions
+  - 2-column responsive grid layout
+  - Less prominent "Remove Friend" button
+  - Confirmation dialogs with friend's name
+
+**🏠 Guest Experience:**
+- **Clean Landing Page** - Hidden navigation header for guests
+  - Only login card visible for new visitors
+  - Cleaner, more focused first impression
+  - Authenticated users see full navigation
+
+#### 🔧 Technical Improvements
+
+**Routes Added:**
+```php
+GET  /posts/{post}/edit     - Show edit form
+PUT  /posts/{post}          - Update post
+POST /posts/{post}/pin      - Toggle pin status
+```
+
+**Database Fields Used:**
+- `is_pinned` - Boolean field for pinned posts
+- `media` - JSON array supports both images and videos
+
+**New Views:**
+- `chat-box.blade.php` - Reusable chat component
+- `posts/edit.blade.php` - Post editing form
+
+**Updated Controllers:**
+- `MessageController` - Added JSON response for AJAX
+- `PostController` - Added edit(), update(), pin() methods
+
+**Validation Updates:**
+```php
+'media.*' => 'file|mimetypes:image/*,video/mp4,video/mpeg,video/quicktime,video/x-msvideo,video/webm|max:102400'
+```
+
+---
+
+## 📌 Previous Version: v1.2.0 - VP Social UX Improvements
+
+### 🎨 User Experience Enhancements
+
+Major improvements to VP Social Theme's usability and feature set.
+
+#### ✨ What's New in v1.2.0
+
+**🏘️ Groups System:**
+- Navigation link added to header
+- Comprehensive groups directory
+- Search and filter functionality
+- Privacy badges and enhanced UI
+
+**📱 Responsive Design:**
+- Mobile-friendly friends view
+- Stacked buttons on small screens
+
+**💗 Hashtag Reactions Fix:**
+- Proper eager loading on filtered posts
+- Reactions work everywhere
+
+**🔄 Advanced Sharing:**
+- Dropdown menu with multiple options
+- Internal repost and external sharing
+- Copy link with clipboard API
+
+**🔗 URL Preview System:**
+- Automatic metadata extraction
+- Open Graph and Twitter Card support
+- 24-hour caching for performance
+
+---
+
+## 📌 Previous Version: v1.1.8-complete - Module System Improvements
 
 ### 🔧 Module Detection & UX Enhancements
 
