@@ -20,6 +20,7 @@ class Post extends Model
         'content',
         'type',
         'media',
+        'url_preview',
         'link_url',
         'link_title',
         'link_description',
@@ -35,6 +36,7 @@ class Post extends Model
     
     protected $casts = [
         'media' => 'array',
+        'url_preview' => 'array',
         'is_pinned' => 'boolean',
         'is_published' => 'boolean',
     ];

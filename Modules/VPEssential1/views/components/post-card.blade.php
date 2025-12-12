@@ -68,6 +68,38 @@
             @endforeach
         </div>
     @endif
+    
+    {{-- URL Preview Card --}}
+    @if($post->url_preview)
+        <a href="{{ $post->url_preview['url'] }}" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="block border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden hover:shadow-lg transition mb-4">
+            @if($post->url_preview['image'])
+                <img src="{{ $post->url_preview['image'] }}" 
+                     alt="{{ $post->url_preview['title'] ?? 'Link preview' }}"
+                     class="w-full h-48 object-cover bg-gray-200 dark:bg-gray-700"
+                     onerror="this.style.display='none'">
+            @endif
+            <div class="p-4 bg-gray-50 dark:bg-gray-800">
+                @if($post->url_preview['site_name'])
+                    <div class="text-xs text-gray-500 dark:text-gray-400 uppercase mb-1">
+                        🔗 {{ $post->url_preview['site_name'] }}
+                    </div>
+                @endif
+                @if($post->url_preview['title'])
+                    <div class="font-bold text-gray-900 dark:text-white mb-1 line-clamp-2">
+                        {{ $post->url_preview['title'] }}
+                    </div>
+                @endif
+                @if($post->url_preview['description'])
+                    <div class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                        {{ $post->url_preview['description'] }}
+                    </div>
+                @endif
+            </div>
+        </a>
+    @endif
 
     {{-- Post Stats --}}
     <div class="flex items-center justify-between py-2 border-t border-b border-gray-200 dark:border-gray-700 mb-2">
@@ -111,14 +143,75 @@
             💬 Comment
         </button>
 
-        {{-- Share Button --}}
-        <form action="{{ route('social.posts.share', $post->id) }}" method="POST" class="flex-1" onsubmit="return handleShare(event, {{ $post->id }})">
-            @csrf
-            <button type="submit" 
+        {{-- Share Button with Dropdown --}}
+        <div class="flex-1 relative" x-data="{ showShareMenu: false }">
+            <button @click="showShareMenu = !showShareMenu" 
+                    type="button"
                     class="w-full py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium transition">
                 🔄 Share
             </button>
-        </form>
+            
+            {{-- Share Dropdown Menu --}}
+            <div x-show="showShareMenu" 
+                 @click.away="showShareMenu = false"
+                 x-transition
+                 class="absolute bottom-full mb-2 left-0 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50"
+                 style="display: none;">
+                
+                {{-- Repost to Profile --}}
+                <form action="{{ route('social.posts.share', $post->id) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="share_type" value="repost">
+                    <button type="submit" 
+                            class="w-full px-4 py-3 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3">
+                        <span class="text-2xl">🔄</span>
+                        <div>
+                            <div class="font-semibold text-gray-900 dark:text-white">Repost to Profile</div>
+                            <div class="text-xs text-gray-600 dark:text-gray-400">Share instantly with your followers</div>
+                        </div>
+                    </button>
+                </form>
+                
+                <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                
+                {{-- External Share Options --}}
+                <div class="px-2">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 px-2 py-1 font-semibold uppercase">Share to Social Media</div>
+                    
+                    {{-- Facebook --}}
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('social.posts.show', $post->id)) }}" 
+                       target="_blank" 
+                       class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3">
+                        <span class="text-xl">📘</span>
+                        <span class="text-gray-900 dark:text-white">Facebook</span>
+                    </a>
+                    
+                    {{-- Twitter/X --}}
+                    <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('social.posts.show', $post->id)) }}&text={{ urlencode(Str::limit($post->content, 100)) }}" 
+                       target="_blank" 
+                       class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3">
+                        <span class="text-xl">𝕏</span>
+                        <span class="text-gray-900 dark:text-white">Twitter/X</span>
+                    </a>
+                    
+                    {{-- WhatsApp --}}
+                    <a href="https://wa.me/?text={{ urlencode(route('social.posts.show', $post->id)) }}" 
+                       target="_blank" 
+                       class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3">
+                        <span class="text-xl">💬</span>
+                        <span class="text-gray-900 dark:text-white">WhatsApp</span>
+                    </a>
+                    
+                    {{-- Copy Link --}}
+                    <button type="button" 
+                            onclick="copyPostLink('{{ route('social.posts.show', $post->id) }}', this)"
+                            class="w-full px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3 text-left">
+                        <span class="text-xl">🔗</span>
+                        <span class="text-gray-900 dark:text-white">Copy Link</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     {{-- Comments Section --}}
@@ -359,37 +452,20 @@ function toggleReaction(id, contentType, reactionType, button) {
     });
 }
 
-function handleShare(event, postId) {
-    event.preventDefault();
-    const form = event.target;
-    const button = form.querySelector('button');
-    
-    button.disabled = true;
-    button.textContent = 'Sharing...';
-    
-    fetch(form.action, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            button.textContent = '✓ Shared';
-            button.classList.add('text-green-600');
-            setTimeout(() => location.reload(), 1000);
-        } else {
-            throw new Error('Share failed');
-        }
-    })
-    .catch(error => {
-        console.error('Error sharing post:', error);
-        button.disabled = false;
-        button.textContent = '🔄 Share';
-        alert('Failed to share post. Please try again.');
+function copyPostLink(url, button) {
+    navigator.clipboard.writeText(url).then(() => {
+        const originalText = button.querySelector('span:last-child').textContent;
+        button.querySelector('span:last-child').textContent = '✓ Link Copied!';
+        button.classList.add('text-green-600');
+        
+        setTimeout(() => {
+            button.querySelector('span:last-child').textContent = originalText;
+            button.classList.remove('text-green-600');
+        }, 2000);
+    }).catch(err => {
+        alert('Failed to copy link');
+        console.error('Copy failed:', err);
     });
-    
-    return false;
 }
 
 function loadMoreComments(postId) {

@@ -10,18 +10,42 @@ use Modules\VPEssential1\Models\Post;
 
 class GroupController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $myGroups = Auth::user()->groups()
-            ->wherePivot('status', 'approved')
-            ->latest()
-            ->paginate(12);
-            
-        $suggestedGroups = Group::where('privacy', 'public')
-            ->whereNotIn('id', Auth::user()->groups()->pluck('vp_groups.id'))
-            ->orderByDesc('members_count')
-            ->take(6)
-            ->get();
+        $filter = $request->get('filter');
+        $search = $request->get('search');
+        
+        // My Groups query
+        $myGroupsQuery = Auth::user()->groups()
+            ->wherePivot('status', 'approved');
+        
+        if ($search) {
+            $myGroupsQuery->where('vp_groups.name', 'like', "%{$search}%");
+        }
+        
+        $myGroups = $myGroupsQuery->latest()->paginate(12);
+        
+        // Suggested/All Groups query
+        $suggestedQuery = Group::where('privacy', 'public')
+            ->whereNotIn('id', Auth::user()->groups()->pluck('vp_groups.id'));
+        
+        if ($search) {
+            $suggestedQuery->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        // Apply filters
+        if ($filter === 'popular') {
+            $suggestedQuery->where('members_count', '>=', 10)->orderByDesc('members_count');
+        } elseif ($filter === 'new') {
+            $suggestedQuery->orderByDesc('created_at');
+        } else {
+            $suggestedQuery->orderByDesc('members_count');
+        }
+        
+        $suggestedGroups = $suggestedQuery->paginate(12);
 
         return view('vpessential1::groups.index', compact('myGroups', 'suggestedGroups'));
     }

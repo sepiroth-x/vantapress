@@ -33,6 +33,10 @@
                    class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('social.messages.*') ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     💬 Messages
                 </a>
+                <a href="{{ route('social.groups.index') }}" 
+                   class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('social.groups.*') ? 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    🏘️ Groups
+                </a>
             </nav>
 
             {{-- User Menu (Logged In) --}}

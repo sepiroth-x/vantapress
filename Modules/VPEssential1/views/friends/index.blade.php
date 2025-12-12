@@ -48,7 +48,7 @@
                     </div>
 
                     {{-- Actions --}}
-                    <div class="flex gap-2">
+                    <div class="flex flex-col sm:flex-row gap-2">
                         <a href="{{ route('social.profile.user', $friend->id) }}" 
                            class="flex-1 text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
                             View Profile

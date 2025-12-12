@@ -8,16 +8,19 @@ use Modules\VPEssential1\Models\Post;
 use Modules\VPEssential1\Models\PostShare;
 use Modules\VPEssential1\Models\SocialSetting;
 use Modules\VPEssential1\Services\HashtagService;
+use Modules\VPEssential1\Services\UrlPreviewService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     protected $hashtagService;
+    protected $urlPreviewService;
     
-    public function __construct(HashtagService $hashtagService)
+    public function __construct(HashtagService $hashtagService, UrlPreviewService $urlPreviewService)
     {
         $this->hashtagService = $hashtagService;
+        $this->urlPreviewService = $urlPreviewService;
     }
     
     /**
@@ -76,6 +79,13 @@ class PostController extends Controller
         // Extract and attach hashtags
         $this->hashtagService->extractAndAttach($post, $validated['content']);
         
+        // Extract URL preview if URL found in content
+        $urlPreview = $this->urlPreviewService->getFirstUrlPreview($validated['content']);
+        if ($urlPreview) {
+            $post->url_preview = $urlPreview;
+            $post->save();
+        }
+        
         return redirect()->back()->with('success', 'Post created successfully!');
     }
     
@@ -131,7 +141,14 @@ class PostController extends Controller
     public function hashtag(string $tag)
     {
         $posts = $this->hashtagService->search($tag, Post::class);
-        $posts = $posts->sortByDesc('created_at')->values();
+        
+        // Eager load relationships for post cards
+        $postIds = $posts->pluck('id');
+        $posts = Post::whereIn('id', $postIds)
+            ->with(['user', 'user.profile', 'comments', 'reactions'])
+            ->get()
+            ->sortByDesc('created_at')
+            ->values();
         
         return view('vpessential1::posts.hashtag', compact('posts', 'tag'));
     }
