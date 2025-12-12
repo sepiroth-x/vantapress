@@ -96,9 +96,14 @@
                     {{-- Post Options --}}
                     <div class="flex items-center justify-between mt-4">
                         <div class="flex gap-2">
-                            <label class="cursor-pointer px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600">
+                            <label class="cursor-pointer px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition">
                                 📷 Photo
-                                <input type="file" name="media[]" multiple accept="image/*" class="hidden">
+                                <input type="file" name="media[]" multiple accept="image/*" class="hidden" onchange="previewFiles(this)">
+                            </label>
+                            
+                            <label class="cursor-pointer px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+                                🎥 Video
+                                <input type="file" name="media[]" accept="video/*" class="hidden" onchange="previewFiles(this)">
                             </label>
                             
                             <select name="visibility" 
@@ -113,6 +118,12 @@
                                 class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
                             Post
                         </button>
+                    </div>
+                    
+                    {{-- Media Preview --}}
+                    <div id="media-preview" class="mt-4 hidden">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Selected files:</p>
+                        <div id="preview-container" class="space-y-2"></div>
                     </div>
                 </div>
             </div>
@@ -232,6 +243,40 @@ function mentionAutocomplete() {
                 this.showSuggestions = false;
             }
         }
+    }
+}
+
+// File preview function
+function previewFiles(input) {
+    const container = document.getElementById('preview-container');
+    const preview = document.getElementById('media-preview');
+    container.innerHTML = '';
+    
+    if (input.files.length > 0) {
+        preview.classList.remove('hidden');
+        
+        Array.from(input.files).forEach((file, index) => {
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg';
+            
+            const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+            const isVideo = file.type.startsWith('video/');
+            const icon = isVideo ? '🎥' : '📷';
+            
+            // Check file size (100MB limit for videos, 5MB for images)
+            const maxSize = isVideo ? 100 : 5;
+            const sizeError = fileSize > maxSize ? ' - ⚠️ Too large!' : '';
+            
+            div.innerHTML = `
+                <span class="text-sm text-gray-700 dark:text-gray-300">
+                    ${icon} ${file.name} <span class="text-gray-500">(${fileSize} MB${sizeError})</span>
+                </span>
+            `;
+            
+            container.appendChild(div);
+        });
+    } else {
+        preview.classList.add('hidden');
     }
 }
 

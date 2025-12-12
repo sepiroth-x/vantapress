@@ -57,7 +57,7 @@ class PostController extends Controller
             'type' => 'in:status,photo,video,link',
             'visibility' => 'in:public,friends,private',
             'media' => 'nullable|array',
-            'media.*' => 'image|max:5120',
+            'media.*' => 'file|mimetypes:image/*,video/mp4,video/mpeg,video/quicktime,video/x-msvideo,video/webm|max:102400',
             'link_url' => 'nullable|url',
         ]);
         
@@ -65,7 +65,7 @@ class PostController extends Controller
         $validated['type'] = $validated['type'] ?? 'status';
         $validated['visibility'] = $validated['visibility'] ?? 'public';
         
-        // Handle media uploads
+        // Handle media uploads (photos and videos)
         if ($request->hasFile('media')) {
             $mediaFiles = [];
             foreach ($request->file('media') as $file) {
@@ -97,6 +97,69 @@ class PostController extends Controller
         $post->load(['user', 'user.profile', 'comments.user', 'reactions']);
         
         return view('vpessential1::posts.show', compact('post'));
+    }
+    
+    /**
+     * Show edit form
+     */
+    public function edit(Post $post)
+    {
+        if ($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        return view('vpessential1::posts.edit', compact('post'));
+    }
+    
+    /**
+     * Update post
+     */
+    public function update(Request $request, Post $post)
+    {
+        if ($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        $validated = $request->validate([
+            'content' => 'required|string|max:' . SocialSetting::get('max_post_length', 5000),
+            'visibility' => 'in:public,friends,private',
+        ]);
+        
+        $post->update($validated);
+        
+        // Re-extract and attach hashtags
+        $this->hashtagService->detach($post);
+        $this->hashtagService->extractAndAttach($post, $validated['content']);
+        
+        // Re-extract URL preview
+        $urlPreview = $this->urlPreviewService->getFirstUrlPreview($validated['content']);
+        $post->url_preview = $urlPreview;
+        $post->save();
+        
+        return redirect()->route('social.posts.index')->with('success', 'Post updated successfully!');
+    }
+    
+    /**
+     * Toggle pin status
+     */
+    public function pin(Post $post)
+    {
+        if ($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        // Unpin other posts if pinning this one
+        if (!$post->is_pinned) {
+            Post::where('user_id', Auth::id())
+                ->where('is_pinned', true)
+                ->update(['is_pinned' => false]);
+        }
+        
+        $post->is_pinned = !$post->is_pinned;
+        $post->save();
+        
+        $message = $post->is_pinned ? 'Post pinned to your profile!' : 'Post unpinned from your profile.';
+        return redirect()->back()->with('success', $message);
     }
     
     /**

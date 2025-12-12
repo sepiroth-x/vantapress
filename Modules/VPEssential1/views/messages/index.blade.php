@@ -21,8 +21,9 @@
                         $lastMessage = $conversation->lastMessage;
                     @endphp
                     
-                    <a href="{{ route('social.messages.show', $conversation->id) }}" 
-                       class="flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                    <a href="javascript:void(0)" 
+                       @click="window.dispatchEvent(new CustomEvent('open-chat-{{ $conversation->id }}'))"
+                       class="flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer">
                         {{-- Avatar --}}
                         @if($otherParticipant && $otherParticipant->user->profile && $otherParticipant->user->profile->avatar)
                             <img src="{{ asset('storage/' . $otherParticipant->user->profile->avatar) }}" 
@@ -73,4 +74,17 @@
         @include('vpessential1::components.sidebar-right')
     </div>
 </div>
+
+{{-- Include chat boxes for all conversations --}}
+@foreach($conversations as $conversation)
+    @php
+        $otherParticipant = $conversation->participants
+            ->where('user_id', '!=', auth()->id())
+            ->first();
+    @endphp
+    @include('vpessential1::components.chat-box', [
+        'conversation' => $conversation,
+        'otherParticipant' => $otherParticipant
+    ])
+@endforeach
 @endsection

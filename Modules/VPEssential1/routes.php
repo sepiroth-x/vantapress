@@ -46,6 +46,9 @@ Route::prefix('social')->name('social.')->middleware(['auth', 'web'])->group(fun
         Route::get('/newsfeed', 'index')->name('newsfeed');
         Route::post('/posts', 'store')->name('posts.store');
         Route::get('/posts/{post}', 'show')->name('posts.show');
+        Route::get('/posts/{post}/edit', 'edit')->name('posts.edit');
+        Route::put('/posts/{post}', 'update')->name('posts.update');
+        Route::post('/posts/{post}/pin', 'pin')->name('posts.pin');
         Route::post('/posts/{post}/share', 'share')->name('posts.share');
         Route::delete('/posts/{post}', 'destroy')->name('posts.destroy');
     });

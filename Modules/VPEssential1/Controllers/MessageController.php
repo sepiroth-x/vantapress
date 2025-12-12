@@ -188,6 +188,19 @@ class MessageController extends Controller
             ]);
         }
         
+        // Return JSON for AJAX requests
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => [
+                    'id' => $message->id,
+                    'user_id' => $message->user_id,
+                    'content' => $message->content,
+                    'created_at' => $message->created_at->toIso8601String(),
+                ],
+            ]);
+        }
+        
         return redirect()->back()->with('success', 'Message sent!');
     }
 }

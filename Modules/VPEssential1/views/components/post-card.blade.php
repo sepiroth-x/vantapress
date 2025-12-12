@@ -43,12 +43,47 @@
 
         {{-- Post Menu --}}
         @if(auth()->id() === $post->user_id)
-            <div class="relative">
-                <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+            <div x-data="{ showMenu: false }" class="relative">
+                <button @click="showMenu = !showMenu" 
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
                     </svg>
                 </button>
+                
+                {{-- Dropdown Menu --}}
+                <div x-show="showMenu" 
+                     @click.away="showMenu = false"
+                     x-transition
+                     class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
+                    <a href="{{ route('social.posts.edit', $post->id) }}" 
+                       class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        ✏️ Edit Post
+                    </a>
+                    
+                    <form action="{{ route('social.posts.pin', $post->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" 
+                                class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            @if($post->is_pinned)
+                                📌 Unpin from Profile
+                            @else
+                                📌 Pin to Profile
+                            @endif
+                        </button>
+                    </form>
+                    
+                    <form action="{{ route('social.posts.destroy', $post->id) }}" 
+                          method="POST" 
+                          onsubmit="return confirm('Are you sure you want to delete this post?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" 
+                                class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-b-lg">
+                            🗑️ Delete Post
+                        </button>
+                    </form>
+                </div>
             </div>
         @endif
     </div>
@@ -60,11 +95,25 @@
 
     {{-- Post Media --}}
     @if($post->media)
-        <div class="grid grid-cols-2 gap-2 mb-4">
+        <div class="grid {{ count($post->media) === 1 ? 'grid-cols-1' : 'grid-cols-2' }} gap-2 mb-4">
             @foreach($post->media as $media)
-                <img src="{{ asset('storage/' . $media) }}" 
-                     alt="Post image" 
-                     class="rounded-lg w-full h-64 object-cover">
+                @php
+                    $extension = pathinfo($media, PATHINFO_EXTENSION);
+                    $videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mpeg'];
+                    $isVideo = in_array(strtolower($extension), $videoExtensions);
+                @endphp
+                
+                @if($isVideo)
+                    <video controls class="rounded-lg w-full {{ count($post->media) === 1 ? 'max-h-[600px]' : 'h-64' }} object-cover bg-black">
+                        <source src="{{ asset('storage/' . $media) }}" type="video/{{ $extension === 'mov' ? 'quicktime' : $extension }}">
+                        Your browser does not support the video tag.
+                    </video>
+                @else
+                    <img src="{{ asset('storage/' . $media) }}" 
+                         alt="Post image" 
+                         class="rounded-lg w-full {{ count($post->media) === 1 ? 'max-h-[600px]' : 'h-64' }} object-cover cursor-pointer hover:opacity-90 transition"
+                         onclick="openImageModal(this.src)">
+                @endif
             @endforeach
         </div>
     @endif

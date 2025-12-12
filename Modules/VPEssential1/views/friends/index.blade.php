@@ -18,57 +18,74 @@
 
     {{-- Friends Grid --}}
     @if($friends->count() > 0)
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             @foreach($friends as $friend)
-                <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-                    <div class="flex items-center gap-4 mb-4">
-                        {{-- Avatar --}}
-                        @if($friend->profile && $friend->profile->avatar)
-                            <img src="{{ asset('storage/' . $friend->profile->avatar) }}" 
-                                 alt="{{ $friend->name }}" 
-                                 class="w-16 h-16 rounded-full object-cover">
-                        @else
-                            <div class="w-16 h-16 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xl font-bold text-white">
-                                {{ strtoupper(substr($friend->name, 0, 1)) }}
-                            </div>
-                        @endif
-
-                        <div class="flex-1">
-                            <a href="{{ route('social.profile.user', $friend->id) }}" 
-                               class="font-semibold text-gray-900 dark:text-white hover:underline">
-                                {{ $friend->profile->display_name ?? $friend->name }}
-                            </a>
-                            @if($friend->isVerified())
-                                <span class="text-blue-500">✓</span>
+                <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300">
+                    {{-- Friend Header with Cover --}}
+                    <div class="h-24 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+                    
+                    {{-- Friend Info --}}
+                    <div class="relative px-6 pb-6">
+                        {{-- Avatar (overlapping cover) --}}
+                        <div class="absolute -top-12">
+                            @if($friend->profile && $friend->profile->avatar)
+                                <img src="{{ asset('storage/' . $friend->profile->avatar) }}" 
+                                     alt="{{ $friend->name }}" 
+                                     class="w-24 h-24 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-lg">
+                            @else
+                                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center text-3xl font-bold text-white border-4 border-white dark:border-gray-800 shadow-lg">
+                                    {{ strtoupper(substr($friend->name, 0, 1)) }}
+                                </div>
                             @endif
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                {{ '@' . $friend->name }}
-                            </p>
+                        </div>
+
+                        <div class="pt-14">
+                            {{-- Name and Username --}}
+                            <div class="mb-4">
+                                <a href="{{ route('social.profile.user', $friend->id) }}" 
+                                   class="font-bold text-xl text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition">
+                                    {{ $friend->profile->display_name ?? $friend->name }}
+                                    @if($friend->isVerified())
+                                        <span class="text-blue-500 text-sm">✓</span>
+                                    @endif
+                                </a>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    {{ '@' . $friend->name }}
+                                </p>
+                                
+                                {{-- Bio if exists --}}
+                                @if($friend->profile && $friend->profile->bio)
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 mt-2 line-clamp-2">
+                                        {{ $friend->profile->bio }}
+                                    </p>
+                                @endif
+                            </div>
+
+                            {{-- Action Buttons --}}
+                            <div class="flex gap-2 mb-3">
+                                <a href="{{ route('social.profile.user', $friend->id) }}" 
+                                   class="flex-1 text-center px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 font-medium shadow-md hover:shadow-lg transition-all">
+                                    👤 Profile
+                                </a>
+                                <a href="{{ route('social.messages.create', $friend->id) }}" 
+                                   class="flex-1 text-center px-4 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 font-medium shadow-md hover:shadow-lg transition-all">
+                                    💬 Message
+                                </a>
+                            </div>
+
+                            {{-- Remove Friend (Less Prominent) --}}
+                            <form action="{{ route('social.friends.remove', $friend->id) }}" 
+                                  method="POST" 
+                                  onsubmit="return confirm('Are you sure you want to remove {{ $friend->profile->display_name ?? $friend->name }} from your friends?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        class="w-full px-3 py-2 text-sm text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-all">
+                                    ❌ Remove Friend
+                                </button>
+                            </form>
                         </div>
                     </div>
-
-                    {{-- Actions --}}
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <a href="{{ route('social.profile.user', $friend->id) }}" 
-                           class="flex-1 text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                            View Profile
-                        </a>
-                        <a href="{{ route('social.messages.create', $friend->id) }}" 
-                           class="flex-1 text-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
-                            Message
-                        </a>
-                    </div>
-
-                    {{-- Remove Friend --}}
-                    <form action="{{ route('social.friends.remove', $friend->id) }}" method="POST" class="mt-2">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                                onclick="return confirm('Remove friend?')"
-                                class="w-full px-4 py-2 text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                            Remove Friend
-                        </button>
-                    </form>
                 </div>
             @endforeach
         </div>
