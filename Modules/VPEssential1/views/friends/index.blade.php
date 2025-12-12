@@ -3,7 +3,11 @@
 @section('title', 'Friends')
 
 @section('content')
-<div class="max-w-5xl mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-12 gap-6">
+        @include('vpessential1::components.sidebar-left')
+        
+        <main class="col-span-12 lg:col-span-6">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Friends</h1>
         <a href="{{ route('social.friends.requests') }}" 
@@ -80,5 +84,9 @@
             </a>
         </div>
     @endif
+        </main>
+        
+        @include('vpessential1::components.sidebar-right')
+    </div>
 </div>
 @endsection

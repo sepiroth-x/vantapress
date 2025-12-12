@@ -14,9 +14,17 @@ class ProfileController extends Controller
     /**
      * Display user profile
      */
-    public function show($userId = null)
+    public function show($identifier = null)
     {
-        $user = $userId ? \App\Models\User::findOrFail($userId) : Auth::user();
+        if ($identifier) {
+            // Try to find user by username first, then by ID
+            $user = \App\Models\User::where('username', $identifier)
+                ->orWhere('id', $identifier)
+                ->firstOrFail();
+        } else {
+            $user = Auth::user();
+        }
+        
         $profile = $user->profile ?? $this->createProfile($user);
         
         return view('vpessential1::profile.show', compact('user', 'profile'));

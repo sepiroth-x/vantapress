@@ -3,7 +3,11 @@
 @section('title', 'Messages')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-12 gap-6">
+        @include('vpessential1::components.sidebar-left')
+        
+        <main class="col-span-12 lg:col-span-6">
     <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Messages</h1>
 
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
@@ -63,6 +67,10 @@
                 </p>
             </div>
         @endif
+    </div>
+        </main>
+        
+        @include('vpessential1::components.sidebar-right')
     </div>
 </div>
 @endsection

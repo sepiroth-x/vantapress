@@ -26,7 +26,8 @@
             <div class="hidden md:flex items-center space-x-4">
                 <a href="#features" class="text-white/90 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/10">Features</a>
                 <a href="#about" class="text-white/90 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/10">About</a>
-                <a href="#login" class="bg-white/20 backdrop-blur-lg text-white px-6 py-2 rounded-lg hover:bg-white/30 transition font-medium">Sign In</a>
+                <a href="#login" class="text-white/90 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/10">Sign In</a>
+                <a href="{{ url('/register') }}" class="bg-white text-purple-600 px-6 py-2 rounded-lg hover:bg-gray-100 transition font-bold">Sign Up</a>
             </div>
         </div>
     </nav>
@@ -134,16 +135,16 @@
                     
                     <div>
                         <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                            Email Address
+                            Email or Username
                         </label>
-                        <input type="email" 
+                        <input type="text" 
                                name="email" 
                                id="email" 
                                required 
                                autofocus
                                value="{{ old('email') }}"
                                class="w-full px-4 py-3.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-800 dark:text-white transition"
-                               placeholder="you@example.com">
+                               placeholder="username or email@example.com">
                         @error('email')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -183,23 +184,7 @@
                     </button>
                 </form>
 
-                {{-- Divider --}}
-                <div class="my-6">
-                    <div class="relative">
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
-                        </div>
-                        <div class="relative flex justify-center text-sm">
-                            <span class="px-3 bg-white dark:bg-gray-900 text-gray-500 font-medium">New to {{ vp_get_theme_setting('site_title', 'VP Social') }}?</span>
-                        </div>
-                    </div>
-                </div>
 
-                {{-- Register Button --}}
-                <a href="{{ url('/register') }}" 
-                   class="block w-full text-center px-6 py-4 border-2 border-purple-600 text-purple-600 dark:text-purple-400 rounded-xl font-bold text-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition">
-                    Create New Account
-                </a>
 
                 {{-- Test Accounts --}}
                 @if(config('app.env') === 'local')

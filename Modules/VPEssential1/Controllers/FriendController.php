@@ -13,11 +13,17 @@ class FriendController extends Controller
     /**
      * Send friend request
      */
-    public function sendRequest($userId)
+    public function sendRequest($identifier)
     {
         if (!SocialSetting::isFeatureEnabled('friends')) {
             abort(404);
         }
+        
+        // Find user by username or ID
+        $user = \App\Models\User::where('username', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+        $userId = $user->id;
         
         if ($userId == Auth::id()) {
             return redirect()->back()->with('error', 'You cannot send a friend request to yourself.');
@@ -99,8 +105,14 @@ class FriendController extends Controller
     /**
      * Remove friend
      */
-    public function remove($userId)
+    public function remove($identifier)
     {
+        // Find user by username or ID
+        $user = \App\Models\User::where('username', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+        $userId = $user->id;
+        
         Friend::where(function($query) use ($userId) {
             $query->where('user_id', Auth::id())
                   ->where('friend_id', $userId);

@@ -44,6 +44,9 @@ class SocialSettings extends Page
             'max_tweet_length' => SocialSetting::get('max_tweet_length', 280),
             'posts_per_page' => SocialSetting::get('posts_per_page', 20),
             'default_comments_display' => SocialSetting::get('default_comments_display', 5),
+            'permalink_profile' => SocialSetting::get('permalink_profile', 'username'),
+            'permalink_messages' => SocialSetting::get('permalink_messages', 'username'),
+            'permalink_friends' => SocialSetting::get('permalink_friends', 'username'),
         ]);
     }
     
@@ -142,6 +145,38 @@ class SocialSettings extends Page
                             ->required(),
                     ])
                     ->columns(2),
+                
+                Forms\Components\Section::make('Permalink Settings')
+                    ->description('Configure URL structure for social features')
+                    ->schema([
+                        Forms\Components\Select::make('permalink_profile')
+                            ->label('Profile URLs')
+                            ->options([
+                                'username' => 'Username (/social/profile/john)',
+                                'id' => 'Numeric ID (/social/profile/123)',
+                            ])
+                            ->default('username')
+                            ->helperText('Choose how profile URLs are structured'),
+                        
+                        Forms\Components\Select::make('permalink_messages')
+                            ->label('Message URLs')
+                            ->options([
+                                'username' => 'Username (/social/messages/john)',
+                                'id' => 'Numeric ID (/social/messages/123)',
+                            ])
+                            ->default('username')
+                            ->helperText('Choose how message conversation URLs are structured'),
+                        
+                        Forms\Components\Select::make('permalink_friends')
+                            ->label('Friend Action URLs')
+                            ->options([
+                                'username' => 'Username (/social/friends/john/request)',
+                                'id' => 'Numeric ID (/social/friends/123/request)',
+                            ])
+                            ->default('username')
+                            ->helperText('Choose how friend request URLs are structured'),
+                    ])
+                    ->columns(1),
             ])
             ->statePath('data');
     }

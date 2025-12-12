@@ -72,9 +72,9 @@
     {{-- Post Stats --}}
     <div class="flex items-center justify-between py-2 border-t border-b border-gray-200 dark:border-gray-700 mb-2">
         <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-            <span id="likes-count-{{ $post->id }}">{{ $post->likes_count }} {{ Str::plural('like', $post->likes_count) }}</span>
+            <span id="likes-count-{{ $post->id }}">{{ $post->reactions->count() }} {{ Str::plural('reaction', $post->reactions->count()) }}</span>
             <span id="comments-count-{{ $post->id }}">{{ $post->comments->count() }} {{ Str::plural('comment', $post->comments->count()) }}</span>
-            <span>{{ $post->shares_count }} {{ Str::plural('share', $post->shares_count) }}</span>
+            <span>{{ $post->shares_count ?? 0 }} {{ Str::plural('share', $post->shares_count ?? 0) }}</span>
         </div>
     </div>
 

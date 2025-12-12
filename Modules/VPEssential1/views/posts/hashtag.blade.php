@@ -1,4 +1,6 @@
-@extends('vpessential1::layouts.app')
+@extends('layouts.app')
+
+@section('title', '#' . $tag)
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 py-6">

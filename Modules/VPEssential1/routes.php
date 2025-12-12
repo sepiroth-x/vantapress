@@ -38,7 +38,7 @@ Route::prefix('social')->name('social.')->middleware(['auth', 'web'])->group(fun
         Route::get('/profile', 'show')->name('profile.show');
         Route::get('/profile/edit', 'edit')->name('profile.edit');
         Route::put('/profile', 'update')->name('profile.update');
-        Route::get('/profile/{userId}', 'show')->name('profile.user');
+        Route::get('/profile/{identifier}', 'show')->name('profile.user');
     });
     
     // Newsfeed & Posts routes
@@ -54,18 +54,18 @@ Route::prefix('social')->name('social.')->middleware(['auth', 'web'])->group(fun
     Route::controller(FriendController::class)->group(function () {
         Route::get('/friends', 'index')->name('friends.index');
         Route::get('/friends/requests', 'requests')->name('friends.requests');
-        Route::post('/friends/{userId}/request', 'sendRequest')->name('friends.request');
+        Route::post('/friends/{identifier}/request', 'sendRequest')->name('friends.request');
         Route::post('/friends/{friend}/accept', 'acceptRequest')->name('friends.accept');
         Route::post('/friends/{friend}/reject', 'rejectRequest')->name('friends.reject');
-        Route::delete('/friends/{userId}', 'remove')->name('friends.remove');
+        Route::delete('/friends/{identifier}', 'remove')->name('friends.remove');
     });
     
     // Messages routes
     Route::controller(MessageController::class)->group(function () {
         Route::get('/messages', 'index')->name('messages.index');
-        Route::get('/messages/create/{userId}', 'create')->name('messages.create');
-        Route::get('/messages/{conversation}', 'show')->name('messages.show');
-        Route::post('/messages/{conversation}', 'send')->name('messages.send');
+        Route::get('/messages/create/{identifier}', 'create')->name('messages.create');
+        Route::get('/messages/{identifier}', 'show')->name('messages.show');
+        Route::post('/messages/{identifier}', 'send')->name('messages.send');
     });
     
     // Comments routes

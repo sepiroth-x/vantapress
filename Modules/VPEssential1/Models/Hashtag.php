@@ -28,6 +28,21 @@ class Hashtag extends Model
     }
     
     /**
+     * Get all posts associated with this hashtag
+     */
+    public function posts()
+    {
+        return $this->hasManyThrough(
+            Post::class,
+            Hashtaggable::class,
+            'hashtag_id',
+            'id',
+            'id',
+            'hashtaggable_id'
+        )->where('hashtaggable_type', 'Modules\\VPEssential1\\Models\\Post');
+    }
+    
+    /**
      * Boot the model
      */
     protected static function boot()

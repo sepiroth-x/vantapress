@@ -36,8 +36,44 @@ class MessageController extends Controller
     /**
      * Show conversation
      */
-    public function show(Conversation $conversation)
+    public function show($identifier)
     {
+        // Try to find conversation by ID first
+        $conversation = Conversation::find($identifier);
+        
+        // If not found, try to find by username (create or find existing conversation)
+        if (!$conversation) {
+            $user = \App\Models\User::where('username', $identifier)
+                ->orWhere('id', $identifier)
+                ->firstOrFail();
+            
+            // Find existing conversation with this user
+            $conversationId = DB::table('vp_conversation_participants as cp1')
+                ->join('vp_conversation_participants as cp2', 'cp1.conversation_id', '=', 'cp2.conversation_id')
+                ->join('vp_conversations as c', 'c.id', '=', 'cp1.conversation_id')
+                ->where('cp1.user_id', Auth::id())
+                ->where('cp2.user_id', $user->id)
+                ->where('c.type', 'private')
+                ->value('c.id');
+            
+            if ($conversationId) {
+                $conversation = Conversation::findOrFail($conversationId);
+            } else {
+                // Create new conversation
+                $conversation = Conversation::create(['type' => 'private']);
+                
+                ConversationParticipant::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => Auth::id(),
+                ]);
+                
+                ConversationParticipant::create([
+                    'conversation_id' => $conversation->id,
+                    'user_id' => $user->id,
+                ]);
+            }
+        }
+        
         // Check if user is participant
         if (!$conversation->participants()->where('user_id', Auth::id())->exists()) {
             abort(403);
@@ -58,8 +94,14 @@ class MessageController extends Controller
     /**
      * Create new conversation
      */
-    public function create($userId)
+    public function create($identifier)
     {
+        // Find user by username or ID
+        $user = \App\Models\User::where('username', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+        $userId = $user->id;
+        
         // Check if conversation already exists
         $existing = DB::table('vp_conversation_participants as cp1')
             ->join('vp_conversation_participants as cp2', 'cp1.conversation_id', '=', 'cp2.conversation_id')
@@ -93,13 +135,16 @@ class MessageController extends Controller
     /**
      * Send message
      */
-    public function send(Request $request, Conversation $conversation)
+    public function send(Request $request, $identifier)
     {
         $validated = $request->validate([
             'content' => 'required|string|max:5000',
             'attachments' => 'nullable|array',
             'attachments.*' => 'file|max:10240',
         ]);
+        
+        // Find conversation
+        $conversation = Conversation::findOrFail($identifier);
         
         // Check if user is participant
         if (!$conversation->participants()->where('user_id', Auth::id())->exists()) {
@@ -139,7 +184,7 @@ class MessageController extends Controller
                 'notifiable_type' => Message::class,
                 'title' => 'New message',
                 'message' => Auth::user()->name . ' sent you a message',
-                'link' => route('messages.show', $conversation->id),
+                'link' => route('social.messages.show', $conversation->id),
             ]);
         }
         

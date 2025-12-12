@@ -174,6 +174,25 @@ Route::middleware(['auth'])->group(function () {
         ->name('theme-customizer.save-layout-template');
     Route::get('/theme-customizer/{id}/layout-templates', [App\Http\Controllers\ThemeCustomizerController::class, 'getLayoutTemplates'])
         ->name('theme-customizer.layout-templates');
+    
+    // VP Social Groups Routes
+    Route::prefix('social/groups')->name('social.groups.')->group(function () {
+        Route::get('/', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'index'])->name('index');
+        Route::get('/create', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'create'])->name('create');
+        Route::post('/', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'store'])->name('store');
+        Route::get('/{slug}', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'show'])->name('show');
+        Route::post('/{slug}/join', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'join'])->name('join');
+        Route::post('/{slug}/leave', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'leave'])->name('leave');
+    });
+    
+    // VP Social Stories Routes
+    Route::prefix('social/stories')->name('social.stories.')->group(function () {
+        Route::get('/', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'index'])->name('index');
+        Route::get('/create', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'create'])->name('create');
+        Route::post('/', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'store'])->name('store');
+        Route::get('/{id}', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'show'])->name('show');
+        Route::delete('/{id}', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'destroy'])->name('destroy');
+    });
 });
 
 // Catch-all route for dynamic pages (must be last)

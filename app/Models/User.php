@@ -167,6 +167,20 @@ class User extends Authenticatable
     }
     
     /**
+     * Groups (communities this user belongs to)
+     */
+    public function groups()
+    {
+        return $this->belongsToMany(
+            \Modules\VPEssential1\Models\Group::class,
+            'vp_group_members',
+            'user_id',
+            'group_id'
+        )->withPivot('role', 'status', 'joined_at')
+          ->withTimestamps();
+    }
+    
+    /**
      * Pokes received
      */
     public function pokesReceived()

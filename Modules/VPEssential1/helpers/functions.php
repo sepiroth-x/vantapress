@@ -288,3 +288,38 @@ if (!function_exists('vp_get_recent_tweets')) {
         return $query->limit($limit)->get();
     }
 }
+if (!function_exists('vp_user_url')) {
+    /**
+     * Get user profile URL using username or ID
+     * 
+     * @param mixed $user User object or ID
+     * @param bool $useUsername Whether to use username (true) or ID (false)
+     * @return string
+     */
+    function vp_user_url($user, bool $useUsername = true): string
+    {
+        if (is_numeric($user)) {
+            $user = \App\Models\User::find($user);
+        }
+        
+        if (!$user) {
+            return '#';
+        }
+        
+        $identifier = ($useUsername && $user->username) ? $user->username : $user->id;
+        return route('social.profile.user', $identifier);
+    }
+}
+
+if (!function_exists('vp_permalink_setting')) {
+    /**
+     * Get the permalink format setting
+     * 
+     * @param string $type Type of permalink (profile, messages, etc.)
+     * @return string 'username' or 'id'
+     */
+    function vp_permalink_setting(string $type = 'profile'): string
+    {
+        return \Modules\VPEssential1\Models\SocialSetting::getValue("permalink_{$type}", 'username');
+    }
+}

@@ -3,7 +3,11 @@
 @section('title', $user->name . ' - Profile')
 
 @section('content')
-<div class="max-w-5xl mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-12 gap-6">
+        {{-- No left sidebar on profile --}}
+        
+        <main class="col-span-12 lg:col-span-9">
     {{-- Cover Image --}}
     <div class="relative bg-gradient-to-r from-blue-500 to-purple-600 rounded-t-lg h-64">
         @if($profile->cover_image)
@@ -152,6 +156,13 @@
                 <p class="text-gray-600 dark:text-gray-400">No posts yet.</p>
             </div>
         @endforelse
+    </div>
+        </main>
+        
+        {{-- Right sidebar with 3 columns on profile --}}
+        <aside class="hidden lg:block lg:col-span-3">
+            @include('vpessential1::components.sidebar-right')
+        </aside>
     </div>
 </div>
 @endsection
