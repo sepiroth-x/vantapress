@@ -40,6 +40,7 @@ class ProfileController extends Controller
     {
         $validated = $request->validate([
             'display_name' => 'nullable|string|max:255',
+            'username' => 'nullable|string|max:255|unique:users,username,' . auth()->id() . '|regex:/^[a-zA-Z0-9_]+$/',
             'bio' => 'nullable|string|max:500',
             'website' => 'nullable|url',
             'twitter' => 'nullable|string|max:255',
@@ -49,6 +50,12 @@ class ProfileController extends Controller
             'avatar' => 'nullable|file|max:2048',
             'cover_image' => 'nullable|file|max:5120',
         ]);
+        
+        // Update username in users table if provided
+        if (isset($validated['username'])) {
+            auth()->user()->update(['username' => $validated['username']]);
+            unset($validated['username']);
+        }
         
         $profile = Auth::user()->profile ?? $this->createProfile(Auth::user());
         

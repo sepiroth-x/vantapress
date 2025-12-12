@@ -49,7 +49,7 @@ class FriendController extends Controller
             'type' => 'friend_request',
             'title' => 'New friend request',
             'message' => Auth::user()->name . ' sent you a friend request',
-            'link' => route('friends.requests'),
+            'link' => route('social.friends.requests'),
         ]);
         
         return redirect()->back()->with('success', 'Friend request sent!');
@@ -76,7 +76,7 @@ class FriendController extends Controller
             'type' => 'friend_accepted',
             'title' => 'Friend request accepted',
             'message' => Auth::user()->name . ' accepted your friend request',
-            'link' => route('profile.show', Auth::id()),
+            'link' => route('social.profile.user', Auth::id()),
         ]);
         
         return redirect()->back()->with('success', 'Friend request accepted!');

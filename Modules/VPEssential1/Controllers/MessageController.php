@@ -70,7 +70,7 @@ class MessageController extends Controller
             ->value('c.id');
         
         if ($existing) {
-            return redirect()->route('messages.show', $existing);
+            return redirect()->route('social.messages.show', $existing);
         }
         
         // Create new conversation

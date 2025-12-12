@@ -1,3 +1,7 @@
+@php
+    use Modules\VPEssential1\Models\SocialSetting;
+    $commentsDisplayCount = (int) SocialSetting::get('default_comments_display', 10);
+@endphp
 <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-4">
     {{-- Post Header --}}
     <div class="flex items-center justify-between mb-4">
@@ -76,12 +80,30 @@
 
     {{-- Post Actions --}}
     <div class="flex items-center gap-2">
-        {{-- Like Button --}}
-        <button onclick="toggleReaction({{ $post->id }}, 'post', this)" 
-                id="like-btn-{{ $post->id }}"
-                class="flex-1 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium transition">
-            <span id="like-icon-{{ $post->id }}">👍</span> Like
-        </button>
+        {{-- Like Button with Reactions --}}
+        <div class="flex-1 relative" x-data="{ showReactions: false }">
+            <button @mouseenter="showReactions = true" 
+                    @mouseleave="showReactions = false"
+                    onclick="toggleReaction({{ $post->id }}, 'post', 'like', this)" 
+                    id="like-btn-{{ $post->id }}"
+                    class="w-full py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium transition">
+                <span id="like-icon-{{ $post->id }}">👍</span> Like
+            </button>
+            
+            {{-- Reaction Picker --}}
+            <div x-show="showReactions" 
+                 x-transition
+                 @mouseenter="showReactions = true"
+                 @mouseleave="showReactions = false"
+                 class="absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-700 shadow-lg rounded-full px-3 py-2 flex gap-2 z-10">
+                <button onclick="toggleReaction({{ $post->id }}, 'post', 'like', this)" class="text-2xl hover:scale-125 transition-transform" title="Like">👍</button>
+                <button onclick="toggleReaction({{ $post->id }}, 'post', 'love', this)" class="text-2xl hover:scale-125 transition-transform" title="Love">❤️</button>
+                <button onclick="toggleReaction({{ $post->id }}, 'post', 'haha', this)" class="text-2xl hover:scale-125 transition-transform" title="Haha">😂</button>
+                <button onclick="toggleReaction({{ $post->id }}, 'post', 'wow', this)" class="text-2xl hover:scale-125 transition-transform" title="Wow">😮</button>
+                <button onclick="toggleReaction({{ $post->id }}, 'post', 'sad', this)" class="text-2xl hover:scale-125 transition-transform" title="Sad">😢</button>
+                <button onclick="toggleReaction({{ $post->id }}, 'post', 'angry', this)" class="text-2xl hover:scale-125 transition-transform" title="Angry">😠</button>
+            </div>
+        </div>
 
         {{-- Comment Button --}}
         <button onclick="toggleComments({{ $post->id }})" 
@@ -122,7 +144,7 @@
 
         {{-- Comments List --}}
         <div class="space-y-3" id="comments-list-{{ $post->id }}">
-            @foreach($post->comments()->whereNull('parent_id')->latest()->take(10)->get() as $comment)
+            @foreach($post->comments()->whereNull('parent_id')->latest()->take($commentsDisplayCount)->get() as $comment)
                 <div class="comment-item" id="comment-{{ $comment->id }}">
                     <div class="flex gap-3">
                         <div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
@@ -199,7 +221,7 @@
                 </div>
             @endforeach
             
-            @if($post->comments_count > 10)
+            @if($post->comments_count > $commentsDisplayCount)
                 <button onclick="loadMoreComments({{ $post->id }})" 
                         class="text-sm text-blue-600 hover:underline">
                     Load more comments...
@@ -272,10 +294,19 @@ function handleCommentSubmit(event, postId) {
     return false;
 }
 
-function toggleReaction(id, type, button) {
-    // Disable button to prevent double clicks
+function toggleReaction(id, contentType, reactionType, button) {
+    // Prevent double clicks
+    if (button.disabled) return;
     button.disabled = true;
-    button.classList.add('opacity-50');
+    
+    const reactionIcons = {
+        'like': '👍',
+        'love': '❤️',
+        'haha': '😂',
+        'wow': '😮',
+        'sad': '😢',
+        'angry': '😠'
+    };
     
     fetch('{{ route("social.reactions.toggle") }}', {
         method: 'POST',
@@ -285,38 +316,45 @@ function toggleReaction(id, type, button) {
         },
         body: JSON.stringify({
             reactable_id: id,
-            reactable_type: type === 'post' ? 'Modules\\VPEssential1\\Models\\Post' : 'Modules\\VPEssential1\\Models\\Tweet',
-            type: 'like'
+            reactable_type: contentType === 'post' ? 'Modules\\VPEssential1\\Models\\Post' : 'Modules\\VPEssential1\\Models\\Tweet',
+            type: reactionType
         })
     })
     .then(response => response.json())
     .then(data => {
         // Update the like count
         const likesCountElement = document.getElementById('likes-count-' + id);
-        if (likesCountElement) {
-            const newCount = data.likes_count || 0;
+        if (likesCountElement && data.likes_count !== undefined) {
+            const newCount = data.likes_count;
             likesCountElement.textContent = newCount + ' ' + (newCount === 1 ? 'like' : 'likes');
         }
         
-        // Update button style
+        // Update button style and icon
+        const likeBtn = document.getElementById('like-btn-' + id);
         const likeIcon = document.getElementById('like-icon-' + id);
+        
         if (data.reacted) {
-            button.classList.add('text-blue-600', 'dark:text-blue-400');
-            if (likeIcon) likeIcon.textContent = '👍✨';
+            if (likeBtn) {
+                likeBtn.classList.add('text-blue-600', 'dark:text-blue-400');
+            }
+            if (likeIcon) {
+                likeIcon.textContent = reactionIcons[reactionType] || '👍';
+            }
         } else {
-            button.classList.remove('text-blue-600', 'dark:text-blue-400');
-            if (likeIcon) likeIcon.textContent = '👍';
+            if (likeBtn) {
+                likeBtn.classList.remove('text-blue-600', 'dark:text-blue-400');
+            }
+            if (likeIcon) {
+                likeIcon.textContent = '👍';
+            }
         }
         
         // Re-enable button
         button.disabled = false;
-        button.classList.remove('opacity-50');
     })
     .catch(error => {
         console.error('Error toggling reaction:', error);
-        // Re-enable button on error
         button.disabled = false;
-        button.classList.remove('opacity-50');
         alert('Failed to update reaction. Please try again.');
     });
 }
