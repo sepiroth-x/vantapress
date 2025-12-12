@@ -47,6 +47,7 @@ class ProfileController extends Controller
             'github' => 'nullable|string|max:255',
             'linkedin' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
+            'privacy' => 'nullable|in:public,friends_only,private',
             'avatar' => 'nullable|file|max:2048',
             'cover_image' => 'nullable|file|max:5120',
         ]);

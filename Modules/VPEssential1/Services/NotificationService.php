@@ -16,6 +16,14 @@ class NotificationService
             return null;
         }
         
+        // Set default notifiable values if not provided
+        if (!isset($data['notifiable_type'])) {
+            $data['notifiable_type'] = 'App\\Models\\User';
+        }
+        if (!isset($data['notifiable_id'])) {
+            $data['notifiable_id'] = $data['from_user_id'] ?? 0;
+        }
+        
         return Notification::create($data);
     }
     

@@ -12,23 +12,37 @@
             @method('PUT')
 
             {{-- Avatar --}}
-            <div class="mb-6">
+            <div class="mb-6" x-data="{ 
+                avatarPreview: '{{ $profile->avatar ? asset('storage/' . $profile->avatar) : '' }}',
+                previewAvatar(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.avatarPreview = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Profile Picture
                 </label>
                 <div class="flex items-center gap-4">
-                    @if($profile->avatar)
-                        <img src="{{ asset('storage/' . $profile->avatar) }}" 
-                             alt="Avatar" 
-                             class="w-20 h-20 rounded-full object-cover">
-                    @else
+                    <template x-if="avatarPreview">
+                        <img :src="avatarPreview" 
+                             alt="Avatar Preview" 
+                             class="w-20 h-20 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600">
+                    </template>
+                    <template x-if="!avatarPreview">
                         <div class="w-20 h-20 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-2xl font-bold text-white">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
-                    @endif
+                    </template>
                     <input type="file" 
                            name="avatar" 
                            accept="image/*"
+                           @change="previewAvatar($event)"
                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 </div>
                 @error('avatar')
@@ -37,20 +51,56 @@
             </div>
 
             {{-- Cover Image --}}
-            <div class="mb-6">
+            <div class="mb-6" x-data="{ 
+                coverPreview: '{{ $profile->cover_image ? asset('storage/' . $profile->cover_image) : '' }}',
+                previewCover(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.coverPreview = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Cover Photo
                 </label>
-                @if($profile->cover_image)
-                    <img src="{{ asset('storage/' . $profile->cover_image) }}" 
-                         alt="Cover" 
-                         class="w-full h-40 object-cover rounded-lg mb-2">
-                @endif
+                <template x-if="coverPreview">
+                    <img :src="coverPreview" 
+                         alt="Cover Preview" 
+                         class="w-full h-40 object-cover rounded-lg mb-2 border-2 border-gray-200 dark:border-gray-600">
+                </template>
                 <input type="file" 
                        name="cover_image" 
                        accept="image/*"
+                       @change="previewCover($event)"
                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 @error('cover_image')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Profile Privacy --}}
+            <div class="mb-6">
+                <label for="privacy" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Profile Privacy
+                </label>
+                <select name="privacy" 
+                        id="privacy" 
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
+                    <option value="public" {{ old('privacy', $profile->privacy ?? 'public') == 'public' ? 'selected' : '' }}>
+                        Public - Anyone can view your profile
+                    </option>
+                    <option value="friends_only" {{ old('privacy', $profile->privacy ?? 'public') == 'friends_only' ? 'selected' : '' }}>
+                        Friends Only - Only friends can view your profile
+                    </option>
+                    <option value="private" {{ old('privacy', $profile->privacy ?? 'public') == 'private' ? 'selected' : '' }}>
+                        Private - Only you can view your profile
+                    </option>
+                </select>
+                @error('privacy')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>

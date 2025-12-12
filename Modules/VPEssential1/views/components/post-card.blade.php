@@ -1,6 +1,6 @@
 @php
     use Modules\VPEssential1\Models\SocialSetting;
-    $commentsDisplayCount = (int) SocialSetting::get('default_comments_display', 10);
+    $commentsDisplayCount = (int) SocialSetting::get('default_comments_display', 5);
 @endphp
 <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-4">
     {{-- Post Header --}}

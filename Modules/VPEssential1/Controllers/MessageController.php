@@ -87,7 +87,7 @@ class MessageController extends Controller
             'user_id' => $userId,
         ]);
         
-        return redirect()->route('messages.show', $conversation->id);
+        return redirect()->route('social.messages.show', $conversation->id);
     }
     
     /**

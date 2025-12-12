@@ -43,7 +43,7 @@ class SocialSettings extends Page
             'max_post_length' => SocialSetting::get('max_post_length', 5000),
             'max_tweet_length' => SocialSetting::get('max_tweet_length', 280),
             'posts_per_page' => SocialSetting::get('posts_per_page', 20),
-            'default_comments_display' => SocialSetting::get('default_comments_display', 10),
+            'default_comments_display' => SocialSetting::get('default_comments_display', 5),
         ]);
     }
     
@@ -138,7 +138,7 @@ class SocialSettings extends Page
                             ->helperText('Minimum number of comments to show initially (minimum: 5)')
                             ->numeric()
                             ->minValue(5)
-                            ->default(10)
+                            ->default(5)
                             ->required(),
                     ])
                     ->columns(2),
