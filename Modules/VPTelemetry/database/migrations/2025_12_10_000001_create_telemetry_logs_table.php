@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('telemetry_logs', function (Blueprint $table) {
-            $table->id();
-            $table->string('event_type', 50)->index(); // install, update, heartbeat, module_change
-            $table->json('payload'); // Full telemetry data sent
-            $table->timestamp('sent_at')->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('telemetry_logs')) {
+            Schema::create('telemetry_logs', function (Blueprint $table) {
+                $table->id();
+                $table->string('event_type', 50)->index(); // install, update, heartbeat, module_change
+                $table->json('payload'); // Full telemetry data sent
+                $table->timestamp('sent_at')->nullable();
+                $table->timestamps();
 
-            // Index for querying recent logs
-            $table->index('created_at');
-        });
+                // Index for querying recent logs
+                $table->index('created_at');
+            });
+        }
     }
 
     /**
