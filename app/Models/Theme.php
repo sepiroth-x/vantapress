@@ -64,6 +64,9 @@ class Theme extends Model
         $activated = $this->update(['is_active' => true]);
         
         if ($activated) {
+            // Run theme migrations automatically (implicit migration)
+            $this->runThemeMigrations();
+            
             // Clear theme cache so changes take effect immediately
             \Illuminate\Support\Facades\Cache::forget('cms_themes');
             \Illuminate\Support\Facades\Cache::forget('active_theme');
@@ -145,6 +148,81 @@ class Theme extends Model
         }
         
         return $deactivated;
+    }
+    
+    /**
+     * Run migrations for this theme (implicit migration on activation)
+     * Mirrors ModuleLoader::runModuleMigrations() behavior
+     */
+    protected function runThemeMigrations(): void
+    {
+        $themePath = base_path('themes/' . $this->slug);
+        $migrationsPath = $themePath . '/migrations';
+        
+        if (!\Illuminate\Support\Facades\File::exists($migrationsPath)) {
+            \Log::debug("No migrations directory for theme: {$this->slug}");
+            return;
+        }
+
+        try {
+            \Log::info("Running migrations for theme: {$this->slug}");
+            
+            // Get all migration files
+            $migrationFiles = glob($migrationsPath . '/*.php');
+            
+            if (empty($migrationFiles)) {
+                \Log::debug("No migration files found for theme: {$this->slug}");
+                return;
+            }
+
+            // Check which migrations are already executed
+            $executedMigrations = \DB::table('migrations')
+                ->pluck('migration')
+                ->toArray();
+
+            // Get current batch number
+            $batch = \DB::table('migrations')->max('batch') + 1;
+
+            $executed = 0;
+            
+            foreach ($migrationFiles as $file) {
+                $migrationName = basename($file, '.php');
+                
+                // Skip if already executed
+                if (in_array($migrationName, $executedMigrations)) {
+                    continue;
+                }
+                
+                try {
+                    // Include and run the migration
+                    $migration = include $file;
+                    
+                    if (method_exists($migration, 'up')) {
+                        $migration->up();
+                        
+                        // Record in migrations table
+                        \DB::table('migrations')->insert([
+                            'migration' => $migrationName,
+                            'batch' => $batch
+                        ]);
+                        
+                        \Log::info("Migrated: {$migrationName}");
+                        $executed++;
+                    }
+                } catch (\Exception $e) {
+                    \Log::error("Migration failed for theme {$this->slug}: {$migrationName}", [
+                        'error' => $e->getMessage()
+                    ]);
+                    // Continue with other migrations even if one fails
+                }
+            }
+            
+            if ($executed > 0) {
+                \Log::info("Theme {$this->slug}: Executed {$executed} migration(s)");
+            }
+        } catch (\Exception $e) {
+            \Log::error("Failed to run migrations for theme {$this->slug}: " . $e->getMessage());
+        }
     }
 
     /**

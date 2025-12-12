@@ -42,13 +42,24 @@ class ReactionController extends Controller
                 $reactable = $existing->reactable;
                 if ($reactable && property_exists($reactable, 'likes_count')) {
                     $reactable->decrement('likes_count');
+                    $reactable->refresh();
                 }
                 
-                return response()->json(['status' => 'removed']);
+                return response()->json([
+                    'status' => 'removed',
+                    'reacted' => false,
+                    'likes_count' => $reactable ? $reactable->likes_count : 0
+                ]);
             } else {
                 // Change reaction type
                 $existing->update(['type' => $validated['type']]);
-                return response()->json(['status' => 'updated']);
+                $reactable = $existing->reactable;
+                
+                return response()->json([
+                    'status' => 'updated',
+                    'reacted' => true,
+                    'likes_count' => $reactable ? $reactable->likes_count : 0
+                ]);
             }
         } else {
             // Create new reaction
@@ -58,6 +69,7 @@ class ReactionController extends Controller
             $reactable = $reaction->reactable;
             if ($reactable && property_exists($reactable, 'likes_count')) {
                 $reactable->increment('likes_count');
+                $reactable->refresh();
             }
             
             // Create notification
@@ -74,7 +86,11 @@ class ReactionController extends Controller
                 ]);
             }
             
-            return response()->json(['status' => 'created']);
+            return response()->json([
+                'status' => 'created',
+                'reacted' => true,
+                'likes_count' => $reactable ? $reactable->likes_count : 0
+            ]);
         }
     }
 }

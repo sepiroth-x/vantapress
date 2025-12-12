@@ -36,9 +36,9 @@ Route::prefix('social')->name('social.')->middleware(['auth', 'web'])->group(fun
     // Profile routes
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'show')->name('profile.show');
-        Route::get('/profile/{userId}', 'show')->name('profile.user');
         Route::get('/profile/edit', 'edit')->name('profile.edit');
         Route::put('/profile', 'update')->name('profile.update');
+        Route::get('/profile/{userId}', 'show')->name('profile.user');
     });
     
     // Newsfeed & Posts routes
@@ -78,6 +78,9 @@ Route::prefix('social')->name('social.')->middleware(['auth', 'web'])->group(fun
     Route::controller(ReactionController::class)->group(function () {
         Route::post('/reactions/toggle', 'toggle')->name('reactions.toggle');
     });
+    
+    // Hashtag routes
+    Route::get('/hashtag/{tag}', [PostController::class, 'hashtag'])->name('hashtag');
     
     // Legacy tweet routes (keeping for backwards compatibility)
     Route::get('/tweets', function() {

@@ -51,7 +51,7 @@
 
     {{-- Post Content --}}
     <div class="mb-4">
-        <p class="text-gray-900 dark:text-white whitespace-pre-wrap">{{ $post->content }}</p>
+        <p class="text-gray-900 dark:text-white whitespace-pre-wrap">{!! preg_replace('/#(\w+)/', '<a href="' . route('social.hashtag', '$1') . '" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">#$1</a>', e($post->content)) !!}</p>
     </div>
 
     {{-- Post Media --}}
@@ -68,31 +68,32 @@
     {{-- Post Stats --}}
     <div class="flex items-center justify-between py-2 border-t border-b border-gray-200 dark:border-gray-700 mb-2">
         <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-            <span>{{ $post->likes_count }} likes</span>
-            <span>{{ $post->comments_count }} comments</span>
-            <span>{{ $post->shares_count }} shares</span>
+            <span id="likes-count-{{ $post->id }}">{{ $post->likes_count }} {{ Str::plural('like', $post->likes_count) }}</span>
+            <span id="comments-count-{{ $post->id }}">{{ $post->comments->count() }} {{ Str::plural('comment', $post->comments->count()) }}</span>
+            <span>{{ $post->shares_count }} {{ Str::plural('share', $post->shares_count) }}</span>
         </div>
     </div>
 
     {{-- Post Actions --}}
     <div class="flex items-center gap-2">
         {{-- Like Button --}}
-        <button onclick="toggleReaction({{ $post->id }}, 'post')" 
-                class="flex-1 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium">
-            👍 Like
+        <button onclick="toggleReaction({{ $post->id }}, 'post', this)" 
+                id="like-btn-{{ $post->id }}"
+                class="flex-1 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium transition">
+            <span id="like-icon-{{ $post->id }}">👍</span> Like
         </button>
 
         {{-- Comment Button --}}
         <button onclick="toggleComments({{ $post->id }})" 
-                class="flex-1 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium">
+                class="flex-1 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium transition">
             💬 Comment
         </button>
 
         {{-- Share Button --}}
-        <form action="{{ route('social.posts.share', $post->id) }}" method="POST" class="flex-1">
+        <form action="{{ route('social.posts.share', $post->id) }}" method="POST" class="flex-1" onsubmit="return handleShare(event, {{ $post->id }})">
             @csrf
             <button type="submit" 
-                    class="w-full py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium">
+                    class="w-full py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg font-medium transition">
                 🔄 Share
             </button>
         </form>
@@ -101,7 +102,7 @@
     {{-- Comments Section --}}
     <div id="comments-{{ $post->id }}" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         {{-- Comment Form --}}
-        <form action="{{ route('social.comments.store') }}" method="POST" class="mb-4">
+        <form action="{{ route('social.comments.store') }}" method="POST" class="mb-4" onsubmit="return handleCommentSubmit(event, {{ $post->id }})">
             @csrf
             <input type="hidden" name="commentable_id" value="{{ $post->id }}">
             <input type="hidden" name="commentable_type" value="{{ get_class($post) }}">
@@ -113,34 +114,98 @@
                        class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                        required>
                 <button type="submit" 
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                     Post
                 </button>
             </div>
         </form>
 
         {{-- Comments List --}}
-        @foreach($post->comments()->whereNull('parent_id')->latest()->take(5)->get() as $comment)
-            <div class="flex gap-3 mb-3">
-                <div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
-                    {{ strtoupper(substr($comment->user->name, 0, 1)) }}
-                </div>
-                <div class="flex-1">
-                    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2">
-                        <a href="{{ route('social.profile.user', $comment->user_id) }}" 
-                           class="font-semibold text-gray-900 dark:text-white hover:underline text-sm">
-                            {{ $comment->user->name }}
-                        </a>
-                        <p class="text-gray-900 dark:text-white text-sm">{{ $comment->content }}</p>
+        <div class="space-y-3" id="comments-list-{{ $post->id }}">
+            @foreach($post->comments()->whereNull('parent_id')->latest()->take(10)->get() as $comment)
+                <div class="comment-item" id="comment-{{ $comment->id }}">
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                            {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2">
+                                <a href="{{ route('social.profile.user', $comment->user_id) }}" 
+                                   class="font-semibold text-gray-900 dark:text-white hover:underline text-sm">
+                                    {{ $comment->user->name }}
+                                </a>
+                                <p class="text-gray-900 dark:text-white text-sm">{{ $comment->content }}</p>
+                            </div>
+                            <div class="flex gap-4 mt-1 text-xs text-gray-600 dark:text-gray-400">
+                                <span>{{ $comment->created_at->diffForHumans() }}</span>
+                                <button onclick="toggleReplyForm({{ $comment->id }})" class="hover:underline font-medium">Reply</button>
+                                @if($comment->replies_count > 0)
+                                    <button onclick="toggleReplies({{ $comment->id }})" class="hover:underline font-medium">
+                                        {{ $comment->replies_count }} {{ Str::plural('reply', $comment->replies_count) }}
+                                    </button>
+                                @endif
+                            </div>
+                            
+                            {{-- Reply Form --}}
+                            <form action="{{ route('social.comments.store') }}" 
+                                  method="POST" 
+                                  id="reply-form-{{ $comment->id }}"
+                                  class="hidden mt-2"
+                                  onsubmit="return handleCommentSubmit(event, {{ $post->id }})">
+                                @csrf
+                                <input type="hidden" name="commentable_id" value="{{ $post->id }}">
+                                <input type="hidden" name="commentable_type" value="{{ get_class($post) }}">
+                                <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                                
+                                <div class="flex gap-2">
+                                    <input type="text" 
+                                           name="content" 
+                                           placeholder="Write a reply..."
+                                           class="flex-1 px-3 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                                           required>
+                                    <button type="submit" 
+                                            class="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                        Reply
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            {{-- Replies --}}
+                            @if($comment->replies_count > 0)
+                                <div id="replies-{{ $comment->id }}" class="hidden mt-3 pl-4 border-l-2 border-gray-300 dark:border-gray-600 space-y-2">
+                                    @foreach($comment->replies()->latest()->get() as $reply)
+                                        <div class="flex gap-2" id="comment-{{ $reply->id }}">
+                                            <div class="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+                                                {{ strtoupper(substr($reply->user->name, 0, 1)) }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg px-2 py-1">
+                                                    <a href="{{ route('social.profile.user', $reply->user_id) }}" 
+                                                       class="font-semibold text-gray-900 dark:text-white hover:underline text-xs">
+                                                        {{ $reply->user->name }}
+                                                    </a>
+                                                    <p class="text-gray-900 dark:text-white text-xs">{{ $reply->content }}</p>
+                                                </div>
+                                                <div class="flex gap-3 mt-1 text-xs text-gray-600 dark:text-gray-400">
+                                                    <span>{{ $reply->created_at->diffForHumans() }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                    <div class="flex gap-4 mt-1 text-xs text-gray-600 dark:text-gray-400">
-                        <span>{{ $comment->created_at->diffForHumans() }}</span>
-                        <button class="hover:underline">Like</button>
-                        <button class="hover:underline">Reply</button>
-                    </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+            
+            @if($post->comments_count > 10)
+                <button onclick="loadMoreComments({{ $post->id }})" 
+                        class="text-sm text-blue-600 hover:underline">
+                    Load more comments...
+                </button>
+            @endif
+        </div>
     </div>
 </div>
 
@@ -151,7 +216,67 @@ function toggleComments(postId) {
     commentsDiv.classList.toggle('hidden');
 }
 
-function toggleReaction(id, type) {
+function toggleReplyForm(commentId) {
+    const replyForm = document.getElementById('reply-form-' + commentId);
+    replyForm.classList.toggle('hidden');
+    if (!replyForm.classList.contains('hidden')) {
+        replyForm.querySelector('input[name="content"]').focus();
+    }
+}
+
+function toggleReplies(commentId) {
+    const repliesDiv = document.getElementById('replies-' + commentId);
+    repliesDiv.classList.toggle('hidden');
+}
+
+function handleCommentSubmit(event, postId) {
+    event.preventDefault();
+    const form = event.target;
+    const button = form.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    
+    button.disabled = true;
+    button.textContent = 'Posting...';
+    
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Increment comment count
+            const commentsCountElement = document.getElementById('comments-count-' + postId);
+            if (commentsCountElement) {
+                const match = commentsCountElement.textContent.match(/\d+/);
+                const currentCount = match ? parseInt(match[0]) : 0;
+                const newCount = currentCount + 1;
+                commentsCountElement.textContent = newCount + ' ' + (newCount === 1 ? 'comment' : 'comments');
+            }
+            
+            // Reload page to show new comment
+            setTimeout(() => location.reload(), 500);
+        } else {
+            throw new Error('Comment post failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error posting comment:', error);
+        button.disabled = false;
+        button.textContent = originalText;
+        alert('Failed to post comment. Please try again.');
+    });
+    
+    return false;
+}
+
+function toggleReaction(id, type, button) {
+    // Disable button to prevent double clicks
+    button.disabled = true;
+    button.classList.add('opacity-50');
+    
     fetch('{{ route("social.reactions.toggle") }}', {
         method: 'POST',
         headers: {
@@ -163,7 +288,75 @@ function toggleReaction(id, type) {
             reactable_type: type === 'post' ? 'Modules\\VPEssential1\\Models\\Post' : 'Modules\\VPEssential1\\Models\\Tweet',
             type: 'like'
         })
-    }).then(() => location.reload());
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Update the like count
+        const likesCountElement = document.getElementById('likes-count-' + id);
+        if (likesCountElement) {
+            const newCount = data.likes_count || 0;
+            likesCountElement.textContent = newCount + ' ' + (newCount === 1 ? 'like' : 'likes');
+        }
+        
+        // Update button style
+        const likeIcon = document.getElementById('like-icon-' + id);
+        if (data.reacted) {
+            button.classList.add('text-blue-600', 'dark:text-blue-400');
+            if (likeIcon) likeIcon.textContent = '👍✨';
+        } else {
+            button.classList.remove('text-blue-600', 'dark:text-blue-400');
+            if (likeIcon) likeIcon.textContent = '👍';
+        }
+        
+        // Re-enable button
+        button.disabled = false;
+        button.classList.remove('opacity-50');
+    })
+    .catch(error => {
+        console.error('Error toggling reaction:', error);
+        // Re-enable button on error
+        button.disabled = false;
+        button.classList.remove('opacity-50');
+        alert('Failed to update reaction. Please try again.');
+    });
+}
+
+function handleShare(event, postId) {
+    event.preventDefault();
+    const form = event.target;
+    const button = form.querySelector('button');
+    
+    button.disabled = true;
+    button.textContent = 'Sharing...';
+    
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            button.textContent = '✓ Shared';
+            button.classList.add('text-green-600');
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            throw new Error('Share failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error sharing post:', error);
+        button.disabled = false;
+        button.textContent = '🔄 Share';
+        alert('Failed to share post. Please try again.');
+    });
+    
+    return false;
+}
+
+function loadMoreComments(postId) {
+    // Placeholder for pagination - would need AJAX implementation
+    alert('Load more comments feature coming soon!');
 }
 </script>
 @endpush

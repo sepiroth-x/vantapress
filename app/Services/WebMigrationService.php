@@ -79,6 +79,32 @@ class WebMigrationService
                 }
             }
 
+            // Scan all theme directories for migrations (for active themes only)
+            $themesPath = base_path('themes');
+            if (is_dir($themesPath)) {
+                $themeDirectories = glob($themesPath . '/*', GLOB_ONLYDIR);
+                
+                foreach ($themeDirectories as $themeDir) {
+                    $themeMigrationPath = $themeDir . '/migrations';
+                    
+                    if (is_dir($themeMigrationPath)) {
+                        $themeMigrationFiles = glob($themeMigrationPath . '/*.php');
+                        
+                        foreach ($themeMigrationFiles as $file) {
+                            $allMigrations[] = basename($file, '.php');
+                        }
+
+                        if (count($themeMigrationFiles) > 0) {
+                            Log::info('[WebMigrationService] Theme migrations found', [
+                                'theme' => basename($themeDir),
+                                'count' => count($themeMigrationFiles),
+                                'path' => $themeMigrationPath
+                            ]);
+                        }
+                    }
+                }
+            }
+
             // Get executed migrations
             $executedMigrations = DB::table('migrations')
                 ->pluck('migration')

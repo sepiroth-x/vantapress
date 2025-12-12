@@ -30,6 +30,7 @@ class PostController extends Controller
         }
         
         $posts = Post::with(['user', 'user.profile', 'comments', 'reactions'])
+            ->withCount('comments')
             ->where('visibility', 'public')
             ->orWhere(function($query) {
                 $query->where('visibility', 'friends')
@@ -118,10 +119,21 @@ class PostController extends Controller
             'notifiable_type' => Post::class,
             'title' => 'Post shared',
             'message' => Auth::user()->name . ' shared your post',
-            'link' => route('posts.show', $post->id),
+            'link' => route('social.posts.show', $post->id),
         ]);
         
         return redirect()->back()->with('success', 'Post shared successfully!');
+    }
+    
+    /**
+     * Show posts by hashtag
+     */
+    public function hashtag(string $tag)
+    {
+        $posts = $this->hashtagService->search($tag, Post::class);
+        $posts = $posts->sortByDesc('created_at')->values();
+        
+        return view('vpessential1::posts.hashtag', compact('posts', 'tag'));
     }
     
     /**

@@ -46,31 +46,57 @@ class ProfileController extends Controller
             'github' => 'nullable|string|max:255',
             'linkedin' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
-            'avatar' => 'nullable|image|max:2048',
-            'cover_image' => 'nullable|image|max:5120',
+            'avatar' => 'nullable|file|max:2048',
+            'cover_image' => 'nullable|file|max:5120',
         ]);
         
         $profile = Auth::user()->profile ?? $this->createProfile(Auth::user());
         
-        // Handle avatar upload
-        if ($request->hasFile('avatar')) {
+        // Handle avatar upload with manual extension check
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+            $avatar = $request->file('avatar');
+            $extension = strtolower($avatar->getClientOriginalExtension());
+            
+            // Validate allowed extensions manually
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                return back()->withErrors(['avatar' => 'Avatar must be a jpg, jpeg, png, gif, or webp file.']);
+            }
+            
             if ($profile->avatar) {
                 Storage::delete($profile->avatar);
             }
-            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            
+            // Generate filename manually to avoid MIME type detection
+            $filename = uniqid() . '_' . time() . '.' . $extension;
+            $validated['avatar'] = $avatar->storeAs('avatars', $filename, 'public');
+        } else {
+            unset($validated['avatar']);
         }
         
-        // Handle cover image upload
-        if ($request->hasFile('cover_image')) {
+        // Handle cover image upload with manual extension check
+        if ($request->hasFile('cover_image') && $request->file('cover_image')->isValid()) {
+            $coverImage = $request->file('cover_image');
+            $extension = strtolower($coverImage->getClientOriginalExtension());
+            
+            // Validate allowed extensions manually
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                return back()->withErrors(['cover_image' => 'Cover image must be a jpg, jpeg, png, gif, or webp file.']);
+            }
+            
             if ($profile->cover_image) {
                 Storage::delete($profile->cover_image);
             }
-            $validated['cover_image'] = $request->file('cover_image')->store('covers', 'public');
+            
+            // Generate filename manually to avoid MIME type detection
+            $filename = uniqid() . '_' . time() . '.' . $extension;
+            $validated['cover_image'] = $coverImage->storeAs('covers', $filename, 'public');
+        } else {
+            unset($validated['cover_image']);
         }
         
         $profile->update($validated);
         
-        return redirect()->route('profile.show')->with('success', 'Profile updated successfully!');
+        return redirect()->route('social.profile.show')->with('success', 'Profile updated successfully!');
     }
     
     /**

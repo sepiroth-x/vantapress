@@ -163,6 +163,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 \App\Http\Middleware\CheckPendingMigrations::class,
+                \App\Http\Middleware\CheckAdminRole::class, // Only allow super-admin and admin
             ])
             ->brandName('VantaPress');
     }
