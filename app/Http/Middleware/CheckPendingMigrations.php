@@ -30,6 +30,11 @@ class CheckPendingMigrations
             return $next($request);
         }
 
+        // Skip check on login route to prevent interference with authentication
+        if ($request->is('admin/login')) {
+            return $next($request);
+        }
+
         // Skip check on Database Updates page itself to avoid loops
         if ($request->is('admin/database-updates*')) {
             return $next($request);
@@ -37,10 +42,15 @@ class CheckPendingMigrations
 
         // Check for pending migrations
         try {
+            // Only check if we're in a normal admin page request (not AJAX/API)
+            if ($request->expectsJson() || $request->ajax()) {
+                return $next($request);
+            }
+
             $migrationService = new WebMigrationService();
             $status = $migrationService->checkPendingMigrations();
 
-            if ($status['pending'] && $status['count'] > 0) {
+            if ($status['pending'] && $status['count'] > 0 && $status['count'] !== 'Error') {
                 // Show notification banner
                 Notification::make()
                     ->warning()
@@ -65,7 +75,8 @@ class CheckPendingMigrations
         } catch (\Exception $e) {
             // Silently fail - don't break admin panel if check fails
             \Log::warning('Failed to check pending migrations', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
         }
 
