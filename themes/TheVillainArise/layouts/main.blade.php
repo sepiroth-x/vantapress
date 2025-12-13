@@ -32,6 +32,9 @@
     
     <title>@yield('title', config('app.name', 'VantaPress')) - The Villain Arise</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
+    
     {{-- Additional Meta Tags --}}
     @yield('meta')
     
