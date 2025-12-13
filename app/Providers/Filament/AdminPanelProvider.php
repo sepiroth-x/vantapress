@@ -65,7 +65,7 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode(true) // Enable dark mode toggle (system, light, dark)
             ->font('Inter')
             ->brandLogo(asset('images/vantapress-logo.svg'))
-            ->favicon(asset('images/favicon.ico'))
+            ->favicon(asset('images/favicon.svg'))
             ->sidebarCollapsibleOnDesktop() // Allow sidebar collapse on desktop
             ->sidebarWidth('16rem') // Set sidebar width (256px)
             ->maxContentWidth('full') // Full width content area
@@ -164,6 +164,13 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 \App\Http\Middleware\CheckPendingMigrations::class,
                 \App\Http\Middleware\CheckAdminRole::class, // Only allow super-admin and admin
+            ])
+            ->userMenuItems([
+                'newsfeed' => \Filament\Navigation\MenuItem::make()
+                    ->label('Visit Newsfeed')
+                    ->url(fn () => route('social.newsfeed'))
+                    ->icon('heroicon-o-home')
+                    ->visible(fn () => \App\Models\Theme::where('is_active', true)->where('slug', 'VPSocial')->exists()),
             ])
             ->brandName('VantaPress');
     }
