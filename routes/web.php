@@ -25,17 +25,28 @@ Route::get('/', function (ThemeManager $themeManager) {
         $activeTheme = Theme::where('is_active', true)->first();
         
         if ($activeTheme) {
-            // If user is logged in, redirect to newsfeed (if route exists)
-            if (auth()->check()) {
-                // Check if social.newsfeed route exists before redirecting
+            // Check if VPSocial theme is active
+            $isVPSocialActive = $activeTheme->slug === 'VPSocial';
+            
+            // If user is logged in AND VPSocial is active, redirect to newsfeed
+            if (auth()->check() && $isVPSocialActive) {
                 if (\Illuminate\Support\Facades\Route::has('social.newsfeed')) {
                     return redirect()->route('social.newsfeed');
                 }
-                // Fallback: If social route not available, show landing
+            }
+            
+            // For VPSocial theme, show landing page (for both guest and logged-in users without newsfeed)
+            if ($isVPSocialActive) {
                 return view('vpessential1::landing');
             }
             
-            // Guest user - show landing page
+            // For other themes, render the theme's homepage
+            $view = $themeManager->getThemeView($activeTheme->slug, 'home');
+            if (view()->exists($view)) {
+                return view($view);
+            }
+            
+            // Fallback to landing if theme home view doesn't exist
             return view('vpessential1::landing');
         }
         
@@ -191,7 +202,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('theme-customizer.layout-templates');
     
     // VP Social Groups Routes
-    Route::prefix('social/groups')->name('social.groups.')->group(function () {
+    Route::prefix('social/groups')->name('social.groups.')->middleware(['vpsocial'])->group(function () {
         Route::get('/', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'index'])->name('index');
         Route::get('/create', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'create'])->name('create');
         Route::post('/', [\Modules\VPEssential1\Http\Controllers\GroupController::class, 'store'])->name('store');
@@ -201,7 +212,7 @@ Route::middleware(['auth'])->group(function () {
     });
     
     // VP Social Stories Routes
-    Route::prefix('social/stories')->name('social.stories.')->group(function () {
+    Route::prefix('social/stories')->name('social.stories.')->middleware(['vpsocial'])->group(function () {
         Route::get('/', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'index'])->name('index');
         Route::get('/create', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'create'])->name('create');
         Route::post('/', [\Modules\VPEssential1\Http\Controllers\StoryController::class, 'store'])->name('store');

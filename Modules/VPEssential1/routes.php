@@ -31,7 +31,7 @@ Route::prefix('social')->name('social.')->group(function () {
 });
 
 // Authenticated routes
-Route::prefix('social')->name('social.')->middleware(['auth', 'web'])->group(function () {
+Route::prefix('social')->name('social.')->middleware(['auth', 'web', 'vpsocial'])->group(function () {
     
     // Profile routes
     Route::controller(ProfileController::class)->group(function () {

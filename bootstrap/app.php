@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'module' => \App\Http\Middleware\ModuleMiddleware::class,
+            'vpsocial' => \App\Http\Middleware\VPSocialThemeRequired::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
