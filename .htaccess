@@ -2,6 +2,9 @@
     RewriteEngine On
     RewriteBase /
 
+    # CRITICAL: Prioritize index.php over any other index files
+    DirectoryIndex index.php index.html
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
