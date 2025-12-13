@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         \Modules\VPToDoList\VPToDoListServiceProvider::class,
         \Modules\HelloWorld\HelloWorldServiceProvider::class,
         \Modules\TheVillainTerminal\TheVillainTerminalServiceProvider::class,
+        \Modules\VPTelemetryServer\VPTelemetryServerServiceProvider::class,
     ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',

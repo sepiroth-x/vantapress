@@ -5,6 +5,7 @@ namespace Modules\VPTelemetryServer;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 
 /**
  * VantaPress Telemetry Server Module
@@ -43,6 +44,9 @@ class VPTelemetryServerServiceProvider extends ServiceProvider
         // Register Filament resources
         $this->registerFilamentResources();
         
+        // Register Livewire components
+        $this->registerLivewireComponents();
+        
         Log::info('[VPTelemetryServer] Module booted successfully');
     }
 
@@ -78,5 +82,29 @@ class VPTelemetryServerServiceProvider extends ServiceProvider
         // No manual registration needed - Filament will find them via namespace
         
         Log::info('[VPTelemetryServer] Filament resources registered for auto-discovery');
+    }
+    
+    /**
+     * Register Livewire components for Filament widgets
+     */
+    protected function registerLivewireComponents(): void
+    {
+        // Register Filament widgets as Livewire components
+        Livewire::component('modules.v-p-telemetry-server.filament.widgets.telemetry-stats-overview', 
+            \Modules\VPTelemetryServer\Filament\Widgets\TelemetryStatsOverview::class);
+        
+        Livewire::component('modules.v-p-telemetry-server.filament.widgets.installations-timeline-chart', 
+            \Modules\VPTelemetryServer\Filament\Widgets\InstallationsTimelineChart::class);
+        
+        Livewire::component('modules.v-p-telemetry-server.filament.widgets.modules-chart', 
+            \Modules\VPTelemetryServer\Filament\Widgets\ModulesChart::class);
+        
+        Livewire::component('modules.v-p-telemetry-server.filament.widgets.themes-chart', 
+            \Modules\VPTelemetryServer\Filament\Widgets\ThemesChart::class);
+        
+        Livewire::component('modules.v-p-telemetry-server.filament.widgets.php-versions-chart', 
+            \Modules\VPTelemetryServer\Filament\Widgets\PhpVersionsChart::class);
+        
+        Log::info('[VPTelemetryServer] Livewire components registered');
     }
 }
