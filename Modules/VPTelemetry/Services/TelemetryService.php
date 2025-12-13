@@ -5,6 +5,7 @@ namespace Modules\VPTelemetry\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Modules\VPTelemetry\Models\TelemetryLog;
 
 /**
@@ -306,12 +307,20 @@ class TelemetryService
     protected function getEnabledModules(): array
     {
         try {
-            // Get enabled modules from Module system
-            $moduleLoader = app(\App\Services\ModuleLoader::class);
-            $modules = $moduleLoader->getEnabledModules();
+            // Check if modules table exists
+            if (!DB::getSchemaBuilder()->hasTable('modules')) {
+                return [];
+            }
             
-            return array_keys($modules);
+            // Get enabled modules from database
+            $modules = DB::table('modules')
+                ->where('is_enabled', true)
+                ->pluck('slug')
+                ->toArray();
+            
+            return $modules;
         } catch (\Exception $e) {
+            Log::warning('Failed to get enabled modules: ' . $e->getMessage());
             return [];
         }
     }
