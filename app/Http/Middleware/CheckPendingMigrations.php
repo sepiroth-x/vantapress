@@ -25,24 +25,27 @@ class CheckPendingMigrations
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Process the request first, then add notification
+        $response = $next($request);
+        
         // Only check for authenticated admin users
         if (!auth()->check() || !$request->is('admin*')) {
-            return $next($request);
+            return $response;
         }
 
         // Skip check on login/logout routes to prevent interference with authentication
         if ($request->is('admin/login') || $request->is('admin/logout')) {
-            return $next($request);
+            return $response;
         }
 
         // Skip on POST requests (form submissions, including login processing)
         if ($request->isMethod('post')) {
-            return $next($request);
+            return $response;
         }
 
         // Skip check on Database Updates page itself to avoid loops
         if ($request->is('admin/database-updates*')) {
-            return $next($request);
+            return $response;
         }
 
         // Check for pending migrations
@@ -85,6 +88,6 @@ class CheckPendingMigrations
             ]);
         }
 
-        return $next($request);
+        return $response;
     }
 }
