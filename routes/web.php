@@ -25,9 +25,14 @@ Route::get('/', function (ThemeManager $themeManager) {
         $activeTheme = Theme::where('is_active', true)->first();
         
         if ($activeTheme) {
-            // If user is logged in, redirect to newsfeed
+            // If user is logged in, redirect to newsfeed (if route exists)
             if (auth()->check()) {
-                return redirect()->route('social.newsfeed');
+                // Check if social.newsfeed route exists before redirecting
+                if (\Illuminate\Support\Facades\Route::has('social.newsfeed')) {
+                    return redirect()->route('social.newsfeed');
+                }
+                // Fallback: If social route not available, show landing
+                return view('vpessential1::landing');
             }
             
             // Guest user - show landing page
@@ -49,7 +54,11 @@ Route::get('/', function (ThemeManager $themeManager) {
 // Authentication routes
 Route::get('/login', function() {
     if (auth()->check()) {
-        return redirect()->route('social.newsfeed');
+        // Check if social.newsfeed route exists before redirecting
+        if (\Illuminate\Support\Facades\Route::has('social.newsfeed')) {
+            return redirect()->route('social.newsfeed');
+        }
+        return redirect('/');
     }
     return view('vpessential1::landing');
 })->name('login');
@@ -73,8 +82,11 @@ Route::post('/login', function(\Illuminate\Http\Request $request) {
         // Clear any intended URL from previous session
         $request->session()->forget('url.intended');
         
-        // Always redirect to newsfeed for social logins
-        return redirect()->route('social.newsfeed');
+        // Redirect to newsfeed if route exists, otherwise home
+        if (\Illuminate\Support\Facades\Route::has('social.newsfeed')) {
+            return redirect()->route('social.newsfeed');
+        }
+        return redirect('/');
     }
 
     return back()->withErrors([
@@ -145,7 +157,10 @@ Route::post('/register', function(\Illuminate\Http\Request $request) {
     $request->session()->regenerate();
 
     // Redirect with welcome message
-    return redirect()->route('social.newsfeed')->with('success', 'Welcome to ' . config('app.name') . '! Start by creating your first post.');
+    if (\Illuminate\Support\Facades\Route::has('social.newsfeed')) {
+        return redirect()->route('social.newsfeed')->with('success', 'Welcome to ' . config('app.name') . '! Start by creating your first post.');
+    }
+    return redirect('/')->with('success', 'Welcome to ' . config('app.name') . '!');
 });
 
 Route::get('/old-landing', function () {

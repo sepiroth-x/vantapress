@@ -106,3 +106,593 @@
 [2025-12-13 19:40:33] local.INFO: [VPTelemetry] Module booted successfully  
 [2025-12-13 19:40:33] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
 [2025-12-13 19:40:33] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:13:30] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:13:30] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:13:30] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:13:30] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:13:30] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:13:30] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:13:30] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:13:30] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:13:30] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:13:30] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:13:30] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:13:30] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:13:30] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:13:30] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:13:31] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:13:31] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:13:31] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:13:31] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:13:31] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:13:31] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:13:31] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:13:31] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:13:31] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:13:37] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:13:37] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:13:37] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:13:37] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:13:37] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:13:37] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:13:37] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:13:37] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:13:37] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:13:37] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:13:37] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:13:37] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:13:37] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:13:37] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:13:38] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:13:38] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:13:38] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:13:38] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:13:38] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:13:38] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:13:38] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:13:38] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:13:38] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:34] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:34] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:34] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:34] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:34] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:34] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:34] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:34] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:34] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:34] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:34] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:34] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:34] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:34] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:34] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:36] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:36] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:36] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:36] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:36] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:36] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:36] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:36] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:36] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:36] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:36] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:36] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:36] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:36] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:36] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:43] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:43] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:43] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:43] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:43] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:43] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:43] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:43] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:43] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:43] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:43] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:43] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:43] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:43] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:43] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:44] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:44] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:44] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:44] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:44] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:44] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:44] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:44] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:44] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:44] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:44] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:44] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:44] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:44] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:44] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:47] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:47] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:47] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:47] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:47] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:47] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:47] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:47] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:47] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:47] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:47] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:47] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:47] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:47] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:48] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:48] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:48] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:48] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:48] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:48] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:48] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:48] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:48] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:48] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:48] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:48] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:48] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:48] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:48] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:49] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:49] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:49] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:49] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:49] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:49] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:49] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:49] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:49] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:52] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:52] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:52] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:52] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:52] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:52] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:52] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:52] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:52] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:52] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:52] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:52] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:52] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:52] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:52] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:53] local.INFO: [AdminPanelProvider] Discovering module pages {"enabled_modules_count":6} 
+[2025-12-13 20:14:53] local.INFO: [AdminPanelProvider] Registered module page {"module":"VPEssential1","page":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:53] local.INFO: [AdminPanelProvider] Total pages registered {"count":1} 
+[2025-12-13 20:14:53] local.INFO: [AdminPanelProvider] Module pages discovered {"count":1,"pages":["Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:53] local.INFO: [AdminPanelProvider] Page class details {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings","exists":true,"slug":"social-settings","label":"Social Settings","group":"VP Essential 1"} 
+[2025-12-13 20:14:53] local.INFO: [AdminPanelProvider] Added page to final array {"class":"Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"} 
+[2025-12-13 20:14:53] local.INFO: [AdminPanelProvider] Final pages array {"count":2,"pages":["Filament\\Pages\\Dashboard","Modules\\VPEssential1\\Filament\\Pages\\SocialSettings"]} 
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 20:14:53] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 20:14:53] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 20:14:53] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 20:14:53] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 20:14:53] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 20:14:53] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 20:14:53] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 20:14:53] local.INFO: [VPTelemetryServer] Module booted successfully  
