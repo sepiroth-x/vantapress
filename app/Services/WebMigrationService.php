@@ -683,6 +683,131 @@ class WebMigrationService
     }
 
     /**
+     * Check for failed migration fix scripts
+     * Returns detailed information about scripts that failed execution
+     * 
+     * @return array
+     */
+    public function checkFailedFixScripts(): array
+    {
+        $failedPath = database_path('migration-fixes/failed');
+        
+        try {
+            // Check if failed directory exists
+            if (!file_exists($failedPath) || !is_dir($failedPath)) {
+                return [
+                    'has_failures' => false,
+                    'count' => 0,
+                    'scripts' => [],
+                    'message' => 'No failed scripts'
+                ];
+            }
+
+            // Get all PHP files in failed directory
+            $failedFiles = glob($failedPath . '/*.php');
+            
+            if (empty($failedFiles)) {
+                return [
+                    'has_failures' => false,
+                    'count' => 0,
+                    'scripts' => [],
+                    'message' => 'No failed scripts'
+                ];
+            }
+
+            sort($failedFiles);
+            
+            $scripts = array_map(function($file) {
+                return [
+                    'name' => basename($file, '.php'),
+                    'path' => $file,
+                    'modified' => filemtime($file),
+                    'modified_human' => date('Y-m-d H:i:s', filemtime($file))
+                ];
+            }, $failedFiles);
+
+            return [
+                'has_failures' => true,
+                'count' => count($scripts),
+                'scripts' => $scripts,
+                'message' => count($scripts) . ' failed fix script(s) detected'
+            ];
+
+        } catch (Exception $e) {
+            Log::error('[WebMigrationService] Error checking failed scripts', [
+                'error' => $e->getMessage()
+            ]);
+
+            return [
+                'has_failures' => false,
+                'count' => 0,
+                'scripts' => [],
+                'message' => 'Error checking failed scripts: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * Get recent error logs related to migration fixes
+     * Parses Laravel log file for migration-related errors
+     * 
+     * @return array
+     */
+    public function getRecentMigrationErrors(): array
+    {
+        try {
+            $logFile = storage_path('logs/laravel.log');
+            
+            if (!file_exists($logFile)) {
+                return [
+                    'has_errors' => false,
+                    'errors' => [],
+                    'message' => 'No log file found'
+                ];
+            }
+
+            // Read last 100 lines of log file
+            $lines = [];
+            $file = new \SplFileObject($logFile, 'r');
+            $file->seek(PHP_INT_MAX);
+            $lastLine = $file->key();
+            $startLine = max(0, $lastLine - 100);
+            
+            $file->seek($startLine);
+            while (!$file->eof()) {
+                $lines[] = $file->fgets();
+            }
+
+            // Filter for migration-related errors
+            $migrationErrors = [];
+            foreach ($lines as $line) {
+                if (stripos($line, '[Migration Fixes]') !== false && stripos($line, 'ERROR') !== false) {
+                    $migrationErrors[] = trim($line);
+                }
+            }
+
+            return [
+                'has_errors' => count($migrationErrors) > 0,
+                'errors' => array_slice($migrationErrors, -5), // Last 5 errors
+                'count' => count($migrationErrors),
+                'message' => count($migrationErrors) . ' migration error(s) in recent logs'
+            ];
+
+        } catch (Exception $e) {
+            Log::error('[WebMigrationService] Error reading migration logs', [
+                'error' => $e->getMessage()
+            ]);
+
+            return [
+                'has_errors' => false,
+                'errors' => [],
+                'message' => 'Unable to read logs: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    /**
      * Get database migration status summary
      * 
      * @return array
@@ -692,6 +817,8 @@ class WebMigrationService
         $pendingCheck = $this->checkPendingMigrations();
         $historyCheck = $this->getMigrationHistory();
         $fixScriptsCheck = $this->checkAvailableFixScripts();
+        $failedScriptsCheck = $this->checkFailedFixScripts();
+        $recentErrorsCheck = $this->getRecentMigrationErrors();
         $modulesCheck = $this->checkModuleMigrations();
         $themesCheck = $this->checkThemeMigrations();
 
@@ -699,6 +826,8 @@ class WebMigrationService
             'migrations_table_exists' => $this->migrationsTableExists(),
             'pending_migrations' => $pendingCheck,
             'fix_scripts' => $fixScriptsCheck,
+            'failed_scripts' => $failedScriptsCheck,
+            'recent_errors' => $recentErrorsCheck,
             'module_migrations' => $modulesCheck,
             'theme_migrations' => $themesCheck,
             'total_executed' => count($historyCheck['history'] ?? []),

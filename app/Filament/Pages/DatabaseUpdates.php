@@ -31,13 +31,18 @@ class DatabaseUpdates extends Page
     public array $pendingMigrations = [];
     public array $migrationHistory = [];
     public array $availableFixScripts = [];
+    public array $failedFixScripts = [];
+    public array $recentErrors = [];
     public array $moduleMigrations = [];
     public array $themeMigrations = [];
     public int $fixScriptCount = 0;
+    public int $failedScriptCount = 0;
     public int $totalModulePending = 0;
     public int $totalThemePending = 0;
     public bool $hasPendingMigrations = false;
     public bool $hasFixScripts = false;
+    public bool $hasFailedScripts = false;
+    public bool $hasRecentErrors = false;
     public bool $hasModuleMigrations = false;
     public bool $hasThemeMigrations = false;
     public string $statusMessage = '';
@@ -67,6 +72,17 @@ class DatabaseUpdates extends Page
         $this->fixScriptCount = $fixScripts['count'] ?? 0;
         $this->availableFixScripts = $fixScripts['scripts'] ?? [];
 
+        // Get failed scripts information
+        $failedScripts = $status['failed_scripts'] ?? [];
+        $this->hasFailedScripts = $failedScripts['has_failures'] ?? false;
+        $this->failedScriptCount = $failedScripts['count'] ?? 0;
+        $this->failedFixScripts = $failedScripts['scripts'] ?? [];
+
+        // Get recent errors information
+        $recentErrors = $status['recent_errors'] ?? [];
+        $this->hasRecentErrors = $recentErrors['has_errors'] ?? false;
+        $this->recentErrors = $recentErrors['errors'] ?? [];
+
         // Get module migrations information
         $moduleMigrations = $status['module_migrations'] ?? [];
         $this->hasModuleMigrations = $moduleMigrations['has_pending'] ?? false;
@@ -88,6 +104,8 @@ class DatabaseUpdates extends Page
             'has_pending' => $this->hasPendingMigrations,
             'fix_scripts_count' => $this->fixScriptCount,
             'has_fix_scripts' => $this->hasFixScripts,
+            'failed_scripts_count' => $this->failedScriptCount,
+            'has_failed_scripts' => $this->hasFailedScripts,
             'module_migrations' => $this->totalModulePending,
             'theme_migrations' => $this->totalThemePending
         ]);

@@ -236,5 +236,156 @@
                 </div>
             </div>
         </div>
+
+        {{-- Failed Scripts Alert --}}
+        @if($hasFailedScripts && count($failedFixScripts) > 0)
+            <div class="rounded-lg border-2 border-red-400 dark:border-red-600 bg-red-50 dark:bg-red-900/30 p-6">
+                <div class="flex items-start gap-3">
+                    <svg class="w-8 h-8 text-red-600 dark:text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-red-900 dark:text-red-200 mb-2">
+                            ⚠️ Migration Fix Script{{ $failedScriptCount > 1 ? 's' : '' }} Failed
+                        </h3>
+                        <p class="text-sm text-red-800 dark:text-red-300 mb-4">
+                            {{ $failedScriptCount }} migration fix script(s) encountered errors during execution. These scripts are designed to resolve database conflicts, but something went wrong.
+                        </p>
+
+                        {{-- Failed Scripts List --}}
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 mb-4">
+                            <h4 class="font-semibold text-red-900 dark:text-red-200 mb-2">Failed Scripts:</h4>
+                            <ul class="space-y-2">
+                                @foreach($failedFixScripts as $script)
+                                    <li class="flex items-start gap-2 text-sm text-gray-900 dark:text-gray-100">
+                                        <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                        <div>
+                                            <code class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{{ $script['name'] }}</code>
+                                            <span class="text-xs text-gray-600 dark:text-gray-400 ml-2">Failed: {{ $script['modified_human'] }}</span>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        {{-- Troubleshooting Steps --}}
+                        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 mb-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                                What This Means & How to Fix It
+                            </h4>
+                            <div class="text-sm text-gray-700 dark:text-gray-300 space-y-3">
+                                <div>
+                                    <strong class="text-gray-900 dark:text-gray-100">Why did this happen?</strong>
+                                    <p class="mt-1">Migration fix scripts can fail for several reasons:</p>
+                                    <ul class="list-disc ml-5 mt-1 space-y-1">
+                                        <li>Database permissions issue (can't drop/create tables)</li>
+                                        <li>A table the script expected to find doesn't exist</li>
+                                        <li>Conflicting data that prevents cleanup</li>
+                                        <li>Your database structure differs from what the script expects</li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <strong class="text-gray-900 dark:text-gray-100">What should you do?</strong>
+                                    <ol class="list-decimal ml-5 mt-1 space-y-2">
+                                        <li>
+                                            <strong>Check the error logs:</strong>
+                                            <ul class="list-disc ml-5 mt-1">
+                                                <li>Go to <code class="text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded">storage/logs/laravel.log</code></li>
+                                                <li>Look for entries containing <code class="text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded">[Migration Fixes]</code></li>
+                                                <li>Note the specific error message (e.g., "table not found", "permission denied")</li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <strong>Try running the update again:</strong>
+                                            <p class="mt-1">Sometimes temporary issues resolve themselves. Click "Refresh Status" then "Update Database Now" again.</p>
+                                        </li>
+                                        <li>
+                                            <strong>Check database permissions:</strong>
+                                            <p class="mt-1">Ensure your database user has permissions to CREATE, DROP, and ALTER tables.</p>
+                                        </li>
+                                        <li>
+                                            <strong>Manual review may be needed:</strong>
+                                            <p class="mt-1">Failed scripts are located at: <code class="text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded">database/migration-fixes/failed/</code></p>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <div class="border-t border-gray-300 dark:border-gray-600 pt-3">
+                                    <strong class="text-gray-900 dark:text-gray-100">Can I continue using VantaPress?</strong>
+                                    <p class="mt-1">
+                                        <strong class="text-green-600 dark:text-green-400">Yes, usually!</strong> Failed fix scripts often address edge cases or clean up legacy data. Your site should continue working normally. However, you may encounter issues if:
+                                    </p>
+                                    <ul class="list-disc ml-5 mt-1">
+                                        <li>The failed script was fixing a critical database conflict</li>
+                                        <li>You're upgrading from a very old version</li>
+                                        <li>Multiple scripts failed (indicates a larger issue)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Support Contact --}}
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
+                            <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                Need Help? Contact VantaPress Support
+                            </h4>
+                            <div class="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+                                <p>If you can't resolve this issue, our support team is here to help!</p>
+                                
+                                <div class="bg-white dark:bg-gray-800 rounded p-3">
+                                    <p class="font-semibold text-gray-900 dark:text-gray-100 mb-2">📧 Email: <a href="mailto:support@vantapress.com" class="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300">support@vantapress.com</a></p>
+                                    
+                                    <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Please include the following information in your email:</p>
+                                    
+                                    <div class="text-xs bg-gray-50 dark:bg-gray-900 rounded p-2 font-mono">
+                                        <strong>Subject:</strong> Migration Fix Script Failed - [Script Name]<br><br>
+                                        <strong>Include:</strong><br>
+                                        1. VantaPress Version: {{ config('app.version', '1.1.9') }}<br>
+                                        2. Failed Script(s): {{ implode(', ', array_column($failedFixScripts, 'name')) }}<br>
+                                        3. Hosting Environment: (e.g., "Shared hosting - cPanel")<br>
+                                        4. PHP Version: {{ PHP_VERSION }}<br>
+                                        5. Database Type: {{ config('database.default', 'mysql') }}<br>
+                                        6. Error from logs: (copy from storage/logs/laravel.log)<br>
+                                        7. When did this occur: {{ now()->format('Y-m-d H:i:s') }}<br><br>
+                                        <strong>Optional but helpful:</strong><br>
+                                        - Screenshot of this page<br>
+                                        - Last 50 lines of storage/logs/laravel.log<br>
+                                        - Steps you took before the error occurred
+                                    </div>
+                                </div>
+
+                                <p class="text-xs text-gray-600 dark:text-gray-400">
+                                    ⏱️ <strong>Response Time:</strong> We typically respond within 24 hours on business days. For urgent issues, include "URGENT" in your subject line.
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Recent Errors --}}
+                        @if($hasRecentErrors && count($recentErrors) > 0)
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 mt-4">
+                                <h4 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Recent Error Log Entries:</h4>
+                                <div class="text-xs font-mono bg-gray-50 dark:bg-gray-900 rounded p-3 overflow-x-auto max-h-40 overflow-y-auto">
+                                    @foreach($recentErrors as $error)
+                                        <div class="text-red-600 dark:text-red-400 mb-1">{{ $error }}</div>
+                                    @endforeach
+                                </div>
+                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                                    💡 Tip: Copy these errors when contacting support for faster resolution.
+                                </p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </x-filament-panels::page>
