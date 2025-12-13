@@ -41,9 +41,10 @@ Route::get('/', function (ThemeManager $themeManager) {
             }
             
             // For other themes, render the theme's homepage
-            $view = $themeManager->getThemeView($activeTheme->slug, 'home');
-            if (view()->exists($view)) {
-                return view($view);
+            // Theme views are registered with namespace 'theme.pages'
+            $homeView = 'theme.pages::home';
+            if (view()->exists($homeView)) {
+                return view($homeView);
             }
             
             // Fallback to landing if theme home view doesn't exist
