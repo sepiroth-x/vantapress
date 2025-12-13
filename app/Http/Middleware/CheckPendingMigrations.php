@@ -30,8 +30,13 @@ class CheckPendingMigrations
             return $next($request);
         }
 
-        // Skip check on login route to prevent interference with authentication
-        if ($request->is('admin/login')) {
+        // Skip check on login/logout routes to prevent interference with authentication
+        if ($request->is('admin/login') || $request->is('admin/logout')) {
+            return $next($request);
+        }
+
+        // Skip on POST requests (form submissions, including login processing)
+        if ($request->isMethod('post')) {
             return $next($request);
         }
 
