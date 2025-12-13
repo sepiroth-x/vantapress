@@ -167,6 +167,13 @@ class WebMigrationService
      * This system allows deploying fix scripts with updates that automatically
      * resolve migration conflicts without requiring manual user intervention.
      * 
+     * CONTINUOUS RUNNING STRATEGY:
+     * - Always attempts to run all fix scripts in the directory
+     * - Skips scripts that already ran successfully (checks shouldRun())
+     * - Moves successfully executed scripts to "successfully-ran" folder
+     * - Moves failed scripts to "failed" folder for review
+     * - Leaves pending scripts in root folder for next run
+     * 
      * Each fix script:
      * - Checks if it needs to run (shouldRun method)
      * - Executes fix logic (execute method)
@@ -181,13 +188,19 @@ class WebMigrationService
         Log::warning('[Migration Fixes] !!!!! METHOD CALLED - FIRST LINE !!!!!');
         
         $fixesPath = database_path('migration-fixes');
+        $successPath = $fixesPath . DIRECTORY_SEPARATOR . 'successfully-ran';
+        $failedPath = $fixesPath . DIRECTORY_SEPARATOR . 'failed';
+        
         $fixesExecuted = [];
         $fixesSkipped = [];
+        $fixesFailed = [];
         
         // AGGRESSIVE LOGGING: Always log entry to this method
         Log::warning('[Migration Fixes] ========================================');
         Log::warning('[Migration Fixes] ENTERED executeMigrationFixes() method');
         Log::warning('[Migration Fixes] Looking for fixes at: ' . $fixesPath);
+        Log::warning('[Migration Fixes] Success folder: ' . $successPath);
+        Log::warning('[Migration Fixes] Failed folder: ' . $failedPath);
         Log::warning('[Migration Fixes] ========================================');
         
         try {
@@ -208,16 +221,26 @@ class WebMigrationService
                 return [
                     'executed' => [],
                     'skipped' => [],
+                    'failed' => [],
                     'total' => 0,
                     'message' => 'No migration fixes available'
                 ];
             }
             
-            Log::warning('[Migration Fixes] ✓ Directory exists, scanning for scripts...');
-
+            // Ensure success and failed directories exist
+            if (!is_dir($successPath)) {
+                mkdir($successPath, 0755, true);
+                Log::info('[Migration Fixes] Created successfully-ran directory');
+            }
+            if (!is_dir($failedPath)) {
+                mkdir($failedPath, 0755, true);
+                Log::info('[Migration Fixes] Created failed directory');
+            }
+            
             Log::warning('[Migration Fixes] ✓ Directory exists, scanning for scripts...');
 
             // Get all PHP files in migration-fixes directory (sorted alphabetically)
+            // Only scan root level, not subdirectories
             $fixFiles = glob($fixesPath . '/*.php');
             
             Log::warning('[Migration Fixes] Glob scan result:', [
@@ -227,13 +250,20 @@ class WebMigrationService
             ]);
             
             if (empty($fixFiles)) {
-                Log::error('[Migration Fixes] ❌ No PHP files found in directory!');
-                Log::error('[Migration Fixes] Expected: 001_drop_legacy_menu_tables.php');
+                Log::warning('[Migration Fixes] No pending fix scripts in root directory');
+                
+                // Check for previously successful scripts
+                $successfulScripts = glob($successPath . '/*.php');
+                $failedScripts = glob($failedPath . '/*.php');
+                
                 return [
                     'executed' => [],
                     'skipped' => [],
+                    'failed' => [],
                     'total' => 0,
-                    'message' => 'No migration fixes available'
+                    'message' => 'No pending fix scripts (Success: ' . count($successfulScripts) . ', Failed: ' . count($failedScripts) . ')',
+                    'previously_successful' => count($successfulScripts),
+                    'previously_failed' => count($failedScripts)
                 ];
             }
 
@@ -243,7 +273,7 @@ class WebMigrationService
                 'scripts' => array_map('basename', $fixFiles)
             ]);
 
-            // Execute each fix script
+            // Execute each fix script with continuous running strategy
             foreach ($fixFiles as $fixFile) {
                 $fixName = basename($fixFile, '.php');
                 
@@ -261,7 +291,13 @@ class WebMigrationService
                     Log::warning("[Migration Fixes] Calling shouldRun() method...");
                     if (method_exists($fixInstance, 'shouldRun') && !$fixInstance->shouldRun()) {
                         $fixesSkipped[] = $fixName;
-                        Log::warning("[Migration Fixes] Script returned FALSE - skipping");
+                        Log::warning("[Migration Fixes] Script returned FALSE - skipping (already ran or not needed)");
+                        
+                        // Move to successfully-ran folder since it's complete
+                        $destination = $successPath . DIRECTORY_SEPARATOR . basename($fixFile);
+                        if (rename($fixFile, $destination)) {
+                            Log::info("[Migration Fixes] ✓ Moved to successfully-ran: {$fixName}");
+                        }
                         continue;
                     }
                     
@@ -280,12 +316,34 @@ class WebMigrationService
                                 'details' => $result
                             ];
                             Log::warning("[Migration Fixes] ✓ SUCCESS: {$fixName}", $result);
+                            
+                            // Move to successfully-ran folder
+                            $destination = $successPath . DIRECTORY_SEPARATOR . basename($fixFile);
+                            if (rename($fixFile, $destination)) {
+                                Log::info("[Migration Fixes] ✓ Moved to successfully-ran: {$fixName}");
+                            }
                         } else {
                             $fixesSkipped[] = $fixName;
                             Log::info("[Migration Fixes] Skipped: {$fixName} - " . ($result['message'] ?? 'No action needed'));
+                            
+                            // Move to successfully-ran since it determined it doesn't need to run
+                            $destination = $successPath . DIRECTORY_SEPARATOR . basename($fixFile);
+                            if (rename($fixFile, $destination)) {
+                                Log::info("[Migration Fixes] ✓ Moved to successfully-ran: {$fixName}");
+                            }
                         }
                     } else {
                         Log::error("[Migration Fixes] ❌ Invalid script: {$fixName} (missing execute method)");
+                        
+                        // Move to failed folder
+                        $destination = $failedPath . DIRECTORY_SEPARATOR . basename($fixFile);
+                        if (rename($fixFile, $destination)) {
+                            Log::error("[Migration Fixes] ✗ Moved to failed: {$fixName}");
+                        }
+                        $fixesFailed[] = [
+                            'name' => $fixName,
+                            'error' => 'Missing execute method'
+                        ];
                     }
 
                 } catch (Exception $e) {
@@ -295,6 +353,18 @@ class WebMigrationService
                         'line' => $e->getLine(),
                         'trace' => $e->getTraceAsString()
                     ]);
+                    
+                    // Move to failed folder
+                    $destination = $failedPath . DIRECTORY_SEPARATOR . basename($fixFile);
+                    if (rename($fixFile, $destination)) {
+                        Log::error("[Migration Fixes] ✗ Moved to failed: {$fixName}");
+                    }
+                    
+                    $fixesFailed[] = [
+                        'name' => $fixName,
+                        'error' => $e->getMessage()
+                    ];
+                    
                     // Continue with other fixes even if one fails
                 }
             }
@@ -302,10 +372,11 @@ class WebMigrationService
             $summary = [
                 'executed' => $fixesExecuted,
                 'skipped' => $fixesSkipped,
+                'failed' => $fixesFailed,
                 'total' => count($fixesExecuted),
-                'message' => count($fixesExecuted) > 0 
-                    ? 'Executed ' . count($fixesExecuted) . ' migration fix(es)' 
-                    : 'No migration fixes needed'
+                'total_skipped' => count($fixesSkipped),
+                'total_failed' => count($fixesFailed),
+                'message' => $this->buildFixSummaryMessage($fixesExecuted, $fixesSkipped, $fixesFailed)
             ];
 
             Log::warning('[Migration Fixes] ========================================');
@@ -323,11 +394,42 @@ class WebMigrationService
             return [
                 'executed' => $fixesExecuted,
                 'skipped' => $fixesSkipped,
+                'failed' => $fixesFailed,
                 'total' => count($fixesExecuted),
+                'total_failed' => count($fixesFailed),
                 'message' => 'Fix execution had errors: ' . $e->getMessage(),
                 'error' => $e->getMessage()
             ];
         }
+    }
+
+    /**
+     * Build a human-readable summary message for fix script execution
+     * 
+     * @param array $executed
+     * @param array $skipped
+     * @param array $failed
+     * @return string
+     */
+    protected function buildFixSummaryMessage(array $executed, array $skipped, array $failed): string
+    {
+        $parts = [];
+        
+        if (count($executed) > 0) {
+            $parts[] = count($executed) . ' executed';
+        }
+        if (count($skipped) > 0) {
+            $parts[] = count($skipped) . ' skipped (already ran)';
+        }
+        if (count($failed) > 0) {
+            $parts[] = count($failed) . ' failed';
+        }
+        
+        if (empty($parts)) {
+            return 'No migration fixes needed';
+        }
+        
+        return 'Migration fixes: ' . implode(', ', $parts);
     }
 
     /**

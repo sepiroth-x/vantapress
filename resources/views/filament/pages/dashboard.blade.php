@@ -1,5 +1,47 @@
 <x-filament-panels::page>
     <div class="grid gap-6 lg:gap-8">
+        @php
+            $activeTheme = config('cms.active_theme');
+            $isVPSocialActive = $activeTheme === 'VPSocial';
+        @endphp
+
+        <!-- VPSocial Theme Indicator (only shown when VPSocial is active) -->
+        @if($isVPSocialActive)
+        <div class="fi-section rounded-xl bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 shadow-lg ring-1 ring-purple-500/20">
+            <div class="fi-section-content p-6 lg:p-8">
+                <div class="flex items-center gap-4">
+                    <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+                        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold tracking-tight text-white">
+                            🎉 VPSocial Theme Active!
+                        </h2>
+                        <p class="mt-1 text-sm text-white/90">
+                            Your social network is live. Visit your newsfeed to see what's happening.
+                        </p>
+                        <div class="mt-3 flex gap-3">
+                            <a href="/social/newsfeed" target="_blank" class="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-purple-600 shadow-md transition-all hover:bg-white/90 hover:shadow-lg">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Visit Newsfeed
+                            </a>
+                            <a href="/social" target="_blank" class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                Social Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Welcome Section -->
         <div class="fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
             <div class="fi-section-content p-6 lg:p-8">
