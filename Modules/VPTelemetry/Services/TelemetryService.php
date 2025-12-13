@@ -50,7 +50,7 @@ class TelemetryService
      */
     public function __construct()
     {
-        $this->apiEndpoint = config('telemetry.api_endpoint', 'https://telemetry.vantapress.com/api/v1/telemetry/collect');
+        $this->apiEndpoint = config('telemetry.api_endpoint', 'https://vantapress.com/api/v1/telemetry/collect');
         $this->installationId = $this->getOrCreateInstallationId();
     }
 

@@ -1,14 +1,16 @@
 {
-    "name": "tcc/school-cms",
+    "name": "sepirothx/vantapress",
     "type": "project",
-    "description": "Talisay City College - Laravel-based CMS & School Information System",
-    "keywords": ["laravel", "cms", "school", "education", "modular"],
-    "license": "proprietary",
+    "description": "VantaPress - A WordPress-inspired Content Management System built with Laravel 11 and FilamentPHP 3",
+    "keywords": ["laravel", "cms", "filament", "content-management", "modular", "vantapress"],
+    "license": "MIT",
+    "homepage": "https://vantapress.com",
     "authors": [
         {
             "name": "Sepiroth X Villainous (Richard Cebel Cupal, LPT)",
             "email": "chardy.tsadiq02@gmail.com",
-            "role": "Lead Developer"
+            "role": "Lead Developer",
+            "homepage": "https://vantapress.com"
         }
     ],
     "require": {

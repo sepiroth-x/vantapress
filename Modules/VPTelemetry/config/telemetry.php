@@ -23,10 +23,10 @@ return [
     | URL where telemetry data is sent.
     | Must use HTTPS for security.
     |
-    | Default: https://dev5.thevillainousacademy.it.nf/api/v1/telemetry/collect
+    | Default: https://vantapress.com/api/v1/telemetry/collect
     |
     */
-    'api_endpoint' => env('TELEMETRY_API_ENDPOINT', 'https://dev5.thevillainousacademy.it.nf/api/v1/telemetry/collect'),
+    'api_endpoint' => env('TELEMETRY_API_ENDPOINT', 'https://vantapress.com/api/v1/telemetry/collect'),
 
     /*
     |--------------------------------------------------------------------------

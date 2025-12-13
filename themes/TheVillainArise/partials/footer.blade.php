@@ -85,9 +85,9 @@
             <div>
                 <h3 class="text-lg font-bold font-orbitron text-villain-500 mb-4 uppercase tracking-wider">Resources</h3>
                 <ul class="space-y-2">
-                    <li><a href="{{ url('/docs') }}" class="text-gray-400 hover:text-villain-500 transition">Documentation</a></li>
-                    <li><a href="{{ url('/modules') }}" class="text-gray-400 hover:text-villain-500 transition">Modules</a></li>
-                    <li><a href="{{ url('/themes') }}" class="text-gray-400 hover:text-villain-500 transition">Themes</a></li>
+                    <li><a href="https://github.com/sepiroth-x/vantapress/blob/standard-release/README.md" target="_blank" class="text-gray-400 hover:text-villain-500 transition">Documentation</a></li>
+                    <li><a href="https://github.com/sepiroth-x/vantapress" target="_blank" class="text-gray-400 hover:text-villain-500 transition">GitHub Repository</a></li>
+                    <li><a href="https://vantapress.com" target="_blank" class="text-gray-400 hover:text-villain-500 transition">Official Website</a></li>
                     <li><a href="{{ url('/admin') }}" class="text-gray-400 hover:text-villain-500 transition">Admin Panel</a></li>
                 </ul>
             </div>
@@ -98,7 +98,7 @@
             <p>&copy; {{ date('Y') }} {{ config('app.name', 'VantaPress') }}. All rights reserved. Powered by <span class="text-villain-500 font-bold">VantaPress</span>.</p>
             <p class="mt-2 text-xs">
                 Theme by <strong class="text-villain-500">Sepiroth X Villainous</strong> | Open Source | 
-                <a href="https://github.com/sepiroth-x" target="_blank" class="hover:text-villain-500 transition">GitHub</a> | 
+                <a href="https://github.com/sepiroth-x/vantapress" target="_blank" class="hover:text-villain-500 transition">GitHub</a> | 
                 <a href="https://www.facebook.com/sepirothx/" target="_blank" class="hover:text-villain-500 transition">Facebook</a> | 
                 <a href="https://x.com/sepirothx000" target="_blank" class="hover:text-villain-500 transition">Twitter</a> | 
                 <a href="mailto:chardy.tsadiq02@gmail.com" class="hover:text-villain-500 transition">Email</a>

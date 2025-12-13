@@ -1,4 +1,10 @@
 {
+    "name": "vantapress",
+    "version": "1.2.1",
+    "description": "VantaPress - A WordPress-inspired Content Management System built with Laravel",
+    "homepage": "https://vantapress.com",
+    "author": "Sepirothx",
+    "license": "MIT",
     "private": true,
     "type": "module",
     "scripts": {

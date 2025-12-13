@@ -97,7 +97,8 @@
                    class="px-8 py-4 bg-villain-600 hover:bg-villain-700 text-white font-bold rounded-lg transition-all transform hover:scale-105 hover:shadow-xl hover:shadow-villain-500/50 uppercase tracking-wider">
                     Access Admin Panel
                 </a>
-                <a href="{{ url('/docs') }}" 
+                <a href="https://github.com/sepiroth-x/vantapress/blob/standard-release/README.md" 
+                   target="_blank"
                    class="px-8 py-4 border-2 border-villain-600 hover:border-villain-500 text-villain-500 hover:text-villain-400 font-bold rounded-lg transition-all uppercase tracking-wider">
                     Read Documentation
                 </a>

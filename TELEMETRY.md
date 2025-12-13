@@ -405,7 +405,7 @@ File: `Modules/VPTelemetry/config/telemetry.php`
 ```php
 return [
     'enabled' => env('TELEMETRY_ENABLED', true),
-    'api_endpoint' => env('TELEMETRY_API_ENDPOINT', 'https://telemetry.vantapress.com/api/v1/telemetry/collect'),
+    'api_endpoint' => env('TELEMETRY_API_ENDPOINT', 'https://vantapress.com/api/v1/telemetry/collect'),
     'heartbeat_interval' => 24, // hours
     'retry_attempts' => 3,
     'retry_delay' => 100, // ms

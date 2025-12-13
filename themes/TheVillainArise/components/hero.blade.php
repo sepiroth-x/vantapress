@@ -27,9 +27,9 @@
             'subtitle' => 'Unleash the power of VantaPress CMS',
             'description' => 'A modular, themeable, and powerful content management system built for developers who dare to be different.',
             'cta_primary_text' => 'Get Started',
-            'cta_primary_url' => url('/pages'),
+            'cta_primary_url' => url('/admin'),
             'cta_secondary_text' => 'View Docs',
-            'cta_secondary_url' => url('/docs'),
+            'cta_secondary_url' => 'https://github.com/sepiroth-x/vantapress/blob/standard-release/README.md',
             'background_type' => 'gradient',
             'background_image' => '',
             'show_cta' => true
