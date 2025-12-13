@@ -178,8 +178,14 @@ class CMSServiceProvider extends ServiceProvider
     protected function registerViewComposers(): void
     {
         view()->composer('*', function ($view) {
-            $view->with('cms_settings', app(SettingsManager::class)->all());
-            $view->with('cms_menus', app(MenuManager::class)->all());
+            try {
+                $view->with('cms_settings', app(SettingsManager::class)->all());
+                $view->with('cms_menus', app(MenuManager::class)->all());
+            } catch (\Exception $e) {
+                // Database not ready yet (during installation)
+                $view->with('cms_settings', []);
+                $view->with('cms_menus', []);
+            }
         });
     }
 }

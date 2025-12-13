@@ -26,6 +26,8 @@
 namespace App\Services\CMS;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Setting;
 
 class SettingsManager
@@ -50,6 +52,11 @@ class SettingsManager
      */
     protected function loadSettings(): void
     {
+        // Check if database is configured and tables exist
+        if (!$this->isDatabaseReady()) {
+            return;
+        }
+
         if ($this->cacheEnabled && Cache::has($this->cacheKey)) {
             $this->settings = Cache::get($this->cacheKey);
             return;
@@ -64,6 +71,33 @@ class SettingsManager
 
         if ($this->cacheEnabled) {
             Cache::put($this->cacheKey, $this->settings, $this->cacheLifetime);
+        }
+    }
+
+    /**
+     * Check if database is ready and settings table exists
+     *
+     * @return bool
+     */
+    protected function isDatabaseReady(): bool
+    {
+        try {
+            // Check if database connection is configured
+            $dbHost = config('database.connections.mysql.host');
+            $dbDatabase = config('database.connections.mysql.database');
+            
+            if (empty($dbHost) || empty($dbDatabase) || $dbHost === 'localhost' && empty(config('database.connections.mysql.password'))) {
+                return false;
+            }
+
+            // Try to establish connection
+            DB::connection()->getPdo();
+            
+            // Check if settings table exists
+            return Schema::hasTable('settings');
+        } catch (\Exception $e) {
+            // Database not ready (connection failed or table doesn't exist)
+            return false;
         }
     }
 
@@ -93,14 +127,16 @@ class SettingsManager
             return $this->settings[$key];
         }
 
-        // Try loading from database if not in cache
-        $setting = Setting::where('key', $key)->first();
+        // Try loading from database if not in cache (only if database is ready)
+        if ($this->isDatabaseReady()) {
+            $setting = Setting::where('key', $key)->first();
 
-        if ($setting) {
-            $value = $this->unserializeValue($setting->value, $setting->type);
-            $fullKey = $setting->group ? "{$setting->group}.{$key}" : $key;
-            $this->settings[$fullKey] = $value;
-            return $value;
+            if ($setting) {
+                $value = $this->unserializeValue($setting->value, $setting->type);
+                $fullKey = $setting->group ? "{$setting->group}.{$key}" : $key;
+                $this->settings[$fullKey] = $value;
+                return $value;
+            }
         }
 
         return $default;
