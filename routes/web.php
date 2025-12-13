@@ -41,10 +41,17 @@ Route::get('/', function (ThemeManager $themeManager) {
             }
             
             // For other themes, render the theme's homepage
-            // Theme views are registered with namespace 'theme.pages'
-            $homeView = 'theme.pages::home';
-            if (view()->exists($homeView)) {
-                return view($homeView);
+            // Check multiple possible view paths based on theme structure
+            $possibleViews = [
+                'theme.pages::home',           // For themes with pages/ directory (TheVillainArise)
+                'theme::pages.home',           // For themes with views/pages/ structure (BasicTheme)
+                'home',                         // Direct view if registered in view paths
+            ];
+            
+            foreach ($possibleViews as $viewPath) {
+                if (view()->exists($viewPath)) {
+                    return view($viewPath);
+                }
             }
             
             // Fallback to landing if theme home view doesn't exist

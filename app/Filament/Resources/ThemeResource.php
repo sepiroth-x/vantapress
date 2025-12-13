@@ -196,9 +196,13 @@ class ThemeResource extends Resource
                         
                         Notification::make()
                             ->title('Theme activated')
-                            ->body('Visit your homepage to see the new theme in action!')
+                            ->body('Refreshing to load the new theme...')
                             ->success()
                             ->send();
+                    })
+                    ->after(function () {
+                        // Redirect to homepage to show the new theme
+                        redirect('/')->send();
                     }),
                 
                 Tables\Actions\Action::make('deactivate')

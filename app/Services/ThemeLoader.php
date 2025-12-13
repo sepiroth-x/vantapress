@@ -278,6 +278,10 @@ class ThemeLoader
             $this->updateConfig('cms.active_theme', $themeName);
             $this->activeTheme = $themeName;
             
+            // Clear view cache to ensure new theme views are loaded
+            \Artisan::call('view:clear');
+            \Artisan::call('cache:clear');
+            
             return true;
         } catch (Exception $e) {
             logger()->error("Failed to activate theme {$themeName}: " . $e->getMessage());
