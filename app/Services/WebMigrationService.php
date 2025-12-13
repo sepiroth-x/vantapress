@@ -105,6 +105,9 @@ class WebMigrationService
                 }
             }
 
+            // Sort all migrations chronologically by filename (timestamp prefix)
+            sort($allMigrations);
+
             // Get executed migrations
             $executedMigrations = DB::table('migrations')
                 ->pluck('migration')
@@ -112,6 +115,9 @@ class WebMigrationService
 
             // Find pending migrations
             $pendingMigrations = array_diff($allMigrations, $executedMigrations);
+            
+            // Sort pending migrations chronologically
+            sort($pendingMigrations);
 
             if (count($pendingMigrations) > 0) {
                 Log::info('[WebMigrationService] Pending migrations detected', [
