@@ -50,9 +50,14 @@ Route::get('/', function (ThemeManager $themeManager) {
             
             foreach ($possibleViews as $viewPath) {
                 if (view()->exists($viewPath)) {
+                    logger()->info("Homepage: Loading view '{$viewPath}' for theme '{$activeTheme->slug}'");
                     return view($viewPath);
                 }
             }
+            
+            // Log which views were checked and not found
+            logger()->warning("Homepage: No theme home view found for '{$activeTheme->slug}'. Checked: " . implode(', ', $possibleViews));
+            logger()->info("Registered view namespaces: " . json_encode(array_keys(app('view')->getFinder()->getHints())));
             
             // Fallback to landing if theme home view doesn't exist
             return view('vpessential1::landing');

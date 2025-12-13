@@ -119,6 +119,8 @@ class ThemeManager
     {
         $themePath = $this->getThemePath($themeName);
         
+        logger()->info("ThemeManager: Registering views for theme '{$themeName}' at path: {$themePath}");
+        
         // Register all theme directories with proper namespaces
         $directories = [
             'views' => 'theme',
@@ -132,6 +134,9 @@ class ThemeManager
             $path = $themePath . '/' . $dir;
             if (File::exists($path)) {
                 View::addNamespace($namespace, $path);
+                logger()->info("ThemeManager: Registered namespace '{$namespace}' -> {$path}");
+            } else {
+                logger()->debug("ThemeManager: Directory not found: {$path}");
             }
         }
 
@@ -140,12 +145,14 @@ class ThemeManager
         $viewsPath = $themePath . '/views';
         if (File::exists($viewsPath)) {
             View::getFinder()->prependLocation($viewsPath);
+            logger()->info("ThemeManager: Added views location: {$viewsPath}");
         }
         
         // Also add pages directory for homepage routing
         $pagesPath = $themePath . '/pages';
         if (File::exists($pagesPath)) {
             View::getFinder()->prependLocation($pagesPath);
+            logger()->info("ThemeManager: Added pages location: {$pagesPath}");
         }
     }
 
