@@ -1380,42 +1380,43 @@ ini_set('display_errors', 1);
                         echo "<span class='icon'>✓</span> Admin user created successfully!";
                         echo "</div>";
                         
-                        // Assign super-admin role if roles table exists
+                        // Assign super-admin role using Laravel's eloquent for reliability
                         try {
-                            $rolesExist = $pdo->query("SHOW TABLES LIKE 'roles'")->rowCount() > 0;
+                            // Bootstrap Laravel application
+                            $app = require_once __DIR__.'/bootstrap/app.php';
+                            $kernel = $app->make(\Illuminate\Contracts\Console\Kernel::class);
+                            $kernel->bootstrap();
                             
-                            if ($rolesExist) {
-                                // Check if super-admin role exists
-                                $stmt = $pdo->prepare("SELECT id FROM roles WHERE name = 'super-admin' LIMIT 1");
-                                $stmt->execute();
-                                $role = $stmt->fetch(PDO::FETCH_ASSOC);
+                            // Load the user and assign role using Spatie package
+                            $user = \App\Models\User::find($userId);
+                            
+                            if ($user) {
+                                // Ensure role exists (should be created by migration-fixes)
+                                $role = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'super-admin']);
                                 
-                                if ($role) {
-                                    // Check if model_has_roles table exists
-                                    $modelHasRolesExists = $pdo->query("SHOW TABLES LIKE 'model_has_roles'")->rowCount() > 0;
-                                    
-                                    if ($modelHasRolesExists) {
-                                        // Assign super-admin role to user
-                                        $stmt = $pdo->prepare("
-                                            INSERT INTO model_has_roles (role_id, model_type, model_id)
-                                            VALUES (?, 'App\\\\Models\\\\User', ?)
-                                            ON DUPLICATE KEY UPDATE role_id = role_id
-                                        ");
-                                        $stmt->execute([$role['id'], $userId]);
-                                        
-                                        echo "<div class='status success'>";
-                                        echo "<span class='icon'>👑</span> Super-admin role assigned successfully!";
-                                        echo "</div>";
-                                    }
-                                } else {
-                                    echo "<div class='status warning'>";
-                                    echo "<span class='icon'>⚠</span> Super-admin role not found. Run seeders to create roles.";
-                                    echo "</div>";
+                                // Assign the role
+                                if (!$user->hasRole('super-admin')) {
+                                    $user->assignRole('super-admin');
                                 }
+                                
+                                echo "<div class='status success'>";
+                                echo "<span class='icon'>👑</span> Super-admin role assigned successfully!";
+                                echo "<div style='margin-top:10px; padding:10px; background:#f8f9fa; border-radius:4px;'>";
+                                echo "<strong>Assigned Roles:</strong> " . htmlspecialchars($user->getRoleNames()->join(', '));
+                                echo "</div>";
+                                echo "</div>";
+                            } else {
+                                echo "<div class='status error'>";
+                                echo "<span class='icon'>✗</span> Could not load user for role assignment!";
+                                echo "</div>";
                             }
                         } catch (Exception $e) {
                             echo "<div class='status warning'>";
                             echo "<span class='icon'>⚠</span> Could not assign role: " . htmlspecialchars($e->getMessage());
+                            echo "<div style='margin-top:10px; padding:10px; background:#fff3cd; border-radius:4px; font-size:12px;'>";
+                            echo "You can manually run: <code>php artisan tinker</code> then:<br>";
+                            echo "<code>\$user = App\\Models\\User::find($userId);<br>\$user->assignRole('super-admin');</code>";
+                            echo "</div>";
                             echo "</div>";
                         }
                     }
