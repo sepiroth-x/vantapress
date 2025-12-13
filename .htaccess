@@ -6,10 +6,8 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # CRITICAL: Allow direct access to setup scripts (bypass Laravel routing)
-    RewriteRule ^generate-key\.php$ - [L]
-    RewriteRule ^scripts/generate-key\.php$ - [L]
-    RewriteRule ^scripts/install\.php$ - [L]
+    # CRITICAL: Allow direct access to install.php (bypass Laravel routing)
+    RewriteRule ^install\.php$ - [L]
 
     # CRITICAL: Serve static assets from public/ folder
     # When request is for /css/*, /js/*, /images/*, etc., serve from public/
