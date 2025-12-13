@@ -25,7 +25,27 @@ return new class
         Log::warning('[Migration Fix 003] ========================================');
 
         try {
-            // Failed migrations that need to be re-run
+            // Check if tables/columns already exist (successful previous migration)
+            $groupsTableExists = Schema::hasTable('vp_groups');
+            $groupPostsTableExists = Schema::hasTable('vp_group_posts');
+            $privacyColumnExists = Schema::hasTable('vp_user_profiles') && 
+                                   Schema::hasColumn('vp_user_profiles', 'privacy');
+            $urlPreviewColumnExists = Schema::hasTable('vp_posts') && 
+                                      Schema::hasColumn('vp_posts', 'url_preview');
+
+            // If ALL features exist, migrations completed successfully - skip fix
+            if ($groupsTableExists && $groupPostsTableExists && $privacyColumnExists && $urlPreviewColumnExists) {
+                Log::info('[Migration Fix 003] DECISION: SKIP - All migrations completed successfully', [
+                    'vp_groups' => 'exists',
+                    'vp_group_posts' => 'exists',
+                    'privacy_column' => 'exists',
+                    'url_preview_column' => 'exists',
+                    'reason' => 'Update scenario - migrations were successful in previous version'
+                ]);
+                return false;
+            }
+
+            // Some migrations failed or partially completed - need to clean up and re-run
             $failedMigrations = [
                 '2025_12_12_000001_create_vp_groups_tables',
                 '2025_12_12_000002_add_privacy_to_profiles',

@@ -1,0 +1,108 @@
+[2025-12-13 19:40:20] local.ERROR: [AdminPanelProvider] Failed to discover module pages {"error":"SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it (Connection: mysql, SQL: select exists (select 1 from information_schema.tables where table_schema = 'hawkeye1_tccdb2' and table_name = 'modules' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`)","trace":"#0 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(979): Illuminate\\Database\\Connection->runQueryCallback()
+#1 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(958): Illuminate\\Database\\Connection->tryAgainIfCausedByLostConnection()
+#2 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(781): Illuminate\\Database\\Connection->handleQueryException()
+#3 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(398): Illuminate\\Database\\Connection->run()
+#4 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(344): Illuminate\\Database\\Connection->select()
+#5 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(361): Illuminate\\Database\\Connection->selectOne()
+#6 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Schema\\MySqlBuilder.php(45): Illuminate\\Database\\Connection->scalar()
+#7 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(361): Illuminate\\Database\\Schema\\MySqlBuilder->hasTable()
+#8 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\app\\Providers\\Filament\\AdminPanelProvider.php(180): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#9 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\app\\Providers\\Filament\\AdminPanelProvider.php(27): App\\Providers\\Filament\\AdminPanelProvider->discoverModulePages()
+#10 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\filament\\filament\\src\\PanelProvider.php(15): App\\Providers\\Filament\\AdminPanelProvider->panel()
+#11 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Collections\\helpers.php(236): Filament\\PanelProvider->{closure:Filament\\PanelProvider::register():15}()
+#12 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\filament\\filament\\src\\Facades\\Filament.php(140): value()
+#13 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(1432): Filament\\Facades\\Filament::{closure:Filament\\Facades\\Filament::registerPanel():140}()
+#14 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(1350): Illuminate\\Container\\Container->fireCallbackArray()
+#15 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(850): Illuminate\\Container\\Container->fireResolvingCallbacks()
+#16 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1078): Illuminate\\Container\\Container->resolve()
+#17 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(763): Illuminate\\Foundation\\Application->resolve()
+#18 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1058): Illuminate\\Container\\Container->make()
+#19 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\helpers.php(124): Illuminate\\Foundation\\Application->make()
+#20 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\filament\\filament\\src\\FilamentManager.php(51): app()
+#21 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\filament\\filament\\src\\FilamentServiceProvider.php(48): Filament\\FilamentManager->__construct()
+#22 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(952): Filament\\FilamentServiceProvider->{closure:Filament\\FilamentServiceProvider::packageRegistered():47}()
+#23 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(832): Illuminate\\Container\\Container->build()
+#24 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1078): Illuminate\\Container\\Container->resolve()
+#25 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(763): Illuminate\\Foundation\\Application->resolve()
+#26 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1058): Illuminate\\Container\\Container->make()
+#27 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(1580): Illuminate\\Foundation\\Application->make()
+#28 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(239): Illuminate\\Container\\Container->offsetGet()
+#29 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(210): Illuminate\\Support\\Facades\\Facade::resolveFacadeInstance()
+#30 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Facades\\Facade.php(355): Illuminate\\Support\\Facades\\Facade::getFacadeRoot()
+#31 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\filament\\filament\\routes\\web.php(13): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#32 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(511): Illuminate\\Support\\ServiceProvider->{closure:D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\filament\\filament\\routes\\web.php:12}()
+#33 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(467): Illuminate\\Routing\\Router->loadRoutes()
+#34 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\RouteRegistrar.php(207): Illuminate\\Routing\\Router->group()
+#35 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\filament\\filament\\routes\\web.php(12): Illuminate\\Routing\\RouteRegistrar->group()
+#36 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\ServiceProvider.php(195): require('...')
+#37 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\spatie\\laravel-package-tools\\src\\Concerns\\PackageServiceProvider\\ProcessRoutes.php(14): Illuminate\\Support\\ServiceProvider->loadRoutesFrom()
+#38 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\spatie\\laravel-package-tools\\src\\PackageServiceProvider.php(85): Spatie\\LaravelPackageTools\\PackageServiceProvider->bootPackageRoutes()
+#39 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Spatie\\LaravelPackageTools\\PackageServiceProvider->boot()
+#40 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::{closure:Illuminate\\Container\\BoundMethod::call():35}()
+#41 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(95): Illuminate\\Container\\Util::unwrapIfClosure()
+#42 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod()
+#43 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(696): Illuminate\\Container\\BoundMethod::call()
+#44 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1151): Illuminate\\Container\\Container->call()
+#45 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1132): Illuminate\\Foundation\\Application->bootProvider()
+#46 [internal function]: Illuminate\\Foundation\\Application->{closure:Illuminate\\Foundation\\Application::boot():1131}()
+#47 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1131): array_walk()
+#48 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#49 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(342): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap()
+#50 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(474): Illuminate\\Foundation\\Application->bootstrapWith()
+#51 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(196): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#52 D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\artisan(38): Illuminate\\Foundation\\Console\\Kernel->handle()
+#53 {main}"} 
+[2025-12-13 19:40:21] local.INFO: [AdminPanelProvider] Module pages discovered {"count":0,"pages":[]} 
+[2025-12-13 19:40:25] local.INFO: [AdminPanelProvider] Final pages array {"count":1,"pages":["Filament\\Pages\\Dashboard"]} 
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 19:40:31] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 19:40:31] local.INFO: [VPTelemetry] Service registered  
+[2025-12-13 19:40:31] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 19:40:31] local.INFO: [VPTelemetryServer] Service registered  
+[2025-12-13 19:40:31] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 19:40:31] local.INFO: [VPTelemetryServer] Module booted successfully  
+[2025-12-13 19:40:31] local.WARNING: [CMSServiceProvider] View path not found {"module":"HelloWorld","alias":"helloworld","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/HelloWorld/resources/views"} 
+[2025-12-13 19:40:32] local.INFO: [CMSServiceProvider] View namespace registered {"module":"TheVillainTerminal","alias":"thevillainterrminal","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/TheVillainTerminal/resources/views","path_exists":true} 
+[2025-12-13 19:40:32] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPEssential1","alias":"vpessential1","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPEssential1/resources/views"} 
+[2025-12-13 19:40:32] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetry","alias":"vptelemetry","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetry/resources/views","path_exists":true} 
+[2025-12-13 19:40:32] local.INFO: [CMSServiceProvider] View namespace registered {"module":"VPTelemetryServer","alias":"vptelemetryserver","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPTelemetryServer/resources/views","path_exists":true} 
+[2025-12-13 19:40:32] local.WARNING: [CMSServiceProvider] View path not found {"module":"VPToDoList","alias":"vptodolist","path":"D:\\0. Web Development\\4. Laravel Development\\vantapress-release\\Modules/VPToDoList/resources/views"} 
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-migrate  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-system-info  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-php-version  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-filament-version  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-version  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-make-theme-layout  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-export-layout  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: vanta-help  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: pwd  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: cd  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: ls  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: mkdir  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: rmdir  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: touch  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: rm  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Command registered: cat  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Registered 16 commands  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Filament page registered with panel  
+[2025-12-13 19:40:33] local.INFO: [Villain Terminal] Module loaded successfully  
+[2025-12-13 19:40:33] local.INFO: [VPTelemetry] Module booted successfully  
+[2025-12-13 19:40:33] local.INFO: [VPTelemetryServer] Filament resources registered for auto-discovery  
+[2025-12-13 19:40:33] local.INFO: [VPTelemetryServer] Module booted successfully  
