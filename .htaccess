@@ -2,8 +2,8 @@
     RewriteEngine On
     RewriteBase /
 
-    # CRITICAL: Prioritize index.php over any other index files
-    DirectoryIndex index.php index.html
+    # CRITICAL: Prioritize index.html during fresh install, then index.php after installation
+    DirectoryIndex index.html index.php
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
@@ -12,15 +12,10 @@
     # CRITICAL: Allow direct access to install.php (bypass Laravel routing)
     RewriteRule ^install\.php$ - [L]
 
-    # CRITICAL: Serve static assets from public/ folder
-    # When request is for /css/*, /js/*, /images/*, etc., serve from public/
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(css|js|images|fonts|vendor|favicon\.ico)(.*)$ public/$1$2 [L]
-
-    # If the asset actually exists in root (not in public/), serve it directly
+    # CRITICAL: Serve static assets directly (no public/ folder)
+    # Assets are in root: /css/*, /js/*, /images/*, etc.
     RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^(css|js|images|fonts|vendor)/ - [L]
+    RewriteRule ^(css|js|images|fonts|vendor|favicon\.ico)(.*)$ - [L]
 
     # Redirect Trailing Slashes
     RewriteCond %{REQUEST_FILENAME} !-d

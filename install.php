@@ -1482,31 +1482,14 @@ ini_set('display_errors', 1);
 
         // Step 6: Complete
         elseif ($step === 6) {
-            // Activate Laravel by renaming _index.php back to index.php
-            // Files are in ROOT directory (not public/) for shared hosting
+            // Activate Laravel by renaming index.html to index-off.html
+            // This allows index.php to take over as the main entry point
             $rootDir = __DIR__;
-            $publicDir = __DIR__ . '/public';
             
             // Rename index.html to index-off.html (preserve pre-installation page)
             if (file_exists("$rootDir/index.html")) {
                 rename("$rootDir/index.html", "$rootDir/index-off.html");
                 echo "<!-- Renamed pre-installation landing page: index.html → index-off.html -->\n";
-            }
-            
-            if (file_exists("$publicDir/index.html")) {
-                rename("$publicDir/index.html", "$publicDir/index-off.html");
-                echo "<!-- Renamed public/index.html → public/index-off.html -->\n";
-            }
-            
-            // Check both locations and activate whichever exists
-            if (file_exists("$rootDir/_index.php")) {
-                rename("$rootDir/_index.php", "$rootDir/index.php");
-                echo "<!-- Activated Laravel routing (root/index.php) -->\n";
-            }
-            
-            if (file_exists("$publicDir/_index.php")) {
-                rename("$publicDir/_index.php", "$publicDir/index.php");
-                echo "<!-- Activated Laravel routing (public/index.php) -->\n";
             }
             
             // Trigger telemetry installation event
