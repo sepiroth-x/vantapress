@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleFilamentErrors::class,
             \App\Http\Middleware\ThemeMiddleware::class,
+            \App\Http\Middleware\CheckPendingMigrations::class,
         ]);
 
         $middleware->alias([
