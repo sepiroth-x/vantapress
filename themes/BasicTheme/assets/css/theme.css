@@ -317,44 +317,51 @@ header {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.header-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.site-header .header-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     gap: 2rem;
 }
 
-.logo {
+.site-header .logo {
     flex-shrink: 0;
 }
 
-.main-nav {
+.site-header .main-nav {
     flex: 1;
-    display: flex;
-    justify-content: flex-end;
+    display: flex !important;
+    justify-content: flex-end !important;
 }
 
-.main-nav ul {
-    list-style: none;
-    display: flex;
+.site-header .main-nav ul {
+    list-style: none !important;
+    display: flex !important;
+    flex-direction: row !important;
     gap: 2rem;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.main-nav a {
+.site-header .main-nav li {
+    list-style: none !important;
+    display: inline-block !important;
+}
+
+.site-header .main-nav a {
     color: #ccc;
     font-weight: 600;
     transition: all 0.3s ease;
     font-size: 1rem;
 }
 
-.main-nav a:hover {
+.site-header .main-nav a:hover {
     color: var(--villain-red);
 }
 
 /* ==================== FOOTER ==================== */
-footer {
+.site-footer {
     background: linear-gradient(180deg, var(--villain-black) 0%, var(--villain-gray-dark) 100%);
     border-top: 2px solid var(--villain-red);
     padding: 3rem 0;
@@ -362,58 +369,88 @@ footer {
     z-index: 1;
 }
 
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+.site-footer .footer-content {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 2rem;
     margin-bottom: 2rem;
-    text-align: left;
+    text-align: left !important;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.footer-section h4 {
+.site-footer .footer-section {
+    text-align: left !important;
+}
+
+.site-footer .footer-section h4 {
     color: var(--villain-red);
     margin-bottom: 1rem;
     font-size: 1.1rem;
+    text-align: left !important;
 }
 
-.footer-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.site-footer .footer-section ul {
+    list-style: none !important;
+    list-style-type: none !important;
+    padding: 0 !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+    text-align: left !important;
 }
 
-.footer-section li {
+.site-footer .footer-section li {
+    list-style: none !important;
+    list-style-type: none !important;
     margin-bottom: 0.5rem;
+    padding-left: 0 !important;
+    text-align: left !important;
 }
 
-.footer-section a {
+.site-footer .footer-section li::before {
+    display: none !important;
+}
+
+.site-footer .footer-section a {
     color: #ccc;
     transition: color 0.3s ease;
+    text-decoration: none;
 }
 
-.footer-section a:hover {
+.site-footer .footer-section a:hover {
     color: var(--villain-red);
 }
 
-.footer-bottom {
+.site-footer .footer-bottom {
     border-top: 1px solid rgba(212, 0, 38, 0.3);
     padding-top: 2rem;
     text-align: center;
 }
 
-footer p {
+.site-footer p {
     color: #888;
     font-size: 0.9rem;
 }
 
-.footer-attribution {
+.site-footer .footer-attribution {
     margin-top: 0.5rem;
 }
 
 @media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
+    .site-footer .footer-content {
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+    }
+    
+    .site-footer .footer-section {
+        text-align: center !important;
+    }
+    
+    .site-footer .footer-section h4,
+    .site-footer .footer-section ul,
+    .site-footer .footer-section li {
+        text-align: center !important;
     }
 }
 
@@ -446,21 +483,21 @@ footer p {
     h2 { font-size: 2rem; }
     .hero h1 { font-size: 2.8rem; }
     
-    .header-wrapper {
-        flex-direction: column;
-        align-items: center;
+    .site-header .header-wrapper {
+        flex-direction: column !important;
+        align-items: center !important;
         gap: 1rem;
     }
     
-    .main-nav {
-        width: 100%;
-        justify-content: center;
+    .site-header .main-nav {
+        width: 100% !important;
+        justify-content: center !important;
     }
     
-    .main-nav ul {
-        flex-direction: column;
+    .site-header .main-nav ul {
+        flex-direction: column !important;
         gap: 1rem;
-        text-align: center;
+        text-align: center !important;
     }
     
     .container {
