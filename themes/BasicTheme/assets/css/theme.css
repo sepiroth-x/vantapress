@@ -319,23 +319,24 @@ header {
 
 .header-wrapper {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .logo {
-    text-align: center;
+    flex-shrink: 0;
 }
 
 .main-nav {
-    width: 100%;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .main-nav ul {
     list-style: none;
     display: flex;
-    justify-content: center;
     gap: 2rem;
     margin: 0;
     padding: 0;
@@ -357,14 +358,63 @@ footer {
     background: linear-gradient(180deg, var(--villain-black) 0%, var(--villain-gray-dark) 100%);
     border-top: 2px solid var(--villain-red);
     padding: 3rem 0;
-    text-align: center;
     position: relative;
     z-index: 1;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.footer-section h4 {
+    color: var(--villain-red);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: #ccc;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: var(--villain-red);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(212, 0, 38, 0.3);
+    padding-top: 2rem;
+    text-align: center;
 }
 
 footer p {
     color: #888;
     font-size: 0.9rem;
+}
+
+.footer-attribution {
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
 }
 
 /* ==================== UTILITIES ==================== */
@@ -397,7 +447,14 @@ footer p {
     .hero h1 { font-size: 2.8rem; }
     
     .header-wrapper {
+        flex-direction: column;
+        align-items: center;
         gap: 1rem;
+    }
+    
+    .main-nav {
+        width: 100%;
+        justify-content: center;
     }
     
     .main-nav ul {
