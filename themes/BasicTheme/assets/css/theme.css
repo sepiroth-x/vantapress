@@ -39,7 +39,7 @@ body {
     padding: 0 2rem;
 }
 
-/* Animated Grid Background */
+/* Animated Grid Background with Gradient */
 .animated-grid {
     position: fixed;
     top: 0;
@@ -48,15 +48,24 @@ body {
     height: 100%;
     z-index: -1;
     background: 
-        linear-gradient(rgba(212, 0, 38, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212, 0, 38, 0.05) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: gridMove 20s linear infinite;
+        radial-gradient(circle at 20% 50%, rgba(212, 0, 38, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255, 23, 68, 0.1) 0%, transparent 50%),
+        linear-gradient(rgba(212, 0, 38, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 0, 38, 0.08) 1px, transparent 1px),
+        linear-gradient(180deg, #0A0A0A 0%, #1A0505 50%, #0A0A0A 100%);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 50px 50px, 50px 50px, 100% 100%;
+    animation: gridMove 20s linear infinite, gradientShift 15s ease-in-out infinite;
 }
 
 @keyframes gridMove {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(50px, 50px); }
+    0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0 0, 0 0, 0% 0%; }
+    100% { background-position: 0% 0%, 0% 0%, 0% 0%, 50px 50px, 50px 50px, 0% 0%; }
+}
+
+@keyframes gradientShift {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
 }
 
 /* Glowing Effects */
@@ -376,16 +385,50 @@ body {
 }
 
 .section-dark {
-    background: rgba(10, 10, 10, 0.5);
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(26, 5, 5, 0.6) 100%);
+    position: relative;
+}
+
+.section-dark::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 50%, rgba(212, 0, 38, 0.1) 0%, transparent 60%),
+        radial-gradient(circle at 70% 50%, rgba(139, 0, 0, 0.1) 0%, transparent 60%);
+    pointer-events: none;
 }
 
 .section-darker {
-    background: #0A0A0A;
+    background: linear-gradient(180deg, #0A0A0A 0%, #150303 50%, #0A0A0A 100%);
     border-top: 1px solid rgba(212, 0, 38, 0.2);
+    border-bottom: 1px solid rgba(212, 0, 38, 0.1);
 }
 
 .section-light {
-    background: rgba(212, 0, 38, 0.03);
+    background: linear-gradient(135deg, rgba(212, 0, 38, 0.05) 0%, rgba(139, 0, 0, 0.03) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-light::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(212, 0, 38, 0.08) 0%, transparent 50%);
+    animation: rotate 30s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Table Styles */
@@ -454,26 +497,45 @@ table tbody td {
 /* Card Styles */
 .card {
     padding: 2rem;
-    background: rgba(212, 0, 38, 0.05);
-    border: 1px solid rgba(212, 0, 38, 0.2);
+    background: linear-gradient(135deg, rgba(212, 0, 38, 0.08) 0%, rgba(139, 0, 0, 0.05) 100%);
+    border: 1px solid rgba(212, 0, 38, 0.25);
     border-radius: 1rem;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 0, 38, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.card:hover::before {
+    left: 100%;
 }
 
 .card:hover {
-    background: rgba(212, 0, 38, 0.1);
+    background: linear-gradient(135deg, rgba(212, 0, 38, 0.15) 0%, rgba(139, 0, 0, 0.1) 100%);
     border-color: var(--color-primary);
-    box-shadow: 0 8px 30px rgba(212, 0, 38, 0.3);
+    box-shadow: 0 8px 30px rgba(212, 0, 38, 0.4), 0 0 60px rgba(212, 0, 38, 0.2);
     transform: translateY(-5px);
 }
 
 .card-dark {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(212, 0, 38, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(212, 0, 38, 0.08) 100%);
+    border: 1px solid rgba(212, 0, 38, 0.25);
+    backdrop-filter: blur(10px);
 }
 
 .card-dark:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(212, 0, 38, 0.15) 100%);
+    box-shadow: 0 8px 30px rgba(212, 0, 38, 0.3);
 }
 
 /* Text Utilities */

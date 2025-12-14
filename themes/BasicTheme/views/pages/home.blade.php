@@ -20,68 +20,68 @@
 </div>
 
 {{-- Comparison Table --}}
-<div style="padding: 60px 20px; background: #f9fafb;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #dc2626;">🌟 Why VantaPress?</h2>
+<section class="section section-dark" style="padding: 60px 20px; position: relative;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+        <h2 class="glow-text" style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">🌟 Why VantaPress?</h2>
         
-        <div style="overflow-x: auto; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <div style="overflow-x: auto; background: linear-gradient(135deg, rgba(212, 0, 38, 0.1) 0%, rgba(10, 10, 10, 0.8) 100%); border-radius: 12px; box-shadow: 0 8px 30px rgba(212, 0, 38, 0.3); border: 1px solid rgba(212, 0, 38, 0.3);">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="background: #dc2626; color: white;">
-                        <th style="padding: 16px; text-align: left; font-size: 1.1rem;">Feature</th>
-                        <th style="padding: 16px; text-align: center; font-size: 1.1rem;">WordPress</th>
-                        <th style="padding: 16px; text-align: center; font-size: 1.1rem;">VantaPress</th>
-                        <th style="padding: 16px; text-align: center; font-size: 1.1rem;">Laravel</th>
+                    <tr style="background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);">
+                        <th style="padding: 16px; text-align: left; font-size: 1.1rem; color: white;">Feature</th>
+                        <th style="padding: 16px; text-align: center; font-size: 1.1rem; color: white;">WordPress</th>
+                        <th style="padding: 16px; text-align: center; font-size: 1.1rem; color: white;">VantaPress</th>
+                        <th style="padding: 16px; text-align: center; font-size: 1.1rem; color: white;">Laravel</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 16px; font-weight: 600;">Ease of Use</td>
-                        <td style="padding: 16px; text-align: center;">✅ Beginner-friendly</td>
-                        <td style="padding: 16px; text-align: center; background: #fef2f2; font-weight: 700;">✅ Simple setup</td>
-                        <td style="padding: 16px; text-align: center;">❌ Complex setup</td>
+                    <tr style="border-bottom: 1px solid rgba(212, 0, 38, 0.2);">
+                        <td style="padding: 16px; font-weight: 600; color: var(--text-color);">Ease of Use</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">✅ Beginner-friendly</td>
+                        <td style="padding: 16px; text-align: center; background: rgba(212, 0, 38, 0.2); font-weight: 700; color: var(--color-primary);">✅ Simple setup</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">❌ Complex setup</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 16px; font-weight: 600;">Modern PHP</td>
-                        <td style="padding: 16px; text-align: center;">❌ Legacy code</td>
-                        <td style="padding: 16px; text-align: center; background: #fef2f2; font-weight: 700;">✅ Laravel 11</td>
-                        <td style="padding: 16px; text-align: center;">✅ Modern code</td>
+                    <tr style="border-bottom: 1px solid rgba(212, 0, 38, 0.2);">
+                        <td style="padding: 16px; font-weight: 600; color: var(--text-color);">Modern PHP</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">❌ Legacy code</td>
+                        <td style="padding: 16px; text-align: center; background: rgba(212, 0, 38, 0.2); font-weight: 700; color: var(--color-primary);">✅ Laravel 11</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">✅ Modern code</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 16px; font-weight: 600;">Admin Panel</td>
-                        <td style="padding: 16px; text-align: center;">✅ Built-in</td>
-                        <td style="padding: 16px; text-align: center; background: #fef2f2; font-weight: 700;">✅ FilamentPHP</td>
-                        <td style="padding: 16px; text-align: center;">❌ Build yourself</td>
+                    <tr style="border-bottom: 1px solid rgba(212, 0, 38, 0.2);">
+                        <td style="padding: 16px; font-weight: 600; color: var(--text-color);">Admin Panel</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">✅ Built-in</td>
+                        <td style="padding: 16px; text-align: center; background: rgba(212, 0, 38, 0.2); font-weight: 700; color: var(--color-primary);">✅ FilamentPHP</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">❌ Build yourself</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 16px; font-weight: 600;">Database ORM</td>
-                        <td style="padding: 16px; text-align: center;">❌ wpdb</td>
-                        <td style="padding: 16px; text-align: center; background: #fef2f2; font-weight: 700;">✅ Eloquent</td>
-                        <td style="padding: 16px; text-align: center;">✅ Eloquent</td>
+                    <tr style="border-bottom: 1px solid rgba(212, 0, 38, 0.2);">
+                        <td style="padding: 16px; font-weight: 600; color: var(--text-color);">Database ORM</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">❌ wpdb</td>
+                        <td style="padding: 16px; text-align: center; background: rgba(212, 0, 38, 0.2); font-weight: 700; color: var(--color-primary);">✅ Eloquent</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">✅ Eloquent</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 16px; font-weight: 600;">Asset Management</td>
-                        <td style="padding: 16px; text-align: center;">⚠️ Plugins needed</td>
-                        <td style="padding: 16px; text-align: center; background: #fef2f2; font-weight: 700;">✅ Built-in</td>
-                        <td style="padding: 16px; text-align: center;">⚠️ Vite required</td>
+                    <tr style="border-bottom: 1px solid rgba(212, 0, 38, 0.2);">
+                        <td style="padding: 16px; font-weight: 600; color: var(--text-color);">Asset Management</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">⚠️ Plugins needed</td>
+                        <td style="padding: 16px; text-align: center; background: rgba(212, 0, 38, 0.2); font-weight: 700; color: var(--color-primary);">✅ Built-in</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">⚠️ Vite required</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 16px; font-weight: 600;">Shared Hosting</td>
-                        <td style="padding: 16px; text-align: center;">✅ Works anywhere</td>
-                        <td style="padding: 16px; text-align: center; background: #fef2f2; font-weight: 700;">✅ Optimized</td>
-                        <td style="padding: 16px; text-align: center;">❌ Often restricted</td>
+                    <tr style="border-bottom: 1px solid rgba(212, 0, 38, 0.2);">
+                        <td style="padding: 16px; font-weight: 600; color: var(--text-color);">Shared Hosting</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">✅ Works anywhere</td>
+                        <td style="padding: 16px; text-align: center; background: rgba(212, 0, 38, 0.2); font-weight: 700; color: var(--color-primary);">✅ Optimized</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">❌ Often restricted</td>
                     </tr>
                     <tr>
-                        <td style="padding: 16px; font-weight: 600;">Code Quality</td>
-                        <td style="padding: 16px; text-align: center;">⚠️ Mixed</td>
-                        <td style="padding: 16px; text-align: center; background: #fef2f2; font-weight: 700;">✅ PSR standards</td>
-                        <td style="padding: 16px; text-align: center;">✅ PSR standards</td>
+                        <td style="padding: 16px; font-weight: 600; color: var(--text-color);">Code Quality</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">⚠️ Mixed</td>
+                        <td style="padding: 16px; text-align: center; background: rgba(212, 0, 38, 0.2); font-weight: 700; color: var(--color-primary);">✅ PSR standards</td>
+                        <td style="padding: 16px; text-align: center; color: var(--text-color);">✅ PSR standards</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
+</section>
 
 {{-- Key Features --}}
 <section class="features">
@@ -129,81 +129,82 @@
 </section>
 
 {{-- Quick Installation --}}
-<div style="padding: 60px 20px; background: #1f2937; color: white;">
+<section class="section section-darker" style="padding: 60px 20px; color: white;">
     <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">🚀 WordPress-Style Installation</h2>
+        <h2 class="glow-text" style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">🚀 WordPress-Style Installation</h2>
         <p style="text-align: center; font-size: 1.2rem; margin-bottom: 3rem; opacity: 0.9;">Get started in minutes, not hours!</p>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
-            <div style="text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
-                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">1. Download</h3>
+            <div class="card-dark" style="text-align: center; padding: 1.5rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(212, 0, 38, 0.5));">📦</div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--color-primary);">1. Download</h3>
                 <p style="opacity: 0.8;">Get the latest release</p>
             </div>
             
-            <div style="text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">☁️</div>
-                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">2. Upload</h3>
+            <div class="card-dark" style="text-align: center; padding: 1.5rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(212, 0, 38, 0.5));">☁️</div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--color-primary);">2. Upload</h3>
                 <p style="opacity: 0.8;">Use FTP or File Manager</p>
             </div>
             
-            <div style="text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">⚙️</div>
-                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">3. Configure</h3>
+            <div class="card-dark" style="text-align: center; padding: 1.5rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(212, 0, 38, 0.5));">⚙️</div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--color-primary);">3. Configure</h3>
                 <p style="opacity: 0.8;">Rename .env.example to .env</p>
             </div>
             
-            <div style="text-align: center; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">🌐</div>
-                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">4. Install</h3>
+            <div class="card-dark" style="text-align: center; padding: 1.5rem;">
+                <div style="font-size: 3rem; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(212, 0, 38, 0.5));">🌐</div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--color-primary);">4. Install</h3>
                 <p style="opacity: 0.8;">Visit /install.php</p>
             </div>
         </div>
         
         <div style="text-align: center;">
             <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">✅ No Terminal. No Composer. No npm. Just Upload & Install!</h3>
-            <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" style="display: inline-block; background: #dc2626; color: white; padding: 16px 48px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.2rem; margin-top: 1rem;">Download VantaPress Now →</a>
+            <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" class="btn btn-primary" style="display: inline-block; padding: 16px 48px; font-size: 1.2rem; margin-top: 1rem;">Download VantaPress Now →</a>
         </div>
     </div>
-</div>
+</section>
 
 {{-- Technology Stack --}}
-<div style="padding: 60px 20px; background: #f9fafb;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #dc2626;">🛠️ Technology Stack</h2>
+<section class="section section-light" style="padding: 60px 20px; position: relative;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+        <h2 class="glow-text" style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">🛠️ Technology Stack</h2>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: center;">
-            <div style="padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <strong style="color: #dc2626;">Laravel</strong><br>
-                <span style="color: #666;">11.47.0</span>
+            <div class="card" style="padding: 1.5rem;">
+                <strong style="color: var(--color-primary); font-size: 1.2rem;">Laravel</strong><br>
+                <span style="color: var(--text-color); opacity: 0.8;">11.47.0</span>
             </div>
-            <div style="padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <strong style="color: #dc2626;">PHP</strong><br>
-                <span style="color: #666;">8.2.29+</span>
+            <div class="card" style="padding: 1.5rem;">
+                <strong style="color: var(--color-primary); font-size: 1.2rem;">PHP</strong><br>
+                <span style="color: var(--text-color); opacity: 0.8;">8.2.29+</span>
             </div>
-            <div style="padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <strong style="color: #dc2626;">FilamentPHP</strong><br>
-                <span style="color: #666;">3.3.45</span>
+            <div class="card" style="padding: 1.5rem;">
+                <strong style="color: var(--color-primary); font-size: 1.2rem;">FilamentPHP</strong><br>
+                <span style="color: var(--text-color); opacity: 0.8;">3.3.45</span>
             </div>
-            <div style="padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <strong style="color: #dc2626;">MySQL</strong><br>
-                <span style="color: #666;">5.7+ / MariaDB</span>
+            <div class="card" style="padding: 1.5rem;">
+                <strong style="color: var(--color-primary); font-size: 1.2rem;">MySQL</strong><br>
+                <span style="color: var(--text-color); opacity: 0.8;">5.7+ / MariaDB</span>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 {{-- Footer CTA --}}
-<div style="padding: 60px 20px; background: #dc2626; color: white; text-align: center;">
-    <div class="container" style="max-width: 800px; margin: 0 auto;">
-        <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Ready to Get Started?</h2>
+<section style="padding: 60px 20px; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); color: white; text-align: center; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%); animation: pulse 4s ease-in-out infinite;"></div>
+    <div class="container" style="max-width: 800px; margin: 0 auto; position: relative; z-index: 1;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);">Ready to Get Started?</h2>
         <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95;">Join developers who choose WordPress simplicity with Laravel power</p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" style="background: white; color: #dc2626; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem;">📥 Download VantaPress</a>
-            <a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank" style="background: rgba(255,255,255,0.2); color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; border: 2px solid white;">📚 Read Documentation</a>
-            <a href="https://github.com/sepiroth-x/vantapress" target="_blank" style="background: rgba(255,255,255,0.2); color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; border: 2px solid white;">⭐ Star on GitHub</a>
+            <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" style="background: white; color: var(--color-primary); padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 30px rgba(0, 0, 0, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.3)';">📥 Download VantaPress</a>
+            <a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank" style="background: rgba(255,255,255,0.2); color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; border: 2px solid white; backdrop-filter: blur(10px); transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255,255,255,0.3)';" onmouseout="this.style.background='rgba(255,255,255,0.2)';">📚 Read Documentation</a>
+            <a href="https://github.com/sepiroth-x/vantapress" target="_blank" style="background: rgba(255,255,255,0.2); color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1.1rem; border: 2px solid white; backdrop-filter: blur(10px); transition: all 0.3s ease;" onmouseover="this.style.background='rgba(255,255,255,0.3)';" onmouseout="this.style.background='rgba(255,255,255,0.2)';">⭐ Star on GitHub</a>
         </div>
         <p style="margin-top: 2rem; opacity: 0.8;">Created by <strong>Sepiroth X Villainous</strong> | MIT License | Open Source</p>
     </div>
-</div>
+</section>
 @endsection
