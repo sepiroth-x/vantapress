@@ -154,6 +154,11 @@ class TelemetrySettings extends Page implements HasForms
         try {
             // Update .env file
             $envPath = base_path('.env');
+            
+            if (!file_exists($envPath)) {
+                throw new \Exception('.env file not found');
+            }
+            
             $envContent = file_get_contents($envPath);
 
             if (preg_match('/^TELEMETRY_ENABLED=.*$/m', $envContent)) {
@@ -163,19 +168,24 @@ class TelemetrySettings extends Page implements HasForms
                     $envContent
                 );
             } else {
-                $envContent .= "\nTELEMETRY_ENABLED=" . ($enabled ? 'true' : 'false');
+                $envContent .= "\nTELEMETRY_ENABLED=" . ($enabled ? 'true' : 'false') . "\n";
             }
 
             file_put_contents($envPath, $envContent);
 
-            // Clear config cache
+            // Clear all caches to ensure config is reloaded
             \Artisan::call('config:clear');
+            \Artisan::call('cache:clear');
+            
+            // Reload config
+            app()->make('config')->set('telemetry.enabled', $enabled);
 
             $this->telemetryEnabled = $enabled;
 
             Notification::make()
                 ->title($enabled ? 'Telemetry Enabled' : 'Telemetry Disabled')
                 ->success()
+                ->body('Setting saved successfully')
                 ->send();
 
         } catch (\Exception $e) {
