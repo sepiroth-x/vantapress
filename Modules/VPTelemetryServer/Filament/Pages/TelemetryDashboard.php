@@ -29,6 +29,25 @@ class TelemetryDashboard extends Page
     protected static ?int $navigationSort = 1;
 
     /**
+     * Check if navigation should be registered
+     * Only show when VPTelemetryServer module is enabled
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Check if VPTelemetryServer module is enabled
+        try {
+            $module = \DB::table('modules')
+                ->where('name', 'VPTelemetryServer')
+                ->where('is_enabled', true)
+                ->first();
+            
+            return $module !== null;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
      * Get header widgets
      */
     protected function getHeaderWidgets(): array

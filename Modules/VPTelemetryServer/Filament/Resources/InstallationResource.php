@@ -22,6 +22,25 @@ class InstallationResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    /**
+     * Check if navigation should be registered
+     * Only show when VPTelemetryServer module is enabled
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Check if VPTelemetryServer module is enabled
+        try {
+            $module = \DB::table('modules')
+                ->where('name', 'VPTelemetryServer')
+                ->where('is_enabled', true)
+                ->first();
+            
+            return $module !== null;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public static function form(Form $form): Form
     {
         return $form
