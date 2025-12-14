@@ -1244,19 +1244,19 @@ ini_set('display_errors', 1);
                     if (file_exists($publicDir . '/css/vantapress-admin.css')) {
                         echo "✓ VantaPress admin CSS found<br>";
                     } else {
-                        echo "⚠ VantaPress admin CSS not found (create resources/css/vantapress-admin.css)<br>";
+                        echo "⚠ VantaPress admin CSS not found (create css/vantapress-admin.css)<br>";
                     }
                     
                     if (file_exists($publicDir . '/images/vantapress-logo.svg')) {
                         echo "✓ VantaPress logo found<br>";
                     } else {
-                        echo "⚠ VantaPress logo not found (upload to public/images/)<br>";
+                        echo "⚠ VantaPress logo not found (upload to images/)<br>";
                     }
                     
                     if (file_exists($publicDir . '/images/vantapress-icon.svg')) {
                         echo "✓ VantaPress icon found<br>";
                     } else {
-                        echo "⚠ VantaPress icon not found (upload to public/images/)<br>";
+                        echo "⚠ VantaPress icon not found (upload to images/)<br>";
                     }
                     
                     // Verify critical Filament assets
