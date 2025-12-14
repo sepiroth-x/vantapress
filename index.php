@@ -14,13 +14,8 @@ define('LARAVEL_START', microtime(true));
 $envPath = __DIR__ . '/.env';
 $installPath = __DIR__ . '/install.php';
 
-if (file_exists($installPath) && (!file_exists($envPath) || filesize($envPath) < 50)) {
-    // Installation not complete, redirect to installer
-    header('Location: /install.php');
-    exit;
-}
-
-// Manually load .env for shared hosting compatibility
+// Manually load .env first
+$appKeyExists = false;
 if (file_exists($envPath)) {
     $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
@@ -32,10 +27,20 @@ if (file_exists($envPath)) {
         $key = trim($key);
         $value = trim($value, " \t\n\r\0\x0B\"'");
         
+        if ($key === 'APP_KEY' && !empty($value) && $value !== 'base64:') {
+            $appKeyExists = true;
+        }
+        
         $_ENV[$key] = $value;
         $_SERVER[$key] = $value;
         putenv("$key=$value");
     }
+}
+
+// Redirect to installer if install.php exists and APP_KEY is missing
+if (file_exists($installPath) && !$appKeyExists) {
+    header('Location: /install.php');
+    exit;
 }
 
 if (file_exists($maintenance = __DIR__.'/storage/framework/maintenance.php')) {
