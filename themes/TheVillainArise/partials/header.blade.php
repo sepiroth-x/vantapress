@@ -88,11 +88,6 @@
                             </svg>
                         </a>
                     @endif
-                @else
-                    <a href="{{ url('/admin') }}" 
-                       class="text-gray-300 hover:text-villain-500 transition font-medium text-sm">
-                        Login
-                    </a>
                 @endauth
                 
                 {{-- Mobile Menu Toggle --}}

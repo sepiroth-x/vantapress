@@ -27,8 +27,8 @@
             <div class="hidden md:flex items-center space-x-4">
                 <a href="#features" class="text-white/90 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/10">Features</a>
                 <a href="#about" class="text-white/90 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/10">About</a>
-                <a href="#login" class="text-white/90 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/10">Sign In</a>
-                <a href="{{ url('/register') }}" class="bg-white text-purple-600 px-6 py-2 rounded-lg hover:bg-gray-100 transition font-bold">Sign Up</a>
+                <a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank" class="text-white/90 hover:text-white transition px-4 py-2 rounded-lg hover:bg-white/10">Documentation</a>
+                <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" class="bg-white text-purple-600 px-6 py-2 rounded-lg hover:bg-gray-100 transition font-bold">Download</a>
             </div>
         </div>
     </nav>
@@ -57,16 +57,16 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <a href="#login" 
+                    <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank"
                        class="group px-8 py-4 bg-white text-purple-600 rounded-xl font-bold text-lg hover:bg-gray-100 transition shadow-2xl hover:shadow-white/20 hover:scale-105 transform duration-300 flex items-center justify-center">
-                        Get Started Free
+                        Download VantaPress
                         <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
                     </a>
-                    <a href="#features" 
+                    <a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank"
                        class="px-8 py-4 bg-white/10 backdrop-blur-lg text-white rounded-xl font-bold text-lg hover:bg-white/20 transition border-2 border-white/30 flex items-center justify-center">
-                        Learn More
+                        Documentation
                     </a>
                 </div>
 
@@ -89,113 +89,48 @@
                 </div>
             </div>
 
-            {{-- Right: Login Card --}}
-            <div id="login" class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
+            {{-- Right: CTA Card --}}
+            <div class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                        Welcome Back
+                        Ready to Start?
                     </h2>
                     <p class="text-gray-600 dark:text-gray-400">
-                        Sign in to continue your journey
+                        Download VantaPress and deploy in minutes
                     </p>
                 </div>
 
-                {{-- Error/Success Messages --}}
-                @if ($errors->any())
-                    <div class="mb-6 rounded-xl bg-red-50 dark:bg-red-900/20 p-4 border border-red-100 dark:border-red-900">
-                        <div class="flex items-start">
-                            <svg class="h-5 w-5 text-red-500 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                            </svg>
-                            <div class="ml-3">
-                                <div class="text-sm text-red-800 dark:text-red-200">
-                                    @foreach ($errors->all() as $error)
-                                        <p>{{ $error }}</p>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                @if(session('success'))
-                    <div class="mb-6 rounded-xl bg-green-50 dark:bg-green-900/20 p-4 border border-green-100 dark:border-green-900">
-                        <div class="flex items-start">
-                            <svg class="h-5 w-5 text-green-500 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <div class="ml-3">
-                                <p class="text-sm text-green-800 dark:text-green-200">{{ session('success') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Login Form --}}
-                <form method="POST" action="{{ url('/login') }}" class="space-y-5">
-                    @csrf
+                <div class="space-y-4">
+                    <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank"
+                       class="block w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition shadow-lg hover:shadow-xl transform hover:scale-[1.02] duration-200 text-center">
+                        📥 Download Latest Release
+                    </a>
                     
-                    <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                            Email or Username
-                        </label>
-                        <input type="text" 
-                               name="email" 
-                               id="email" 
-                               required 
-                               autofocus
-                               value="{{ old('email') }}"
-                               class="w-full px-4 py-3.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-800 dark:text-white transition"
-                               placeholder="username or email@example.com">
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank"
+                       class="block w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition text-center">
+                        📚 View Documentation
+                    </a>
+                    
+                    <a href="https://github.com/sepiroth-x/vantapress" target="_blank"
+                       class="block w-full border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white py-4 rounded-xl font-bold text-lg hover:border-purple-500 hover:text-purple-600 transition text-center">
+                        ⭐ Star on GitHub
+                    </a>
+                </div>
 
-                    <div>
-                        <label for="password" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                            Password
-                        </label>
-                        <input type="password" 
-                               name="password" 
-                               id="password" 
-                               required
-                               class="w-full px-4 py-3.5 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-800 dark:text-white transition"
-                               placeholder="••••••••">
-                        @error('password')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="flex items-center justify-between text-sm">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" 
-                                   name="remember" 
-                                   class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
-                            <span class="ml-2 text-gray-600 dark:text-gray-400 font-medium">Remember me</span>
-                        </label>
-                        
-                        <a href="{{ url('/forgot-password') }}" class="text-purple-600 hover:text-purple-700 font-semibold">
-                            Forgot password?
-                        </a>
-                    </div>
-
-                    <button type="submit" 
-                            class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-pink-700 transition shadow-lg hover:shadow-xl transform hover:scale-[1.02] duration-200">
-                        Sign In
-                    </button>
-                </form>
-
-
-
-                {{-- Test Accounts --}}
-                @if(config('app.env') === 'local')
-                <div class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-900">
-                    <p class="text-xs text-yellow-800 dark:text-yellow-200 font-bold mb-2">🧪 Test Accounts:</p>
-                    <div class="space-y-1 text-xs text-yellow-700 dark:text-yellow-300 font-mono">
-                        <p>john@test.com / password</p>
-                        <p>jane@test.com / password</p>
-                        <p>alex@test.com / password</p>
+                <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold text-purple-600">MIT</div>
+                            <div class="text-xs text-gray-600 dark:text-gray-400">License</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-purple-600">Free</div>
+                            <div class="text-xs text-gray-600 dark:text-gray-400">Open Source</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-purple-600">v1.2.1</div>
+                            <div class="text-xs text-gray-600 dark:text-gray-400">Latest</div>
+                        </div>
                     </div>
                 </div>
                 @endif
