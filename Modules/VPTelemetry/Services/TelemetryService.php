@@ -381,7 +381,7 @@ class TelemetryService
         $totalPings = TelemetryLog::whereNotNull('sent_at')->count();
 
         return [
-            'enabled' => $this->isEnabled,
+            'enabled' => config('telemetry.enabled', true),
             'installation_id' => $this->installationId,
             'last_heartbeat' => $lastHeartbeat ? \Carbon\Carbon::parse($lastHeartbeat) : null,
             'total_pings' => $totalPings,
