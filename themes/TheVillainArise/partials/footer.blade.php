@@ -68,14 +68,12 @@
                             @endforeach
                         @else
                             <li><a href="{{ url('/') }}" class="text-gray-400 hover:text-villain-500 transition">Home</a></li>
-                            <li><a href="{{ url('/pages') }}" class="text-gray-400 hover:text-villain-500 transition">Pages</a></li>
                             <li><a href="{{ url('/about') }}" class="text-gray-400 hover:text-villain-500 transition">About</a></li>
                             <li><a href="{{ url('/contact') }}" class="text-gray-400 hover:text-villain-500 transition">Contact</a></li>
                             <li><a href="{{ url('/terms') }}" class="text-gray-400 hover:text-villain-500 transition">Terms of Use</a></li>
                         @endif
                     @else
                         <li><a href="{{ url('/') }}" class="text-gray-400 hover:text-villain-500 transition">Home</a></li>
-                        <li><a href="{{ url('/pages') }}" class="text-gray-400 hover:text-villain-500 transition">Pages</a></li>
                         <li><a href="{{ url('/about') }}" class="text-gray-400 hover:text-villain-500 transition">About</a></li>
                         <li><a href="{{ url('/contact') }}" class="text-gray-400 hover:text-villain-500 transition">Contact</a></li>
                         <li><a href="{{ url('/terms') }}" class="text-gray-400 hover:text-villain-500 transition">Terms of Use</a></li>

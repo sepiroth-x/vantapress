@@ -238,6 +238,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/about', function() {
     $activeTheme = \App\Models\Theme::where('is_active', true)->first();
     $possibleViews = [
+        'theme::about',
         'theme::pages.about',
         'theme.pages::about',
     ];
@@ -254,6 +255,7 @@ Route::get('/about', function() {
 Route::get('/contact', function() {
     $activeTheme = \App\Models\Theme::where('is_active', true)->first();
     $possibleViews = [
+        'theme::contact',
         'theme::pages.contact',
         'theme.pages::contact',
     ];
@@ -270,6 +272,7 @@ Route::get('/contact', function() {
 Route::get('/terms', function() {
     $activeTheme = \App\Models\Theme::where('is_active', true)->first();
     $possibleViews = [
+        'theme::terms',
         'theme::pages.terms',
         'theme.pages::terms',
     ];
