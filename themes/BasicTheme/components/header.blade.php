@@ -1,6 +1,6 @@
 <header class="site-header" data-vp-element="header">
     <div class="container">
-        <div class="header-content">
+        <div class="header-wrapper">
             <div class="logo" data-vp-element="site_logo">
                 <a href="/" style="display: flex; flex-direction: column; align-items: flex-start;">
                     <span style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; color: var(--villain-red); text-shadow: 0 0 15px rgba(212, 0, 38, 0.6); letter-spacing: 2px;">VANTAPRESS</span>
