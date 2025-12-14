@@ -59,6 +59,12 @@ class CheckPendingMigrations
             $status = $migrationService->checkPendingMigrations();
 
             if ($status['pending'] && $status['count'] > 0 && $status['count'] !== 'Error') {
+                // Log for debugging
+                \Log::info('Pending migrations detected, sending notification', [
+                    'count' => $status['count'],
+                    'user' => auth()->id()
+                ]);
+                
                 // Show notification banner
                 Notification::make()
                     ->warning()
@@ -78,7 +84,7 @@ class CheckPendingMigrations
                             ->label('Remind Me Later')
                             ->close(),
                     ])
-                    ->send();
+                    ->sendToDatabase(auth()->user());
             }
         } catch (\Exception $e) {
             // Silently fail - don't break admin panel if check fails
