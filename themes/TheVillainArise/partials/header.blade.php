@@ -60,14 +60,12 @@
                     @else
                         {{-- Default Menu --}}
                         <a href="{{ url('/') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">Home</a>
-                        <a href="{{ url('/pages') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">Pages</a>
                         <a href="{{ url('/about') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">About</a>
                         <a href="{{ url('/contact') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">Contact</a>
                     @endif
                 @else
                     {{-- Fallback Default Menu --}}
                     <a href="{{ url('/') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">Home</a>
-                    <a href="{{ url('/pages') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">Pages</a>
                     <a href="{{ url('/about') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">About</a>
                     <a href="{{ url('/contact') }}" class="text-gray-300 hover:text-villain-500 transition font-medium uppercase text-sm tracking-wider">Contact</a>
                 @endif
