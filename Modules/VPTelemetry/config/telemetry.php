@@ -9,11 +9,13 @@ return [
     | Enable or disable anonymous telemetry collection.
     | Users can change this in Admin > Settings.
     |
+    | Default: false (opt-in, not opt-out)
+    |
     | Data collected: domain, IP, version, PHP version, modules, themes
     | Data NOT collected: emails, usernames, passwords, user content
     |
     */
-    'enabled' => env('TELEMETRY_ENABLED', true),
+    'enabled' => env('TELEMETRY_ENABLED', false),
 
     /*
     |--------------------------------------------------------------------------
