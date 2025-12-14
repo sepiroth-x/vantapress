@@ -21,13 +21,13 @@
         :root {
             @php
                 $cssVars = [
-                    'color-primary' => vp_get_theme_setting('primary_color', '#3b82f6'),
-                    'color-secondary' => vp_get_theme_setting('secondary_color', '#8b5cf6'),
-                    'color-accent' => vp_get_theme_setting('accent_color', '#10b981'),
-                    'header-bg-color' => vp_get_theme_setting('header_bg_color', '#ffffff'),
-                    'header-text-color' => vp_get_theme_setting('header_text_color', '#1e293b'),
-                    'footer-bg-color' => vp_get_theme_setting('footer_bg_color', '#1e293b'),
-                    'footer-text-color' => vp_get_theme_setting('footer_text_color', '#ffffff'),
+                    'color-primary' => vp_get_theme_setting('primary_color', '#D40026'),
+                    'color-secondary' => vp_get_theme_setting('secondary_color', '#8B0018'),
+                    'color-accent' => vp_get_theme_setting('accent_color', '#ff0033'),
+                    'header-bg-color' => vp_get_theme_setting('header_bg_color', '#1a1a1a'),
+                    'header-text-color' => vp_get_theme_setting('header_text_color', '#e0e0e0'),
+                    'footer-bg-color' => vp_get_theme_setting('footer_bg_color', '#0a0a0a'),
+                    'footer-text-color' => vp_get_theme_setting('footer_text_color', '#e0e0e0'),
                 ];
             @endphp
             @foreach($cssVars as $varName => $varValue)
