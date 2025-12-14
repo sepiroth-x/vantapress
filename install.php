@@ -924,18 +924,23 @@ ini_set('display_errors', 1);
                         echo "⊘ No migration fixes found<br><br>";
                     }
                     
-                    // Get migration files from core and modules
-                    $migrationFiles = glob(__DIR__ . '/database/migrations/*.php');
+                    // Get migration files - CORE FIRST, then modules
+                    // This ensures users table and other core tables exist before module foreign keys
+                    $coreMigrations = glob(__DIR__ . '/database/migrations/*.php');
+                    sort($coreMigrations);
                     
-                    // Add VPEssential1 module migrations
+                    $moduleMigrations = [];
+                    // Add VPEssential1 module migrations AFTER core
                     $vpEssentialMigrations = glob(__DIR__ . '/Modules/VPEssential1/migrations/*.php');
                     if ($vpEssentialMigrations) {
-                        $migrationFiles = array_merge($migrationFiles, $vpEssentialMigrations);
+                        sort($vpEssentialMigrations);
+                        $moduleMigrations = array_merge($moduleMigrations, $vpEssentialMigrations);
                     }
                     
-                    sort($migrationFiles);
+                    // Combine: core migrations first, then module migrations
+                    $migrationFiles = array_merge($coreMigrations, $moduleMigrations);
                     
-                    echo "📂 Found " . count($migrationFiles) . " migration files<br><br>";
+                    echo "📂 Found " . count($migrationFiles) . " migration files (" . count($coreMigrations) . " core + " . count($moduleMigrations) . " module)<br><br>";
                     
                     // Get already run migrations
                     $stmt = $pdo->query("SELECT migration FROM migrations");
