@@ -38,6 +38,22 @@ class TelemetrySettings extends Page implements HasForms
     
     protected static ?int $navigationSort = 100;
 
+    /**
+     * Determine if the navigation item should be registered
+     */
+    public static function shouldRegisterNavigation(): bool
+    {
+        try {
+            $module = \DB::table('modules')
+                ->where('name', 'VPTelemetry')
+                ->first();
+            
+            return $module && $module->is_enabled;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     public bool $telemetryEnabled;
     public ?string $lastHeartbeat = null;
     public ?string $installationId = null;
