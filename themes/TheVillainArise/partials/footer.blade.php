@@ -85,9 +85,9 @@
             <div>
                 <h3 class="text-lg font-bold font-orbitron text-villain-500 mb-4 uppercase tracking-wider">Resources</h3>
                 <ul class="space-y-2">
-                    <li><a href="https://github.com/sepiroth-x/vantapress/blob/standard-release/README.md" target="_blank" class="text-gray-400 hover:text-villain-500 transition">Documentation</a></li>
+                    <li><a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank" class="text-gray-400 hover:text-villain-500 transition">Documentation</a></li>
+                    <li><a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" class="text-gray-400 hover:text-villain-500 transition">Download</a></li>
                     <li><a href="https://github.com/sepiroth-x/vantapress" target="_blank" class="text-gray-400 hover:text-villain-500 transition">GitHub Repository</a></li>
-                    <li><a href="https://vantapress.com" target="_blank" class="text-gray-400 hover:text-villain-500 transition">Official Website</a></li>
                     <li><a href="{{ url('/admin') }}" class="text-gray-400 hover:text-villain-500 transition">Admin Panel</a></li>
                 </ul>
             </div>

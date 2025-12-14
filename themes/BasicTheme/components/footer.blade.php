@@ -16,7 +16,7 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
-                    <li><a href="https://github.com/sepiroth-x/vantapress/blob/standard-release/README.md" target="_blank">Documentation</a></li>
+                    <li><a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank">Documentation</a></li>
                     <li><a href="https://github.com/sepiroth-x/vantapress" target="_blank">GitHub</a></li>
                     <li><a href="/admin">Admin Panel</a></li>
                 </ul>
