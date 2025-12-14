@@ -234,6 +234,55 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+// Static Pages Routes (About, Contact, Terms)
+Route::get('/about', function() {
+    $activeTheme = \App\Models\Theme::where('is_active', true)->first();
+    $possibleViews = [
+        'theme::pages.about',
+        'theme.pages::about',
+    ];
+    
+    foreach ($possibleViews as $viewPath) {
+        if (view()->exists($viewPath)) {
+            return view($viewPath);
+        }
+    }
+    
+    return view('vpessential1::landing');
+})->name('about');
+
+Route::get('/contact', function() {
+    $activeTheme = \App\Models\Theme::where('is_active', true)->first();
+    $possibleViews = [
+        'theme::pages.contact',
+        'theme.pages::contact',
+    ];
+    
+    foreach ($possibleViews as $viewPath) {
+        if (view()->exists($viewPath)) {
+            return view($viewPath);
+        }
+    }
+    
+    return view('vpessential1::landing');
+})->name('contact');
+
+Route::get('/terms', function() {
+    $activeTheme = \App\Models\Theme::where('is_active', true)->first();
+    $possibleViews = [
+        'theme::pages.terms',
+        'theme.pages::terms',
+    ];
+    
+    foreach ($possibleViews as $viewPath) {
+        if (view()->exists($viewPath)) {
+            return view($viewPath);
+        }
+    }
+    
+    return view('vpessential1::landing');
+})->name('terms');
+
 // Catch-all route for dynamic pages (must be last)
 Route::get('/{slug}', [App\Http\Controllers\PageController::class, 'show'])
     ->where('slug', '.*')
