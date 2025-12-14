@@ -25,9 +25,19 @@ if (!function_exists('vp_get_theme_setting')) {
      */
     function vp_get_theme_setting(string $key, $default = null)
     {
-        // Don't cache in customizer preview to see changes immediately
-        $setting = ThemeSetting::where('key', $key)->first();
-        return $setting ? $setting->value : $default;
+        try {
+            // Check if table exists first
+            if (!Schema::hasTable('vp_theme_settings')) {
+                return $default;
+            }
+            
+            // Don't cache in customizer preview to see changes immediately
+            $setting = ThemeSetting::where('key', $key)->first();
+            return $setting ? $setting->value : $default;
+        } catch (\Exception $e) {
+            // Fallback to default if any error occurs
+            return $default;
+        }
     }
 }
 

@@ -924,8 +924,15 @@ ini_set('display_errors', 1);
                         echo "⊘ No migration fixes found<br><br>";
                     }
                     
-                    // Get migration files
+                    // Get migration files from core and modules
                     $migrationFiles = glob(__DIR__ . '/database/migrations/*.php');
+                    
+                    // Add VPEssential1 module migrations
+                    $vpEssentialMigrations = glob(__DIR__ . '/Modules/VPEssential1/migrations/*.php');
+                    if ($vpEssentialMigrations) {
+                        $migrationFiles = array_merge($migrationFiles, $vpEssentialMigrations);
+                    }
+                    
                     sort($migrationFiles);
                     
                     echo "📂 Found " . count($migrationFiles) . " migration files<br><br>";
