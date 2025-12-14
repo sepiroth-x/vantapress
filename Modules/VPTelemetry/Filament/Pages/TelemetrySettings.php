@@ -84,7 +84,7 @@ class TelemetrySettings extends Page implements HasForms
         }
 
         $this->form->fill([
-            'telemetry_enabled' => $this->telemetryEnabled,
+            'telemetry_enabled' => $this->telemetryEnabled ?? true, // Default to enabled
         ]);
     }
 
