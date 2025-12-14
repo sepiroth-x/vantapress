@@ -4,50 +4,50 @@
 
 @section('content')
 {{-- Hero Section --}}
-<div style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 60px 20px; text-align: center;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">Contact Us</h1>
-        <p style="font-size: 1.3rem; opacity: 0.95;">Let's Build Something Amazing Together</p>
+<div class="hero">
+    <div class="container">
+        <h1 class="glow-text">Contact Us</h1>
+        <p style="font-size: 1.3rem;">Let's Build Something Amazing Together</p>
     </div>
 </div>
 
 {{-- Contact Options --}}
-<div style="padding: 60px 20px; background: white;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <h2 style="font-size: 2.5rem; margin-bottom: 1rem; color: #dc2626;">📬 Get in Touch</h2>
-            <p style="font-size: 1.2rem; color: #666;">
+<section class="features">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="glow-text">📬 Get in Touch</h2>
+            <p style="font-size: 1.2rem; color: var(--text-color); margin-top: 1rem;">
                 Whether you're a developer looking to contribute, a business interested in VantaPress,<br>
                 or just have questions—we'd love to hear from you!
             </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
+        <div class="feature-grid">
             {{-- Email Card --}}
-            <div style="background: #fef2f2; padding: 2rem; border-radius: 12px; border-left: 4px solid #dc2626; text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #dc2626;">Email</h3>
-                <p style="color: #666; margin-bottom: 1rem;">For business inquiries, support, and collaboration</p>
-                <a href="mailto:chardy.tsadiq02@gmail.com" style="color: #dc2626; font-weight: 700; font-size: 1.1rem; text-decoration: none;">
+            <div class="feature-card">
+                <div class="feature-icon">📧</div>
+                <h3>Email</h3>
+                <p style="margin-bottom: 1rem;">For business inquiries, support, and collaboration</p>
+                <a href="mailto:chardy.tsadiq02@gmail.com" class="text-primary" style="font-weight: 700; font-size: 1.1rem; text-decoration: none;">
                     chardy.tsadiq02@gmail.com
                 </a>
             </div>
 
             {{-- Phone Card --}}
-            <div style="background: #fef2f2; padding: 2rem; border-radius: 12px; border-left: 4px solid #dc2626; text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #dc2626;">Mobile</h3>
-                <p style="color: #666; margin-bottom: 1rem;">Direct line for urgent matters</p>
-                <a href="tel:+639150388448" style="color: #dc2626; font-weight: 700; font-size: 1.1rem; text-decoration: none;">
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile</h3>
+                <p style="margin-bottom: 1rem;">Direct line for urgent matters</p>
+                <a href="tel:+639150388448" class="text-primary" style="font-weight: 700; font-size: 1.1rem; text-decoration: none;">
                     +63 915 0388 448
                 </a>
             </div>
 
             {{-- GitHub Card --}}
-            <div style="background: #fef2f2; padding: 2rem; border-radius: 12px; border-left: 4px solid #dc2626; text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">💻</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #dc2626;">GitHub</h3>
-                <p style="color: #666; margin-bottom: 1rem;">For code contributions and issues</p>
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3>GitHub</h3>
+                <p style="margin-bottom: 1rem;">For code contributions and issues</p>
                 <a href="https://github.com/sepiroth-x/vantapress" target="_blank" style="color: #dc2626; font-weight: 700; font-size: 1.1rem; text-decoration: none;">
                     @sepiroth-x/vantapress
                 </a>

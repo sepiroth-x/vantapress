@@ -4,16 +4,16 @@
 
 @section('content')
 {{-- Hero Section --}}
-<div class="hero" style="background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 80px 20px; text-align: center;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <h1 style="font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem;">⚡ VantaPress</h1>
-        <p style="font-size: 1.5rem; margin-bottom: 0.5rem; opacity: 0.95;">A WordPress-Inspired CMS Built with Laravel</p>
-        <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.85;">The Best of Both Worlds: WordPress Simplicity + Laravel Power</p>
-        <div class="hero-actions" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-            <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" class="btn btn-primary" style="background: white; color: #dc2626; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 700;">📥 Download Now</a>
-            <a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank" class="btn btn-secondary" style="background: rgba(255,255,255,0.2); color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; border: 2px solid white;">📚 Documentation</a>
+<div class="hero">
+    <div class="container">
+        <h1 class="glow-text">⚡ VantaPress</h1>
+        <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">A WordPress-Inspired CMS Built with Laravel</p>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem;">The Best of Both Worlds: WordPress Simplicity + Laravel Power</p>
+        <div class="hero-actions">
+            <a href="https://github.com/sepiroth-x/vantapress/releases/latest" target="_blank" class="btn btn-primary">📥 Download Now</a>
+            <a href="https://github.com/sepiroth-x/vantapress#readme" target="_blank" class="btn btn-secondary">📚 Documentation</a>
         </div>
-        <div style="margin-top: 2rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px; display: inline-block;">
+        <div style="margin-top: 2rem; padding: 1rem; background: rgba(212, 0, 38, 0.2); border-radius: 8px; display: inline-block; border: 1px solid rgba(212, 0, 38, 0.3);">
             <strong>Current Version:</strong> v1.2.1-social-advanced | <strong>License:</strong> MIT (Open Source)
         </div>
     </div>
@@ -84,49 +84,49 @@
 </div>
 
 {{-- Key Features --}}
-<div style="padding: 60px 20px; background: white;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto;">
-        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: #dc2626;">💎 What Makes VantaPress Different?</h2>
+<section class="features">
+    <div class="container">
+        <h2 class="glow-text">💎 What Makes VantaPress Different?</h2>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <div style="padding: 2rem; background: #fef2f2; border-radius: 12px; border-left: 4px solid #dc2626;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #991b1b;">WordPress Philosophy, Laravel Power</h3>
-                <p style="color: #666;">Instant setup with web-based installer, no terminal required</p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>WordPress Philosophy, Laravel Power</h3>
+                <p>Instant setup with web-based installer, no terminal required</p>
             </div>
             
-            <div style="padding: 2rem; background: #fef2f2; border-radius: 12px; border-left: 4px solid #dc2626;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #991b1b;">No Build Tools Required</h3>
-                <p style="color: #666;">Deploy via FTP/cPanel, FilamentPHP handles all assets internally</p>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>No Build Tools Required</h3>
+                <p>Deploy via FTP/cPanel, FilamentPHP handles all assets internally</p>
             </div>
             
-            <div style="padding: 2rem; background: #fef2f2; border-radius: 12px; border-left: 4px solid #dc2626;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">💎</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #991b1b;">Beautiful Admin Panel</h3>
-                <p style="color: #666;">FilamentPHP provides a stunning dashboard with zero compilation needed</p>
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <h3>Beautiful Admin Panel</h3>
+                <p>FilamentPHP provides a stunning dashboard with zero compilation needed</p>
             </div>
             
-            <div style="padding: 2rem; background: #fef2f2; border-radius: 12px; border-left: 4px solid #dc2626;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏗️</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #991b1b;">Proper Architecture</h3>
-                <p style="color: #666;">MVC pattern, Eloquent ORM, dependency injection, testable code</p>
+            <div class="feature-card">
+                <div class="feature-icon">🏗️</div>
+                <h3>Proper Architecture</h3>
+                <p>MVC pattern, Eloquent ORM, dependency injection, testable code</p>
             </div>
             
-            <div style="padding: 2rem; background: #fef2f2; border-radius: 12px; border-left: 4px solid #dc2626;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌐</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #991b1b;">Shared Hosting Ready</h3>
-                <p style="color: #666;">Works on cheap shared hosting like iFastNet, HostGator, Bluehost</p>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Shared Hosting Ready</h3>
+                <p>Works on cheap shared hosting like iFastNet, HostGator, Bluehost</p>
             </div>
             
-            <div style="padding: 2rem; background: #fef2f2; border-radius: 12px; border-left: 4px solid #dc2626;">
-                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔓</div>
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: #991b1b;">Open Source & Free</h3>
-                <p style="color: #666;">MIT licensed, modify and use however you want</p>
+            <div class="feature-card">
+                <div class="feature-icon">🔓</div>
+                <h3>Open Source & Free</h3>
+                <p>MIT licensed, modify and use however you want</p>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 {{-- Quick Installation --}}
 <div style="padding: 60px 20px; background: #1f2937; color: white;">
