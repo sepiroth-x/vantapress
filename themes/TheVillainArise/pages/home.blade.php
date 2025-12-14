@@ -93,14 +93,15 @@
                 Join the villain side and build something extraordinary with VantaPress CMS
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ url('/admin') }}" 
+                <a href="https://github.com/sepiroth-x/vantapress" 
+                   target="_blank"
                    class="px-8 py-4 bg-villain-600 hover:bg-villain-700 text-white font-bold rounded-lg transition-all transform hover:scale-105 hover:shadow-xl hover:shadow-villain-500/50 uppercase tracking-wider">
-                    Access Admin Panel
+                    Get Started
                 </a>
-                <a href="https://github.com/sepiroth-x/vantapress/blob/standard-release/README.md" 
+                <a href="https://github.com/sepiroth-x/vantapress#readme" 
                    target="_blank"
                    class="px-8 py-4 border-2 border-villain-600 hover:border-villain-500 text-villain-500 hover:text-villain-400 font-bold rounded-lg transition-all uppercase tracking-wider">
-                    Read Documentation
+                    View Documentation
                 </a>
             </div>
         </div>

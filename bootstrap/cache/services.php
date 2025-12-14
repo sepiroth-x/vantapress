@@ -52,6 +52,7 @@
     48 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
     49 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
     50 => 'Modules\\TheVillainTerminal\\TheVillainTerminalServiceProvider',
+    51 => 'Modules\\VPTelemetryServer\\VPTelemetryServerServiceProvider',
   ),
   'eager' => 
   array (
@@ -92,6 +93,7 @@
     34 => 'Modules\\VPToDoList\\VPToDoListServiceProvider',
     35 => 'Modules\\HelloWorld\\HelloWorldServiceProvider',
     36 => 'Modules\\TheVillainTerminal\\TheVillainTerminalServiceProvider',
+    37 => 'Modules\\VPTelemetryServer\\VPTelemetryServerServiceProvider',
   ),
   'deferred' => 
   array (
